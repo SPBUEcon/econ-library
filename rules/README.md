@@ -6,5 +6,6 @@
 | [sources-and-citation.md](sources-and-citation.md) | Как указывать источники |
 | [team-work.md](team-work.md) | Как работать в команде |
 | [ai-usage.md](ai-usage.md) | Как использовать ИИ |
+| [workstream-lifecycle.md](workstream-lifecycle.md) | Жизненный цикл воркстрима: гейты, наследование, где что лежит |
 
 Правила обязательны для всех участников и автоматически подключаются к Claude Code через `CLAUDE.md`.
