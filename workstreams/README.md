@@ -68,6 +68,7 @@
 ## Связанные документы
 
 - Концепт мастерской — [`../program/concept.md`](../program/concept.md).
+- Модель управления курсом (мандат, классы решений, жизненный цикл темы) — [`../program/governance.md`](../program/governance.md).
 - Модель гейтов — [`../program/gates.md`](../program/gates.md).
 - Календарь первого хода и лекции — [`../program/calendar.md`](../program/calendar.md).
 - Открытые вопросы и решения — [`../program/open-questions.md`](../program/open-questions.md).

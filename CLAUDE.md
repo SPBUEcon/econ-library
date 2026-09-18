@@ -14,6 +14,8 @@
 - Базовые документы — [`program/concept.md`](program/concept.md) (концепт) и
   [`workstreams/README.md`](workstreams/README.md) (карта воркстримов). Оригиналы (PDF) —
   [`program/source/`](program/source/).
+- **Модель управления курсом** (мандат, гейты, классы решений C0–C4, план семестра, форматы,
+  участие партнёра, жизненный цикл темы, межвуз, среда) — [`program/governance.md`](program/governance.md).
 - Роли — [`roles/README.md`](roles/README.md). Жизненный цикл воркстрима —
   [`rules/workstream-lifecycle.md`](rules/workstream-lifecycle.md).
 
