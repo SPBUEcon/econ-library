@@ -14,6 +14,9 @@
 Это **слой 2** архитектуры (воркстрим). Слой 1 (программа) — [`../program/`](../program/),
 слой 3 (команды) — внутри каждой папки воркстрима. Модель гейтов — [`../program/gates.md`](../program/gates.md).
 
+> **Для студентов:** наглядная [витрина воркстримов](../program/site/workstreams_board.html) (HTML) ·
+> рабочая [доска «воркстрим × гейт»](board.md) · [как включиться в воркстрим](../guides/how-to-join.md).
+
 ---
 
 ## Сводная карта
@@ -76,6 +79,9 @@
 
 ## Связанные документы
 
+- Доска «воркстрим × гейт» (статус-борд) — [`board.md`](board.md).
+- Витрина воркстримов (HTML, для студентов) — [`../program/site/workstreams_board.html`](../program/site/workstreams_board.html).
+- Как включиться в воркстрим — [`../guides/how-to-join.md`](../guides/how-to-join.md).
 - Концепт мастерской — [`../program/concept.md`](../program/concept.md).
 - Модель управления курсом (мандат, классы решений, жизненный цикл темы) — [`../program/governance.md`](../program/governance.md).
 - Модель гейтов — [`../program/gates.md`](../program/gates.md).

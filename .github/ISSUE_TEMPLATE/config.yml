@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Витрина воркстримов
+    url: https://github.com/SPBUEcon/econ-library/blob/main/program/site/workstreams_board.html
+    about: Посмотреть все воркстримы, гейты и статусы, прежде чем подавать заявку.
+  - name: Как включиться в воркстрим (гайд)
+    url: https://github.com/SPBUEcon/econ-library/blob/main/guides/how-to-join.md
+    about: Два пути входа — через контакт или через репозиторий.

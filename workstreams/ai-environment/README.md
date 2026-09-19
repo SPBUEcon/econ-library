@@ -46,6 +46,19 @@
 
 Роли — [`../../roles/README.md`](../../roles/README.md).
 
+## Как включиться
+
+Это **сквозная среда для всех команд** — включаться можно и отдельно, и прямо из своего
+воркстрима (подробно — [гайд](../../guides/how-to-join.md)):
+
+- **Через контакт** — напишите шерпе воркстрима (*уточнить*) или куратору — ИИтех (veai),
+  М. Костицин.
+- **Через репозиторий** — заявка в Issues по шаблону
+  [«Заявка на вход»](../../.github/ISSUE_TEMPLATE/join-workstream.md) →
+  [соглашение о входе](../_template/onboarding.md) → роль ([роли](../../roles/README.md)).
+
+Статус — на [витрине](../../program/site/workstreams_board.html) и [доске](../board.md).
+
 ## Разделы папки
 
 [`gates/`](gates/) · [`data/raw/`](data/raw/) · [`data/processed/`](data/processed/) ·
