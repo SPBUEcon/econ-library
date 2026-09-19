@@ -39,6 +39,19 @@
 
 Роли — [`../../roles/README.md`](../../roles/README.md).
 
+## Как включиться
+
+Хочешь в этот воркстрим? Два пути (подробно — [гайд](../../guides/how-to-join.md)):
+
+- **Через контакт** — напишите шерпе воркстрима (*уточнить*) или через владельца — Федерация
+  фиджитал-спорта СПб.
+- **Через репозиторий** — заявка в Issues по шаблону
+  [«Заявка на вход»](../../.github/ISSUE_TEMPLATE/join-workstream.md) →
+  [соглашение о входе](../_template/onboarding.md) → роль ([роли](../../roles/README.md)).
+
+Открытые для входа гейты — **G2 и G4** ([гейты](../../program/gates.md)). Статус — на
+[витрине](../../program/site/workstreams_board.html) и [доске](../board.md).
+
 ## Разделы папки
 
 [`gates/`](gates/) · [`data/raw/`](data/raw/) · [`data/processed/`](data/processed/) ·

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Витрина воркстримов — Мастерская «Технологии в экономике»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --ink:#1B2038; --ink2:#272E52; --card:#2E3660;
+  --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0;
+  --green:#2FA37A; --amber:#D9932B;
+  --disp:'Unbounded','Arial Black',sans-serif;
+  --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+section{padding:72px 0}
+a{color:inherit}
+.eyebrow{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:18px}
+h2{font-family:var(--disp);font-weight:700;font-size:clamp(26px,3.4vw,40px);line-height:1.15;margin-bottom:14px}
+.lead{font-size:clamp(16px,1.8vw,20px);color:var(--grey);max-width:820px}
+a.btn{display:inline-block;background:var(--coral);color:#fff;text-decoration:none;font-weight:600;
+  font-size:17px;padding:14px 28px;border-radius:14px;transition:transform .15s ease, box-shadow .15s ease}
+a.btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(240,97,79,.35)}
+a.btn.ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.5)}
+a.btn.ghost:hover{border-color:#fff;box-shadow:none}
+a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+
+/* -------- HERO -------- */
+.hero{background:var(--ink);color:#fff;padding:72px 0 80px}
+.hero .eyebrow{color:var(--ice)}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(28px,4.2vw,48px);line-height:1.12;max-width:900px}
+.hero h1 .accent{color:var(--coral)}
+.hero .sub{margin-top:20px;font-size:clamp(16px,1.9vw,21px);color:var(--ice);max-width:760px}
+.hero .cta-row{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap}
+.hero .stat-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:40px}
+.stat{background:var(--ink2);border-radius:14px;padding:14px 20px}
+.stat b{font-family:var(--disp);font-weight:700;font-size:24px;color:#fff;display:block}
+.stat span{font-size:13px;color:var(--ice);letter-spacing:.04em}
+
+/* -------- ЛЕГЕНДА -------- */
+.legend{background:var(--panel)}
+.legend-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:32px;margin-top:36px}
+.lvl-list{display:flex;flex-direction:column;gap:12px}
+.lvl{display:flex;gap:14px;align-items:flex-start;background:#fff;border-radius:14px;padding:16px 20px}
+.lvl .tag{flex:none}
+.lvl p{font-size:15px;color:var(--grey)}
+.lvl p b{color:var(--ink)}
+.gate-legend{background:var(--ink);color:#fff;border-radius:18px;padding:28px}
+.gate-legend h3{font-family:var(--disp);font-weight:500;font-size:18px;margin-bottom:16px;color:#fff}
+.gate-legend ol{list-style:none;counter-reset:g -1;display:flex;flex-direction:column;gap:9px}
+.gate-legend li{counter-increment:g;font-size:14.5px;color:var(--ice);padding-left:44px;position:relative}
+.gate-legend li::before{content:"G" counter(g);position:absolute;left:0;top:-1px;font-family:var(--disp);font-weight:700;font-size:13px;color:var(--coral);
+  background:var(--ink2);border-radius:8px;padding:3px 8px}
+.gate-legend .open{margin-top:16px;font-size:14px;color:#fff;border-top:1px solid rgba(255,255,255,.15);padding-top:14px}
+.gate-legend .open b{color:var(--coral)}
+
+/* -------- БЕЙДЖИ УРОВНЯ -------- */
+.tag{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.04em;border-radius:999px;padding:5px 12px;white-space:nowrap}
+.tag.a{background:var(--coral);color:#fff}
+.tag.b{background:var(--ink);color:#fff}
+.tag.cross{background:#3E7BD6;color:#fff}
+.tag.event{background:var(--green);color:#fff}
+.tag.talks{background:#fff;color:var(--grey);border:1.5px solid var(--line)}
+
+/* -------- СЕТКА ВОРКСТРИМОВ -------- */
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
+.ws{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 24px 22px;display:flex;flex-direction:column;
+  transition:transform .15s ease, box-shadow .15s ease}
+.ws:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(27,32,56,.10)}
+.ws.flag{background:linear-gradient(180deg,#fff, #F7F9FE)}
+.ws-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.ws-num{font-family:var(--disp);font-weight:700;font-size:34px;color:var(--ice);line-height:.9}
+.ws h3{font-family:var(--disp);font-weight:500;font-size:19px;line-height:1.25;margin:2px 0 14px}
+
+/* gate rail */
+.rail{display:flex;gap:5px;margin-bottom:16px}
+.rail .g{flex:1;text-align:center;font-family:var(--disp);font-weight:700;font-size:11px;padding:6px 0;border-radius:7px;
+  background:var(--panel);color:#9AA3C4;border:1px solid transparent}
+.rail .g.done{background:var(--ice);color:var(--ink2)}
+.rail .g.now{background:var(--coral);color:#fff}
+.rail .g.target{background:#fff;color:var(--coral);border:1.5px dashed var(--coral)}
+.rail .g.open{box-shadow:inset 0 -3px 0 var(--green)}
+
+.ws .super{font-size:14.5px;color:var(--ink);margin-bottom:16px}
+.meta{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
+.meta .row{font-size:13.5px;color:var(--grey);display:flex;gap:8px}
+.meta .row .k{flex:none;width:96px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);font-weight:600;padding-top:2px}
+.meta .row .v{color:var(--ink)}
+.meta .row .v small{color:var(--grey);font-weight:400}
+
+.status{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;margin-bottom:16px}
+.status .dot{width:9px;height:9px;border-radius:50%}
+.status.active .dot{background:var(--green)} .status.active{color:var(--green)}
+.status.frame .dot{background:var(--coral)} .status.frame{color:var(--coral)}
+.status.idea .dot{background:var(--amber)} .status.idea{color:var(--amber)}
+.status.talks .dot{background:var(--grey)} .status.talks{color:var(--grey)}
+
+.join{margin-top:auto;border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.join .contact{font-size:12.5px;color:var(--grey)}
+.join .contact b{color:var(--ink);font-weight:600}
+.join a.enter{font-size:14px;font-weight:600;color:var(--coral);text-decoration:none;white-space:nowrap}
+.join a.enter:hover{text-decoration:underline}
+.join a.enter:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* -------- КАК ВКЛЮЧИТЬСЯ -------- */
+.join-sec{background:var(--ink);color:#fff}
+.join-sec .lead{color:var(--ice)}
+.paths{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:44px}
+.path{background:var(--ink2);border-radius:20px;padding:32px}
+.path .n{font-family:var(--disp);font-weight:700;font-size:14px;color:var(--coral);letter-spacing:.08em;margin-bottom:12px}
+.path h3{font-family:var(--disp);font-weight:500;font-size:22px;margin-bottom:12px}
+.path p{font-size:16px;color:var(--ice);margin-bottom:16px}
+.path ol{margin:0 0 4px 18px;font-size:15px;color:var(--ice)}
+.path ol li{margin-bottom:8px}
+.path a.doc{color:#fff;font-weight:600;border-bottom:2px solid rgba(240,97,79,.6);text-decoration:none}
+.path a.doc:hover{border-bottom-color:#fff}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+.qstep{background:var(--ink2);border-radius:16px;padding:22px 24px}
+.qstep .qn{font-family:var(--disp);font-weight:700;font-size:26px;color:var(--coral);line-height:1;margin-bottom:10px}
+.qstep b{display:block;font-size:16px;margin-bottom:6px}
+.qstep span{font-size:14px;color:var(--ice)}
+
+/* -------- FOOTER -------- */
+.foot-sec{background:var(--panel)}
+.foot-links{display:flex;flex-wrap:wrap;gap:14px;margin-top:24px}
+.foot-links a{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 20px;font-size:15px;font-weight:600;color:var(--ink);text-decoration:none}
+.foot-links a:hover{border-color:var(--coral);color:var(--coral)}
+.foot-note{margin-top:40px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);font-weight:600}
+.src{margin-top:14px;font-size:13px;color:var(--grey);max-width:820px}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.rv.on{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
+
+@media (max-width:1000px){
+  .board{grid-template-columns:repeat(2,1fr)}
+  .legend-grid{grid-template-columns:1fr}
+  .quick{grid-template-columns:1fr}
+}
+@media (max-width:680px){
+  section{padding:56px 0}
+  .board{grid-template-columns:1fr}
+  .paths{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Мастерская «Технологии в экономике» · ЭФ СПбГУ · осень 2026</div>
+    <h1>Витрина <span class="accent">воркстримов</span></h1>
+    <p class="sub">Что происходит в каждой сквозной теме, на каком гейте она стоит и как в неё
+      включиться — командой или в одиночку, через контакт или через репозиторий.</p>
+    <div class="stat-row">
+      <div class="stat"><b>7</b><span>оперативных · семестр (A)</span></div>
+      <div class="stat"><b>4</b><span>флагмана · год+ (B)</span></div>
+      <div class="stat"><b>G0→G5</b><span>гейты одного хода</span></div>
+      <div class="stat"><b>G2·G4</b><span>открыты для входа</span></div>
+    </div>
+    <div class="cta-row">
+      <a class="btn" href="#join">Как включиться</a>
+      <a class="btn ghost" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/README.md">К карте в репозитории</a>
+    </div>
+  </div>
+</header>
+
+<!-- ЛЕГЕНДА -->
+<section class="legend">
+  <div class="wrap">
+    <div class="eyebrow rv">Как читать карточки</div>
+    <h2 class="rv">Уровни и гейты</h2>
+    <div class="legend-grid">
+      <div class="lvl-list">
+        <div class="lvl rv"><span class="tag a">A · семестр</span><p><b>Оперативный воркстрим.</b> Проходит ход до G3–G4 за семестр — сюда входят командами прямо сейчас.</p></div>
+        <div class="lvl rv"><span class="tag b">B · флагман</span><p><b>Длинный горизонт (год+).</b> Этой осенью только G0–G2; студенты входят фрагментами (бенчмарки, рынки).</p></div>
+        <div class="lvl rv"><span class="tag cross">Сквозной</span><p><b>Среда для всех команд.</b> Не отдельный ход, а линия, которая идёт сквозь остальные воркстримы.</p></div>
+        <div class="lvl rv"><span class="tag event">Событие</span><p><b>Формат-событие.</b> Конкурс / выставка с отдельным ритмом; роль студентов определяется под событие.</p></div>
+      </div>
+      <div class="gate-legend rv">
+        <h3>Гейты — точки пересборки, не экзамены</h3>
+        <ol>
+          <li>Рамка — суперзадача и ставка партнёра подтверждены</li>
+          <li>Команда — роли распределены, наследство принято</li>
+          <li>Архитектура — концепция живой модели защищена</li>
+          <li>Поле — модель проверена реальной средой</li>
+          <li>Результат — вердикт партнёра «беру / беру с условиями / не беру»</li>
+          <li>Наследование — пакет передачи следующей команде</li>
+        </ol>
+        <p class="open"><b>G2 и G4 открыты</b> для студентов и преподавателей других вузов до всякого формального партнёрства — это главный канал входа следующих команд.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ВОРКСТРИМЫ -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow rv">Оперативные и сквозные · вход открыт</div>
+    <h2 class="rv">Воркстримы этого хода</h2>
+    <div class="board">
+
+      <!-- 1 Страхование -->
+      <div class="ws rv">
+        <div class="ws-top"><span class="ws-num">01</span><span class="tag a">A · семестр</span></div>
+        <h3>Страхование</h3>
+        <div class="rail" aria-label="Текущий гейт G0, целевой G4">
+          <span class="g now">G0</span><span class="g">G1</span><span class="g open">G2</span><span class="g">G3</span><span class="g target open">G4</span><span class="g">G5</span>
+        </div>
+        <p class="super">Новые ниши и embedded-insurance · онлайн vs агентский канал · продвижение киберстрахования. На первый ход — 1–2 фокуса.</p>
+        <div class="meta">
+          <div class="row"><span class="k">Партнёр</span><span class="v">Ингосстрах — Г. Владельщикова <small>вице-президент · Владелец + Эксперт</small></span></div>
+          <div class="row"><span class="k">Команды</span><span class="v">Экономика, 3 к. + группы ЭФ</span></div>
+        </div>
+        <span class="status frame"><span class="dot"></span>G0 — рамка</span>
+        <div class="join">
+          <span class="contact">Контакт: <b>шерпа — уточнить</b></span>
+          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/insurance">Войти →</a>
+        </div>
+      </div>
+
+      <!-- 2 Развитие территорий -->
+      <div class="ws rv">
+        <div class="ws-top"><span class="ws-num">02</span><span class="tag a">A · семестр</span></div>
+        <h3>Развитие территорий</h3>
+        <div class="rail" aria-label="Текущий гейт G0, целевой G3">
+          <span class="g now">G0</span><span class="g">G1</span><span class="g open">G2</span><span class="g target">G3</span><span class="g open">G4</span><span class="g">G5</span>
+        </div>
+        <p class="super">ГИС-анализ и планирование спортинфраструктуры + коммуникация и медиа для вовлечения населения в спорт.</p>
+        <div class="meta">
+          <div class="row"><span class="k">Партнёр</span><span class="v">Спорткомитет СПб — А. Шантырь, И. Сологуб <small>Владелец</small></span></div>
+          <div class="row"><span class="k">Технолог</span><span class="v">Геоинтеллект — Д. Структов <small>шерпа-технолог (ГИС)</small></span></div>
+          <div class="row"><span class="k">Команды</span><span class="v">ИСЭ, 4 к. + возм. Университет МЧС</span></div>
+        </div>
+        <span class="status frame"><span class="dot"></span>G0 — рамка (hot)</span>
+        <div class="join">
+          <span class="contact">Контакт: <b>Геоинтеллект (ГИС)</b></span>
+          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/territories">Войти →</a>
+        </div>
+      </div>
+
+      <!-- 4 Фиджитал-спорт -->
+      <div class="ws rv">
+        <div class="ws-top"><span class="ws-num">04</span><span class="tag a">A · семестр</span></div>
+        <h3>Фиджитал-спорт</h3>
+        <div class="rail" aria-label="Текущий гейт G0, целевой G3">
+          <span class="g now">G0</span><span class="g">G1</span><span class="g open target">G2</span><span class="g target">G3</span><span class="g open">G4</span><span class="g">G5</span>
+        </div>
+        <p class="super">Оценка международного рынка фиджитал-дайвинга: объём, сегменты, каналы, зарубежное продвижение.</p>
+        <div class="meta">
+          <div class="row"><span class="k">Партнёр</span><span class="v">Федерация фиджитал-спорта СПб — А. Спелов <small>Владелец + Эксперт</small></span></div>
+          <div class="row"><span class="k">Команды</span><span class="v">Экономика, 3 к. + возм. СПбГМТУ</span></div>
+        </div>
+        <span class="status frame"><span class="dot"></span>G0 — рамка</span>
+        <div class="join">
+          <span class="contact">Контакт: <b>шерпа — уточнить</b></span>
+          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/phygital-sport">Войти →</a>
+        </div>
+      </div>
+
+      <!-- 13 Среда управления -->
+      <div class="ws rv">
+        <div class="ws-top"><span class="ws-num">13</span><span class="tag cross">Сквозной · зонтик</span></div>
+        <h3>Среда управления</h3>
+        <div class="rail" aria-label="Текущий гейт G1, целевой G3">
+          <span class="g done">G0</span><span class="g now">G1</span><span class="g open">G2</span><span class="g target">G3</span><span class="g open">G4</span><span class="g">G5</span>
+        </div>
+        <p class="super">Единая вузонезависимая среда: репозиторий воркстримов, доска «воркстрим × гейт», шаблоны, автоматизация, эта витрина.</p>
+        <div class="meta">
+          <div class="row"><span class="k">Владелец</span><span class="v">Мастерская (Хан)</span></div>
+          <div class="row"><span class="k">Ставка</span><span class="v">В. В. Иванова <small>зав. кафедрой ИСвЭ</small></span></div>
+          <div class="row"><span class="k">Команды</span><span class="v">Магистранты ИСвЭ + команда Veai</span></div>
+        </div>
+        <span class="status active"><span class="dot"></span>Активный</span>
+        <div class="join">
+          <span class="contact">Вход через <b>git / PR</b></span>
+          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/management-environment">Войти →</a>
+        </div>
+      </div>
+
+      <!-- 5 ИИ / цифровые двойники -->
+      <div class="ws rv">
+        <div class="ws-top"><span class="ws-num">05</span><span class="tag cross">Сквозной</span></div>
+        <h3>ИИ, цифровые двойники и симуляции</h3>
+        <div class="rail" aria-label="Сквозной, текущий гейт G0">
+          <span class="g now">G0</span><span class="g">G1</span><span class="g">G2</span><span class="g">G3</span><span class="g">G4</span><span class="g">G5</span>
+        </div>
+        <p class="super">Сквозная AI-линия: ИИ-агенты, AI-native подход, ИИ-инструменты в ежедневной работе всех команд.</p>
+        <div class="meta">
+          <div class="row"><span class="k">Партнёр</span><span class="v">ИИтех (veai) — М. Костицин <small>Эксперт · среда / лаборатория</small></span></div>
+          <div class="row"><span class="k">Команды</span><span class="v">Оба курса + все команды</span></div>
+        </div>
+        <span class="status frame"><span class="dot"></span>G0 — рамка · сквозной</span>
+        <div class="join">
+          <span class="contact">Контакт: <b>шерпа — уточнить</b></span>
+          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/ai-environment">Войти →</a>
+        </div>
+      </div>
+
+      <!-- 6 Технологии и производство / венчур -->
+      <div class="ws rv">
+        <div class="ws-top"><span class="ws-num">06</span><span class="tag a">A/B · семестр→год</span></div>
+        <h3>Технологии и производство / венчур</h3>
+        <div class="rail" aria-label="Текущий гейт G0, целевой G1">
+          <span class="g now">G0</span><span class="g target">G1</span><span class="g open">G2</span><span class="g">G3</span><span class="g open">G4</span><span class="g">G5</span>
+        </div>
+        <p class="super">Венчурный и технологический рынок. Отдельная возможность — оргкоманда Хайпарк.Форума (12–13.11.2026).</p>
+        <div class="meta">
+          <div class="row"><span class="k">Партнёр</span><span class="v">ИТМО Хайпарк — М. Мастин <small>Эксперт + Владелец флагмана</small></span></div>
+          <div class="row"><span class="k">Команды</span><span class="v">Оба курса</span></div>
+        </div>
+        <span class="status frame"><span class="dot"></span>G0 — рамка</span>
+        <div class="join">
+          <span class="contact">Контакт: <b>шерпа — уточнить</b></span>
+          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/venture-tech">Войти →</a>
+        </div>
+      </div>
+
+      <!-- 7 Экология / Биеннале карт -->
+      <div class="ws rv">
+        <div class="ws-top"><span class="ws-num">07</span><span class="tag event">Событие</span></div>
+        <h3>Экология / данные — Биеннале карт</h3>
+        <div class="rail" aria-label="Формат события, текущий гейт G0">
+          <span class="g now">G0</span><span class="g">G1</span><span class="g">G2</span><span class="g">G3</span><span class="g">G4</span><span class="g">G5</span>
+        </div>
+        <p class="super">Всероссийский конкурс по картографии / геоаналитике + выставка: без победителей и призов, бесплатно, отбор на выставку.</p>
+        <div class="meta">
+          <div class="row"><span class="k">Партнёр</span><span class="v">Геоинтеллект — Д. Структов <small>Эксперт + событие</small></span></div>
+          <div class="row"><span class="k">Команды</span><span class="v">Оба курса + внешние вузы</span></div>
+        </div>
+        <span class="status frame"><span class="dot"></span>Событие · рамка</span>
+        <div class="join">
+          <span class="contact">Контакт: <b>Геоинтеллект</b></span>
+          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/cartography-biennale">Войти →</a>
+        </div>
+      </div>
+
+      <!-- 8 Кибер-фиджитал арена -->
+      <div class="ws flag rv">
+        <div class="ws-top"><span class="ws-num">08</span><span class="tag b">B · флагман</span></div>
+        <h3>Кибер-фиджитал арена</h3>
+        <div class="rail" aria-label="Флагман, диапазон G0–G2">
+          <span class="g now">G0</span><span class="g">G1</span><span class="g target open">G2</span><span class="g">G3</span><span class="g">G4</span><span class="g">G5</span>
+        </div>
+        <p class="super">Международная кибер-фиджитал арена в Петербурге (спорт × фиджитал × инфраструктура). Вход студентов — фрагментами.</p>
+        <div class="meta">
+          <div class="row"><span class="k">Куратор</span><span class="v">М. Мастин (Хайпарк) <small>Владелец флагмана</small></span></div>
+          <div class="row"><span class="k">Команды</span><span class="v">Межвузовский</span></div>
+        </div>
+        <span class="status idea"><span class="dot"></span>Идея · G0–G2</span>
+        <div class="join">
+          <span class="contact">Связать с №2, №3, №4</span>
+          <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Войти →</a>
+        </div>
+      </div>
+
+      <!-- 9 Международный технологический центр -->
+      <div class="ws flag rv">
+        <div class="ws-top"><span class="ws-num">09</span><span class="tag b">B · флагман</span></div>
+        <h3>Международный технологический центр</h3>
+        <div class="rail" aria-label="Флагман, диапазон G0–G2">
+          <span class="g now">G0</span><span class="g">G1</span><span class="g target open">G2</span><span class="g">G3</span><span class="g">G4</span><span class="g">G5</span>
+        </div>
+        <p class="super">«Новый международный ВДНХ» для стран-партнёров техлидеров (Китай, Индия, ЮВА и др.). Студенческие фрагменты — бенчмарки, рынки.</p>
+        <div class="meta">
+          <div class="row"><span class="k">Владельцы</span><span class="v">М. Мастин, Ирен Артемова <small>Владелец флагмана</small></span></div>
+          <div class="row"><span class="k">Команды</span><span class="v">Межвузовский</span></div>
+        </div>
+        <span class="status idea"><span class="dot"></span>Идея · G0–G2</span>
+        <div class="join">
+          <span class="contact">Оформить рамку</span>
+          <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Войти →</a>
+        </div>
+      </div>
+
+      <!-- 10 Сеть фиджитал дайвинг-центров -->
+      <div class="ws flag rv">
+        <div class="ws-top"><span class="ws-num">10</span><span class="tag b">B · флагман</span></div>
+        <h3>Сеть фиджитал дайвинг-центров</h3>
+        <div class="rail" aria-label="Флагман, диапазон G0–G2">
+          <span class="g now">G0</span><span class="g">G1</span><span class="g target open">G2</span><span class="g">G3</span><span class="g">G4</span><span class="g">G5</span>
+        </div>
+        <p class="super">Сеть фиджитал дайвинг-центров как мягкая сила и продвижение российских технологий. Вырастает из воркстрима №4.</p>
+        <div class="meta">
+          <div class="row"><span class="k">Куратор</span><span class="v">А. Спелов (Федерация) <small>Владелец флагмана</small></span></div>
+          <div class="row"><span class="k">Команды</span><span class="v">Экономика, 3 к. + возм. СПбГМТУ</span></div>
+        </div>
+        <span class="status idea"><span class="dot"></span>Идея · G0–G2</span>
+        <div class="join">
+          <span class="contact">Из №4: рынок → сеть</span>
+          <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Войти →</a>
+        </div>
+      </div>
+
+      <!-- 11 Новый интеллектуальный центр -->
+      <div class="ws flag rv">
+        <div class="ws-top"><span class="ws-num">11</span><span class="tag b">B · зонтик</span></div>
+        <h3>Новый интеллектуальный центр</h3>
+        <div class="rail" aria-label="Флагман-зонтик, текущий гейт G0">
+          <span class="g now">G0</span><span class="g">G1</span><span class="g">G2</span><span class="g">G3</span><span class="g">G4</span><span class="g">G5</span>
+        </div>
+        <p class="super">Консалтинг + think tank постинформационного уклада — институциональный зонтик над аналитикой мастерской.</p>
+        <div class="meta">
+          <div class="row"><span class="k">Куратор</span><span class="v">Хан <small>Владелец флагмана</small></span></div>
+          <div class="row"><span class="k">Команды</span><span class="v">Мастерская в целом</span></div>
+        </div>
+        <span class="status idea"><span class="dot"></span>Идея · G0</span>
+        <div class="join">
+          <span class="contact">Определить рамку зонтика</span>
+          <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Войти →</a>
+        </div>
+      </div>
+
+      <!-- 12 Аскона -->
+      <div class="ws flag rv">
+        <div class="ws-top"><span class="ws-num">12</span><span class="tag talks">В переговорах</span></div>
+        <h3>Аскона</h3>
+        <div class="rail" aria-label="В переговорах, гейт не начат">
+          <span class="g">G0</span><span class="g">G1</span><span class="g">G2</span><span class="g">G3</span><span class="g">G4</span><span class="g">G5</span>
+        </div>
+        <p class="super">Поток и суперзадача пока не определены. Тема без живой ставки на витрину для входа не выводится — идут переговоры.</p>
+        <div class="meta">
+          <div class="row"><span class="k">Контакт</span><span class="v">АсконаLive — уточняется</span></div>
+          <div class="row"><span class="k">Поток</span><span class="v">Мода / креативные — уточнить</span></div>
+        </div>
+        <span class="status talks"><span class="dot"></span>В переговорах</span>
+        <div class="join">
+          <span class="contact">Ещё не открыт для входа</span>
+          <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Подробнее →</a>
+        </div>
+      </div>
+
+    </div>
+    <p class="src rv">Данные карточек перенесены из <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/README.md">карты воркстримов</a>
+      и карточек воркстримов; статусы «уточнить / в переговорах / идея» сохранены как в источнике.
+      Проверяйте по первоисточнику и обновляйте по мере движения к гейтам.</p>
+  </div>
+</section>
+
+<!-- КАК ВКЛЮЧИТЬСЯ -->
+<section class="join-sec" id="join">
+  <div class="wrap">
+    <div class="eyebrow rv">Быстрый старт</div>
+    <h2 class="rv">Как включиться в воркстрим</h2>
+    <p class="lead rv">Два пути — выбирайте любой. Оба ведут к одному: роль в воркстриме, цифровой
+      след и движение к ближайшему гейту вместе с командой.</p>
+
+    <div class="paths">
+      <div class="path rv">
+        <div class="n">ПУТЬ 1</div>
+        <h3>Через контакт</h3>
+        <p>Быстро и по-человечески: напишите шерпе, капитану или владельцу воркстрима — контакт указан в карточке выше и в карточке воркстрима в репозитории.</p>
+        <ol>
+          <li>Выбрали воркстрим на витрине.</li>
+          <li>Открыли его карточку, нашли контакт (шерпа / владелец).</li>
+          <li>Договорились о роли и вошли в ближайший гейт.</li>
+        </ol>
+        <p style="margin-bottom:0">Хороший момент для входа — <b>открытые гейты G2 и G4</b>: на них можно прийти до всякого формального оформления.</p>
+      </div>
+      <div class="path rv">
+        <div class="n">ПУТЬ 2</div>
+        <h3>Через репозиторий</h3>
+        <p>Формально и с цифровым следом: заявка живёт в Issues, а вход фиксируется соглашением о входе — так вклад виден с первого дня.</p>
+        <ol>
+          <li>Открыли Issue по шаблону <a class="doc" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.md">«Заявка на вход в воркстрим»</a>.</li>
+          <li>Заполнили: воркстрим, роль, курс/группа, навыки, путь входа.</li>
+          <li>Заполнили <a class="doc" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/_template/onboarding.md">соглашение о входе</a> и получили роль.</li>
+        </ol>
+        <p style="margin-bottom:0">Подробно — гайд <a class="doc" href="https://github.com/SPBUEcon/econ-library/blob/main/guides/how-to-join.md">«Как включиться в воркстрим»</a>.</p>
+      </div>
+    </div>
+
+    <div class="quick">
+      <div class="qstep rv"><div class="qn">1</div><b>Выбрать</b><span>воркстрим на витрине и прочитать его карточку в репозитории.</span></div>
+      <div class="qstep rv"><div class="qn">2</div><b>Роль</b><span>выбрать роль по <a class="doc" href="https://github.com/SPBUEcon/econ-library/blob/main/roles/README.md">списку ролей</a>: капитан, архитектор, аналитик поля, интегратор технологий, связной.</span></div>
+      <div class="qstep rv"><div class="qn">3</div><b>Войти</b><span>контакт или Issue — и первый ход к ближайшему гейту вместе с командой.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<section class="foot-sec">
+  <div class="wrap">
+    <div class="eyebrow rv">Навигация</div>
+    <h2 class="rv">Дальше</h2>
+    <div class="foot-links rv">
+      <a href="./landing_tech_econ.html">О мастерской (лендинг)</a>
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/README.md">Карта воркстримов</a>
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/board.md">Доска «воркстрим × гейт»</a>
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/guides/how-to-join.md">Как включиться</a>
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/roles/README.md">Роли</a>
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/program/gates.md">Гейты G0–G5</a>
+    </div>
+    <p class="foot-note rv">Витрина воркстримов · Мастерская «Технологии в экономике» · ЭФ СПбГУ · Кафедра информационных систем в экономике · осень 2026</p>
+    <p class="src rv">Витрину держит в актуальном состоянии воркстрим «Среда управления». Нашли расхождение со статусом воркстрима — поправьте через Pull request.</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('on'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, {threshold: 0.12});
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
