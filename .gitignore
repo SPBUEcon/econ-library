@@ -1,0 +1,11 @@
+# Закрытая таблица контактов реестра — в репозиторий не попадает.
+# Шаблон колонок — registry/_contacts-template.csv, см. registry/README.md.
+registry/*-contacts.csv
+registry/private/
+
+# Временные файлы редакторов и ОС
+Thumbs.db
+desktop.ini
+.DS_Store
+~$*
+*.tmp
