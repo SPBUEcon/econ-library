@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Участники, группы, роли и доступы — одностраничник</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2038; --ink2:#272E52;
+    --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5; --line:#D7E0F0;
+    --coral:#F0614F; --grey:#5A6072; --green:#2FA37A; --amber:#D9932B;
+    --disp:'Unbounded','Arial Black',sans-serif;
+    --body:'IBM Plex Sans',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.4;font-size:14px}
+  .page{max-width:1240px;margin:0 auto;padding:28px 32px 24px}
+  header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-bottom:3px solid var(--ink);padding-bottom:12px;margin-bottom:16px}
+  h1{font-family:var(--disp);font-weight:700;font-size:26px;line-height:1.15}
+  .meta{font-size:12px;color:var(--grey);text-align:right;white-space:nowrap}
+  .meta b{color:var(--coral)}
+  h2{font-family:var(--disp);font-weight:500;font-size:13px;letter-spacing:.02em;margin-bottom:8px;color:var(--ink2)}
+  .grid{display:grid;grid-template-columns:5fr 7fr;gap:20px}
+  .stack{display:grid;gap:14px;align-content:start}
+  .box{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .box.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .box.dark h2{color:var(--coral)}
+  ul{list-style:none}
+  li{padding-left:14px;position:relative;margin-bottom:5px}
+  li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;border-radius:50%;background:var(--coral)}
+  .box.dark li::before{background:var(--coral)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .two > div{background:var(--panel);border-radius:8px;padding:9px 11px}
+  .two h3{font-size:12px;font-weight:600;margin-bottom:5px;color:var(--ink2)}
+  .two li{font-size:12.5px;margin-bottom:3px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{font-family:var(--disp);font-weight:500;font-size:10.5px;text-align:left;padding:6px 8px;background:var(--ink);color:#fff}
+  th:first-child{border-radius:8px 0 0 0} th:last-child{border-radius:0 8px 0 0}
+  td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  td.n{font-family:var(--disp);font-weight:700;color:var(--coral);width:26px}
+  td.q{font-weight:600;width:27%}
+  .tag{display:inline-block;font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:99px;background:var(--ice);color:var(--ink2);white-space:nowrap}
+  .tag.c4{background:#FBE0DC;color:#B23A2B}
+  .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  .strip .box{padding:10px 12px}
+  .strip h2{color:var(--coral)}
+  .strip p{font-size:12.5px}
+  footer{margin-top:12px;font-size:11px;color:var(--grey);display:flex;justify-content:space-between;gap:16px}
+  @media screen and (max-width:900px){
+    .grid,.strip,.two{grid-template-columns:1fr}
+    header{flex-direction:column;align-items:flex-start}
+    .meta{text-align:left;white-space:normal}
+  }
+  @media print{
+    @page{size:A4 landscape;margin:8mm}
+    body{font-size:11px;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .page{padding:0;max-width:none}
+    header{padding-bottom:6px;margin-bottom:8px}
+    h1{font-size:20px}
+    h2{font-size:11px;margin-bottom:5px}
+    .grid{gap:14px} .stack{gap:10px}
+    .box,.strip .box{break-inside:avoid;padding:8px 11px}
+    li{margin-bottom:3px}
+    td,li,.strip p,.two li,.box p{font-size:10.8px !important}
+    .two h3{font-size:10.8px}
+    th{font-size:9px;padding:5px 7px}
+    td{padding:5px 7px}
+    .tag{font-size:9.5px;padding:0 6px}
+    .strip{margin-top:8px;gap:8px}
+    footer{margin-top:6px;font-size:8.5px}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>Участники, группы, роли и доступы</h1>
+    <div class="meta">Проект предложения к <b>24.09.2026 · G1</b><br>Полный текст — <code>program/participants-and-access.md</code></div>
+  </header>
+
+  <div class="grid">
+    <div class="stack">
+      <div class="box dark">
+        <h2>Что нашли в репозитории</h2>
+        <ul>
+          <li><b>Репозиторий публичный</b>, а правила запрещают персональные данные. Шаблон входа при этом просит ФИО.</li>
+          <li>Владелец — <b>личный аккаунт</b>, не организация: командных ролей нет.</li>
+          <li><b>Защита <code>main</code> не включена</b>: правило «только через PR» держится на договорённости.</li>
+          <li>Списков участников, групп и внешних <b>нигде нет</b>.</li>
+        </ul>
+      </div>
+
+      <div class="box">
+        <h2>Два контура — две системы учёта</h2>
+        <div class="two">
+          <div>
+            <h3>Формальный · у вуза</h3>
+            <ul>
+              <li>Семестр, дисциплина, занятия</li>
+              <li>Зачёт, ведомость, посещаемость</li>
+              <li>Учебная <b>группа</b></li>
+              <li>Внешний зачёт закрывает его вуз</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Содержательный · в репозитории</h3>
+            <ul>
+              <li>Воркстрим, мандат, ходы</li>
+              <li>Гейты, пакет G5, библиотека</li>
+              <li>Рабочая <b>команда</b> 3–5 человек</li>
+              <li>Курсовые и ВКР — как ход в воркстриме</li>
+            </ul>
+          </div>
+        </div>
+        <p style="font-size:12px;margin-top:8px;color:var(--grey)">Мост между контурами — <b>выписка вклада</b> из реестра и истории репозитория.</p>
+      </div>
+
+      <div class="box">
+        <h2>Зачёт: рекомендуем вариант A</h2>
+        <ul>
+          <li>Зачёт за <b>ход в своей роли</b> до G4 или до честного G5 + индивидуальная рефлексия.</li>
+          <li>Провал гейта — не незачёт; срыв G5 и «тихий выход» — влияют.</li>
+          <li>Не по числу коммитов: нетехнические роли работают не в git.</li>
+          <li><b>Блокер:</b> 6 занятий у «Экономики» против 8–10 в лендинге.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="box" style="padding:0;overflow:hidden">
+        <table>
+          <thead><tr><th>#</th><th>Что решаем</th><th>Рекомендация</th><th>Класс</th></tr></thead>
+          <tbody>
+            <tr><td class="n">1</td><td class="q">Где вести списки людей</td><td>Закрытый реестр вне репозитория; в репозитории — ник, роль, воркстрим</td><td><span class="tag">C3</span></td></tr>
+            <tr><td class="n">2</td><td class="q">Как устроены доступы</td><td>Читают все; пишут в <code>main</code> только через PR; студенты и внешние — форк + PR; запись — шерпам и владельцам</td><td><span class="tag">C3</span></td></tr>
+            <tr><td class="n">3</td><td class="q">Организация GitHub</td><td>Перейти с личного аккаунта; включить защиту <code>main</code> и CODEOWNERS</td><td><span class="tag">C3</span></td></tr>
+            <tr><td class="n">4</td><td class="q">Группа и команда</td><td>Развести: группа — формальная, команда — рабочая; одна основная команда на семестр</td><td><span class="tag">C1–C2</span></td></tr>
+            <tr><td class="n">5</td><td class="q">Что считать зачётом</td><td>Вариант A: ход в роли + рефлексия; согласовать с факультетом</td><td><span class="tag c4">C4</span></td></tr>
+            <tr><td class="n">6</td><td class="q">Внешние участники</td><td>Мини-G1 → соглашение → спонсор-шерпа → мини-G5; запись в реестре</td><td><span class="tag">C2</span></td></tr>
+            <tr><td class="n">7</td><td class="q">Долгий результат</td><td>Хроника воркстрима, пакет G5, курсовые и ВКР привязать к воркстриму</td><td><span class="tag">C2</span></td></tr>
+            <tr><td class="n">8</td><td class="q">Закрытые данные партнёра</td><td>Отдельное закрытое пространство на воркстрим; в репозиторий не попадают</td><td><span class="tag">C3</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="box">
+        <h2>Роли команды (issue #2)</h2>
+        <p style="font-size:12.5px">Оставить <b>пять ролей</b>, а не плодить новые; внутри — <b>профили</b>. Интегратор технологий: <span class="tag">ГИС</span> <span class="tag">разработчик прототипов</span> <span class="tag">ИИ-инструменты</span>. Связной с партнёром: <span class="tag">коммуникации</span>. В реестре — «роль + профиль». Ключи и токены в репозитории не хранятся.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="box"><h2>Читают все</h2><p>Публичная витрина — вход для внешних вузов через открытые G2 и G4.</p></div>
+    <div class="box"><h2>Пишут через PR</h2><p>Студенты и внешние — из форка. Ревью — шерпа и владелец воркстрима.</p></div>
+    <div class="box"><h2>Кадровый потребитель</h2><p>Профили людей — только с согласия участника и по правилу пропорциональности.</p></div>
+    <div class="box"><h2>Ещё уточнить</h2><p>Хранение данных студентов · согласие партнёров на ФИО · тариф GitHub · координатор факультета.</p></div>
+  </div>
+
+  <footer>
+    <span>Мастерская «Технологии в экономике» · ЭФ СПбГУ · осень 2026</span>
+    <span>Проект предложения, не решение. Решения C3–C4 — мастер, носитель ставки, факультет.</span>
+  </footer>
+</div>
+</body>
+</html>
