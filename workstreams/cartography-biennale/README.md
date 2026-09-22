@@ -55,5 +55,5 @@
 [`gates/`](gates/) · [`data/raw/`](data/raw/) · [`data/processed/`](data/processed/) ·
 [`meetings/`](meetings/) · [`deliverables/`](deliverables/)
 
-Связанный воркстрим — «Развитие территорий» ([`../territories/`](../territories/)) — тот же
+Связанный воркстрим — «Экономика и технологии в спорте» ([`../sport-spb/`](../sport-spb/)) — тот же
 партнёр Геоинтеллект.
