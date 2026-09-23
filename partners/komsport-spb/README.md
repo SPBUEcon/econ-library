@@ -11,7 +11,7 @@
 | **Роль партнёра** | Владелец воркстрима(ов) |
 | **Технолог (шерпа)** | Геоинтеллект / ООО «ЦПИ» — Д. Структов (гендиректор, основатель) |
 | **Актив (портал)** | <https://komsport.spb.ru/portal/> ; реестр спортобъектов — <https://komsport.spb.ru/portal/sportobject/> |
-| **Воркстримы** | [`sport-geo`](../../workstreams/sport-geo/) · [`sport-engagement`](../../workstreams/sport-engagement/) · поток-хаб [`territories`](../../workstreams/territories/) |
+| **Воркстримы** | [`sport-geo`](../../workstreams/sport-geo/) · [`sport-engagement`](../../workstreams/sport-engagement/) · поток-хаб [`sport-spb`](../../workstreams/sport-spb/) |
 
 ## Что делаем для партнёра
 
@@ -28,7 +28,7 @@
    система показателей (см. [`tasks/task-2-engagement.md`](tasks/task-2-engagement.md)).
 
 Общая рамка домена, связь двух задач и общий контур показателей — поток-хаб
-[«Развитие территорий»](../../workstreams/territories/).
+[«Экономика и технологии в спорте»](../../workstreams/sport-spb/).
 
 ## Опорные документы (открытые / партнёрские)
 

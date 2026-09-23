@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Экономика и технологии в спорте — стратегия для Спорткомитета СПб</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --ink:#1B2038; --ink2:#272E52; --card:#2E3660;
+  --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0;
+  --green:#2FA37A; --amber:#D9932B; --blue:#3E7BD6;
+  --disp:'Unbounded','Arial Black',sans-serif;
+  --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:var(--body);background:var(--ink);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+
+/* ---- Deck frame ---- */
+.deck{position:relative;width:100vw;height:100vh;overflow:hidden}
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .35s ease;
+  display:flex;flex-direction:column;justify-content:center;background:var(--paper);
+  padding:clamp(22px,3.2vw,44px) clamp(28px,5.5vw,88px);overflow:auto}
+.slide.active{opacity:1;visibility:visible}
+.slide.dark{background:var(--ink);color:#fff}
+
+/* ---- shared type ---- */
+.kicker{font-family:var(--body);font-size:clamp(11px,1.1vw,13.5px);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--coral);font-weight:600;margin-bottom:16px}
+.slide.dark .kicker{color:var(--ice)}
+h1{font-family:var(--disp);font-weight:700;font-size:clamp(30px,5vw,60px);line-height:1.08;letter-spacing:-.01em}
+h2{font-family:var(--disp);font-weight:700;font-size:clamp(24px,3.4vw,42px);line-height:1.12;margin-bottom:8px;letter-spacing:-.01em}
+h3{font-family:var(--disp);font-weight:600;font-size:clamp(16px,1.7vw,21px);line-height:1.25}
+p{font-size:clamp(14px,1.35vw,18px)}
+.muted{color:var(--grey)}
+.slide.dark .muted{color:var(--ice)}
+b,strong{font-weight:600}
+.accent{color:var(--coral)}
+
+/* ---- title slide ---- */
+.title-wrap{margin:auto 0;max-width:1000px}
+.title-wrap h1{max-width:15ch}
+.title-sub{margin-top:22px;font-size:clamp(16px,1.9vw,22px);color:var(--ice);max-width:60ch}
+.org-row{margin-top:40px;display:flex;flex-wrap:wrap;gap:14px}
+.org{background:var(--ink2);border-radius:14px;padding:14px 20px;font-size:14.5px;color:#fff}
+.org b{display:block;font-family:var(--disp);font-weight:600;font-size:15px;margin-bottom:2px}
+.org span{color:var(--ice);font-size:13px}
+.title-badges{margin-top:34px;display:flex;flex-wrap:wrap;gap:10px}
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;padding:8px 16px;font-size:13.5px;color:#fff}
+.pill .n{font-family:var(--disp);font-weight:700;color:var(--coral)}
+
+/* ---- header line for content slides ---- */
+.s-head{margin-bottom:14px;flex:none}
+.s-head .row{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* ---- two columns ---- */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.slide .cols,.slide .cols-3{align-items:stretch}
+@media(max-width:820px){.cols,.cols-3{grid-template-columns:1fr}}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:clamp(15px,1.7vw,22px);display:flex;flex-direction:column}
+.card.tint{background:var(--panel)}
+.card .tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--coral);margin-bottom:12px}
+.card .tag .dot{width:9px;height:9px;border-radius:50%;background:var(--coral)}
+.card.two .tag{color:var(--blue)} .card.two .tag .dot{background:var(--blue)}
+.card h3{margin-bottom:12px}
+.card ul{list-style:none;display:flex;flex-direction:column;gap:7px;margin-top:4px}
+.card li{position:relative;padding-left:22px;font-size:clamp(13.5px,1.25vw,16px);color:var(--ink2)}
+.card li::before{content:"";position:absolute;left:2px;top:9px;width:8px;height:8px;border-radius:2px;background:var(--coral)}
+.card.two li::before{background:var(--blue)}
+.card li b{color:var(--ink)}
+.card .foot{margin-top:auto;padding-top:14px;font-size:12.5px;color:var(--grey)}
+
+/* goal band */
+.goal{background:var(--ink);color:#fff;border-radius:16px;padding:12px 22px;margin-bottom:10px}
+.goal .lbl{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ice);font-weight:600;margin-bottom:6px}
+.goal p{font-size:clamp(14px,1.4vw,18px);color:#fff}
+.goal p .accent{color:var(--coral)}
+
+/* metric strip */
+.kpi-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:2px}
+.kpi{background:var(--panel);border-radius:12px;padding:11px 16px;flex:1;min-width:150px}
+.kpi b{font-family:var(--disp);font-weight:700;font-size:clamp(18px,2vw,26px);color:var(--ink);display:block}
+.kpi span{font-size:12.5px;color:var(--grey)}
+
+/* flow (theme connection) */
+.flow{display:flex;align-items:stretch;gap:12px;flex-wrap:wrap;margin-top:14px}
+.flow .node{flex:1;min-width:150px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.flow .node .t{font-family:var(--disp);font-weight:600;font-size:14px;margin-bottom:4px}
+.flow .node p{font-size:12.5px;color:var(--grey)}
+.flow .arr{align-self:center;color:var(--coral);font-size:22px;font-weight:700}
+
+/* process steps (gates) */
+.gates{display:flex;gap:8px;margin:18px 0 8px;flex-wrap:wrap}
+.gates .g{flex:1;min-width:92px;background:var(--panel);border-radius:11px;padding:10px 8px;text-align:center;border:1px solid transparent}
+.gates .g b{font-family:var(--disp);font-weight:700;font-size:14px;display:block;color:var(--ink2)}
+.gates .g span{font-size:11px;color:var(--grey)}
+.gates .g.now{background:var(--coral);border-color:var(--coral)}
+.gates .g.now b,.gates .g.now span{color:#fff}
+.gates .g.target{background:#fff;border:1.5px dashed var(--coral)}
+.gates .g.target b{color:var(--coral)}
+
+.two-mini{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:820px){.two-mini{grid-template-columns:1fr}}
+
+.decide{background:linear-gradient(135deg,var(--coral),#E24A38);color:#fff;border-radius:18px;padding:22px 26px;margin-top:4px}
+.decide h3{color:#fff;margin-bottom:10px}
+.decide ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px 22px}
+@media(max-width:820px){.decide ul{grid-template-columns:1fr}}
+.decide li{position:relative;padding-left:24px;font-size:14.5px}
+.decide li::before{content:"✓";position:absolute;left:0;top:0;font-weight:700}
+
+/* footer / nav */
+.footer{position:fixed;bottom:0;left:0;right:0;height:44px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(20px,3vw,40px);font-size:12px;color:var(--grey);pointer-events:none;z-index:20}
+.slide.active ~ .footer{}
+.brandline{font-weight:600;letter-spacing:.04em}
+.nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;z-index:30}
+.nav button{pointer-events:auto;border:1px solid var(--line);background:#fff;color:var(--ink);width:36px;height:36px;border-radius:10px;
+  font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
+.nav button:hover{border-color:var(--coral);color:var(--coral)}
+.dots{display:flex;gap:7px;pointer-events:auto}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--ice);cursor:pointer;transition:.15s}
+.dots i.on{background:var(--coral);transform:scale(1.15)}
+.counter{position:fixed;top:16px;right:clamp(20px,3vw,40px);font-family:var(--disp);font-weight:700;font-size:13px;color:var(--grey);z-index:20}
+.slide.dark ~ .counter{}
+
+.src{font-size:11.5px;color:var(--grey);margin-top:10px}
+.slide.dark .src{color:var(--ice);opacity:.8}
+
+/* ---- print: one slide per page ---- */
+@media print{
+  @page{size:1280px 720px;margin:0}
+  html,body{height:auto;background:#fff}
+  .deck{height:auto;overflow:visible}
+  .slide{position:relative;inset:auto;opacity:1!important;visibility:visible!important;
+    width:1280px;height:720px;page-break-after:always;overflow:hidden}
+  .nav,.footer,.counter{display:none!important}
+}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 1 · Титул -->
+  <section class="slide dark active">
+    <div class="title-wrap">
+      <div class="kicker">На утверждение общей стратегии · осень 2026</div>
+      <h1>Экономика и технологии <span class="accent">в спорте</span></h1>
+      <p class="title-sub">Стратегия совместной работы Комитета по физической культуре и спорту Санкт-Петербурга и университетской мастерской. Масштаб — город.</p>
+      <div class="org-row">
+        <div class="org"><b>Комитет по спорту СПб</b><span>Владелец задач · носитель ставки</span></div>
+        <div class="org"><b>Мастерская «Технологии в экономике»</b><span>ЭФ СПбГУ · команды и методология</span></div>
+        <div class="org"><b>Геоинтеллект / ЦПИ</b><span>ГИС-технолог</span></div>
+      </div>
+      <div class="title-badges">
+        <span class="pill"><span class="n">01</span> Инфраструктура спорта</span>
+        <span class="pill"><span class="n">02</span> Вовлечение населения</span>
+        <span class="pill">Результат к декабрю 2026</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · Две тематики -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Что решаем</div>
+      <div class="row"><h2>Два потока задач — одна цель</h2></div>
+      <p class="muted">Оба потока работают на головной показатель города — <b>долю граждан, систематически занимающихся физкультурой и спортом</b>. Инфраструктура создаёт предложение, вовлечение формирует спрос.</p>
+    </div>
+    <div class="cols">
+      <div class="card">
+        <span class="tag"><span class="dot"></span>Тематика 01</span>
+        <h3>Развитие инфраструктуры спорта</h3>
+        <ul>
+          <li>Спортивные объекты по городу размещены <b>неравномерно</b> и без единой модели потребности</li>
+          <li>Житель ездит через город; в районах не хватает объектов по видам спорта и категориям</li>
+          <li>Планирование и инвестиции — без прозрачной пространственной картины</li>
+        </ul>
+        <div class="foot">Инструмент: <b>геоаналитика</b> (ГИС, тепловые карты)</div>
+      </div>
+      <div class="card two">
+        <span class="tag"><span class="dot"></span>Тематика 02</span>
+        <h3>Вовлечение населения в спорт</h3>
+        <ul>
+          <li>Население плохо информировано о событиях и доступной инфраструктуре</li>
+          <li>Нет стратегии коммуникаций; каналы и обратная связь не управляются</li>
+          <li>Вложения в объекты и события слабо доходят до целевой аудитории</li>
+        </ul>
+        <div class="foot">Инструмент: <b>стратегия коммуникаций + ИИ-мониторинг</b></div>
+      </div>
+    </div>
+    <div class="flow">
+      <div class="node"><div class="t">Инфраструктура</div><p>предложение: что и где есть</p></div>
+      <div class="arr">→</div>
+      <div class="node"><div class="t">Коммуникация</div><p>спрос: житель узнаёт и приходит</p></div>
+      <div class="arr">→</div>
+      <div class="node"><div class="t">Обратная связь</div><p>отклик и запросы → приоритеты</p></div>
+      <div class="arr">↺</div>
+    </div>
+    <p class="src">Ориентир: национальная цель — доля систематически занимающихся ФКиС ≈ 70% к 2030 г. (ГП-498 СПб, ред. 02.06.2026; Указ Президента РФ № 309). Точные значения показателей — по первоисточнику.</p>
+  </section>
+
+  <!-- 3 · Тематика 1: инфраструктура -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Тематика 01 · инфраструктура</div>
+      <div class="row"><h2>Геоаналитика и инвестиционная среда</h2></div>
+    </div>
+    <div class="goal">
+      <div class="lbl">Цель длинного горизонта</div>
+      <p>Перевести развитие инфраструктуры на <span class="accent">доказательное, пространственно обоснованное и долгосрочное планирование</span>. Прозрачный инвестпроцесс → инвесторы, партнёры, управляемые долгосрочные показатели.</p>
+    </div>
+    <div class="cols">
+      <div class="card tint">
+        <span class="tag"><span class="dot"></span>Три вопроса, на которые отвечаем</span>
+        <ul>
+          <li><b>Что</b> построить на свободном месте</li>
+          <li><b>Чего</b> не хватает в районе и в городе</li>
+          <li><b>Где</b> строить при наличии потребности</li>
+          <li class="muted" style="font-size:13px">Учёт плотности и состава населения, доступности, представленности спорта</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag"><span class="dot"></span>Текущие варианты решений</span>
+        <ul>
+          <li><b>Разворачивание Геоинтеллекта</b> — «цифровой двойник»: публичная карта, тепловые карты доступности, закрытый геоаналитический модуль, подбор локаций</li>
+          <li><b>Инвестиционная среда</b> — прозрачность размещения как основа для инвесторов и программ развития</li>
+          <li><b>Инструмент управления инфраструктурой</b> — единая панель планирования и мониторинга</li>
+        </ul>
+        <div class="foot">Вариант реализации — КП Геоинтеллекта (18.09.2026): 4 модуля; ИИ — интерпретация, контекст, прогноз потребности</div>
+      </div>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi"><b>~5,3 млн ₽</b><span>базовое внедрение</span></div>
+      <div class="kpi"><b>~2,9 млн ₽/год</b><span>вариант SaaS</span></div>
+      <div class="kpi"><b>~4 мес</b><span>срок до внедрения</span></div>
+    </div>
+    <p class="src">Ориентиры бюджета — по КП Геоинтеллекта / ЦПИ от 18.09.2026 (требуют подтверждения). Пилот силами университета — на открытых данных, до решения о внедрении.</p>
+  </section>
+
+  <!-- 4 · Тематика 2: вовлечение -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Тематика 02 · вовлечение</div>
+      <div class="row"><h2>Сквозная система вовлечения</h2></div>
+    </div>
+    <div class="goal">
+      <div class="lbl">Цель длинного горизонта</div>
+      <p>Единая система управления <span class="accent">«инфраструктура / событие → канал → житель → обратная связь»</span> — от верхних показателей до локальных событий и активов. Коммуникация становится частью планирования, а не рассылкой постфактум.</p>
+    </div>
+    <div class="cols-3">
+      <div class="card two">
+        <span class="tag"><span class="dot"></span>Каналы и стратегия</span>
+        <ul>
+          <li>Аудит каналов и активов Комитета</li>
+          <li>Стратегия управления каналами</li>
+          <li>Связка событий и инфраструктуры с аудиторией</li>
+        </ul>
+      </div>
+      <div class="card two">
+        <span class="tag"><span class="dot"></span>Медиа и обратная связь</span>
+        <ul>
+          <li>Медиасрез: охваты, тональность, отклики</li>
+          <li>ИИ-мониторинг медиа и соцсетей</li>
+          <li>Запросы и «боли» жителей (без перс. данных)</li>
+        </ul>
+      </div>
+      <div class="card two">
+        <span class="tag"><span class="dot"></span>Показатели</span>
+        <ul>
+          <li>Верх: информированность, вовлечённость, удовлетворённость</li>
+          <li>Низ: охват события, отклик по каналу</li>
+          <li>Прототип единой системы показателей</li>
+        </ul>
+      </div>
+    </div>
+    <p class="src">Слой доступности из тематики 01 — вход для адресной коммуникации в тематике 02 (кому и о чём сообщать в конкретном районе).</p>
+  </section>
+
+  <!-- 5 · Формат работы -->
+  <section class="slide dark">
+    <div class="s-head">
+      <div class="kicker">Как это работает</div>
+      <div class="row"><h2>Формат работы с университетом</h2></div>
+      <p class="muted">Мастерская ведёт задачи как <b>воркстримы</b> — устойчивые темы, к которым каждый семестр подключается студенческая команда. Семестр = один ход, размеченный контрольными точками (гейтами) G0→G5.</p>
+    </div>
+    <div class="gates">
+      <div class="g now"><b>G0</b><span>Рамка</span></div>
+      <div class="g"><b>G1</b><span>Команда</span></div>
+      <div class="g"><b>G2</b><span>Архитектура</span></div>
+      <div class="g target"><b>G3</b><span>Поле · декабрь</span></div>
+      <div class="g"><b>G4</b><span>Результат</span></div>
+      <div class="g"><b>G5</b><span>Наследование</span></div>
+    </div>
+    <div class="cols-3" style="margin-top:8px">
+      <div class="card tint">
+        <span class="tag"><span class="dot"></span>Роль Комитета</span>
+        <ul>
+          <li><b>Владелец</b> задач и носитель ставки</li>
+          <li>Доступ к «полю»: данные, объекты, каналы</li>
+          <li>Приёмка результата и вердикт на демо</li>
+        </ul>
+      </div>
+      <div class="card tint">
+        <span class="tag"><span class="dot"></span>Кто в команде</span>
+        <ul>
+          <li>Студенты ИСЭ (4 к.) + ЭФ СПбГУ</li>
+          <li>Технолог — Геоинтеллект (ГИС)</li>
+          <li>ИИ-инструменты — линия ИИтех</li>
+        </ul>
+      </div>
+      <div class="card tint">
+        <span class="tag"><span class="dot"></span>Принципы</span>
+        <ul>
+          <li>Только открытые данные, без перс. данных</li>
+          <li>Каждая цифра — с источником и датой</li>
+          <li>Пилот силами университета — до внедрения</li>
+        </ul>
+      </div>
+    </div>
+    <p class="src">Что даёт Комитету: результат без предоплаты в этом семестре, независимая методология и пилот, обоснование до решения о промышленном внедрении.</p>
+  </section>
+
+  <!-- 6 · К декабрю -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Семестровый горизонт</div>
+      <div class="row"><h2>Что можно получить к декабрю (G3)</h2></div>
+    </div>
+    <div class="two-mini">
+      <div class="card">
+        <span class="tag"><span class="dot"></span>Инфраструктура</span>
+        <ul>
+          <li>Геокодированный <b>реестр спортобъектов</b> по категориям</li>
+          <li><b>Карты доступности и дефицита</b> (изохроны 5/10/15 мин, доля населения в зонах)</li>
+          <li><b>Пилот по 1–2 районам</b>: ответ на три вопроса с оценкой охвата</li>
+          <li>Разбор варианта Геоинтеллекта как инструмента управления</li>
+        </ul>
+      </div>
+      <div class="card two">
+        <span class="tag"><span class="dot"></span>Вовлечение</span>
+        <ul>
+          <li><b>Аудит каналов</b> и активов Комитета</li>
+          <li><b>Медиасрез</b> по открытым данным (ИИ-мониторинг)</li>
+          <li><b>Карта разрывов</b> «вложение → житель»</li>
+          <li><b>Прототип системы показателей</b> + черновик стратегии коммуникаций</li>
+        </ul>
+      </div>
+    </div>
+    <div class="decide">
+      <h3>Что утверждаем сейчас</h3>
+      <ul>
+        <li>Общую стратегию: две тематики и цели длинного горизонта</li>
+        <li>Доступ к данным (объекты, охват, медиаметрики)</li>
+        <li>Кураторов от Комитета и пилотные районы</li>
+        <li>Ритм сверки на гейтах до результата в декабре</li>
+      </ul>
+    </div>
+    <p class="src">Источники: постановка задач Комитета (2026-09); ГП-498 СПб (ред. 02.06.2026 № 408); КП Геоинтеллекта (18.09.2026); портал komsport.spb.ru. Значения показателей ГП-498 — уточняются по первоисточнику.</p>
+  </section>
+
+</div>
+
+<div class="counter" id="counter">01 / 06</div>
+<div class="footer">
+  <span class="brandline">Экономика и технологии в спорте · Спорткомитет СПб × Мастерская «Технологии в экономике»</span>
+  <span>ЭФ СПбГУ · осень 2026</span>
+</div>
+<div class="nav">
+  <button id="prev" aria-label="Назад">‹</button>
+  <div class="dots" id="dots"></div>
+  <button id="next" aria-label="Вперёд">›</button>
+</div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var i=0, n=slides.length;
+  var counter=document.getElementById('counter');
+  var dotsWrap=document.getElementById('dots');
+  slides.forEach(function(_,k){
+    var d=document.createElement('i');
+    d.addEventListener('click',function(){go(k)});
+    dotsWrap.appendChild(d);
+  });
+  var dots=[].slice.call(dotsWrap.children);
+  function pad(x){return (x<9?'0':'')+(x+1)}
+  function render(){
+    slides.forEach(function(s,k){s.classList.toggle('active',k===i)});
+    dots.forEach(function(d,k){d.classList.toggle('on',k===i)});
+    counter.textContent=pad(i)+' / '+pad(n-1);
+    document.body.style.background = slides[i].classList.contains('dark') ? '#1B2038' : '#FAFBFE';
+  }
+  function go(k){ i=Math.max(0,Math.min(n-1,k)); render(); }
+  function next(){go(i+1)} function prev(){go(i-1)}
+  document.getElementById('next').addEventListener('click',next);
+  document.getElementById('prev').addEventListener('click',prev);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')(next(),e.preventDefault());
+    else if(e.key==='ArrowLeft'||e.key==='PageUp')prev();
+    else if(e.key==='Home')go(0); else if(e.key==='End')go(n-1);
+  });
+  // swipe
+  var x0=null;
+  document.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(x0===null)return; var dx=e.changedTouches[0].clientX-x0;
+    if(Math.abs(dx)>50){dx<0?next():prev()} x0=null;
+  },{passive:true});
+  render();
+})();
+</script>
+</body>
+</html>
