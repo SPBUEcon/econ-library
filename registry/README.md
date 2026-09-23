@@ -43,8 +43,7 @@
 остаётся и принимает следующую команду ([governance § 1](../program/governance.md)). Поэтому
 `teams` и `workstreams` — разные сущности, а не одна.
 
-**История не теряется.** Человек осенью 2026 — аналитик поля в команде воркстрима «Развитие
-территорий», весной 2027 — шерпа того же воркстрима. Это две строки в `memberships` с разными
+**История не теряется.** Человек осенью 2026 — аналитик поля в команде воркстрима «Геоаналитика спортинфраструктуры», весной 2027 — шерпа того же воркстрима. Это две строки в `memberships` с разными
 `semester_id` и `role`, а не правка одной строки. Лестница «участник → капитан → шерпа → владелец»
 ([governance § 9](../program/governance.md)) читается как история строк по одному `person_id`.
 
@@ -54,8 +53,8 @@
 |---|---|---|---|
 | Участник | [`participants.csv`](participants.csv) | Постоянно | `p001` |
 | Семестр (ход курса) | [`semesters.csv`](semesters.csv) | 1 семестр | `2026-fall` |
-| Воркстрим | папки в [`../workstreams/`](../workstreams/) | Несколько семестров / лет | `territories` |
-| Команда | [`teams.csv`](teams.csv) | 1 семестр | `territories-2026-fall-01` |
+| Воркстрим | папки в [`../workstreams/`](../workstreams/) | Несколько семестров / лет | `sport-geo` |
+| Команда | [`teams.csv`](teams.csv) | 1 семестр | `sport-geo-2026-fall-01` |
 | Назначение роли | [`memberships.csv`](memberships.csv) | От даты до даты | `m0001` |
 
 Отдельного файла воркстримов нет намеренно: источник правды о воркстриме — его карточка
@@ -100,8 +99,8 @@
 
 | Колонка | Что | Значения |
 |---|---|---|
-| `team_id` | `<workstream_id>-<semester_id>-<NN>` | `territories-2026-fall-01` |
-| `workstream_id` | Имя папки в `workstreams/` | `territories` |
+| `team_id` | `<workstream_id>-<semester_id>-<NN>` | `sport-geo-2026-fall-01` |
+| `workstream_id` | Имя папки в `workstreams/` | `sport-geo` |
 | `semester_id` | | `2026-fall` |
 | `title` | Человеческое название команды, если есть | |
 | `captain_person_id` | Капитан | `p001` |
@@ -124,8 +123,8 @@
 | `membership_id` | | `m0001` |
 | `person_id` | Кто | `p001` |
 | `semester_id` | Когда | `2026-fall` |
-| `workstream_id` | В какой теме; пусто для ролей уровня программы | `territories` |
-| `team_id` | В какой команде; **пусто для ролей уровня воркстрима и программы** | `territories-2026-fall-01` |
+| `workstream_id` | В какой теме; пусто для ролей уровня программы | `sport-geo` |
+| `team_id` | В какой команде; **пусто для ролей уровня воркстрима и программы** | `sport-geo-2026-fall-01` |
 | `role` | Что делает | см. словарь |
 | `profile` | Уточнение внутри роли | `gis`, `prototyping`, … |
 | `date_from`, `date_to` | Границы назначения; `date_to` пусто, пока действует | `2026-09-24` |
@@ -257,17 +256,17 @@ p012,smirnov,smirnov,СПбГМТУ,"Кораблестроение, 4 к.",stud
 
 ```csv
 team_id,workstream_id,semester_id,title,captain_person_id,sherpa_person_id,gate,status,origin,note
-territories-2026-fall-01,territories,2026-fall,ГИС-трек,p001,p007,G1,active,spbu,
+sport-geo-2026-fall-01,sport-geo,2026-fall,ГИС-трек,p001,p007,G1,active,spbu,
 ```
 
 `memberships.csv`
 
 ```csv
 membership_id,person_id,semester_id,workstream_id,team_id,role,profile,date_from,date_to,exit_type,sponsor_person_id,gate_in,note
-m0001,p001,2026-fall,territories,territories-2026-fall-01,captain,,2026-09-24,,,p007,G1,
-m0002,p001,2026-fall,territories,territories-2026-fall-01,field-analyst,data,2026-09-24,,,p007,G1,совмещает роли
-m0003,p007,2026-fall,territories,,sherpa,,2026-09-24,,,,G1,"ведёт команду, в неё не входит"
-m0004,p012,2026-fall,territories,territories-2026-fall-01,tech-integrator,gis,2026-10-08,,,p007,G2,"внешний, вошёл на открытом гейте"
+m0001,p001,2026-fall,sport-geo,sport-geo-2026-fall-01,captain,,2026-09-24,,,p007,G1,
+m0002,p001,2026-fall,sport-geo,sport-geo-2026-fall-01,field-analyst,data,2026-09-24,,,p007,G1,совмещает роли
+m0003,p007,2026-fall,sport-geo,,sherpa,,2026-09-24,,,,G1,"ведёт команду, в неё не входит"
+m0004,p012,2026-fall,sport-geo,sport-geo-2026-fall-01,tech-integrator,gis,2026-10-08,,,p007,G2,"внешний, вошёл на открытом гейте"
 ```
 
 Строка `m0003` показывает роль уровня воркстрима: `team_id` пуст. Строки `m0001` и `m0002` —
