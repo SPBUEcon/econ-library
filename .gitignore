@@ -3,6 +3,13 @@
 registry/*-contacts.csv
 registry/private/
 
+# Презентации-первоисточники дисциплин — приватные, доступ по запросу.
+# В публичный репозиторий не попадают; в git хранится только структурированное
+# извлечение (catalog/, notes/). Оригиналы держите в source-private/ (см.
+# disciplines/technologies-econ-fin/README.md, раздел «Провенанс»).
+disciplines/**/source-private/
+disciplines/**/*.pptx
+
 # Временные файлы редакторов и ОС
 Thumbs.db
 desktop.ini
