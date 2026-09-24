@@ -81,8 +81,8 @@ table{border-collapse:collapse;width:100%;font-size:14px}
 th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);font-weight:600;background:var(--panel)}
 tr:last-child td{border-bottom:none}
-td a{color:var(--ink2);font-weight:600;text-decoration:none}
-td a:hover{text-decoration:underline}
+td a{color:var(--coral);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(240,97,79,.35)}
+td a:hover{border-bottom-color:var(--coral)}
 
 /* -------- ресурсы: список ссылок-плиток -------- */
 .res{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:34px}
@@ -93,7 +93,13 @@ td a:hover{text-decoration:underline}
 .res .rd{font-size:13.5px;color:var(--grey)}
 .res .rk{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);font-weight:600}
 
-.note{margin-top:24px;font-size:13.5px;color:var(--grey);border-left:3px solid var(--line);padding-left:16px}
+.note{margin-top:24px;font-size:14.5px;color:var(--grey);border-left:3px solid var(--line);padding-left:16px}
+.note a{color:var(--coral);font-weight:600;text-decoration:underline}
+a.btn-sm{display:inline-block;background:var(--coral);color:#fff;text-decoration:none;font-weight:600;
+  font-size:15px;padding:11px 22px;border-radius:12px;transition:transform .15s ease, box-shadow .15s ease}
+a.btn-sm:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(240,97,79,.32)}
+a.btn-sm.dark{background:var(--ink)}
+.cta-inline{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
 
 /* -------- footer -------- */
 .foot{background:var(--ink);color:var(--ice);padding:40px 0;font-size:14px}
@@ -275,9 +281,11 @@ td a:hover{text-decoration:underline}
         </tbody>
       </table>
     </div>
-    <p class="note">Курс в HTML (фильтр по блокам + поиск): <a href="disciplines/technologies-econ-fin/site/course.html">course.html</a> ·
-      опорные заметки: <a href="https://github.com/SPBUEcon/econ-library/tree/main/disciplines/technologies-econ-fin/notes">notes/</a> ·
-      материалы по курсам вуза: <a href="https://github.com/SPBUEcon/econ-library/blob/main/courses/README.md">courses/</a>.</p>
+    <div class="cta-inline">
+      <a class="btn-sm" href="disciplines/technologies-econ-fin/site/course.html">📘 Открыть курс в HTML (фильтр + поиск) →</a>
+      <a class="btn-sm dark" href="https://github.com/SPBUEcon/econ-library/tree/main/disciplines/technologies-econ-fin/notes">Опорные заметки</a>
+      <a class="btn-sm dark" href="https://github.com/SPBUEcon/econ-library/blob/main/courses/README.md">Материалы по курсам вуза</a>
+    </div>
   </div>
 </section>
 
