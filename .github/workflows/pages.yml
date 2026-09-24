@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages
+
+# Публикует весь репозиторий как статический сайт на GitHub Pages.
+# Публичные HTML-витрины: https://spbuecon.github.io/econ-library/program/site/dashboard.html и др.
+# Markdown-контент (.md, папки) на Pages не рендерится — ссылки витрин на него ведут на github.com.
+# Первый запуск: Settings → Pages → Source = "GitHub Actions" (один раз, вручную).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact (весь репозиторий)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
