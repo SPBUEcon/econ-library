@@ -65,12 +65,13 @@
 > HTML-витрины собираются вручную / скриптом и держатся в синхроне с markdown-первоисточниками.
 > Курс дисциплины пересобирается из каталога: `python disciplines/technologies-econ-fin/site/build.py`.
 
-**Публичные ссылки (GitHub Pages).** После включения Pages (Settings → Pages → Source = «GitHub Actions»)
-витрины доступны публично:
+**Публичные ссылки (GitHub Pages).** Витрины доступны публично:
 
-- Дашборд — `https://spbuecon.github.io/econ-library/program/site/dashboard.html`
+- 🧭 **Дашборд (главная)** — `https://spbuecon.github.io/econ-library/`
 - Витрина воркстримов — `https://spbuecon.github.io/econ-library/program/site/workstreams_board.html`
 - Курс дисциплины — `https://spbuecon.github.io/econ-library/disciplines/technologies-econ-fin/site/course.html`
+
+> Дашборд — это корневой `index.html`; `program/site/dashboard.html` оставлен редиректом на главную.
 
 > Markdown-хаб публичен и без Pages — на github.com: этот файл
 > [`DASHBOARD.md`](https://github.com/SPBUEcon/econ-library/blob/main/DASHBOARD.md). Ссылки витрин на

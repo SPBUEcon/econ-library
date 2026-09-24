@@ -7,7 +7,7 @@
 > Проект студенческий и неофициальный. Все данные собираются из открытых источников.
 
 > **🧭 Общий дашборд всей активности** (сущности, ссылки, статусы) — [`DASHBOARD.md`](DASHBOARD.md) ·
-> визуальная витрина [`program/site/dashboard.html`](program/site/dashboard.html).
+> визуальная витрина (главная на GitHub Pages): **https://spbuecon.github.io/econ-library/**
 
 ## Что такое мастерская
 

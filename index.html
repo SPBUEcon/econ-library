@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<!--
+  Дашборд Мастерской «Технологии в экономике» — КОРНЕВАЯ витрина-хаб (index.html).
+  Публичный URL: https://spbuecon.github.io/econ-library/
+  Самодостаточная страница, работает по file:// без сервера.
+  ИСТОЧНИК ПРАВДЫ — DASHBOARD.md. Держать в синхроне с ним, board.md и partners/README.md.
+  Обновлено: 2026-09-24.
+-->
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дашборд — Мастерская «Технологии в экономике»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --ink:#1B2038; --ink2:#272E52; --card:#2E3660;
+  --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0;
+  --green:#2FA37A; --amber:#D9932B; --blue:#3E7BD6;
+  --disp:'Unbounded','Arial Black',sans-serif;
+  --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+section{padding:64px 0}
+a{color:inherit}
+.eyebrow{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:16px}
+h2{font-family:var(--disp);font-weight:700;font-size:clamp(24px,3.2vw,36px);line-height:1.15;margin-bottom:12px}
+.lead{font-size:clamp(15px,1.7vw,19px);color:var(--grey);max-width:820px}
+a.btn{display:inline-block;background:var(--coral);color:#fff;text-decoration:none;font-weight:600;
+  font-size:16px;padding:13px 26px;border-radius:14px;transition:transform .15s ease, box-shadow .15s ease}
+a.btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(240,97,79,.35)}
+a.btn.ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.5)}
+a.btn.ghost:hover{border-color:#fff;box-shadow:none}
+a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+
+/* -------- HERO -------- */
+.hero{background:var(--ink);color:#fff;padding:70px 0 74px}
+.hero .eyebrow{color:var(--ice)}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(28px,4.2vw,48px);line-height:1.12;max-width:960px}
+.hero h1 .accent{color:var(--coral)}
+.hero .sub{margin-top:18px;font-size:clamp(15px,1.8vw,20px);color:var(--ice);max-width:800px}
+.hero .cta-row{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
+.hero .stat-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
+.stat{background:var(--ink2);border-radius:14px;padding:14px 20px}
+.stat b{font-family:var(--disp);font-weight:700;font-size:24px;color:#fff;display:block}
+.stat span{font-size:13px;color:var(--ice);letter-spacing:.04em}
+
+/* -------- секции-навигаторы (карточки доменов) -------- */
+.nav-sec{background:var(--panel)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
+.dom{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 24px;display:flex;flex-direction:column;
+  transition:transform .15s ease, box-shadow .15s ease;text-decoration:none;color:inherit}
+.dom:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(27,32,56,.10)}
+.dom .n{font-family:var(--disp);font-weight:700;font-size:13px;color:var(--coral);letter-spacing:.06em;margin-bottom:12px}
+.dom h3{font-family:var(--disp);font-weight:500;font-size:20px;line-height:1.25;margin-bottom:10px}
+.dom p{font-size:14.5px;color:var(--grey);margin-bottom:16px}
+.dom .go{margin-top:auto;font-size:14px;font-weight:600;color:var(--coral)}
+
+/* -------- бейджи / статусы -------- */
+.tag{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.04em;border-radius:999px;padding:5px 12px;white-space:nowrap}
+.tag.a{background:var(--coral);color:#fff}
+.tag.b{background:var(--ink);color:#fff}
+.tag.cross{background:var(--blue);color:#fff}
+.tag.event{background:var(--green);color:#fff}
+.status{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600}
+.status .dot{width:9px;height:9px;border-radius:50%}
+.status.active .dot{background:var(--green)} .status.active{color:var(--green)}
+.status.frame .dot{background:var(--coral)} .status.frame{color:var(--coral)}
+.status.idea .dot{background:var(--amber)} .status.idea{color:var(--amber)}
+
+/* -------- таблицы -------- */
+.tbl{margin-top:34px;overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:#fff}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);font-weight:600;background:var(--panel)}
+tr:last-child td{border-bottom:none}
+td a{color:var(--ink2);font-weight:600;text-decoration:none}
+td a:hover{text-decoration:underline}
+
+/* -------- ресурсы: список ссылок-плиток -------- */
+.res{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:34px}
+.res a{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:20px 22px;text-decoration:none;color:inherit;transition:transform .15s ease, box-shadow .15s ease}
+.res a:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(27,32,56,.09)}
+.res .rt{font-family:var(--disp);font-weight:500;font-size:17px}
+.res .rd{font-size:13.5px;color:var(--grey)}
+.res .rk{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);font-weight:600}
+
+.note{margin-top:24px;font-size:13.5px;color:var(--grey);border-left:3px solid var(--line);padding-left:16px}
+
+/* -------- footer -------- */
+.foot{background:var(--ink);color:var(--ice);padding:40px 0;font-size:14px}
+.foot a{color:#fff;text-decoration:none;font-weight:600}
+.foot a:hover{text-decoration:underline}
+
+@media (max-width:900px){
+  .grid,.res{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">ЭФ СПбГУ · осень 2026 · дашборд</div>
+    <h1>Вся активность мастерской <span class="accent">«Технологии в экономике»</span> — на одной странице</h1>
+    <p class="sub">Основные сущности программы, ссылки и базовые статусы: воркстримы, партнёры, дисциплина,
+      треки групп и ключевые ресурсы. Текущий ход — осень 2026, гейты G0→G5.</p>
+    <div class="cta-row">
+      <a class="btn" href="program/site/workstreams_board.html">Витрина воркстримов</a>
+      <a class="btn ghost" href="https://github.com/SPBUEcon/econ-library/blob/main/DASHBOARD.md">Дашборд в Markdown</a>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b>12</b><span>воркстримов (+ инфра №13)</span></div>
+      <div class="stat"><b>4</b><span>флагмана</span></div>
+      <div class="stat"><b>8</b><span>партнёров</span></div>
+      <div class="stat"><b>2</b><span>трека (группы × семестр)</span></div>
+      <div class="stat"><b>G0→G4</b><span>ход осени 2026</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== 6 ДОМЕНОВ ===================== -->
+<section class="nav-sec">
+  <div class="wrap">
+    <div class="eyebrow">Разделы</div>
+    <h2>Шесть областей активности</h2>
+    <p class="lead">Каждая карточка ведёт к сущности и её первоисточнику. Полная сводка со ссылками —
+      в <a href="https://github.com/SPBUEcon/econ-library/blob/main/DASHBOARD.md" style="color:var(--coral);font-weight:600">DASHBOARD.md</a>.</p>
+    <div class="grid">
+      <a class="dom" href="#obzor"><div class="n">01</div><h3>Обзор и статусы</h3>
+        <p>Что такое мастерская, текущий ход, ключевые даты и контакты.</p><span class="go">К обзору →</span></a>
+      <a class="dom" href="#resursy"><div class="n">02</div><h3>Ресурсы и сервисы</h3>
+        <p>Выложенные витрины, приложения, каталоги и репозиторий.</p><span class="go">К ресурсам →</span></a>
+      <a class="dom" href="#workstreams"><div class="n">03</div><h3>Воркстримы</h3>
+        <p>12 воркстримов + 4 флагмана: уровень, гейт, партнёр, статус.</p><span class="go">К воркстримам →</span></a>
+      <a class="dom" href="#partners"><div class="n">04</div><h3>Партнёры</h3>
+        <p>Носители суперзадач, роли и связные по воркстримам.</p><span class="go">К партнёрам →</span></a>
+      <a class="dom" href="#discipline"><div class="n">05</div><h3>Дисциплина и материалы</h3>
+        <p>Темы, концепты, кейсы, банк вопросов и билетов, курс в HTML.</p><span class="go">К материалам →</span></a>
+      <a class="dom" href="#tracks"><div class="n">06</div><h3>Треки: группы × семестры</h3>
+        <p>Реальные потоки, планы, контент занятий, доклады, отчётность.</p><span class="go">К трекам →</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 1. ОБЗОР ===================== -->
+<section id="obzor">
+  <div class="wrap">
+    <div class="eyebrow">01 · Обзор и статусы</div>
+    <h2>Текущий ход — осень 2026</h2>
+    <p class="lead">Команды в воркстримах собирают живые модели бизнеса, рынка и территории вместе с реальными
+      партнёрами. Воркстрим — единица управления (живёт дольше семестра); семестр = один ход, гейты G0→G5.
+      Первое занятие 17.09, сборка команд 24.09 (G1). Мастер — Д. Хан.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Гейт</th><th>Дата (Экономика, 3 к.)</th><th>Что происходит</th></tr></thead>
+        <tbody>
+          <tr><td>G0 — Рамка</td><td>17.09.2026</td><td>Вход в ландшафт, сборка воркстримов, суперзадачи и ставки</td></tr>
+          <tr><td>G1 — Команда</td><td>24.09.2026</td><td>Формирование команд, роли, наследство, методология</td></tr>
+          <tr><td>→ G2</td><td>01.10.2026</td><td>Постановка задачи, данные, архитектура модели</td></tr>
+          <tr><td>G2 — Архитектура</td><td>08.10.2026</td><td>Защита концепции живой модели</td></tr>
+          <tr><td>G3 — Поле</td><td>15.10.2026</td><td>Проверка модели реальной средой</td></tr>
+          <tr><td>G4 — Результат / демо</td><td>22.10.2026</td><td>Промежуточная защита проектов</td></tr>
+          <tr><td>Событие</td><td>12–13.11.2026</td><td>Хайпарк.Форум (воркстрим №6)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Курс ИСЭ (Бизнес-информатика, 4 к.) идёт параллельно (старт 18.09.2026), даты у команд свои.
+      Базовые документы: <a href="https://github.com/SPBUEcon/econ-library/blob/main/program/concept.md">концепт</a> · <a href="https://github.com/SPBUEcon/econ-library/blob/main/program/governance.md">модель управления</a> ·
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/program/gates.md">гейты</a> · <a href="https://github.com/SPBUEcon/econ-library/blob/main/program/calendar.md">календарь</a> ·
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/guides/how-to-join.md">как включиться</a>.</p>
+  </div>
+</section>
+
+<!-- ===================== 2. РЕСУРСЫ ===================== -->
+<section id="resursy" class="nav-sec">
+  <div class="wrap">
+    <div class="eyebrow">02 · Ключевые ресурсы и сервисы</div>
+    <h2>Выложенные страницы, приложения и каталоги</h2>
+    <p class="lead">Всё работает по <code>file://</code> без сервера.</p>
+    <div class="res">
+      <a href="program/site/workstreams_board.html"><span class="rk">Витрина</span><span class="rt">Витрина воркстримов</span><span class="rd">Наглядный каталог воркстримов для студентов</span></a>
+      <a href="program/site/workstreams_architecture.html"><span class="rk">Витрина</span><span class="rt">Архитектура воркстримов</span><span class="rd">Как устроены слои и гейты мастерской</span></a>
+      <a href="program/site/landing_tech_econ.html"><span class="rk">Витрина</span><span class="rt">Лендинг курса</span><span class="rd">Вводная страница мастерской</span></a>
+      <a href="program/site/participants-and-access-onepager.html"><span class="rk">Витрина</span><span class="rt">Участники и доступы</span><span class="rd">Одностраничник по участию и доступам</span></a>
+      <a href="disciplines/technologies-econ-fin/site/course.html"><span class="rk">Приложение</span><span class="rt">Курс дисциплины (HTML)</span><span class="rd">Темы, концепты, методологии, кейсы, вопросы + поиск</span></a>
+      <a href="https://github.com/SPBUEcon/econ-library/tree/main/disciplines/technologies-econ-fin/catalog"><span class="rk">Каталог</span><span class="rt">Каталог дисциплины (CSV)</span><span class="rd">«Источник правды» контента дисциплины</span></a>
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/README.md"><span class="rk">Репозиторий</span><span class="rt">econ-library</span><span class="rd">Среда управления мастерской (этот репозиторий)</span></a>
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/DASHBOARD.md"><span class="rk">Хаб</span><span class="rt">DASHBOARD.md</span><span class="rd">Эта же сводка в Markdown (источник правды витрины)</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 3. ВОРКСТРИМЫ ===================== -->
+<section id="workstreams">
+  <div class="wrap">
+    <div class="eyebrow">03 · Воркстримы</div>
+    <h2>Оперативные, сквозные и флагманы</h2>
+    <p class="lead">Дайджест <a href="program/site/workstreams_board.html" style="color:var(--coral);font-weight:600">доски «воркстрим × гейт»</a>.
+      Полная карта — <a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/README.md" style="color:var(--coral);font-weight:600">workstreams/README.md</a>.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>#</th><th>Воркстрим</th><th>Уровень</th><th>Гейт</th><th>Партнёр / куратор</th><th>Статус</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/insurance">Страхование</a></td><td><span class="tag a">A</span></td><td>G0→G4</td><td>Ингосстрах</td><td><span class="status frame"><span class="dot"></span>рамка</span></td></tr>
+          <tr><td>2</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-geo">Геоаналитика спортинфраструктуры</a></td><td><span class="tag a">A</span></td><td>G0→G3</td><td>Спорткомитет СПб / Геоинтеллект</td><td><span class="status frame"><span class="dot"></span>рамка (hot)</span></td></tr>
+          <tr><td>3</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-engagement">Вовлечение в спорте</a></td><td><span class="tag a">A</span></td><td>G0→G3</td><td>Спорткомитет СПб</td><td><span class="status frame"><span class="dot"></span>рамка (hot)</span></td></tr>
+          <tr><td>4</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/phygital-sport">Фиджитал-спорт</a></td><td><span class="tag a">A</span></td><td>G0→G2–3</td><td>Федерация фиджитал-спорта СПб</td><td><span class="status frame"><span class="dot"></span>рамка</span></td></tr>
+          <tr><td>5</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/ai-environment">ИИ, цифровые двойники</a></td><td><span class="tag cross">Сквозной</span></td><td>сквозной</td><td>ИИтех (veai)</td><td><span class="status frame"><span class="dot"></span>рамка</span></td></tr>
+          <tr><td>6</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/venture-tech">Технологии и венчур</a></td><td><span class="tag a">A/B</span></td><td>G0→G1</td><td>ИТМО Хайпарк</td><td><span class="status frame"><span class="dot"></span>рамка</span></td></tr>
+          <tr><td>7</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/cartography-biennale">Биеннале карт</a></td><td><span class="tag event">Событие</span></td><td>событие</td><td>Геоинтеллект</td><td><span class="status frame"><span class="dot"></span>рамка</span></td></tr>
+          <tr><td>13</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/management-environment">Среда управления</a></td><td><span class="tag cross">Зонтик</span></td><td>G1→G3</td><td>Мастерская (Хан)</td><td><span class="status active"><span class="dot"></span>активный</span></td></tr>
+          <tr><td>8–11</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Флагманы (арена, техноцентр, дайвинг, интеллектцентр)</a></td><td><span class="tag b">B</span></td><td>G0–G2</td><td>М. Мастин и др.</td><td><span class="status idea"><span class="dot"></span>идея</span></td></tr>
+          <tr><td>12</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/askona-live">Аскона (прото)</a></td><td><span class="tag b">Прото</span></td><td>→ G0</td><td>АсконаLive</td><td><span class="status idea"><span class="dot"></span>в переговорах</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 4. ПАРТНЁРЫ ===================== -->
+<section id="partners" class="nav-sec">
+  <div class="wrap">
+    <div class="eyebrow">04 · Партнёры</div>
+    <h2>Носители суперзадач</h2>
+    <p class="lead">Реестр — <a href="https://github.com/SPBUEcon/econ-library/blob/main/partners/README.md" style="color:var(--coral);font-weight:600">partners/README.md</a>;
+      вузы-партнёры — <a href="https://github.com/SPBUEcon/econ-library/blob/main/partners/universities.md" style="color:var(--coral);font-weight:600">universities.md</a>.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Партнёр</th><th>Роль</th><th>Воркстрим(ы)</th><th>Связной</th></tr></thead>
+        <tbody>
+          <tr><td>Ингосстрах</td><td>Владелец + Эксперт</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/insurance">Страхование</a></td><td>Г. Владельщикова</td></tr>
+          <tr><td>Спорткомитет СПб</td><td>Владелец</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-geo">Геоаналитика</a>, <a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-engagement">Вовлечение</a></td><td>А. Шантырь, И. Сологуб</td></tr>
+          <tr><td>Геоинтеллект</td><td>Шерпа-технолог · Эксперт</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-geo">Геоаналитика</a>, <a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/cartography-biennale">Биеннале</a></td><td>Д. Структов</td></tr>
+          <tr><td>Федерация фиджитал-спорта СПб</td><td>Владелец + Эксперт</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/phygital-sport">Фиджитал-спорт</a></td><td>А. Спелов</td></tr>
+          <tr><td>ИИтех (veai)</td><td>Эксперт (среда)</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/ai-environment">ИИ / цифровые двойники</a></td><td>М. Костицин</td></tr>
+          <tr><td>ИТМО Хайпарк</td><td>Эксперт + Владелец флагмана</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/venture-tech">Венчур</a>, флагманы</td><td>М. Мастин</td></tr>
+          <tr><td>Ирен Артемова</td><td>Владелец флагмана</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Международный техноцентр</a></td><td>—</td></tr>
+          <tr><td>АсконаLive</td><td>уточнить (в переговорах)</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/askona-live">Аскона (прото)</a></td><td>Н. Мандавиа, А. Ларионов</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 5. ДИСЦИПЛИНА ===================== -->
+<section id="discipline">
+  <div class="wrap">
+    <div class="eyebrow">05 · Дисциплины и учебные материалы</div>
+    <h2>Технологии (ИС в экономике и финансах)</h2>
+    <p class="lead">Ведёт Д. Хан. Четыре блока: постинформационный переход · технологический ландшафт ·
+      ИИ и модели бизнеса · модели управления. Каталог CSV — источник правды контента.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Что</th><th>Строк</th><th>Файл</th></tr></thead>
+        <tbody>
+          <tr><td>Темы / лекционные блоки</td><td>28</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/topics.csv">topics.csv</a></td></tr>
+          <tr><td><b>Банк вопросов (вопросы / билеты)</b></td><td>24</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/questions.csv">questions.csv</a></td></tr>
+          <tr><td>Концепты и модели-фреймворки</td><td>34</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/concepts.csv">concepts.csv</a></td></tr>
+          <tr><td>Методологии</td><td>13</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/methodologies.csv">methodologies.csv</a></td></tr>
+          <tr><td>Модели бизнеса (кейсы компаний)</td><td>13</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/business-models.csv">business-models.csv</a></td></tr>
+          <tr><td>Прикладные и инфраструктурные кейсы</td><td>10</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/cases.csv">cases.csv</a></td></tr>
+          <tr><td>Технологии</td><td>10</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/technologies.csv">technologies.csv</a></td></tr>
+          <tr><td>Матрица укладов по отраслям</td><td>15</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/industries.csv">industries.csv</a></td></tr>
+          <tr><td>Источники (презентации)</td><td>14</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/sources.csv">sources.csv</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Курс в HTML (фильтр по блокам + поиск): <a href="disciplines/technologies-econ-fin/site/course.html">course.html</a> ·
+      опорные заметки: <a href="https://github.com/SPBUEcon/econ-library/tree/main/disciplines/technologies-econ-fin/notes">notes/</a> ·
+      материалы по курсам вуза: <a href="https://github.com/SPBUEcon/econ-library/blob/main/courses/README.md">courses/</a>.</p>
+  </div>
+</section>
+
+<!-- ===================== 6. ТРЕКИ ===================== -->
+<section id="tracks" class="nav-sec">
+  <div class="wrap">
+    <div class="eyebrow">06 · Треки: группы × семестры</div>
+    <h2>Формальные академические треки</h2>
+    <p class="lead">Где и кому читается дисциплина. Планы, контент проведённых занятий, темы докладов и
+      отчётность — в папке трека. Полная модель — <a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/README.md" style="color:var(--coral);font-weight:600">tracks/README.md</a>.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Трек</th><th>Поток</th><th>Питает воркстримы</th><th>Прогон</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/econ-3/README.md">econ-3</a></td><td>Экономика, 3 курс (неск. групп)</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/insurance">insurance</a>, <a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/phygital-sport">phygital-sport</a></td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/econ-3/2026-fall/README.md">осень 2026</a> — <span class="status active"><span class="dot"></span>идёт</span></td></tr>
+          <tr><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/bi-4/README.md">bi-4</a></td><td>Бизнес-информатика (ИСЭ), 4 курс (2 группы)</td><td><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-geo">sport-geo</a>, <a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-engagement">sport-engagement</a></td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/bi-4/2026-fall/README.md">осень 2026</a> — <span class="status active"><span class="dot"></span>идёт</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Пофамильная посещаемость и оценки — в вузовской ведомости, не здесь (приватность,
+      репозиторий публичный). Рабочий контур (кто в каких командах/ролях) — реестр
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/registry/README.md">registry/</a> (проект структуры, согласуется к G1).</p>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="foot">
+  <div class="wrap">
+    Дашборд Мастерской «Технологии в экономике» · ЭФ СПбГУ · осень 2026 · обновлено 2026-09-24.
+    Источник правды — <a href="https://github.com/SPBUEcon/econ-library/blob/main/DASHBOARD.md">DASHBOARD.md</a>. Правки — через Pull request.
+  </div>
+</footer>
+
+</body>
+</html>
