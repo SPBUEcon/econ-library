@@ -30,6 +30,13 @@
 Общая рамка домена, связь двух задач и общий контур показателей — поток-хаб
 [«Экономика и технологии в спорте»](../../workstreams/sport-spb/).
 
+## Стратегия и дорожная карта
+
+- Стратегия «Экономика и технологии в спорте» — [`deliverables/strategy-komsport-2026.html`](../../workstreams/sport-spb/deliverables/strategy-komsport-2026.html).
+- Дорожная карта 05.10–31.12.2026 (ядро команды развития, интенсив, открытая встреча в Музее спорта,
+  демо-день) — [`plan-komsport-okt-dek-2026.md`](../../workstreams/sport-spb/plan-komsport-okt-dek-2026.md),
+  [слайды](../../workstreams/sport-spb/deliverables/plan-komsport-okt-dek-2026.html).
+
 ## Опорные документы (открытые / партнёрские)
 
 | Документ | Тип | Где | Примечание |
