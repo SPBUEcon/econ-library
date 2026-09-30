@@ -83,29 +83,39 @@ select{max-width:220px}
 @media (max-width:760px){.nav{position:static}.wrap{padding:0 18px}}
 button.reset{font-family:var(--body);font-size:13px;font-weight:600;background:none;border:none;color:var(--coral);cursor:pointer;padding:6px}
 
-/* CARDS */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr));gap:18px}
-.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 20px 16px;display:flex;flex-direction:column;border-left:5px solid var(--grey)}
+/* LIST — задания лентой, одна широкая плашка на задание */
+.list{display:flex;flex-direction:column;gap:10px}
+.card{background:#fff;border:1px solid var(--line);border-left:6px solid var(--grey);border-radius:16px;
+  padding:18px 22px;display:grid;grid-template-columns:150px minmax(0,1fr) 200px;gap:6px 26px;align-items:start}
+.card:hover{box-shadow:0 8px 24px rgba(27,32,56,.07)}
 .card[data-kind="fixed"]{border-left-color:var(--blue)}
 .card[data-kind="param"]{border-left-color:var(--violet)}
 .card[data-kind="relay"]{border-left-color:var(--coral)}
-.card .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
-.cid{font-family:var(--disp);font-size:12.5px;font-weight:700;color:var(--ink)}
+.card .side{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.cid{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--ink)}
 .badge{font-size:11.5px;font-weight:600;border-radius:999px;padding:2px 9px;background:var(--panel);color:var(--grey)}
 .badge.fixed{background:#E6EEFB;color:var(--blue)} .badge.param{background:#EEE9FB;color:var(--violet)} .badge.relay{background:#FDE9E6;color:var(--coral)}
 .badge.active{background:#E3F4EC;color:var(--green)}
-.card h4{font-family:var(--disp);font-weight:500;font-size:16.5px;line-height:1.3;margin-bottom:8px}
-.card p.brief{font-size:14.5px;margin-bottom:10px}
-.meta{font-size:13px;color:var(--grey);display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin-bottom:10px}
-.meta dt{font-weight:600;color:var(--ink)}
-.sk{display:inline-block;font-size:12px;font-weight:600;background:var(--panel);color:var(--ink);border-radius:7px;padding:1px 7px;margin:0 3px 3px 0}
-details{font-size:13.5px;margin-bottom:10px}
-details summary{cursor:pointer;font-weight:600;color:var(--coral)}
-details p{margin-top:6px}
-.links{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px}
-.links a{font-weight:600;color:var(--coral);text-decoration:none}
-.links a:hover{text-decoration:underline}
-.links .muted{color:var(--grey)}
+.card .ty{font-size:12.5px;color:var(--grey);line-height:1.35}
+.card h4{font-family:var(--disp);font-weight:500;font-size:17px;line-height:1.3;margin-bottom:6px}
+.card p.brief{font-size:14.5px;margin-bottom:8px;max-width:820px}
+.facts{font-size:13px;color:var(--grey);margin-bottom:6px}
+.facts b{color:var(--ink);font-weight:600}
+.facts .sep{margin:0 7px;color:var(--line)}
+.sk{display:inline-block;font-size:12px;font-weight:600;background:var(--panel);color:var(--ink);border-radius:7px;padding:1px 8px;margin:0 4px 4px 0}
+details{font-size:13.5px;margin-top:4px}
+details summary{cursor:pointer;font-weight:600;color:var(--coral);width:max-content}
+details p{margin-top:6px;max-width:860px}
+.card .act{display:flex;flex-direction:column;gap:6px;font-size:13.5px}
+.card .act a{font-weight:600;text-decoration:none;color:var(--coral);border:1.5px solid var(--line);border-radius:10px;padding:6px 11px}
+.card .act a:hover{border-color:var(--coral)}
+.card .act a.main{background:var(--coral);border-color:var(--coral);color:#fff}
+.card .act .muted{color:var(--grey);font-size:12.5px}
+@media (max-width:900px){
+  .card{grid-template-columns:1fr;padding:16px 18px}
+  .card .side{flex-direction:row;flex-wrap:wrap;align-items:center}
+  .card .act{flex-direction:row;flex-wrap:wrap}
+}
 .empty{display:none;padding:30px;text-align:center;color:var(--grey);background:#fff;border:1px dashed var(--line);border-radius:16px}
 
 /* DOSSIERS */
@@ -190,7 +200,7 @@ footer p{margin-bottom:8px;max-width:920px}
     <h2>Задания <span class="cnt" id="c-archive"></span></h2>
     <p class="lead">Источник правды — <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/catalog/templates.csv">catalog/templates.csv</a>.
       Фильтры сверху; ссылкой с фильтром можно поделиться — он сохраняется в адресе страницы.</p>
-    <div class="grid" id="g-archive"></div>
+    <div class="list" id="g-archive"></div>
     <div class="empty" id="empty">Ничего не найдено. Измените фильтры или <button class="reset" onclick="resetAll()">сбросьте их</button>.</div>
   </div>
 </section>
@@ -267,34 +277,39 @@ function card(t){
   const skills = t.skill_ids.map(s => `<span class="sk">${esc(SK[s] ? SK[s].title : s)}</span>`).join("");
   const mech = t.mechanic_ids.map(m => MX[m] ? MX[m].title : m).join(" · ");
   const d = DOS[t.dossier_id];
-  const rows = [
-    ["Тип", esc(TY[t.type_id] ? TY[t.type_id].title : t.type_id)],
-    ["Навыки", skills],
-    ["Механика", esc(mech)],
-    ["Масштаб", esc(t.scale.join(" / ")) + (t.duration ? " · " + esc(t.duration) : "")],
-  ];
-  if (t.parameters) rows.push(["Варианты", esc(t.parameters)]);
-  if (t.dossier_id) rows.push(["Досье", esc(d ? d.object : t.dossier_id) + (t.entry_stage.length ? " · стадия: " + esc(t.entry_stage.join(", ")) : "")]);
-  else if (t.entry_stage.length) rows.push(["Стадия досье", esc(t.entry_stage.join(", "))]);
-  if (t.parent_template) rows.push(["Шаблон", `<a href="#t-${esc(t.parent_template)}" onclick="showOne('${esc(t.parent_template)}')">${esc(t.parent_template)}</a>`]);
+  const sep = '<span class="sep">|</span>';
+  const facts = [`<b>Масштаб:</b> ${esc(t.scale.join(" / "))}`];
+  if (t.duration) facts.push(`<b>Срок:</b> ${esc(t.duration)}`);
+  if (mech) facts.push(`<b>Механика:</b> ${esc(mech)}`);
+  const extra = [];
+  if (t.parameters) extra.push(`<b>Варианты:</b> ${esc(t.parameters)}`);
+  if (t.dossier_id) extra.push(`<b>Досье:</b> ${esc(d ? d.object : t.dossier_id)}` + (t.entry_stage.length ? `, стадия: ${esc(t.entry_stage.join(", "))}` : ""));
+  else if (t.entry_stage.length) extra.push(`<b>Стадия досье:</b> ${esc(t.entry_stage.join(", "))}`);
+  if (t.parent_template) extra.push(`<b>Шаблон:</b> <a href="#t-${esc(t.parent_template)}" onclick="showOne('${esc(t.parent_template)}')">${esc(t.parent_template)}</a>`);
   const links = [];
-  if (t.card_url) links.push(`<a href="${t.card_url}">Полная карточка →</a>`);
+  if (t.card_url) links.push(`<a class="main" href="${t.card_url}">Карточка задания →</a>`);
   if (t.case_page) links.push(`<a href="${t.case_page}">Кейс курса</a>`);
   if (d) links.push(`<a href="${d.url}">Досье</a>`);
   if (t.issued) links.push(`<span class="muted">выдано: ${t.issued}</span>`);
-  if (!links.length) links.push(`<span class="muted">карточка — строка архива</span>`);
+  if (!t.card_url) links.push(`<span class="muted">описание — в этой строке архива</span>`);
   const text = [t.template_id, t.title, t.brief, t.deliverable, t.acceptance, t.parameters, mech,
     TY[t.type_id] ? TY[t.type_id].title : "", t.skill_ids.map(s => SK[s] ? SK[s].title : "").join(" ")].join(" ").toLowerCase();
   return `<article class="card" id="t-${esc(t.template_id)}" data-kind="${esc(t.kind)}" data-text="${esc(text)}">
-    <div class="top"><span class="cid">${esc(t.template_id)}</span><span class="badge ${esc(t.kind)}">${KIND[t.kind] || esc(t.kind)}</span>
-      ${t.status === "активно" ? '<span class="badge active">активно</span>' : `<span class="badge">${esc(t.status)}</span>`}</div>
-    <h4>${esc(t.title)}</h4>
-    <p class="brief">${esc(t.brief)}</p>
-    <dl class="meta">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
-    <details><summary>Результат и критерии</summary>
-      <p><b>Что сдаётся:</b> ${esc(t.deliverable)}</p><p><b>Критерии приёмки:</b> ${esc(t.acceptance)}</p>
-      ${t.related_questions.length ? `<p><b>Вопросы банка:</b> ${esc(t.related_questions.join(", "))}</p>` : ""}</details>
-    <div class="links">${links.join("")}</div></article>`;
+    <div class="side"><span class="cid">${esc(t.template_id)}</span>
+      <span class="badge ${esc(t.kind)}">${KIND[t.kind] || esc(t.kind)}</span>
+      ${t.status === "активно" ? '<span class="badge active">активно</span>' : `<span class="badge">${esc(t.status)}</span>`}
+      <span class="ty">${esc(TY[t.type_id] ? TY[t.type_id].title : t.type_id)}</span></div>
+    <div class="body">
+      <h4>${esc(t.title)}</h4>
+      <p class="brief">${esc(t.brief)}</p>
+      <div class="facts">${facts.join(sep)}</div>
+      ${extra.length ? `<div class="facts">${extra.join(sep)}</div>` : ""}
+      <div>${skills}</div>
+      <details><summary>Результат и критерии</summary>
+        <p><b>Что сдаётся:</b> ${esc(t.deliverable)}</p><p><b>Критерии приёмки:</b> ${esc(t.acceptance)}</p>
+        ${t.related_questions.length ? `<p><b>Вопросы банка:</b> ${esc(t.related_questions.join(", "))}</p>` : ""}</details>
+    </div>
+    <div class="act">${links.join("")}</div></article>`;
 }
 document.getElementById("g-archive").innerHTML = T.map(card).join("");
 
