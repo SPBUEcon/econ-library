@@ -50,16 +50,12 @@ h2 .cnt{font-family:var(--body);font-weight:500;font-size:16px;color:var(--grey)
 
 /* HOW */
 .kinds{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.steps4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px;list-style:none;counter-reset:s}
-@media (max-width:900px){.kinds,.steps4{grid-template-columns:1fr}}
+@media (max-width:900px){.kinds{grid-template-columns:1fr}}
 .kind{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;border-top:6px solid var(--grey)}
 .kind.fixed{border-top-color:var(--blue)} .kind.param{border-top-color:var(--violet)} .kind.relay{border-top-color:var(--coral)}
 .kind h3{font-family:var(--disp);font-weight:500;font-size:17px;margin-bottom:6px}
 .kind p{font-size:14.5px;color:var(--grey)}
 .kind .ex{margin-top:10px;font-size:13.5px;color:var(--ink)}
-.steps4 li{counter-increment:s;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:14.5px}
-.steps4 li::before{content:counter(s);display:block;font-family:var(--disp);font-weight:700;color:var(--coral);font-size:18px;margin-bottom:4px}
-.steps4 li b{display:block}
 
 /* CONTROLS */
 .nav{position:sticky;top:0;z-index:50;background:rgba(250,251,254,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
@@ -149,8 +145,6 @@ footer p{margin-bottom:8px;max-width:920px}
     <div class="crumbs"><a href="../../index.html">Мастерская</a> · Архив заданий</div>
     <div class="eyebrow">ЭФ СПбГУ · задания для групп и потоков</div>
     <h1>Архив <span class="accent">заданий</span></h1>
-    <p class="sub">Все задания мастерской в одном месте: конкретные, параметрические (индивидуальный вариант из пула)
-      и эстафетные, которые продолжают накопленное досье. У каждого задания — тип, проверяемые навыки, результат и критерии.</p>
     <div class="stat-row" id="stats"></div>
   </div>
 </header>
@@ -185,12 +179,6 @@ footer p{margin-bottom:8px;max-width:920px}
       <div class="kind relay"><h3>Эстафетное</h3><p>Задание продолжает досье: следующий участник получает редакцию по текущему состоянию накопленного.</p>
         <div class="ex">Пример: досье Red Bull — модель → оппонирование → ставка</div></div>
     </div>
-    <ol class="steps4">
-      <li><b>Выбрать</b>Найдите задание в архиве по навыку, типу или досье.</li>
-      <li><b>Получить выдачу</b>Преподаватель выдаёт задание или вы бронируете вариант; выдача фиксируется в журнале.</li>
-      <li><b>Выполнить</b>По карточке задания: логика выполнения, результат, критерии.</li>
-      <li><b>Сдать PR</b>Результат — Pull request в досье или в папку трека. Принятая работа обновляет досье.</li>
-    </ol>
   </div>
 </section>
 
