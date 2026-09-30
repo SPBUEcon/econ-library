@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<!--
+  Архив заданий Мастерской «Технологии в экономике».
+  СГЕНЕРИРОВАНО скриптом assignments/site/build.py из assignments/catalog/*.csv — не править руками.
+  Собрано: 2026-09-30.
+-->
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Архив заданий — Мастерская «Технологии в экономике»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --ink:#1B2038; --ink2:#272E52; --card:#2E3660;
+  --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0;
+  --green:#2FA37A; --amber:#D9932B; --blue:#3E7BD6; --violet:#7A5AD9;
+  --disp:'Unbounded','Arial Black',sans-serif;
+  --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+section{padding:56px 0;scroll-margin-top:150px}
+section.alt{background:var(--panel)}
+a{color:inherit}
+.eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:14px}
+h2{font-family:var(--disp);font-weight:700;font-size:clamp(24px,3vw,34px);line-height:1.15;margin-bottom:12px}
+h2 .cnt{font-family:var(--body);font-weight:500;font-size:16px;color:var(--grey);vertical-align:middle;margin-left:10px}
+.lead{font-size:clamp(15px,1.6vw,18px);color:var(--grey);max-width:860px;margin-bottom:22px}
+.lead a,.small a{color:var(--coral);font-weight:600}
+
+/* HERO */
+.hero{background:var(--ink);color:#fff;padding:58px 0 52px}
+.hero .eyebrow{color:var(--ice)}
+.crumbs{font-size:13px;color:var(--ice);margin-bottom:20px}
+.crumbs a{color:var(--ice)}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,4vw,46px);line-height:1.12;max-width:980px}
+.hero h1 .accent{color:var(--coral)}
+.hero .sub{margin-top:18px;font-size:clamp(15px,1.8vw,19px);color:var(--ice);max-width:860px}
+.stat-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.stat{background:var(--ink2);border-radius:14px;padding:12px 18px}
+.stat b{font-family:var(--disp);font-weight:700;font-size:21px;color:#fff;display:block}
+.stat span{font-size:12px;color:var(--ice);letter-spacing:.04em}
+
+/* HOW */
+.kinds{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.steps4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px;list-style:none;counter-reset:s}
+@media (max-width:900px){.kinds,.steps4{grid-template-columns:1fr}}
+.kind{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;border-top:6px solid var(--grey)}
+.kind.fixed{border-top-color:var(--blue)} .kind.param{border-top-color:var(--violet)} .kind.relay{border-top-color:var(--coral)}
+.kind h3{font-family:var(--disp);font-weight:500;font-size:17px;margin-bottom:6px}
+.kind p{font-size:14.5px;color:var(--grey)}
+.kind .ex{margin-top:10px;font-size:13.5px;color:var(--ink)}
+.steps4 li{counter-increment:s;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:14.5px}
+.steps4 li::before{content:counter(s);display:block;font-family:var(--disp);font-weight:700;color:var(--coral);font-size:18px;margin-bottom:4px}
+.steps4 li b{display:block}
+
+/* CONTROLS */
+.nav{position:sticky;top:0;z-index:50;background:rgba(250,251,254,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;flex-direction:column;gap:10px;padding-top:12px;padding-bottom:12px}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap}
+.nav-links a{font-size:13.5px;font-weight:600;color:var(--grey);text-decoration:none;padding:6px 11px;border-radius:9px}
+.nav-links a:hover{background:var(--panel);color:var(--ink)}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-family:var(--body);font-size:12.5px;font-weight:600;border:1.5px solid var(--line);background:#fff;color:var(--grey);
+  border-radius:999px;padding:6px 13px;cursor:pointer}
+.chip:hover{border-color:var(--coral);color:var(--ink)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip.on[data-kind="fixed"]{background:var(--blue);border-color:var(--blue)}
+.chip.on[data-kind="param"]{background:var(--violet);border-color:var(--violet)}
+.chip.on[data-kind="relay"]{background:var(--coral);border-color:var(--coral)}
+select,.search input{font-family:var(--body);font-size:13.5px;padding:7px 10px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+select{max-width:220px}
+.search{flex:1;min-width:180px;max-width:300px}
+.search input{width:100%}
+@media (max-width:760px){.nav{position:static}.wrap{padding:0 18px}}
+button.reset{font-family:var(--body);font-size:13px;font-weight:600;background:none;border:none;color:var(--coral);cursor:pointer;padding:6px}
+
+/* CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr));gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 20px 16px;display:flex;flex-direction:column;border-left:5px solid var(--grey)}
+.card[data-kind="fixed"]{border-left-color:var(--blue)}
+.card[data-kind="param"]{border-left-color:var(--violet)}
+.card[data-kind="relay"]{border-left-color:var(--coral)}
+.card .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.cid{font-family:var(--disp);font-size:12.5px;font-weight:700;color:var(--ink)}
+.badge{font-size:11.5px;font-weight:600;border-radius:999px;padding:2px 9px;background:var(--panel);color:var(--grey)}
+.badge.fixed{background:#E6EEFB;color:var(--blue)} .badge.param{background:#EEE9FB;color:var(--violet)} .badge.relay{background:#FDE9E6;color:var(--coral)}
+.badge.active{background:#E3F4EC;color:var(--green)}
+.card h4{font-family:var(--disp);font-weight:500;font-size:16.5px;line-height:1.3;margin-bottom:8px}
+.card p.brief{font-size:14.5px;margin-bottom:10px}
+.meta{font-size:13px;color:var(--grey);display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin-bottom:10px}
+.meta dt{font-weight:600;color:var(--ink)}
+.sk{display:inline-block;font-size:12px;font-weight:600;background:var(--panel);color:var(--ink);border-radius:7px;padding:1px 7px;margin:0 3px 3px 0}
+details{font-size:13.5px;margin-bottom:10px}
+details summary{cursor:pointer;font-weight:600;color:var(--coral)}
+details p{margin-top:6px}
+.links{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px}
+.links a{font-weight:600;color:var(--coral);text-decoration:none}
+.links a:hover{text-decoration:underline}
+.links .muted{color:var(--grey)}
+.empty{display:none;padding:30px;text-align:center;color:var(--grey);background:#fff;border:1px dashed var(--line);border-radius:16px}
+
+/* DOSSIERS */
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr));gap:18px}
+.dos{background:var(--ink);color:#fff;border-radius:20px;padding:22px 24px}
+.dos h3{font-family:var(--disp);font-weight:700;font-size:19px;margin-bottom:6px}
+.dos .st{font-size:13px;color:var(--ice);margin-bottom:12px}
+.dos .st b{color:var(--coral)}
+.dos .tl{font-size:13.5px;color:var(--ice);margin-bottom:14px}
+.dos a{display:inline-block;font-size:13.5px;font-weight:600;color:#fff;background:var(--ink2);border-radius:10px;padding:7px 12px;margin:0 6px 6px 0;text-decoration:none}
+.dos a.hot{background:var(--coral)}
+.dos button{font-family:var(--body);font-size:13.5px;font-weight:600;color:var(--ink);background:var(--ice);border:none;border-radius:10px;padding:7px 12px;cursor:pointer;margin:0 6px 6px 0}
+
+/* REFERENCE */
+.tbl{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:16px;margin-top:14px;margin-bottom:26px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--panel);font-weight:600;font-size:12px;color:var(--grey);letter-spacing:.04em}
+tr:last-child td{border-bottom:none}
+td code{font-size:12.5px}
+h3.ref{font-family:var(--disp);font-weight:500;font-size:18px;margin-top:8px}
+footer{background:var(--ink);color:var(--ice);padding:34px 0;font-size:14px}
+footer a{color:#fff}
+footer p{margin-bottom:8px;max-width:920px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="crumbs"><a href="../../index.html">Мастерская</a> · Архив заданий</div>
+    <div class="eyebrow">ЭФ СПбГУ · задания для групп и потоков</div>
+    <h1>Архив <span class="accent">заданий</span></h1>
+    <p class="sub">Все задания мастерской в одном месте: конкретные, параметрические (индивидуальный вариант из пула)
+      и эстафетные, которые продолжают накопленное досье. У каждого задания — тип, проверяемые навыки, результат и критерии.</p>
+    <div class="stat-row" id="stats"></div>
+  </div>
+</header>
+
+<nav class="nav"><div class="wrap">
+  <div class="nav-links">
+    <a href="#how">Как устроено</a><a href="#archive">Архив</a><a href="#dossiers">Досье</a>
+    <a href="#reference">Типы · навыки · механики</a>
+  </div>
+  <div class="controls">
+    <div class="chips" id="kinds"></div>
+    <select id="f-type" aria-label="Тип задания"></select>
+    <select id="f-skill" aria-label="Навык"></select>
+    <select id="f-scale" aria-label="Масштаб"></select>
+    <select id="f-dossier" aria-label="Досье"></select>
+    <div class="search"><input id="q" type="search" placeholder="Поиск по заданиям…" aria-label="Поиск"></div>
+    <button class="reset" id="reset">Сбросить</button>
+  </div>
+</div></nav>
+
+<section id="how">
+  <div class="wrap">
+    <div class="eyebrow">01 · Как устроено</div>
+    <h2>Три рода заданий</h2>
+    <p class="lead">Род определяет, откуда берётся формулировка. Модель слоя заданий — в
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/README.md">assignments/README.md</a>.</p>
+    <div class="kinds">
+      <div class="kind fixed"><h3>Конкретное</h3><p>Один текст выдаётся многим как есть; результаты сравнимы.</p>
+        <div class="ex">Пример: «Red Bull Stratos как хлопушка»</div></div>
+      <div class="kind param"><h3>Параметрическое</h3><p>Шаблон + вариант из пула каталога дисциплины → индивидуальное задание. В группе варианты не повторяются.</p>
+        <div class="ex">Пример: «Компания {company} по трём укладам»</div></div>
+      <div class="kind relay"><h3>Эстафетное</h3><p>Задание продолжает досье: следующий участник получает редакцию по текущему состоянию накопленного.</p>
+        <div class="ex">Пример: досье Red Bull — модель → оппонирование → ставка</div></div>
+    </div>
+    <ol class="steps4">
+      <li><b>Выбрать</b>Найдите задание в архиве по навыку, типу или досье.</li>
+      <li><b>Получить выдачу</b>Преподаватель выдаёт задание или вы бронируете вариант; выдача фиксируется в журнале.</li>
+      <li><b>Выполнить</b>По карточке задания: логика выполнения, результат, критерии.</li>
+      <li><b>Сдать PR</b>Результат — Pull request в досье или в папку трека. Принятая работа обновляет досье.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="archive" class="alt">
+  <div class="wrap">
+    <div class="eyebrow">02 · Архив</div>
+    <h2>Задания <span class="cnt" id="c-archive"></span></h2>
+    <p class="lead">Источник правды — <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/catalog/templates.csv">catalog/templates.csv</a>.
+      Фильтры сверху; ссылкой с фильтром можно поделиться — он сохраняется в адресе страницы.</p>
+    <div class="grid" id="g-archive"></div>
+    <div class="empty" id="empty">Ничего не найдено. Измените фильтры или <button class="reset" onclick="resetAll()">сбросьте их</button>.</div>
+  </div>
+</section>
+
+<section id="dossiers">
+  <div class="wrap">
+    <div class="eyebrow">03 · Накопительные досье</div>
+    <h2>Досье</h2>
+    <p class="lead">Досье — живой объект (компания, отрасль, технология), над которым работают сменяющие друг друга участники.
+      От стадии досье зависит, какое задание выдаётся. Правила — <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/dossiers/README.md">dossiers/README.md</a>.</p>
+    <div class="dgrid" id="g-dossiers"></div>
+  </div>
+</section>
+
+<section id="reference" class="alt">
+  <div class="wrap">
+    <div class="eyebrow">04 · Справочники</div>
+    <h2>Типы, навыки, механики</h2>
+    <p class="lead">Из чего собирается задание. Файлы — в <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/catalog/README.md">catalog/</a>.</p>
+    <h3 class="ref">Проверяемые навыки</h3>
+    <div class="tbl"><table><thead><tr><th>Навык</th><th>Что это</th><th>Что должно быть видно в результате</th><th>Профильная роль</th></tr></thead><tbody id="t-skills"></tbody></table></div>
+    <h3 class="ref">Типы заданий</h3>
+    <div class="tbl"><table><thead><tr><th>Тип</th><th>Форма результата</th><th>Что это</th><th>Масштаб</th><th>Срок</th></tr></thead><tbody id="t-types"></tbody></table></div>
+    <h3 class="ref">Механики</h3>
+    <div class="tbl"><table><thead><tr><th>Механика</th><th>Как работает</th><th>Когда применять</th></tr></thead><tbody id="t-mech"></tbody></table></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>Как пополнить архив.</b> Добавьте строку в <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/catalog/templates.csv">templates.csv</a>, при необходимости карточку по
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/_card-template.md">шаблону</a>, и пересоберите страницу:
+      <code>python assignments/site/build.py</code>. Изменения — через Pull request.</p>
+    <p>Выдачи — по никам и <code>team_id</code>, без ФИО; оценки здесь не хранятся. Собрано: 2026-09-30.</p>
+    <p><a href="../../index.html">← Дашборд мастерской</a> · <a href="../../disciplines/technologies-econ-fin/site/course.html">Курс дисциплины</a></p>
+  </div>
+</footer>
+
+<script>
+const DATA = {"templates": [{"template_id": "tpl01", "title": "Разбор компании по трём укладам", "kind": "param", "parent_template": "", "type_id": "ty-case", "mechanic_ids": ["mx-param", "mx-claim"], "skill_ids": ["sk-analysis", "sk-search"], "discipline": "technologies-econ-fin", "block": "transition", "scale": ["индивид"], "duration": "2 занятия", "parameters": "company ← business-models.csv (bm01–bm13)", "dossier_id": "", "entry_stage": [], "brief": "Определите, что компания реально производит (товар / смысл / рынок); разметьте по трём укладам и четырём срезам модели бизнеса (c07); сформулируйте ключевой переход (c19) и следующий ход", "deliverable": "Markdown-разбор: таблица «уклад × 4 среза», ключевой переход, текущий уклад и следующий ход; список источников", "acceptance": "Все ячейки заполнены или помечены пробелом; не менее 5 источников первого уровня с датой обращения; цифры со слайдов проверены или помечены «не подтверждено»", "related_questions": ["q17"], "status": "черновик", "file": "templates/tpl01-company-three-uklads.md", "issued": 0, "card_url": "https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/tpl01-company-three-uklads.md", "case_page": ""}, {"template_id": "tpl02", "title": "Отраслевая проекция укладов", "kind": "param", "parent_template": "", "type_id": "ty-report", "mechanic_ids": ["mx-param"], "skill_ids": ["sk-analysis", "sk-model"], "discipline": "technologies-econ-fin", "block": "transition", "scale": ["индивид"], "duration": "одно занятие", "parameters": "industry ← industries.csv (ind01–ind15)", "dossier_id": "", "entry_stage": [], "brief": "Разложите отрасль по трём укладам, дополните строку матрицы своими примерами и назовите следующий ход", "deliverable": "Строка-дополнение к матрице отраслей + 1 страница обоснования", "acceptance": "По каждому укладу не менее 2 примеров с источниками; следующий ход проверяем", "related_questions": ["q04"], "status": "черновик", "file": "", "issued": 0, "card_url": "", "case_page": ""}, {"template_id": "tpl03", "title": "Технология × отрасль", "kind": "param", "parent_template": "", "type_id": "ty-research", "mechanic_ids": ["mx-param"], "skill_ids": ["sk-search", "sk-analysis"], "discipline": "technologies-econ-fin", "block": "landscape", "scale": ["индивид", "команда"], "duration": "3–4 занятия", "parameters": "tech ← technologies.csv (10) × industry ← industries.csv (15) = 150 вариантов", "dossier_id": "", "entry_stage": [], "brief": "Как технология меняет отрасль: какой уклад она подрывает, кто в отрасли уже делает ход, какие данные это подтверждают", "deliverable": "Исследование: вопрос, данные (CSV), вывод; 5–7 страниц", "acceptance": "Данные по правилам rules/data-collection.md; вывод следует из данных; назван хотя бы один игрок с источником", "related_questions": [], "status": "черновик", "file": "", "issued": 0, "card_url": "", "case_page": ""}, {"template_id": "tpl04", "title": "Проверка цифр со слайдов", "kind": "param", "parent_template": "", "type_id": "ty-data", "mechanic_ids": ["mx-bounty"], "skill_ids": ["sk-search", "sk-data"], "discipline": "technologies-econ-fin", "block": "", "scale": ["индивид"], "duration": "одно занятие", "parameters": "row ← строки каталога с пометкой «проверить» (business-models.csv — 7 строк; cases.csv — 6 строк)", "dossier_id": "", "entry_stage": [], "brief": "Проверьте каждую цифру строки каталога по первоисточнику", "deliverable": "Таблица: цифра · статус (подтверждено / опровергнуто / не найдено) · источник · дата обращения; PR с правкой key_metrics", "acceptance": "Каждая цифра имеет статус; источники первого уровня; расхождения источников названы", "related_questions": [], "status": "черновик", "file": "", "issued": 0, "card_url": "", "case_page": ""}, {"template_id": "tpl05", "title": "Правило трёх доменов: проверка замысла", "kind": "param", "parent_template": "", "type_id": "ty-problem", "mechanic_ids": ["mx-param"], "skill_ids": ["sk-model", "sk-analysis"], "discipline": "technologies-econ-fin", "block": "ai-business", "scale": ["индивид"], "duration": "одно занятие", "parameters": "company ← business-models.csv", "dossier_id": "", "entry_stage": [], "brief": "Какие три домена комбинирует компания (домашний · транзитный · трансформируемый) и какой третий рынок она создаёт (m02)? Если трёх доменов нет — какого не хватает", "deliverable": "Решение на 1–2 страницы со схемой доменов", "acceptance": "Домены названы и подтверждены фактами с источниками; вывод о третьем рынке проверяем", "related_questions": [], "status": "черновик", "file": "", "issued": 0, "card_url": "", "case_page": ""}, {"template_id": "tpl06", "title": "Ставка: следующий ход компании", "kind": "param", "parent_template": "", "type_id": "ty-bet", "mechanic_ids": ["mx-bet"], "skill_ids": ["sk-bet", "sk-analysis"], "discipline": "technologies-econ-fin", "block": "ai-business", "scale": ["индивид"], "duration": "одно занятие", "parameters": "company ← business-models.csv или dossier_id", "dossier_id": "", "entry_stage": [], "brief": "Сделайте ставку: какой ход сделает компания и к какой дате; как проверить; ваша уверенность", "deliverable": "Строка в bets.csv + обоснование на 1 страницу", "acceptance": "Ставка проверяема (дата, признак); уверенность указана; обоснование опирается на модель", "related_questions": [], "status": "черновик", "file": "templates/tpl06-bet.md", "issued": 0, "card_url": "https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/tpl06-bet.md", "case_page": ""}, {"template_id": "tpl07", "title": "Red Bull Stratos как хлопушка", "kind": "fixed", "parent_template": "", "type_id": "ty-case", "mechanic_ids": ["mx-fixed"], "skill_ids": ["sk-analysis"], "discipline": "technologies-econ-fin", "block": "transition", "scale": ["индивид"], "duration": "одно занятие", "parameters": "", "dossier_id": "", "entry_stage": [], "brief": "Разберите Red Bull Stratos (ca08) по модели «воронка · лейка · хлопушка» (c01): что было импульсом, какой радиус, какие осколки породили новых клиентов", "deliverable": "Разбор на 1–2 страницы", "acceptance": "Все три модели сопоставлены; осколки подтверждены фактами с источниками; цифры кейса проверены или помечены", "related_questions": ["q02"], "status": "черновик", "file": "", "issued": 0, "card_url": "", "case_page": ""}, {"template_id": "tpl08", "title": "Зеркало ИИ: найди ошибки в разборе", "kind": "param", "parent_template": "", "type_id": "ty-review", "mechanic_ids": ["mx-ai-mirror"], "skill_ids": ["sk-ai", "sk-search"], "discipline": "technologies-econ-fin", "block": "", "scale": ["индивид"], "duration": "одно занятие", "parameters": "object ← business-models.csv или cases.csv", "dossier_id": "", "entry_stage": [], "brief": "При выдаче генерируется ИИ-разбор объекта. Найдите в нём фактические ошибки, выдуманные цифры и подмены рамки", "deliverable": "Разметка ИИ-разбора: утверждение · верно / неверно / не проверяемо · первоисточник", "acceptance": "Не менее 10 утверждений проверено; каждая ошибка подтверждена первоисточником", "related_questions": [], "status": "черновик", "file": "", "issued": 0, "card_url": "", "case_page": ""}, {"template_id": "tpl09", "title": "Дашборд досье", "kind": "param", "parent_template": "", "type_id": "ty-app", "mechanic_ids": ["mx-multirole"], "skill_ids": ["sk-dev", "sk-data"], "discipline": "technologies-econ-fin", "block": "", "scale": ["индивид", "команда"], "duration": "4–6 занятий", "parameters": "dossier ← dossiers/", "dossier_id": "", "entry_stage": ["каркас"], "brief": "Сделайте визуализацию досье: хроника (timeline.csv) + модель по укладам; страница работает по file:// без сервера", "deliverable": "HTML-страница + скрипт сборки + инструкция запуска", "acceptance": "Страница собирается из CSV досье без ручных правок; показывает источники; запускается по инструкции", "related_questions": [], "status": "черновик", "file": "", "issued": 0, "card_url": "", "case_page": ""}, {"template_id": "tpl10", "title": "Дебаты по кейсу", "kind": "param", "parent_template": "", "type_id": "ty-event", "mechanic_ids": ["mx-assembly"], "skill_ids": ["sk-org", "sk-comm"], "discipline": "technologies-econ-fin", "block": "", "scale": ["команда"], "duration": "2–3 занятия", "parameters": "dossier ← dossiers/ или company ← business-models.csv", "dossier_id": "", "entry_stage": ["модель"], "brief": "Соберите дебаты по спорному тезису модели: две стороны, модератор, жюри; итог — какой тезис выжил", "deliverable": "Проведённое событие + протокол в meetings/ + правка модели досье", "acceptance": "Событие состоялось; протокол без персональных данных; изменение модели зафиксировано в changelog досье", "related_questions": [], "status": "черновик", "file": "", "issued": 0, "card_url": "", "case_page": ""}, {"template_id": "tpl11", "title": "Оппонирование модели", "kind": "relay", "parent_template": "", "type_id": "ty-review", "mechanic_ids": ["mx-redteam", "mx-relay"], "skill_ids": ["sk-critique"], "discipline": "technologies-econ-fin", "block": "", "scale": ["индивид"], "duration": "одно занятие", "parameters": "dossier ← dossiers/", "dossier_id": "", "entry_stage": ["модель"], "brief": "Атакуйте текущую версию модели досье: что сломается первым, какие выводы держатся на одном источнике, какие контрпримеры есть", "deliverable": "Рецензия + пункты в open-questions.md досье", "acceptance": "Не менее 3 конкретных уязвимостей с проверками; ссылки на версию модели", "related_questions": [], "status": "черновик", "file": "", "issued": 0, "card_url": "", "case_page": ""}, {"template_id": "tpl12", "title": "Актуализация досье", "kind": "relay", "parent_template": "", "type_id": "ty-research", "mechanic_ids": ["mx-delta", "mx-relay"], "skill_ids": ["sk-search", "sk-inherit"], "discipline": "technologies-econ-fin", "block": "", "scale": ["индивид"], "duration": "2 занятия", "parameters": "dossier ← dossiers/", "dossier_id": "", "entry_stage": ["модель", "устарело"], "brief": "Что изменилось с последней версии досье: новые события, устаревшие цифры, выводы, которые перестали работать", "deliverable": "PR в досье: новые строки timeline.csv, правки model.md, запись в changelog.md", "acceptance": "Каждое изменение с источником и датой; changelog объясняет, что поменялось в модели", "related_questions": [], "status": "черновик", "file": "", "issued": 0, "card_url": "", "case_page": ""}, {"template_id": "tpl13", "title": "Микро-задание с доски пробелов", "kind": "relay", "parent_template": "", "type_id": "ty-data", "mechanic_ids": ["mx-bounty", "mx-relay"], "skill_ids": ["sk-search"], "discipline": "technologies-econ-fin", "block": "", "scale": ["индивид"], "duration": "1–2 занятия", "parameters": "gap ← open-questions.md досье", "dossier_id": "", "entry_stage": ["любая"], "brief": "Закройте один пробел из open-questions.md досье", "deliverable": "PR в досье: закрытый пробел + источники", "acceptance": "Пробел закрыт или честно помечен «не найдено, и вот где искали»", "related_questions": [], "status": "черновик", "file": "", "issued": 0, "card_url": "", "case_page": ""}, {"template_id": "tpl14", "title": "Разрешение ставки", "kind": "relay", "parent_template": "", "type_id": "ty-review", "mechanic_ids": ["mx-bet", "mx-relay"], "skill_ids": ["sk-search", "sk-bet"], "discipline": "technologies-econ-fin", "block": "", "scale": ["индивид"], "duration": "одно занятие", "parameters": "bet ← bets.csv (resolve_by прошла)", "dossier_id": "", "entry_stage": ["любая"], "brief": "Разрешите ставку предшественника: сбылось или нет, по какому признаку, почему модель ошиблась или угадала", "deliverable": "Заполненные поля outcome и resolution_link в bets.csv + вывод для модели досье", "acceptance": "Исход подтверждён источником; вывод для модели записан в changelog", "related_questions": [], "status": "черновик", "file": "", "issued": 0, "card_url": "", "case_page": ""}, {"template_id": "tpl15", "title": "Переопыление модели", "kind": "relay", "parent_template": "", "type_id": "ty-model", "mechanic_ids": ["mx-crosspoll", "mx-relay"], "skill_ids": ["sk-model"], "discipline": "technologies-econ-fin", "block": "", "scale": ["индивид", "команда"], "duration": "2–4 занятия", "parameters": "dossier ← dossiers/ × target ← партнёр воркстрима (workstreams/)", "dossier_id": "", "entry_stage": ["кейс"], "brief": "Перенесите модель досье на партнёра воркстрима: что переносится, что нет, какой ход это подсказывает партнёру", "deliverable": "Модель-перенос + заметка в карточке воркстрима (переопыление)", "acceptance": "Перенос обоснован; различия объектов названы; есть проверяемое предложение хода", "related_questions": [], "status": "черновик", "file": "", "issued": 0, "card_url": "", "case_page": ""}, {"template_id": "rb-01", "title": "Red Bull: каркас и хроника", "kind": "relay", "parent_template": "tpl04", "type_id": "ty-data", "mechanic_ids": ["mx-relay", "mx-bounty"], "skill_ids": ["sk-search", "sk-data"], "discipline": "technologies-econ-fin", "block": "ai-business", "scale": ["индивид"], "duration": "2 занятия", "parameters": "", "dossier_id": "red-bull", "entry_stage": ["зерно"], "brief": "Проверьте цифры bm01 и ca08 по первоисточникам и соберите хронику ключевых трансформаций компании с источниками", "deliverable": "PR в dossiers/red-bull: timeline.csv, sources.csv, статусы цифр в model.md", "acceptance": "Не менее 10 событий хроники с источником и датой обращения; каждая цифра каталога имеет статус", "related_questions": ["q17"], "status": "черновик", "file": "dossiers/red-bull/README.md", "issued": 0, "card_url": "", "case_page": "../../disciplines/technologies-econ-fin/cases/red-bull/index.html"}, {"template_id": "rb-02", "title": "Red Bull: бизнес-модель по трём укладам", "kind": "relay", "parent_template": "tpl01", "type_id": "ty-model", "mechanic_ids": ["mx-relay"], "skill_ids": ["sk-search", "sk-analysis", "sk-model"], "discipline": "technologies-econ-fin", "block": "ai-business", "scale": ["индивид", "команда"], "duration": "2–3 занятия", "parameters": "", "dossier_id": "red-bull", "entry_stage": ["зерно", "каркас"], "brief": "Превратите тезисы слайдов курса в проверенную модель: статус каждого тезиса по первоисточнику, хроника, три уклада × четыре среза, проверка формулы «напиток → медиа → бренд», ключевой переход и три домена (m02), дельта с момента слайдов", "deliverable": "PR в dossiers/red-bull: model.md v1, timeline.csv (≥10 событий), sources.csv, разбор на 3–5 страниц в contributions/", "acceptance": "Каждый тезис слайдов имеет статус; у цифр источник и дата обращения; все ячейки заполнены или помечены пробелом; расхождения источников названы; доска пробелов обновлена", "related_questions": ["q17"], "status": "активно", "file": "templates/rb-02-red-bull-business-model.md", "issued": 0, "card_url": "https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/rb-02-red-bull-business-model.md", "case_page": "../../disciplines/technologies-econ-fin/cases/red-bull/index.html"}, {"template_id": "rb-03", "title": "Red Bull: актуализация", "kind": "relay", "parent_template": "tpl12", "type_id": "ty-research", "mechanic_ids": ["mx-delta", "mx-relay"], "skill_ids": ["sk-search", "sk-inherit"], "discipline": "technologies-econ-fin", "block": "ai-business", "scale": ["индивид"], "duration": "2 занятия", "parameters": "", "dossier_id": "red-bull", "entry_stage": ["модель", "устарело"], "brief": "Что изменилось в Red Bull с даты последней версии досье и что это значит для модели", "deliverable": "PR: новые строки хроники + changelog + правки модели", "acceptance": "Как у tpl12", "related_questions": [], "status": "черновик", "file": "dossiers/red-bull/README.md", "issued": 0, "card_url": "", "case_page": "../../disciplines/technologies-econ-fin/cases/red-bull/index.html"}, {"template_id": "rb-04", "title": "Red Bull: оппонирование модели", "kind": "relay", "parent_template": "tpl11", "type_id": "ty-review", "mechanic_ids": ["mx-redteam", "mx-relay"], "skill_ids": ["sk-critique"], "discipline": "technologies-econ-fin", "block": "ai-business", "scale": ["индивид"], "duration": "одно занятие", "parameters": "", "dossier_id": "red-bull", "entry_stage": ["модель"], "brief": "Атакуйте тезис «Red Bull — уровень 3 (хлопушка)»: где компания остаётся индустриальной или информационной", "deliverable": "Рецензия + пункты в open-questions.md", "acceptance": "Как у tpl11", "related_questions": [], "status": "черновик", "file": "dossiers/red-bull/README.md", "issued": 0, "card_url": "", "case_page": "../../disciplines/technologies-econ-fin/cases/red-bull/index.html"}, {"template_id": "rb-05", "title": "Red Bull: ставка «следующая хлопушка»", "kind": "relay", "parent_template": "tpl06", "type_id": "ty-bet", "mechanic_ids": ["mx-bet", "mx-relay"], "skill_ids": ["sk-bet"], "discipline": "technologies-econ-fin", "block": "ai-business", "scale": ["индивид"], "duration": "одно занятие", "parameters": "", "dossier_id": "red-bull", "entry_stage": ["модель"], "brief": "Какое событие-хлопушку Red Bull сделает следующим, в каком домене и к какой дате", "deliverable": "Строка в bets.csv + обоснование", "acceptance": "Как у tpl06", "related_questions": [], "status": "черновик", "file": "dossiers/red-bull/README.md", "issued": 0, "card_url": "", "case_page": "../../disciplines/technologies-econ-fin/cases/red-bull/index.html"}, {"template_id": "rb-06", "title": "Red Bull → спортивный партнёр: переопыление", "kind": "relay", "parent_template": "tpl15", "type_id": "ty-model", "mechanic_ids": ["mx-crosspoll", "mx-relay"], "skill_ids": ["sk-model"], "discipline": "technologies-econ-fin", "block": "ai-business", "scale": ["команда"], "duration": "2–4 занятия", "parameters": "target ← sport-spb · phygital-sport · sport-engagement", "dossier_id": "red-bull", "entry_stage": ["кейс"], "brief": "Какие механики Red Bull переносятся на партнёра спортивного воркстрима, а какие нет", "deliverable": "Модель-перенос + заметка о переопылении в карточке воркстрима", "acceptance": "Как у tpl15", "related_questions": [], "status": "черновик", "file": "dossiers/red-bull/README.md", "issued": 0, "card_url": "", "case_page": "../../disciplines/technologies-econ-fin/cases/red-bull/index.html"}, {"template_id": "rb-07", "title": "Red Bull: дашборд хроники", "kind": "relay", "parent_template": "tpl09", "type_id": "ty-app", "mechanic_ids": ["mx-multirole", "mx-relay"], "skill_ids": ["sk-dev", "sk-data"], "discipline": "technologies-econ-fin", "block": "ai-business", "scale": ["индивид", "команда"], "duration": "4–6 занятий", "parameters": "", "dossier_id": "red-bull", "entry_stage": ["каркас"], "brief": "Визуализация хроники и модели Red Bull из CSV досье (естественное задание для bi-4)", "deliverable": "HTML-страница + скрипт сборки", "acceptance": "Как у tpl09", "related_questions": [], "status": "черновик", "file": "dossiers/red-bull/README.md", "issued": 0, "card_url": "", "case_page": "../../disciplines/technologies-econ-fin/cases/red-bull/index.html"}], "types": [{"type_id": "ty-report", "title": "Аналитический доклад", "result_form": "отчёт", "description": "Структурированный разбор темы или объекта с выводами и источниками; письменный текст + устное выступление", "typical_scale": "индивид;команда", "typical_duration": "1–3 занятия"}, {"type_id": "ty-case", "title": "Разбор кейса", "result_form": "отчёт", "description": "Разбор компании/события по заданной рамке (три уклада, хлопушка, три домена) с ключевым переходом", "typical_scale": "индивид;команда", "typical_duration": "1–2 занятия"}, {"type_id": "ty-research", "title": "Исследование", "result_form": "исследование", "description": "Постановка вопроса, сбор открытых данных с источниками, проверка гипотезы; результат — данные + вывод", "typical_scale": "индивид;команда", "typical_duration": "3–6 занятий"}, {"type_id": "ty-data", "title": "Набор данных", "result_form": "данные", "description": "Таблица по правилам rules/data-collection.md: сырые данные в data/raw/, обработанные в data/processed/, описание и источники", "typical_scale": "индивид", "typical_duration": "1–3 занятия"}, {"type_id": "ty-model", "title": "Модель", "result_form": "модель", "description": "Экономическая / организационная / финансовая модель: элементы, связи, допущения, «что сломается первым»", "typical_scale": "команда", "typical_duration": "2–6 занятий"}, {"type_id": "ty-problem", "title": "Решение задачи", "result_form": "отчёт", "description": "Задача с проверяемым ответом или обоснованным решением (расчёт, выбор хода, проверка замысла рамкой)", "typical_scale": "индивид", "typical_duration": "одно занятие"}, {"type_id": "ty-app", "title": "Приложение / сервис / прототип", "result_form": "приложение", "description": "Работающий прототип (дашборд, бот, сервис, визуализация) над данными досье или воркстрима; запускается по инструкции", "typical_scale": "индивид;команда", "typical_duration": "3–8 занятий"}, {"type_id": "ty-bet", "title": "Ставка", "result_form": "модель", "description": "Проверяемый прогноз: что произойдёт, к какой дате, по какому признаку проверить, уверенность в процентах; регистрируется в bets.csv", "typical_scale": "индивид", "typical_duration": "одно занятие"}, {"type_id": "ty-event", "title": "Событие", "result_form": "событие", "description": "Проведённое событие: дебаты, круглый стол, интервью с практиком, воркшоп; результат — протокол и итоги", "typical_scale": "команда", "typical_duration": "2–4 занятия"}, {"type_id": "ty-review", "title": "Рецензия / оппонирование", "result_form": "отчёт", "description": "Критический разбор чужой модели или работы: слабые места, контрпримеры, предложенные проверки", "typical_scale": "индивид", "typical_duration": "одно занятие"}, {"type_id": "ty-talk", "title": "Доклад на занятии", "result_form": "активность", "description": "Выступление 7–15 минут по теме с материалами; тема фиксируется в tracks/<трек>/<семестр>/talks.md", "typical_scale": "индивид;команда", "typical_duration": "одно занятие"}], "skills": [{"skill_id": "sk-search", "title": "Поиск и верификация информации", "what_it_is": "Найти первоисточник, проверить цифру, заметить расхождение источников", "evidence": "Источники первого уровня с датой обращения; расхождения названы и объяснён выбор", "related_role": "Аналитик поля"}, {"skill_id": "sk-analysis", "title": "Анализ и структурирование", "what_it_is": "Разложить объект по рамке без пропусков и сделать выводы из данных", "evidence": "Все ячейки рамки заполнены или помечены пробелом; выводы следуют из данных", "related_role": "Архитектор модели"}, {"skill_id": "sk-model", "title": "Сборка модели", "what_it_is": "Собрать связную модель: элементы, связи, допущения, критические точки", "evidence": "Схема/таблица модели; явные допущения; ответ на «что сломается первым»", "related_role": "Архитектор модели"}, {"skill_id": "sk-bet", "title": "Ставка и суждение", "what_it_is": "Сделать проверяемый прогноз и взять за него ответственность", "evidence": "Прогноз с датой разрешения, признаком проверки и уверенностью; запись в bets.csv; позже — калибровка", "related_role": "Архитектор модели"}, {"skill_id": "sk-data", "title": "Работа с данными", "what_it_is": "Собрать и обработать таблицу воспроизводимо", "evidence": "CSV по правилам репозитория; описание обработки; единицы в названиях столбцов", "related_role": "Аналитик поля"}, {"skill_id": "sk-dev", "title": "Разработка", "what_it_is": "Сделать работающий прототип сервиса или визуализации", "evidence": "Код в репозитории, инструкция запуска, прототип запускается", "related_role": "Интегратор технологий"}, {"skill_id": "sk-org", "title": "Организация", "what_it_is": "Собрать людей, событие или команду так, чтобы результат случился", "evidence": "Событие проведено; участники пришли; протокол и решения зафиксированы", "related_role": "Капитан;Связной с партнёром"}, {"skill_id": "sk-comm", "title": "Коммуникация", "what_it_is": "Донести результат до внешнего читателя или слушателя", "evidence": "Доклад/текст понятен без автора; ответы на вопросы; материалы выложены", "related_role": "Капитан"}, {"skill_id": "sk-critique", "title": "Оппонирование", "what_it_is": "Найти слабые места чужой модели и предложить проверки", "evidence": "Конкретные контрпримеры и проверки, а не общие оценки", "related_role": "Архитектор модели"}, {"skill_id": "sk-ai", "title": "Работа с ИИ", "what_it_is": "Использовать ИИ-инструменты и проверять их результат", "evidence": "Указано, где и для чего использован ИИ; факты от ИИ проверены по первоисточнику", "related_role": "Интегратор технологий"}, {"skill_id": "sk-inherit", "title": "Наследование", "what_it_is": "Принять пакет предшественника и передать пакет дальше", "evidence": "Ссылка на принятую версию досье; changelog; обновлённые open-questions для следующего", "related_role": "Капитан"}, {"skill_id": "sk-field", "title": "Работа в поле", "what_it_is": "Получить знание из реальной среды: интервью, наблюдение, контакт с партнёром", "evidence": "Протокол интервью/наблюдения без персональных данных; выводы для модели", "related_role": "Аналитик поля;Связной с партнёром"}], "mechanics": [{"mechanic_id": "mx-fixed", "title": "Конкретное задание", "how": "Один текст выдаётся многим как есть; результаты сравнимы между собой", "when_to_use": "Базовые упражнения; семинарская работа; калибровка уровня группы", "skills": "", "governance_link": ""}, {"mechanic_id": "mx-param", "title": "Параметрическая генерация", "how": "Шаблон × пул из каталога дисциплины (компании, отрасли, технологии); вариант разрешается вручную, бронью или хэшем ника", "when_to_use": "Потоки с большим числом студентов; нужны непересекающиеся варианты", "skills": "", "governance_link": "§ 3 декомпозиция"}, {"mechanic_id": "mx-claim", "title": "Выбор из пула с бронью", "how": "Студент берёт вариант из пула; занятый вариант помечается в issues.csv и недоступен в группе", "when_to_use": "Когда важна мотивация выбора; студенческие доклады", "skills": "", "governance_link": ""}, {"mechanic_id": "mx-relay", "title": "Эстафета по досье", "how": "Следующий участник принимает досье и делает следующий шаг; задание вычисляется из стадии досье", "when_to_use": "Живые кейсы, которые меняются из года в год", "skills": "sk-inherit", "governance_link": "§ 3 пересборка/наследование; § 9"}, {"mechanic_id": "mx-delta", "title": "Актуализация (дельта)", "how": "«Что изменилось с версии vN»: новые события, устаревшие цифры, сломанные выводы", "when_to_use": "Досье не обновлялось семестр и дольше", "skills": "sk-search;sk-analysis", "governance_link": "§ 3 цифровой след"}, {"mechanic_id": "mx-redteam", "title": "Оппонирование", "how": "Участник атакует модель предшественника; выживший вывод повышает зрелость досье", "when_to_use": "Модель собрана, но не проверялась", "skills": "sk-critique", "governance_link": "§ 6 архитектурное ревью («что сломается первым»)"}, {"mechanic_id": "mx-bet", "title": "Ставка с отложенной проверкой", "how": "Прогноз с датой разрешения в bets.csv; разрешает другой участник позже; видна калибровка", "when_to_use": "Проверка суждения и ответственности за вывод", "skills": "sk-bet", "governance_link": "§ 0 ставка"}, {"mechanic_id": "mx-bounty", "title": "Доска пробелов", "how": "Открытые вопросы досье (open-questions.md) с приоритетом становятся микро-заданиями на 1–2 занятия", "when_to_use": "Короткие индивидуальные задания; добор баллов; вход новичка", "skills": "sk-search", "governance_link": "§ 3 мини-трек"}, {"mechanic_id": "mx-crosspoll", "title": "Переопыление", "how": "Модель, собранная на одном объекте, переносится на другой (компания → партнёр воркстрима)", "when_to_use": "Модель выдержала оппонирование", "skills": "sk-model", "governance_link": "§ 3 переопыление; § 6 большой воркшоп"}, {"mechanic_id": "mx-ai-mirror", "title": "Зеркало ИИ", "how": "Студент получает ИИ-разбор (генерируется при выдаче) и ищет в нём ошибки по первоисточникам", "when_to_use": "Тренировка верификации; правило rules/ai-usage.md", "skills": "sk-ai;sk-search", "governance_link": ""}, {"mechanic_id": "mx-multirole", "title": "Одна тема — разные навыки", "how": "Над одним досье одновременно работают аналитик, разработчик, организатор, «ставочник»; результаты стыкуются", "when_to_use": "Командные задания; смешанные потоки (econ-3 + bi-4)", "skills": "", "governance_link": "§ 7 ролевая модель"}, {"mechanic_id": "mx-assembly", "title": "Сборка события", "how": "Результат — проведённое событие (дебаты, интервью, воркшоп), а не текст о нём", "when_to_use": "Проверка организационных навыков", "skills": "sk-org;sk-comm", "governance_link": "§ 3 сборка условий"}], "dossiers": [{"title": "Досье · Red Bull", "object": "Red Bull", "stage": "Зерно", "version": "v0.1", "updated": "2026-09-30", "dossier_id": "red-bull", "url": "https://github.com/SPBUEcon/econ-library/blob/main/assignments/dossiers/red-bull/README.md", "gaps_url": "https://github.com/SPBUEcon/econ-library/blob/main/assignments/dossiers/red-bull/open-questions.md", "case_page": "../../disciplines/technologies-econ-fin/cases/red-bull/index.html", "tasks": ["rb-01", "rb-02", "rb-03", "rb-04", "rb-05", "rb-06", "rb-07"]}], "issuesTotal": 0, "gh": "https://github.com/SPBUEcon/econ-library/blob/main/assignments/"};
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const KIND = {fixed:"Конкретное", param:"Параметрическое", relay:"Эстафетное"};
+const TY = Object.fromEntries(DATA.types.map(t => [t.type_id, t]));
+const SK = Object.fromEntries(DATA.skills.map(s => [s.skill_id, s]));
+const MX = Object.fromEntries(DATA.mechanics.map(m => [m.mechanic_id, m]));
+const DOS = Object.fromEntries(DATA.dossiers.map(d => [d.dossier_id, d]));
+const T = DATA.templates;
+
+// stats
+const st = [
+  [T.length, "заданий в архиве"],
+  [T.filter(t => !t.dossier_id).length, "общих шаблонов"],
+  [T.filter(t => t.dossier_id).length, "заданий досье"],
+  [DATA.skills.length, "проверяемых навыков"],
+  [DATA.dossiers.length, "досье"],
+  [DATA.issuesTotal, "выдач"],
+];
+document.getElementById("stats").innerHTML = st.map(([n, l]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join("");
+
+// controls
+const F = {kind:"", type:"", skill:"", scale:"", dossier:"", q:""};
+document.getElementById("kinds").innerHTML =
+  [["", "Все"], ...Object.entries(KIND)].map(([k, l]) => `<button class="chip" data-kind="${k}">${l}</button>`).join("");
+function fill(id, label, opts){
+  document.getElementById(id).innerHTML = `<option value="">${label}</option>` + opts.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join("");
+}
+fill("f-type", "Все типы", DATA.types.map(t => [t.type_id, t.title]));
+fill("f-skill", "Все навыки", DATA.skills.map(s => [s.skill_id, s.title]));
+fill("f-scale", "Любой масштаб", [["индивид", "Индивидуально"], ["команда", "Команда"]]);
+fill("f-dossier", "Все задания", [["none", "Без досье (общие шаблоны)"], ...DATA.dossiers.map(d => [d.dossier_id, "Досье: " + d.object])]);
+
+// cards
+function card(t){
+  const skills = t.skill_ids.map(s => `<span class="sk">${esc(SK[s] ? SK[s].title : s)}</span>`).join("");
+  const mech = t.mechanic_ids.map(m => MX[m] ? MX[m].title : m).join(" · ");
+  const d = DOS[t.dossier_id];
+  const rows = [
+    ["Тип", esc(TY[t.type_id] ? TY[t.type_id].title : t.type_id)],
+    ["Навыки", skills],
+    ["Механика", esc(mech)],
+    ["Масштаб", esc(t.scale.join(" / ")) + (t.duration ? " · " + esc(t.duration) : "")],
+  ];
+  if (t.parameters) rows.push(["Варианты", esc(t.parameters)]);
+  if (t.dossier_id) rows.push(["Досье", esc(d ? d.object : t.dossier_id) + (t.entry_stage.length ? " · стадия: " + esc(t.entry_stage.join(", ")) : "")]);
+  else if (t.entry_stage.length) rows.push(["Стадия досье", esc(t.entry_stage.join(", "))]);
+  if (t.parent_template) rows.push(["Шаблон", `<a href="#t-${esc(t.parent_template)}" onclick="showOne('${esc(t.parent_template)}')">${esc(t.parent_template)}</a>`]);
+  const links = [];
+  if (t.card_url) links.push(`<a href="${t.card_url}">Полная карточка →</a>`);
+  if (t.case_page) links.push(`<a href="${t.case_page}">Кейс курса</a>`);
+  if (d) links.push(`<a href="${d.url}">Досье</a>`);
+  if (t.issued) links.push(`<span class="muted">выдано: ${t.issued}</span>`);
+  if (!links.length) links.push(`<span class="muted">карточка — строка архива</span>`);
+  const text = [t.template_id, t.title, t.brief, t.deliverable, t.acceptance, t.parameters, mech,
+    TY[t.type_id] ? TY[t.type_id].title : "", t.skill_ids.map(s => SK[s] ? SK[s].title : "").join(" ")].join(" ").toLowerCase();
+  return `<article class="card" id="t-${esc(t.template_id)}" data-kind="${esc(t.kind)}" data-text="${esc(text)}">
+    <div class="top"><span class="cid">${esc(t.template_id)}</span><span class="badge ${esc(t.kind)}">${KIND[t.kind] || esc(t.kind)}</span>
+      ${t.status === "активно" ? '<span class="badge active">активно</span>' : `<span class="badge">${esc(t.status)}</span>`}</div>
+    <h4>${esc(t.title)}</h4>
+    <p class="brief">${esc(t.brief)}</p>
+    <dl class="meta">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+    <details><summary>Результат и критерии</summary>
+      <p><b>Что сдаётся:</b> ${esc(t.deliverable)}</p><p><b>Критерии приёмки:</b> ${esc(t.acceptance)}</p>
+      ${t.related_questions.length ? `<p><b>Вопросы банка:</b> ${esc(t.related_questions.join(", "))}</p>` : ""}</details>
+    <div class="links">${links.join("")}</div></article>`;
+}
+document.getElementById("g-archive").innerHTML = T.map(card).join("");
+
+function match(t){
+  if (F.kind && t.kind !== F.kind) return false;
+  if (F.type && t.type_id !== F.type) return false;
+  if (F.skill && !t.skill_ids.includes(F.skill)) return false;
+  if (F.scale && !t.scale.includes(F.scale)) return false;
+  if (F.dossier === "none" && t.dossier_id) return false;
+  if (F.dossier && F.dossier !== "none" && t.dossier_id !== F.dossier) return false;
+  return true;
+}
+function apply(){
+  const q = F.q.trim().toLowerCase();
+  let n = 0;
+  T.forEach(t => {
+    const el = document.getElementById("t-" + t.template_id);
+    const ok = match(t) && (!q || el.dataset.text.includes(q));
+    el.style.display = ok ? "" : "none";
+    if (ok) n++;
+  });
+  document.getElementById("c-archive").textContent = n === T.length ? `${n}` : `${n} из ${T.length}`;
+  document.getElementById("empty").style.display = n ? "none" : "block";
+  document.querySelectorAll("#kinds .chip").forEach(c => c.classList.toggle("on", c.dataset.kind === F.kind));
+  ["type", "skill", "scale", "dossier"].forEach(k => document.getElementById("f-" + k).value = F[k]);
+  document.getElementById("q").value = F.q;
+  const h = Object.entries(F).filter(([, v]) => v).map(([k, v]) => k + "=" + encodeURIComponent(v)).join("&");
+  history.replaceState(null, "", h ? "#" + h : location.pathname);
+}
+function resetAll(){ Object.keys(F).forEach(k => F[k] = ""); apply(); }
+function showOne(id){ resetAll(); F.q = id.toLowerCase(); apply(); }
+document.getElementById("kinds").addEventListener("click", e => { if (e.target.dataset.kind !== undefined) { F.kind = e.target.dataset.kind; apply(); } });
+["type", "skill", "scale", "dossier"].forEach(k => document.getElementById("f-" + k).addEventListener("change", e => { F[k] = e.target.value; apply(); }));
+document.getElementById("q").addEventListener("input", e => { F.q = e.target.value; apply(); });
+document.getElementById("reset").addEventListener("click", resetAll);
+
+// dossiers
+document.getElementById("g-dossiers").innerHTML = DATA.dossiers.map(d => `<div class="dos">
+  <h3>${esc(d.object || d.title)}</h3>
+  <div class="st">Стадия: <b>${esc(d.stage)}</b> · версия ${esc(d.version)}${d.updated ? " · обновлено " + esc(d.updated) : ""}</div>
+  <div class="tl">Задания досье: ${d.tasks.map(esc).join(", ")}</div>
+  <button onclick="resetAll();F.dossier='${esc(d.dossier_id)}';apply();document.getElementById('archive').scrollIntoView()">Показать задания</button>
+  ${d.case_page ? `<a class="hot" href="${d.case_page}">Кейс курса</a>` : ""}
+  <a href="${d.url}">Досье</a><a href="${d.gaps_url}">Доска пробелов</a></div>`).join("");
+
+// reference
+document.getElementById("t-skills").innerHTML = DATA.skills.map(s =>
+  `<tr><td><b>${esc(s.title)}</b><br><code>${esc(s.skill_id)}</code></td><td>${esc(s.what_it_is)}</td><td>${esc(s.evidence)}</td><td>${esc(s.related_role).replace(/;/g, ", ")}</td></tr>`).join("");
+document.getElementById("t-types").innerHTML = DATA.types.map(t =>
+  `<tr><td><b>${esc(t.title)}</b><br><code>${esc(t.type_id)}</code></td><td>${esc(t.result_form)}</td><td>${esc(t.description)}</td><td>${esc(t.typical_scale).replace(/;/g, ", ")}</td><td>${esc(t.typical_duration)}</td></tr>`).join("");
+document.getElementById("t-mech").innerHTML = DATA.mechanics.map(m =>
+  `<tr><td><b>${esc(m.title)}</b><br><code>${esc(m.mechanic_id)}</code></td><td>${esc(m.how)}</td><td>${esc(m.when_to_use)}</td></tr>`).join("");
+
+// фильтр из адреса: #kind=relay&dossier=red-bull
+new URLSearchParams(location.hash.slice(1)).forEach((v, k) => { if (k in F) F[k] = v; });
+apply();
+</script>
+</body>
+</html>

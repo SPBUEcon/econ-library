@@ -42,11 +42,18 @@ for r in data["concepts"]:
     r["source_ids"] = split(r["source_ids"])
 for r in data["methodologies"]:
     r["source_ids"] = split(r["source_ids"])
+# страницы кейсов (../cases/<кейс>/index.html) — ключ: model_id или case_id
+CASE_PAGES = {
+    "bm01": "../cases/red-bull/index.html",
+    "ca08": "../cases/red-bull/index.html#stratos",
+}
 for r in data["businessModels"]:
     r["source_ids"] = split(r["source_ids"])
+    r["case_page"] = CASE_PAGES.get(r["model_id"], "")
 for r in data["cases"]:
     r["source_ids"] = split(r["source_ids"])
     r["related_concepts"] = split(r["related_concepts"])
+    r["case_page"] = CASE_PAGES.get(r["case_id"], "")
 for r in data["industries"]:
     r["source_ids"] = split(r["source_ids"])
 for r in data["technologies"]:
@@ -153,6 +160,8 @@ h2 .cnt{font-family:var(--body);font-weight:500;font-size:16px;color:var(--grey)
 .card .type{font-size:11px;color:var(--grey);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
 .card p{font-size:13.5px;color:var(--grey);margin-bottom:8px}
 .card p.metric{font-size:12.5px;color:var(--ink);background:var(--panel);border-radius:9px;padding:8px 11px}
+.card a.casepage{font-size:13px;font-weight:600;color:var(--coral);text-decoration:none}
+.card a.casepage:hover{text-decoration:underline}
 .card .foot{margin-top:auto;padding-top:11px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:5px}
 .src{font-size:10.5px;color:var(--grey);background:var(--panel);border-radius:6px;padding:2px 7px;cursor:help}
 .kk{font-size:11.5px;color:var(--ink)}
@@ -460,6 +469,7 @@ document.getElementById("g-models").innerHTML = DATA.businessModels.map(m=>card(
    <h4>${esc(m.company)}</h4><p class="kk"><b>Уровень:</b> ${esc(m.level)}</p>
    <p>${esc(m.transition_summary)}</p>
    ${m.key_metrics&&m.key_metrics!=="—"?`<p class="metric">${esc(m.key_metrics)}</p>`:""}
+   ${m.case_page?`<p><a class="casepage" href="${m.case_page}">Страница кейса и задание →</a></p>`:""}
    <div class="foot">${srcBadges(m.source_ids)}</div>`)).join("");
 
 // cases
@@ -470,6 +480,7 @@ document.getElementById("g-cases").innerHTML = DATA.cases.map(c=>{
    <div class="type">${esc(c.domain)}</div><h4>${esc(c.title)}</h4><p>${esc(c.summary)}</p>
    ${c.key_metrics?`<p class="metric">${esc(c.key_metrics)}</p>`:""}
    ${rc?`<p class="kk"><b>Концепты:</b> ${rc}</p>`:""}
+   ${c.case_page?`<p><a class="casepage" href="${c.case_page}">Страница кейса →</a></p>`:""}
    <div class="foot">${srcBadges(c.source_ids)}</div>`);
 }).join("");
 

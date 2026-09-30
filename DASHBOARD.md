@@ -59,17 +59,20 @@
 | Лендинг курса | Вводная страница мастерской | Витрина | [`program/site/landing_tech_econ.html`](program/site/landing_tech_econ.html) |
 | Участники и доступы | Одностраничник по участию и доступам | Витрина | [`program/site/participants-and-access-onepager.html`](program/site/participants-and-access-onepager.html) |
 | Курс дисциплины (HTML) | Темы, концепты, методологии, кейсы, вопросы + поиск | Приложение | [`disciplines/technologies-econ-fin/site/course.html`](disciplines/technologies-econ-fin/site/course.html) |
+| Архив заданий (HTML) | Все задания для групп: конкретные, параметрические, эстафетные; фильтры по навыку, типу, досье | Приложение | [`assignments/site/index.html`](assignments/site/index.html) · источник — [`assignments/catalog/templates.csv`](assignments/catalog/templates.csv) |
 | Каталог дисциплины (CSV) | «Источник правды» контента дисциплины | Каталог | [`disciplines/technologies-econ-fin/catalog/`](disciplines/technologies-econ-fin/catalog/) |
 | Репозиторий `econ-library` | Среда управления мастерской (этот репозиторий) | Репо | [`README.md`](README.md) |
 
 > HTML-витрины собираются вручную / скриптом и держатся в синхроне с markdown-первоисточниками.
 > Курс дисциплины пересобирается из каталога: `python disciplines/technologies-econ-fin/site/build.py`.
+> Архив заданий пересобирается из каталога заданий: `python assignments/site/build.py`.
 
 **Публичные ссылки (GitHub Pages).** Витрины доступны публично:
 
 - 🧭 **Дашборд (главная)** — `https://spbuecon.github.io/econ-library/`
 - Витрина воркстримов — `https://spbuecon.github.io/econ-library/program/site/workstreams_board.html`
 - Курс дисциплины — `https://spbuecon.github.io/econ-library/disciplines/technologies-econ-fin/site/course.html`
+- Архив заданий — `https://spbuecon.github.io/econ-library/assignments/site/index.html`
 
 > Дашборд — это корневой `index.html`; `program/site/dashboard.html` оставлен редиректом на главную.
 
