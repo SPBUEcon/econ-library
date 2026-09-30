@@ -60,6 +60,7 @@
 | Участники и доступы | Одностраничник по участию и доступам | Витрина | [`program/site/participants-and-access-onepager.html`](program/site/participants-and-access-onepager.html) |
 | Курс дисциплины (HTML) | Темы, концепты, методологии, кейсы, вопросы + поиск | Приложение | [`disciplines/technologies-econ-fin/site/course.html`](disciplines/technologies-econ-fin/site/course.html) |
 | Архив заданий (HTML) | Все задания для групп: конкретные, параметрические, эстафетные; фильтры по навыку, типу, досье | Приложение | [`assignments/site/index.html`](assignments/site/index.html) · источник — [`assignments/catalog/templates.csv`](assignments/catalog/templates.csv) |
+| План работ со Спорткомитетом (HTML) | Дорожная карта 05.10–31.12.2026: ядро, интенсив, открытая встреча, демо-день, темы для команд | Витрина | [`workstreams/sport-spb/deliverables/plan-komsport-okt-dek-2026.html`](workstreams/sport-spb/deliverables/plan-komsport-okt-dek-2026.html) · источник — [`plan-komsport-okt-dek-2026.md`](workstreams/sport-spb/plan-komsport-okt-dek-2026.md) |
 | Каталог дисциплины (CSV) | «Источник правды» контента дисциплины | Каталог | [`disciplines/technologies-econ-fin/catalog/`](disciplines/technologies-econ-fin/catalog/) |
 | Репозиторий `econ-library` | Среда управления мастерской (этот репозиторий) | Репо | [`README.md`](README.md) |
 

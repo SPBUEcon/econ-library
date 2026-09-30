@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>План работ и взаимодействия со Спорткомитетом СПб · 05.10–31.12.2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --ink:#1B2038; --ink2:#272E52; --card:#2E3660;
+  --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0;
+  --green:#2FA37A; --amber:#D9932B; --blue:#3E7BD6;
+  --disp:'Unbounded','Arial Black',sans-serif;
+  --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:var(--body);background:var(--ink);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+
+/* ---- Deck frame (как в стратегии): холст 1280×720 масштабируется под окно ---- */
+html,body{overflow:hidden}
+.stage{position:fixed;inset:0;overflow:hidden}
+.deck{position:absolute;left:50%;top:50%;width:1280px;height:720px;overflow:hidden;
+  transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:center center}
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .35s ease;
+  display:flex;flex-direction:column;justify-content:center;background:var(--paper);
+  padding:40.96px 70.4px 56px;overflow:auto}
+.slide.active{opacity:1;visibility:visible}
+.slide.dark{background:var(--ink);color:#fff}
+
+/* ---- shared type ---- */
+.kicker{font-family:var(--body);font-size:13.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--coral);font-weight:600;margin-bottom:12px}
+.slide.dark .kicker{color:var(--ice)}
+h1{font-family:var(--disp);font-weight:700;font-size:56px;line-height:1.08;letter-spacing:-.01em}
+h2{font-family:var(--disp);font-weight:700;font-size:36px;line-height:1.12;margin-bottom:6px;letter-spacing:-.01em}
+h3{font-family:var(--disp);font-weight:600;font-size:19px;line-height:1.25}
+p{font-size:16px}
+.muted{color:var(--grey)}
+.slide.dark .muted{color:var(--ice)}
+b,strong{font-weight:600}
+.accent{color:var(--coral)}
+
+/* ---- title ---- */
+.title-wrap{margin:auto 0;width:max-content;max-width:100%}
+.title-wrap h1{max-width:16ch;margin-left:auto;text-align:right}
+.title-sub{margin-top:22px;font-size:20px;color:var(--ice);max-width:62ch}
+.org-row{margin-top:34px;display:flex;flex-wrap:wrap;gap:14px}
+.org{border-radius:14px;padding:14px 20px;font-size:14.5px}
+.org-logo{display:flex;align-items:center;gap:14px;background:#fff;color:var(--ink);height:84px;padding:10px 20px}
+.org-logo b{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--ink)}
+.org-logo .logo-arms{height:62px;width:auto}
+.org-logo .logo-klub{height:56px;width:auto}
+.org-logo .logo-geo{height:44px;width:auto}
+.org-logo .logo-veai{height:34px;width:auto}
+.title-badges{margin-top:30px;display:flex;flex-wrap:nowrap;gap:10px}
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;padding:8px 16px;font-size:13.5px;color:#fff;white-space:nowrap}
+.pill .n{font-family:var(--disp);font-weight:700;color:var(--coral)}
+
+.s-head{margin-bottom:14px;flex:none}
+.s-head .row{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.s-head .row .note{font-size:13px;color:var(--grey)}
+
+/* goal band */
+.goal{background:var(--ink);color:#fff;border-radius:16px;padding:14px 22px;margin-bottom:14px}
+.goal .lbl{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ice);font-weight:600;margin-bottom:6px}
+.goal p{font-size:18px;color:#fff;line-height:1.45}
+.goal p .accent{color:var(--coral)}
+
+/* ---- results grid (slide 2) ---- */
+.res-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.rc{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.rc .n{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--coral)}
+.rc b{font-family:var(--disp);font-weight:600;font-size:15px;line-height:1.25;color:var(--ink)}
+.rc span{font-size:13px;line-height:1.4;color:var(--grey)}
+.rc.dark{background:var(--ink);border-color:var(--ink);justify-content:center}
+.rc.dark b{color:#fff;font-size:17px}
+.rc.dark span{color:var(--ice)}
+
+/* ---- core (slide 3) ---- */
+.core{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.role{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:5px}
+.role .top{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.role .n{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--coral)}
+.role .who{font-size:12.5px;font-weight:600;color:var(--blue);text-align:right}
+.role .who.tbd{color:var(--grey);font-weight:500;font-style:italic}
+.role b{font-family:var(--disp);font-weight:600;font-size:15px;line-height:1.25}
+.role span.d{font-size:13px;line-height:1.4;color:var(--grey)}
+.role.head{background:var(--ink);border-color:var(--ink);color:#fff}
+.role.head .who{color:var(--coral)}
+.role.head span.d{color:var(--ice)}
+.role.opt{border-style:dashed}
+.core-foot{display:grid;grid-template-columns:1fr 1.6fr;gap:12px;margin-top:12px}
+.band{background:var(--panel);border-radius:16px;padding:12px 16px}
+.band .lbl{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);font-weight:600;margin-bottom:6px}
+.band p{font-size:13.5px;line-height:1.45;color:var(--ink2)}
+.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.chip{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.chip b{display:block;font-family:var(--disp);font-weight:600;font-size:13px}
+.chip span{font-size:12px;line-height:1.35;color:var(--grey);display:block}
+.chip i{font-style:normal;font-family:var(--disp);font-weight:700;font-size:11px;color:var(--coral)}
+
+/* ---- tables ---- */
+.plan{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.plan th{background:var(--ink);color:#fff;text-align:left;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:9px 12px}
+.plan td{padding:8px 12px;border-top:1px solid var(--line);vertical-align:top;font-size:13.5px;line-height:1.4;color:var(--ink2)}
+.plan tr:nth-child(even) td{background:var(--panel)}
+.plan td.n{font-family:var(--disp);font-weight:700;color:var(--coral);font-size:14px;white-space:nowrap}
+.plan td .t{font-family:var(--disp);font-weight:600;font-size:14px;color:var(--ink);line-height:1.3}
+.plan td.s{white-space:nowrap;font-weight:600;color:var(--ink)}
+.plan td.s small{display:block;font-weight:400;color:var(--grey);font-size:12px}
+.plan td.g{color:var(--grey)}
+.plan.xs td{padding:6px 11px;font-size:12.8px}
+.plan.xs td .t{font-size:13px}
+.lvl{display:inline-block;font-size:11px;font-weight:600;border-radius:999px;padding:1px 8px;margin:1px 0;white-space:nowrap}
+.lvl.gov{background:#FDE4E0;color:#B3392A}
+.lvl.fed{background:#E1EAF8;color:#2A5BA6}
+
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.rule{background:var(--ink);color:#fff;border-radius:14px;padding:9px 16px}
+.rule b{font-family:var(--disp);font-weight:600;font-size:14px;display:block;margin-bottom:4px;color:var(--coral)}
+.rule span{font-size:13px;line-height:1.45;color:var(--ice)}
+
+/* ---- gantt (сводка по неделям) ---- */
+.gantt{display:flex;flex-direction:column;gap:5px;margin-top:4px}
+.g-row{display:grid;grid-template-columns:132px repeat(13,1fr);gap:4px;align-items:stretch;min-height:40px;
+  background:repeating-linear-gradient(90deg,transparent 0,transparent calc((100% - 132px)/13 - 1px),var(--line) calc((100% - 132px)/13 - 1px),var(--line) calc((100% - 132px)/13));
+  background-position:132px 0;background-size:calc(100% - 132px) 100%;background-repeat:no-repeat;border-radius:8px}
+.g-row.head{min-height:0;background:none}
+.g-lbl{grid-column:1;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);display:flex;align-items:center;padding-left:2px}
+.g-wk{text-align:center;font-family:var(--disp);font-weight:700;font-size:12.5px;color:var(--ink);line-height:1.2;padding-bottom:4px}
+.g-wk small{display:block;font-family:var(--body);font-weight:500;font-size:10.5px;color:var(--grey)}
+.g-it{border-radius:8px;font-size:11.5px;line-height:1.2;padding:5px 6px;display:flex;flex-direction:column;justify-content:center;text-align:center;font-weight:600}
+.g-it small{font-weight:400;font-size:10px;opacity:.85}
+.g-it.m{background:var(--ink);color:#fff}
+.g-it.m.lite{background:var(--ink2);opacity:.75}
+.g-it.hot{background:linear-gradient(135deg,var(--coral),#E24A38);color:#fff;font-family:var(--disp);font-size:11.5px}
+.g-it.bar{background:var(--ice);color:var(--ink)}
+.g-it.bar2{background:#D9EFE6;color:#1F6E52}
+.g-it.bar3{background:#F6E6CB;color:#8A5A12}
+.g-it.hw{background:#fff;border:1.5px solid var(--coral);color:var(--coral);font-family:var(--disp);font-size:11px}
+.g-it.gate{background:#fff;border:1.5px solid var(--blue);color:var(--blue);font-family:var(--disp);font-size:11.5px}
+.g-it.st{background:var(--panel);color:var(--ink2);border:1px dashed #AFC0DC}
+.legend{display:flex;gap:18px;margin-top:10px;font-size:12px;color:var(--grey)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:10px;border-radius:3px;display:inline-block}
+
+/* ---- week cards ---- */
+.weeks{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:stretch}
+.weeks.w4{grid-template-columns:repeat(4,1fr);gap:12px}
+.wk{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.wk-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.wk-n{font-family:var(--disp);font-weight:700;font-size:13px;color:var(--coral)}
+.wk-d{font-size:12.5px;color:var(--grey);font-weight:600;white-space:nowrap}
+.wk h3{font-size:17px}
+.gt{align-self:flex-start;font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);background:var(--panel);border-radius:999px;padding:2px 10px}
+.ev{background:var(--ink);color:#fff;border-radius:12px;padding:8px 12px}
+.ev small{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ice);font-weight:600}
+.ev b{font-family:var(--disp);font-weight:600;font-size:13.5px;line-height:1.3}
+.ev.hot{background:linear-gradient(135deg,var(--coral),#E24A38)}
+.ev.hot small{color:#fff;opacity:.9}
+.ev.soft{background:var(--panel);color:var(--ink)}
+.ev.soft small{color:var(--grey)}
+.wk ul{list-style:none;display:flex;flex-direction:column;gap:5px}
+.wk li{position:relative;padding-left:16px;font-size:13px;line-height:1.38;color:var(--ink2)}
+.wk li::before{content:"";position:absolute;left:1px;top:7px;width:7px;height:7px;border-radius:2px;background:var(--coral)}
+.wk li b{color:var(--ink)}
+.wk li.hwk::before{background:var(--blue)}
+.wk .res{margin-top:auto;background:var(--panel);border-radius:10px;padding:7px 11px;font-size:12.8px;line-height:1.38;color:var(--ink)}
+.wk .res em{font-style:normal;display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--coral);font-weight:600}
+.weeks.w4 .wk li{font-size:12.6px}
+
+/* ---- intensive ---- */
+.int{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:stretch}
+.tl{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.tl-i{display:grid;grid-template-columns:92px 1fr 170px;gap:12px;padding:6px 14px;border-top:1px solid var(--line);align-items:baseline}
+.tl-i:first-child{border-top:none}
+.tl-i:nth-child(even){background:var(--panel)}
+.tl-i .tm{font-family:var(--disp);font-weight:600;font-size:12px;color:var(--ink);white-space:nowrap}
+.tl-i .bl{font-size:13px;line-height:1.38;color:var(--ink2)}
+.tl-i .bl b{color:var(--ink)}
+.tl-i .out{font-size:12px;line-height:1.35;color:var(--coral);font-weight:600}
+.tl-i.key{background:#FDEDEA!important}
+.tl.fill .tl-i{flex:1;align-items:center}
+.tl-i.brk .bl,.tl-i.brk .tm{color:var(--grey);font-weight:400}
+.side{background:var(--ink);color:#fff;border-radius:16px;padding:16px 20px;display:flex;flex-direction:column;gap:12px}
+.side .lbl{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ice);font-weight:600;margin-bottom:4px}
+.side p{font-size:13.5px;line-height:1.45;color:var(--ice)}
+.side p b{color:#fff}
+.side ol{list-style:none;display:flex;flex-direction:column;gap:9px}
+.side li{display:flex;gap:10px;font-size:13.5px;line-height:1.4;color:#fff}
+.side .rn{flex:none;width:22px;height:22px;border-radius:50%;background:var(--coral);color:#fff;font-family:var(--disp);font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center}
+
+/* ---- filter strip ---- */
+.filter{display:grid;grid-template-columns:150px repeat(4,1fr);gap:8px;margin-bottom:10px;align-items:stretch}
+.filter .lbl{background:var(--ink);color:#fff;border-radius:12px;padding:8px 12px;font-family:var(--disp);font-weight:600;font-size:13px;display:flex;align-items:center}
+.filter .f{background:var(--panel);border-radius:12px;padding:7px 12px;font-size:12.5px;line-height:1.35;color:var(--ink2);display:flex;gap:8px;align-items:center}
+.filter .f i{font-style:normal;font-family:var(--disp);font-weight:700;color:var(--coral);font-size:13px}
+
+/* ---- gates ---- */
+.gates{display:grid;grid-template-columns:110px repeat(6,1fr);gap:8px}
+.gates .h{background:var(--ink);color:#fff;border-radius:12px;padding:10px 12px}
+.gates .h b{font-family:var(--disp);font-weight:700;font-size:17px;color:var(--coral);display:block}
+.gates .h span{font-size:12.5px;color:var(--ice)}
+.gates .rl{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);display:flex;align-items:center}
+.gates .c{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-size:13px;line-height:1.4;color:var(--ink2)}
+.gates .c b{display:block;font-family:var(--disp);font-weight:600;font-size:12.5px;color:var(--ink);margin-bottom:2px}
+.gates .c.st{background:var(--panel)}
+.data-rules{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.dr{background:var(--panel);border-radius:14px;padding:11px 14px;font-size:13px;line-height:1.42;color:var(--ink2)}
+.dr b{display:block;font-family:var(--disp);font-weight:600;font-size:13.5px;color:var(--ink);margin-bottom:3px}
+
+/* ---- risks ---- */
+.risks{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.rk{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 15px;display:flex;flex-direction:column;gap:6px}
+.rk b{font-family:var(--disp);font-weight:600;font-size:14px;line-height:1.28;color:var(--ink)}
+.rk .cons{font-size:12.5px;line-height:1.38;color:var(--grey)}
+.rk .fix{margin-top:auto;padding-top:6px;border-top:1px dashed var(--line);font-size:12.8px;line-height:1.4;color:var(--ink2)}
+.rk .fix::before{content:"→ ";color:var(--coral);font-weight:700}
+
+/* ---- final ---- */
+.fin{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 22px;display:flex;flex-direction:column}
+.card .tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--coral);margin-bottom:10px}
+.card .tag .dot{width:9px;height:9px;border-radius:50%;background:var(--coral)}
+.card ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.card li{position:relative;padding-left:22px;font-size:15px;line-height:1.4;color:var(--ink2)}
+.card li::before{content:"?";position:absolute;left:0;top:0;font-family:var(--disp);font-weight:700;font-size:13px;color:var(--coral)}
+.decide{background:linear-gradient(135deg,var(--coral),#E24A38);color:#fff;border-radius:18px;padding:20px 24px}
+.decide h3{color:#fff;margin-bottom:12px}
+.decide ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.decide li{position:relative;padding-left:24px;font-size:15px;line-height:1.4}
+.decide li::before{content:"✓";position:absolute;left:0;top:0;font-weight:700}
+
+/* contacts */
+.contacts{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;margin-top:36px}
+.contact-card{background:var(--ink2);border-radius:20px;padding:30px 34px;border-left:6px solid var(--coral)}
+.contact-card .lbl{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ice);font-weight:600;margin-bottom:14px}
+.contact-card .who{font-family:var(--disp);font-weight:700;font-size:34px;line-height:1.15;color:#fff}
+.contact-card .tel{display:inline-block;margin-top:14px;font-family:var(--disp);font-weight:600;font-size:26px;color:var(--coral);text-decoration:none;white-space:nowrap}
+.contact-logo{background:#fff;border-radius:20px;padding:28px 36px;line-height:0}
+.contact-logo img{height:120px;width:auto;display:block}
+
+.src{font-size:11.5px;color:var(--grey);margin-top:10px}
+.slide.dark .src{color:var(--ice);opacity:.8}
+
+/* ---- темы мастерской ---- */
+.topics{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:start}
+.tgrp{display:flex;flex-direction:column;gap:6px}
+.tgrp-h{background:var(--ink);color:#fff;border-radius:14px;padding:9px 14px;border-left:5px solid var(--coral)}
+.tgrp.eng .tgrp-h{border-left-color:var(--blue)}
+.tgrp.ai .tgrp-h{border-left-color:var(--green)}
+.tgrp-h b{font-family:var(--disp);font-weight:600;font-size:15px;display:block}
+.tgrp-h span{font-size:12px;color:var(--ice)}
+.tp{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 12px;display:grid;grid-template-columns:34px 1fr;column-gap:6px;align-items:baseline}
+.tp .n{font-family:var(--disp);font-weight:700;font-size:13px;color:var(--coral)}
+.tgrp.eng .tp .n{color:var(--blue)}
+.tgrp.ai .tp .n{color:var(--green)}
+.tp b{font-family:var(--disp);font-weight:600;font-size:13.5px;line-height:1.28}
+.tp .meta{grid-column:2;display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+.pk{font-size:10.5px;font-weight:600;border-radius:6px;padding:1px 7px;background:var(--panel);color:var(--ink2);white-space:nowrap}
+.pk.q1{background:#D9EFE6;color:#1F6E52}
+.pk.q2{background:#F6E6CB;color:#8A5A12}
+.mini{background:var(--panel);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:5px}
+.mini .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);font-weight:600}
+.mini span{font-size:12.8px;line-height:1.35;color:var(--ink2)}
+.mini i{font-style:normal;font-family:var(--disp);font-weight:700;font-size:11.5px;color:var(--coral);margin-right:6px}
+.route{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+.rt{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.rt .w{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);font-weight:600}
+.rt b{font-family:var(--disp);font-weight:700;font-size:22px;color:var(--coral)}
+.rt span:last-child{font-size:13px;line-height:1.4;color:var(--ink2)}
+.rt.now{background:var(--ink);border-color:var(--ink)}
+.rt.now span:last-child{color:var(--ice)}
+.rt.now .w{color:var(--ice)}
+.credit{display:grid;grid-template-columns:1fr 1.15fr;gap:14px;align-items:start}
+.credit .rule{padding:16px 20px}
+.credit .rule b{font-size:17px;margin-bottom:8px}
+.credit .rule span{font-size:14.5px;line-height:1.5}
+
+/* ---- прикладные темы: развёрнутая Т1 и карточки ---- */
+.dims{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.dim{background:#fff;border:1px solid var(--line);border-top:4px solid var(--blue);border-radius:14px;padding:11px 13px;display:flex;flex-direction:column;gap:5px}
+.dim .n{font-family:var(--disp);font-weight:700;font-size:12px;color:var(--blue)}
+.dim b{font-family:var(--disp);font-weight:600;font-size:14.5px;line-height:1.25}
+.dim ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+.dim li{position:relative;padding-left:13px;font-size:12.8px;line-height:1.35;color:var(--ink2)}
+.dim li::before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:2px;background:var(--blue)}
+.t1-foot{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:10px;margin-top:10px}
+.goal.sm{padding:10px 20px;margin-bottom:10px}
+.goal.sm p{font-size:15.5px}
+.out-big{background:var(--ink);color:#fff;border-radius:14px;padding:11px 16px;font-size:14px;line-height:1.45}
+.out-big .lbl{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:4px}
+.t1-foot .band p{font-size:13px}
+.tks{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:stretch}
+.tk{background:#fff;border:1px solid var(--line);border-top:4px solid var(--coral);border-radius:16px;padding:11px 14px 12px;display:flex;flex-direction:column;gap:5px}
+.tk.eng{border-top-color:var(--blue)}
+.tk.ai{border-top-color:var(--green)}
+.tk.mt{background:var(--panel);border-top-color:var(--grey)}
+.tk-h{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.tk-h .n{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--coral)}
+.tk.eng .tk-h .n{color:var(--blue)}
+.tk.ai .tk-h .n{color:var(--green)}
+.tk.mt .tk-h .n{color:var(--grey)}
+.tk-h .tags{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.tk .tt{font-family:var(--disp);font-weight:600;font-size:14px;line-height:1.28;color:var(--ink);margin-bottom:2px}
+.tk .lb{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-top:2px}
+.tk .ob{font-size:12.3px;line-height:1.38;color:var(--ink2)}
+.tk ul{list-style:none;display:flex;flex-direction:column;gap:3px}
+.tk li{position:relative;padding-left:12px;font-size:12.3px;line-height:1.35;color:var(--ink2)}
+.tk li::before{content:"";position:absolute;left:0;top:6px;width:6px;height:6px;border-radius:2px;background:var(--coral)}
+.tk.eng li::before{background:var(--blue)}
+.tk.ai li::before{background:var(--green)}
+.tk .out{background:var(--ink);color:#fff;border-radius:10px;padding:7px 10px;font-size:12.3px;line-height:1.38;margin-top:4px}
+.tk .cr{margin-top:auto;padding-top:6px;border-top:1px dashed var(--line);font-size:11.8px;line-height:1.38;color:var(--grey)}
+.tk ul.mts{gap:8px;margin-top:4px}
+.tk ul.mts li{padding-left:0}
+.tk ul.mts li::before{display:none}
+.tk ul.mts i{font-style:normal;font-family:var(--disp);font-weight:700;font-size:11.5px;color:var(--coral);margin-right:6px}
+
+/* nav */
+.nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;z-index:30}
+.nav button{pointer-events:auto;border:1px solid var(--line);background:#fff;color:var(--ink);width:36px;height:36px;border-radius:10px;
+  font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
+.nav button:hover{border-color:var(--coral);color:var(--coral)}
+.dots{display:flex;gap:7px;pointer-events:auto}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--ice);cursor:pointer;transition:.15s}
+.dots i.on{background:var(--coral);transform:scale(1.15)}
+.counter{position:fixed;top:16px;right:38.4px;font-family:var(--disp);font-weight:700;font-size:13px;color:var(--grey);z-index:20}
+
+@media print{
+  @page{size:1280px 720px;margin:0}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  html,body{height:auto;background:#fff;overflow:visible}
+  .stage{position:static;overflow:visible}
+  .deck{position:static;transform:none;width:1280px;height:auto;overflow:visible}
+  .slide{position:relative;inset:auto;opacity:1!important;visibility:visible!important;
+    width:1280px;height:720px;page-break-after:always;overflow:hidden}
+  .nav,.counter{display:none!important}
+}
+</style>
+</head>
+<body>
+<div class="stage">
+<div class="deck" id="deck">
+
+  <!-- 1 · Титул -->
+  <section class="slide dark active">
+    <div class="title-wrap">
+      <div class="kicker">Черновик к согласованию · 05.10 — 31.12.2026</div>
+      <h1>План работ и взаимодействия <span class="accent">до конца года</span></h1>
+      <p class="title-sub">Понедельный план совместной работы Комитета по физической культуре и спорту Санкт-Петербурга, Клуба технологического лидерства, Геоинтеллекта, Veai и Мастерской ЭФ СПбГУ. Развёртка стратегии «Экономика и технологии в спорте».</p>
+      <div class="org-row">
+        <div class="org org-logo"><img src="assets/logo-spb-coat-of-arms.png" alt="Герб Санкт-Петербурга" class="logo-arms"><b>Комитет по физической культуре<br>и спорту Санкт-Петербурга</b></div>
+        <div class="org org-logo"><img src="assets/logo-klub-tech-leadership.png" alt="Клуб технологического лидерства" class="logo-klub"></div>
+        <div class="org org-logo"><img src="assets/logo-geointellect.png" alt="Geointellect" class="logo-geo"></div>
+        <div class="org org-logo"><img src="assets/logo-veai.svg" alt="Veai" class="logo-veai"></div>
+      </div>
+      <div class="title-badges">
+        <span class="pill"><span class="n">13</span> недель</span>
+        <span class="pill"><span class="n">08</span> встреч ядра</span>
+        <span class="pill"><span class="n">01</span> интенсив</span>
+        <span class="pill"><span class="n">09</span> домашних заданий</span>
+        <span class="pill"><span class="n">16.12</span> демо-день</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · Ключевая задача -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Ключевая задача периода</div>
+      <div class="row"><h2>Реальное ядро → задачи → прототипы</h2></div>
+    </div>
+    <div class="goal">
+      <p>Создать <span class="accent">реальное ядро команды развития Комитета</span>, согласовать с ним пул задач <span class="accent">губернаторского уровня</span>, запустить их выполнение и к декабрю получить как минимум <span class="accent">работающие прототипы</span> — с управленческим решением, которое готовит каждый прототип.</p>
+    </div>
+    <div class="res-grid">
+      <div class="rc"><span class="n">01</span><b>Ядро существует не на бумаге</b><span>5–6 человек, глава Комитета — участник; состав закреплён распорядительным документом; посещаемость ≥ 80%, сдача ДЗ ≥ 80%</span></div>
+      <div class="rc"><span class="n">02</span><b>Ядро обучено</b><span>Интенсив проведён; у каждого ≥ 1 рабочий ИИ-сценарий, которым он пользуется в работе</span></div>
+      <div class="rc"><span class="n">03</span><b>Пул задач согласован</b><span>3–5 приоритетных задач: паспорт, ТЗ на прототип, владелец из ядра, критерии приёмки; утверждены главой</span></div>
+      <div class="rc"><span class="n">04</span><b>Выполнение запущено</b><span>У каждой задачи исполнитель (подрядчик / студенческая команда), еженедельный статус</span></div>
+      <div class="rc"><span class="n">05</span><b>Прототипы</b><span>По каждой задаче — не ниже v1, проверен на реальных пользователях; вердикт на демо-дне</span></div>
+      <div class="rc"><span class="n">06</span><b>Губернаторский уровень</b><span>По каждой задаче — проект управленческого документа; по 1–2 задачам — федеральный выход</span></div>
+      <div class="rc"><span class="n">07</span><b>Продолжение</b><span>Дорожная карта 2027 г. (I квартал — детально), решение о продлении мандата ядра</span></div>
+      <div class="rc dark"><b>К 31.12.2026</b><span>Национальная цель — ≈ 70% систематически занимающихся ФКиС к 2030 г. (ГП-498 СПб, Указ № 309)</span></div>
+    </div>
+  </section>
+
+  <!-- 3 · Ядро -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Кто участвует</div>
+      <div class="row"><h2>Ядро команды развития: 5–6 человек</h2><span class="note">Роли, а не должности — людей называет глава Комитета на неделе 1</span></div>
+    </div>
+    <div class="core">
+      <div class="role head"><div class="top"><span class="n">01</span><span class="who">А. Шантырь</span></div><b>Глава Комитета — владелец стратегии</b><span class="d">Рамка и приоритеты, утверждение пула задач, ключевые решения, выход на Губернатора, Правительство СПб и федеральный уровень</span></div>
+      <div class="role"><div class="top"><span class="n">02</span><span class="who">И. Сологуб · предложение</span></div><b>Куратор ядра</b><span class="d">Операционный лидер: ритм встреч, контроль ДЗ, связь с подрядчиками и Мастерской, эскалация блокировок</span></div>
+      <div class="role"><div class="top"><span class="n">03</span><span class="who tbd">назначить</span></div><b>Лидер «Инфраструктура»</b><span class="d">Задачи тематики 01, пилотные районы, данные по объектам, инвестиции</span></div>
+      <div class="role"><div class="top"><span class="n">04</span><span class="who tbd">назначить</span></div><b>Лидер «Вовлечение и коммуникации»</b><span class="d">Задачи тематики 02: каналы, события, медиаметрики</span></div>
+      <div class="role"><div class="top"><span class="n">05</span><span class="who tbd">назначить</span></div><b>Лидер «Данные, цифровизация, ИИ»</b><span class="d">Доступ к данным и безопасность, платформа Veai, связь с МВК по ИИ</span></div>
+      <div class="role opt"><div class="top"><span class="n">06</span><span class="who tbd">опционально</span></div><b>Лидер «Программы и показатели»</b><span class="d">ГП-498, показатели, бюджет и адресная инвестпрограмма</span></div>
+    </div>
+    <div class="core-foot">
+      <div class="band">
+        <div class="lbl">Расширенное ядро</div>
+        <p>Ядро + руководители смежных подразделений, подведомственных учреждений и районного уровня (пилотные районы). Участвует в <b>интенсиве</b>, <b>промежуточном ревью</b> и <b>демо-дне</b>. Состав предлагает ядро на встрече № 2.</p>
+      </div>
+      <div class="band">
+        <div class="lbl">Команда сопровождения — не входит в ядро</div>
+        <div class="chips">
+          <div class="chip"><i>01</i><b>АКТЛ</b><span>Методология, фасилитация, интенсив, архитектура, статус</span></div>
+          <div class="chip"><i>02</i><b>Геоинтеллект</b><span>ГИС, тепловые карты, публичная карта</span></div>
+          <div class="chip"><i>03</i><b>Veai</b><span>Доступ к ИИ, инструменты Комитета, обучение</span></div>
+          <div class="chip"><i>04</i><b>ЭФ СПбГУ</b><span>Студенческие команды, модели на открытых данных</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · Ритм и форматы -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Как взаимодействуем</div>
+      <div class="row"><h2>Ритм и форматы</h2></div>
+    </div>
+    <table class="plan xs">
+      <thead><tr><th>Формат</th><th>Кто</th><th>Частота</th><th>Длительность</th><th>Выход</th></tr></thead>
+      <tbody>
+        <tr><td><div class="t">Встреча ядра</div></td><td>Ядро + АКТЛ (+ подрядчики по повестке)</td><td class="s">1 раз в 1–1,5 нед.<small>8 встреч</small></td><td>1,5–2 ч, очно</td><td>Решения, ДЗ, протокол за 24 ч</td></tr>
+        <tr><td><div class="t">Интенсив</div></td><td>Расширенное ядро + эксперты</td><td class="s">1 раз<small>неделя 3</small></td><td>1 день</td><td>Паспорта и ТЗ задач, прототипы v0, обучение</td></tr>
+        <tr><td><div class="t">Открытая встреча в Музее спорта</div></td><td>Руководство Комитета + ядро + студенты, преподаватели, эксперты, вузы</td><td class="s">1 раз<small>неделя 4</small></td><td>2,5–3 ч</td><td>Задачи объявлены публично, команды-кандидаты</td></tr>
+        <tr><td><div class="t">Промежуточное ревью</div></td><td>Расширенное ядро + эксперты + внешний ревьюер</td><td class="s">1 раз<small>неделя 7</small></td><td>2,5–3 ч</td><td>Фиксация объёма и управленческих решений</td></tr>
+        <tr><td><div class="t">Демо-день</div></td><td>Ядро + руководство города (по согл.) + партнёры</td><td class="s">1 раз<small>неделя 11</small></td><td>3 ч</td><td>Вердикт по прототипам</td></tr>
+        <tr><td><div class="t">Созвон куратора + статус-отчёт</div></td><td>Куратор + АКТЛ → ядро</td><td class="s">Еженедельно<small>пн · пт</small></td><td>30 мин · 1 стр.</td><td>Блокировки, повестка, «светофор» задач</td></tr>
+        <tr><td><div class="t">Рабочая сессия по задаче</div></td><td>Владелец задачи + исполнитель</td><td class="s">≥ 1 в неделю</td><td>1 ч</td><td>Движение прототипа</td></tr>
+        <tr><td><div class="t">Гейты Мастерской</div></td><td>Студенческие команды + куратор Комитета</td><td class="s">По календарю курса</td><td>—</td><td>Данные и модели — вход в задачи ядра</td></tr>
+      </tbody>
+    </table>
+    <div class="rules">
+      <div class="rule"><b>ДЗ ядра обязательны</b><span>Сдача — за 2 рабочих дня до встречи; разбираются только сданные ДЗ; несданное — в статус-отчёт и разговор с куратором. Глава — «решение и обратная связь».</span></div>
+      <div class="rule"><b>Правило блокировки</b><span>Задача стоит неделю — красная в статус-отчёте; куратор за неделю называет, кто разблокирует, что нужно и к какому сроку.</span></div>
+    </div>
+  </section>
+
+  <!-- 5 · Сводка по неделям -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Октябрь — декабрь 2026</div>
+      <div class="row"><h2>Карта 13 недель</h2><span class="note">Даты встреч — ориентиры, фиксируются на встрече № 1</span></div>
+    </div>
+    <div class="gantt">
+      <div class="g-row head">
+        <span class="g-lbl"></span>
+        <span class="g-wk">1<small>05.10</small></span><span class="g-wk">2<small>12.10</small></span><span class="g-wk">3<small>19.10</small></span><span class="g-wk">4<small>26.10</small></span><span class="g-wk">5<small>02.11</small></span><span class="g-wk">6<small>09.11</small></span><span class="g-wk">7<small>16.11</small></span><span class="g-wk">8<small>23.11</small></span><span class="g-wk">9<small>30.11</small></span><span class="g-wk">10<small>07.12</small></span><span class="g-wk">11<small>14.12</small></span><span class="g-wk">12<small>21.12</small></span><span class="g-wk">13<small>28.12</small></span>
+      </div>
+      <div class="g-row">
+        <span class="g-lbl">Встречи ядра</span>
+        <span class="g-it m" style="grid-column:2">№ 1<small>07.10</small></span>
+        <span class="g-it m" style="grid-column:3">№ 2<small>14.10</small></span>
+        <span class="g-it m" style="grid-column:5">№ 3<small>28.10</small></span>
+        <span class="g-it m lite" style="grid-column:6">чек-ин<small>03.11</small></span>
+        <span class="g-it m" style="grid-column:7">№ 4<small>10.11</small></span>
+        <span class="g-it m" style="grid-column:8">№ 5 расш.<small>18.11</small></span>
+        <span class="g-it m" style="grid-column:9">№ 6<small>27.11</small></span>
+        <span class="g-it m" style="grid-column:11">№ 7<small>08.12</small></span>
+        <span class="g-it m" style="grid-column:13">№ 8<small>23.12</small></span>
+      </div>
+      <div class="g-row">
+        <span class="g-lbl">События</span>
+        <span class="g-it hot" style="grid-column:4">ИНТЕНСИВ<small>21.10</small></span>
+        <span class="g-it hot" style="grid-column:5">МУЗЕЙ<br>СПОРТА<small>29.10</small></span>
+        <span class="g-it bar" style="grid-column:7">Хайпарк.<br>Форум<small>12–13.11</small></span>
+        <span class="g-it bar" style="grid-column:8">Ревью<small>18.11</small></span>
+        <span class="g-it hot" style="grid-column:12">ДЕМО<small>16.12</small></span>
+      </div>
+      <div class="g-row">
+        <span class="g-lbl">ДЗ ядра</span>
+        <span class="g-it hw" style="grid-column:2">ДЗ-1</span>
+        <span class="g-it hw" style="grid-column:3">ДЗ-2</span>
+        <span class="g-it hw" style="grid-column:4">ДЗ-3</span>
+        <span class="g-it hw" style="grid-column:5">ДЗ-4</span>
+        <span class="g-it hw" style="grid-column:7">ДЗ-5</span>
+        <span class="g-it hw" style="grid-column:8">ДЗ-6</span>
+        <span class="g-it hw" style="grid-column:9">ДЗ-7</span>
+        <span class="g-it hw" style="grid-column:11">ДЗ-8</span>
+        <span class="g-it hw" style="grid-column:12">ДЗ-9</span>
+      </div>
+      <div class="g-row">
+        <span class="g-lbl">Прототипы</span>
+        <span class="g-it bar" style="grid-column:2 / span 2">Постановка задач</span>
+        <span class="g-it bar" style="grid-column:4">v0</span>
+        <span class="g-it bar" style="grid-column:5 / span 3">Сборка v1</span>
+        <span class="g-it bar" style="grid-column:8 / span 2">Проверка в поле</span>
+        <span class="g-it bar" style="grid-column:10 / span 2">v2 + документы</span>
+        <span class="g-it bar" style="grid-column:12">Вердикт</span>
+        <span class="g-it bar" style="grid-column:13 / span 2">План 2027</span>
+      </div>
+      <div class="g-row">
+        <span class="g-lbl">Подрядчики</span>
+        <span class="g-it bar3" style="grid-column:2 / span 3">Контрактация, доступ к данным</span>
+        <span class="g-it bar2" style="grid-column:5 / span 8">Выполнение: АКТЛ · Геоинтеллект · Veai — еженедельный статус</span>
+        <span class="g-it bar3" style="grid-column:13 / span 2">Отчёты, акты</span>
+      </div>
+      <div class="g-row">
+        <span class="g-lbl">Мастерская ЭФ</span>
+        <span class="g-it st" style="grid-column:2">G2<small>08.10</small></span>
+        <span class="g-it st" style="grid-column:3">G3<small>15.10</small></span>
+        <span class="g-it st" style="grid-column:4">G4-демо<small>22.10</small></span>
+        <span class="g-it st" style="grid-column:5 / span 6">Темы очереди 1: Т1–Т4, Т6, Т7, Т11, Т12 · курс ИСЭ (уточнить)</span>
+        <span class="g-it st" style="grid-column:11 / span 2">Итоги хода, G5</span>
+      </div>
+      <div class="g-row">
+        <span class="g-lbl">Гейты ядра</span>
+        <span class="g-it gate" style="grid-column:2">G0</span>
+        <span class="g-it gate" style="grid-column:3">G1</span>
+        <span class="g-it gate" style="grid-column:4 / span 2">G2</span>
+        <span class="g-it gate" style="grid-column:8 / span 2">G3</span>
+        <span class="g-it gate" style="grid-column:11 / span 2">G4</span>
+        <span class="g-it gate" style="grid-column:13 / span 2">G5</span>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--ink)"></i>встреча ядра</span>
+      <span><i style="background:var(--coral)"></i>ключевое событие</span>
+      <span><i style="border:1.5px solid var(--coral);background:#fff"></i>выдача ДЗ</span>
+      <span><i style="border:1.5px solid var(--blue);background:#fff"></i>гейт G0→G5</span>
+      <span>04.11 — выходной · интервалы между встречами — 7–9 дней</span>
+    </div>
+  </section>
+
+  <!-- 6 · Недели 1–3 -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Понедельный план · октябрь</div>
+      <div class="row"><h2>Недели 1–3: запуск → интенсив</h2></div>
+    </div>
+    <div class="weeks">
+      <div class="wk">
+        <div class="wk-top"><span class="wk-n">НЕДЕЛЯ 01</span><span class="wk-d">05–09.10</span></div>
+        <h3>Запуск и утверждение</h3><span class="gt">G0 · рамка</span>
+        <div class="ev"><small>Встреча ядра № 1 · 07.10</small><b>Кик-офф ядра</b></div>
+        <ul>
+          <li><b>Комитет утверждает:</b> стратегию, ядро и куратора, 1–2 пилотных района, доступ к данным, маршрут контрактации</li>
+          <li>Встреча: рамка (≈ 70% к 2030 г.), правила, ритм, реакция на пул задач-кандидатов</li>
+          <li>АКТЛ — интервью с участниками ядра по 45 мин</li>
+          <li>Veai — аккаунты, вводный модуль; Геоинтеллект — перечень данных</li>
+          <li>08.10 — G2 студентов, куратор Комитета — ревьюер</li>
+          <li class="hwk"><b>ДЗ-1</b> — карта своего направления</li>
+        </ul>
+        <div class="res"><em>Результат</em>Ядро и куратор названы, районы выбраны, данные запрошены</div>
+      </div>
+      <div class="wk">
+        <div class="wk-top"><span class="wk-n">НЕДЕЛЯ 02</span><span class="wk-d">12–16.10</span></div>
+        <h3>Постановка задач</h3><span class="gt">G1 · команда</span>
+        <div class="ev"><small>Встреча ядра № 2 · 14.10</small><b>Паспорта задач и программа интенсива</b></div>
+        <ul>
+          <li>Разбор ДЗ-1, приоритизация, паспорта задач v0, фильтр уровня</li>
+          <li>Интенсив: состав и площадка; открытая встреча в Музее спорта: дата и спикер</li>
+          <li>АКТЛ — архитектура решения v0, концепт семантической спортивной платформы</li>
+          <li>Геоинтеллект — реестр загружен, тепловая карта по городу</li>
+          <li>Veai — шаблоны ИИ-сценариев, памятка по данным</li>
+          <li>15.10 — G3 студентов: реестр, изохроны, медиасрез</li>
+          <li class="hwk"><b>ДЗ-2</b> — паспорта задач + 2 ИИ-сценария</li>
+        </ul>
+        <div class="res"><em>Результат</em>Пул задач v0 (≤ 7) с паспортами, приглашения разосланы</div>
+      </div>
+      <div class="wk">
+        <div class="wk-top"><span class="wk-n">НЕДЕЛЯ 03</span><span class="wk-d">19–23.10</span></div>
+        <h3>Интенсив</h3><span class="gt">→ G2 · архитектура</span>
+        <div class="ev hot"><small>Интенсив · 21.10 · 1 день</small><b>Расширенное ядро + эксперты</b></div>
+        <ul>
+          <li><b>Обучение ИИ</b> на реальных задачах ядра</li>
+          <li><b>Совместная проработка инструментов:</b> прототипирование вместе с постановкой задач в 3–4 группах</li>
+          <li>Питч прототипов v0, отбор 3–5 приоритетных задач</li>
+          <li>22.10 — демо студентов, куратор Комитета — эксперт</li>
+          <li>23.10 — протокол, паспорта и прототипы в общую папку</li>
+          <li>Приглашения вузам и экспертам на открытую встречу 29.10</li>
+          <li class="hwk"><b>ДЗ-3</b> — паспорт → ТЗ на прототип</li>
+        </ul>
+        <div class="res"><em>Результат</em>3–5 задач утверждены главой, владельцы назначены, прототипы v0, ядро обучено</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · Недели 4–6 -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Понедельный план · октябрь — ноябрь</div>
+      <div class="row"><h2>Недели 4–6: запуск выполнения → v1</h2></div>
+    </div>
+    <div class="weeks">
+      <div class="wk">
+        <div class="wk-top"><span class="wk-n">НЕДЕЛЯ 04</span><span class="wk-d">26–30.10</span></div>
+        <h3>Запуск выполнения</h3><span class="gt">G2 · архитектура</span>
+        <div class="ev"><small>Встреча ядра № 3 · 28.10</small><b>ТЗ, архитектура, дорожная карта</b></div>
+        <div class="ev hot"><small>Открытая встреча · 29.10 · Музей спорта</small><b>Задачи — студентам, вузам, экспертам</b></div>
+        <ul>
+          <li>ТЗ на прототипы и критерии приёмки; архитектура решения v1</li>
+          <li>Дорожная карта до 16.12: задача → исполнитель → v1 / v2 → документ</li>
+          <li><b>Геоинтеллект:</b> SaaS 2,9 млн ₽ или своя платформа 5,3 млн ₽ — решение или дата</li>
+          <li>Распорядительный документ о составе ядра; исполнители стартуют, статус — с 30.10</li>
+          <li class="hwk"><b>ДЗ-4</b> — работа с инструментами, фидбек-лог</li>
+        </ul>
+        <div class="res"><em>Результат</em>Выполнение запущено, задачи объявлены публично</div>
+      </div>
+      <div class="wk">
+        <div class="wk-top"><span class="wk-n">НЕДЕЛЯ 05</span><span class="wk-d">02–06.11</span></div>
+        <h3>Сборка прототипов v1</h3><span class="gt">04.11 — выходной</span>
+        <div class="ev soft"><small>Онлайн-чек-ин ядра · 03.11 · 30 мин</small><b>Статус и блокировки</b></div>
+        <ul>
+          <li><b>Инфраструктура:</b> изохроны 5/10/15 мин, доля населения в зонах по пилотным районам, тепловая карта v1</li>
+          <li><b>Вовлечение:</b> аудит каналов и активов завершён, медиасрез v1</li>
+          <li><b>ИИ:</b> инструменты v1 на Veai по приоритетным задачам</li>
+          <li>Ядро пользуется инструментами в работе и ведёт фидбек-лог</li>
+          <li>Итоги встречи в каналах; команды очереди 1 стартуют</li>
+          <li>Тезисы выступления на Хайпарк.Форуме</li>
+        </ul>
+        <div class="res"><em>Результат</em>Первые версии прототипов у исполнителей</div>
+      </div>
+      <div class="wk">
+        <div class="wk-top"><span class="wk-n">НЕДЕЛЯ 06</span><span class="wk-d">09–13.11</span></div>
+        <h3>Прототипы v1 и Форум</h3><span class="gt">Сборка v1</span>
+        <div class="ev"><small>Встреча ядра № 4 · 10.11</small><b>Показ v1 владельцами задач</b></div>
+        <ul>
+          <li>Каждый владелец — 10 мин: прототип + фидбек пользователей</li>
+          <li>Корректировка ТЗ</li>
+          <li><b>12–13.11 — Хайпарк.Форум:</b> сессия «Экономика и технологии в спорте»; глава или куратор — спикер <i>(предложение)</i>; студенты — в оргкоманде</li>
+          <li class="hwk"><b>ДЗ-5</b> — «управленческая рамка» задачи на 1 странице</li>
+        </ul>
+        <div class="res"><em>Результат</em>v1 по всем приоритетным задачам, проект представлен публично</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · Недели 7–9 -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Понедельный план · ноябрь — декабрь</div>
+      <div class="row"><h2>Недели 7–9: ревью → поле → v2</h2></div>
+    </div>
+    <div class="weeks">
+      <div class="wk">
+        <div class="wk-top"><span class="wk-n">НЕДЕЛЯ 07</span><span class="wk-d">16–20.11</span></div>
+        <h3>Промежуточное ревью</h3><span class="gt">G3 · вход</span>
+        <div class="ev hot"><small>Встреча ядра № 5 · расширенная · 18.11 · 3 ч</small><b>Ядро + эксперты + внешний ревьюер</b></div>
+        <ul>
+          <li>По каждой задаче: какое решение Губернатора / Правительства СПб готовит прототип, какой показатель двигает, какой федеральный выход</li>
+          <li><b>Фиксация объёма:</b> что в итоговый пакет декабря, что в 2027 г.</li>
+          <li>План полевой проверки</li>
+          <li class="hwk"><b>ДЗ-6</b> — полевой тест с 3–5 пользователями</li>
+        </ul>
+        <div class="res"><em>Результат</em>Объём зафиксирован, перечень управленческих решений-кандидатов</div>
+      </div>
+      <div class="wk">
+        <div class="wk-top"><span class="wk-n">НЕДЕЛЯ 08</span><span class="wk-d">23–27.11</span></div>
+        <h3>Проверка в поле</h3><span class="gt">G3 · поле</span>
+        <div class="ev"><small>Встреча ядра № 6 · 27.11</small><b>Итоги полевой проверки</b></div>
+        <ul>
+          <li>Прототипы в реальной работе: пилотные районы, пресс-служба, профильные подразделения</li>
+          <li><b>Связка тематик:</b> дефицит по районам × настроения и запросы жителей из ИИ-мониторинга</li>
+          <li>Карта разрывов «вложение → житель», прототип системы показателей</li>
+          <li>Что меняем в v2, структура итогового пакета</li>
+          <li class="hwk"><b>ДЗ-7</b> — черновик управленческого документа</li>
+        </ul>
+        <div class="res"><em>Результат</em>Отчёт о полевой проверке по каждой задаче</div>
+      </div>
+      <div class="wk">
+        <div class="wk-top"><span class="wk-n">НЕДЕЛЯ 09</span><span class="wk-d">30.11–04.12</span></div>
+        <h3>Прототипы v2 и документы</h3><span class="gt">Сборка v2</span>
+        <div class="ev soft"><small>Встречи ядра нет</small><b>Рабочие сессии владельцев с исполнителями</b></div>
+        <ul>
+          <li>Прототипы v2 по итогам поля</li>
+          <li><b>Черновики документов:</b> доклад / служебная записка, предложения в МВК по ИИ, предложения к корректировке ГП-498 и адресной инвестпрограммы, федеральная инициатива (если есть)</li>
+          <li>АКТЛ — сценарий демо-дня, список гостей, согласование участия руководства города</li>
+        </ul>
+        <div class="res"><em>Результат</em>v2 у исполнителей, черновик итогового пакета</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · Недели 10–13 -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Понедельный план · декабрь</div>
+      <div class="row"><h2>Недели 10–13: демо-день → 2027</h2></div>
+    </div>
+    <div class="weeks w4">
+      <div class="wk">
+        <div class="wk-top"><span class="wk-n">НЕДЕЛЯ 10</span><span class="wk-d">07–11.12</span></div>
+        <h3>Финализация</h3><span class="gt">G4 · подготовка</span>
+        <div class="ev"><small>Встреча ядра № 7 · 08.12</small><b>Прогон демо</b></div>
+        <ul>
+          <li>Прогон: 7 мин на владельца задачи</li>
+          <li>Финализация документов итогового пакета</li>
+          <li>Мастерская: итоги хода студентов, пакет наследования</li>
+          <li class="hwk"><b>ДЗ-8</b> — выступление и ответы на вопросы</li>
+        </ul>
+        <div class="res"><em>Результат</em>Итоговый пакет готов, гости подтверждены</div>
+      </div>
+      <div class="wk">
+        <div class="wk-top"><span class="wk-n">НЕДЕЛЯ 11</span><span class="wk-d">14–18.12</span></div>
+        <h3>Демо-день</h3><span class="gt">G4 · результат</span>
+        <div class="ev hot"><small>Демо-день · 16.12 · 3 ч</small><b>Первая сессия городской спортивной площадки</b></div>
+        <ul>
+          <li>Прототипы и управленческие решения — от владельцев из ядра</li>
+          <li>Гости: руководство города <i>(по согласованию)</i>, МВК по ИИ, партнёры, ЭФ СПбГУ</li>
+          <li>Вердикт: беру / беру с условиями / не беру</li>
+          <li class="hwk"><b>ДЗ-9</b> — самооценка и предложения в 2027</li>
+        </ul>
+        <div class="res"><em>Результат</em>Вердикт, решения по внедрению, документы переданы</div>
+      </div>
+      <div class="wk">
+        <div class="wk-top"><span class="wk-n">НЕДЕЛЯ 12</span><span class="wk-d">21–25.12</span></div>
+        <h3>Итоги и план 2027</h3><span class="gt">G5 · наследование</span>
+        <div class="ev"><small>Встреча ядра № 8 · 23.12</small><b>Ретро и дорожная карта</b></div>
+        <ul>
+          <li>Ретро работы ядра</li>
+          <li>Дорожная карта 2027 г. (I кв. — детально)</li>
+          <li>Продление мандата ядра, расширение до 10–15 человек</li>
+          <li>Тематики мастерской на весну 2027 г.; закрытие этапов договоров</li>
+        </ul>
+        <div class="res"><em>Результат</em>План 2027 утверждён, пакет наследования</div>
+      </div>
+      <div class="wk">
+        <div class="wk-top"><span class="wk-n">НЕДЕЛЯ 13</span><span class="wk-d">28–31.12</span></div>
+        <h3>Закрытие</h3><span class="gt">Без встреч</span>
+        <div class="ev soft"><small>Отчётность</small><b>Акты по направлениям 01–03</b></div>
+        <ul>
+          <li>Отчёты и акты подрядчиков</li>
+          <li>Открытая часть итогов — в репозиторий Мастерской</li>
+          <li>Пакет наследования для следующего хода</li>
+        </ul>
+        <div class="res"><em>Результат</em>Ход закрыт</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · Интенсив -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Неделя 3 · 21.10 (ориентир)</div>
+      <div class="row"><h2>Интенсив: программа дня</h2></div>
+    </div>
+    <div class="int">
+      <div class="tl">
+        <div class="tl-i brk"><span class="tm">09:30–10:00</span><span class="bl">Сбор, доступы к платформе</span><span class="out"></span></div>
+        <div class="tl-i"><span class="tm">10:00–10:30</span><span class="bl"><b>Открытие.</b> Глава Комитета: рамка, приоритеты, ожидания губернаторского уровня. АКТЛ: как устроен день</span><span class="out">Общая рамка</span></div>
+        <div class="tl-i"><span class="tm">10:30–11:30</span><span class="bl"><b>Обучение 1 · ИИ для руководителя.</b> Возможности и ограничения, безопасность данных, живая демонстрация на Veai</span><span class="out"></span></div>
+        <div class="tl-i"><span class="tm">11:30–12:15</span><span class="bl"><b>Экспертные вставки.</b> Геоинтеллект — тепловые карты по городу; ИИ-мониторинг медиа; Мастерская — результаты G3</span><span class="out">Материал для групп</span></div>
+        <div class="tl-i"><span class="tm">12:15–13:00</span><span class="bl"><b>Обучение 2 · практикум.</b> Каждый решает свою задачу из ДЗ-2 на Veai</span><span class="out">≥ 1 ИИ-сценарий у каждого</span></div>
+        <div class="tl-i brk"><span class="tm">13:00–13:45</span><span class="bl">Обед</span><span class="out"></span></div>
+        <div class="tl-i key"><span class="tm">13:45–15:30</span><span class="bl"><b>Проектные группы (3–4).</b> Паспорт → пользователи и сценарии → данные → <b>прототип v0 на месте</b> (ИИ-инструмент, слой карты, макет дашборда); эксперт за каждым столом</span><span class="out">Паспорт + прототип v0</span></div>
+        <div class="tl-i brk"><span class="tm">15:30–15:45</span><span class="bl">Перерыв</span><span class="out"></span></div>
+        <div class="tl-i"><span class="tm">15:45–16:45</span><span class="bl"><b>Питч и критика.</b> По 10 мин на группу: прототип, управленческое решение, что нужно; вопросы главы и экспертов</span><span class="out">Отбор задач</span></div>
+        <div class="tl-i key"><span class="tm">16:45–17:30</span><span class="bl"><b>Решения.</b> 3–5 приоритетных задач, владельцы, исполнители, сроки, уровень; ДЗ-3</span><span class="out">Протокол решений</span></div>
+        <div class="tl-i"><span class="tm">17:30–18:00</span><span class="bl"><b>Ретро.</b> Что забираем в работу завтра</span><span class="out"></span></div>
+      </div>
+      <div class="side">
+        <div>
+          <div class="lbl">Участники и формат</div>
+          <p><b>Расширенное ядро</b> + эксперты АКТЛ, Геоинтеллекта, Veai, ЭФ СПбГУ. Очно, 3–4 рабочих стола, ноутбуки с доступом к Veai.</p>
+        </div>
+        <div>
+          <div class="lbl">Результат интенсива</div>
+          <ol>
+            <li><span class="rn">1</span><span>3–5 паспортов задач, готовых к ТЗ</span></li>
+            <li><span class="rn">2</span><span>Прототипы v0 по каждой задаче</span></li>
+            <li><span class="rn">3</span><span>Владельцы из ядра и исполнители</span></li>
+            <li><span class="rn">4</span><span>Обученное расширенное ядро: у каждого рабочий ИИ-сценарий</span></li>
+            <li><span class="rn">5</span><span>Протокол решений, подписанный главой</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 · Открытая встреча в Музее спорта -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Неделя 4 · 29.10 (ориентир) · Музей спорта</div>
+      <div class="row"><h2>Открытая встреча: задачи — студентам и вузам</h2></div>
+    </div>
+    <div class="int">
+      <div class="tl fill">
+        <div class="tl-i brk"><span class="tm">15:30–16:00</span><span class="bl">Сбор, регистрация, кофе</span><span class="out"></span></div>
+        <div class="tl-i key"><span class="tm">16:00–16:15</span><span class="bl"><b>Открытие.</b> Глава / руководство Комитета: зачем это городу, цель ≈ 70% к 2030 г., две тематики, роль университетов</span><span class="out">Рамка от руководства</span></div>
+        <div class="tl-i key"><span class="tm">16:15–16:40</span><span class="bl"><b>Ключевые задачи.</b> Куратор ядра и владельцы задач: 3–5 задач, утверждённых на интенсиве; что сделано; где нужны студенты и исследователи</span><span class="out">Задачи объявлены публично</span></div>
+        <div class="tl-i"><span class="tm">16:40–16:55</span><span class="bl"><b>Как войти.</b> ЭФ СПбГУ: воркстримы, гейты, зачёт; темы Т1–Т12, очередь 1</span><span class="out">Понятный вход</span></div>
+        <div class="tl-i"><span class="tm">16:55–17:40</span><span class="bl"><b>Экспертная дискуссия</b> «Данные, ИИ и городской спорт: что могут университеты». 4–5 спикеров: руководство Комитета, Геоинтеллект, Veai, ЭФ СПбГУ, спортивный вуз или федерация; модератор — АКТЛ; вопросы из зала</span><span class="out">Повестка для вузов</span></div>
+        <div class="tl-i"><span class="tm">17:40–18:20</span><span class="bl"><b>Экскурсия по Музею спорта.</b> Группами; маршрут — по согласованию с музеем</span><span class="out"></span></div>
+        <div class="tl-i key"><span class="tm">18:20–18:45</span><span class="bl"><b>Знакомство и запись.</b> Столы по темам очереди 1: эксперты и кураторы тем</span><span class="out">Команды-кандидаты</span></div>
+      </div>
+      <div class="side">
+        <div>
+          <div class="lbl">Участники</div>
+          <p><b>Глава или руководство Комитета</b>, ядро, студенты ЭФ СПбГУ и других вузов, преподаватели, эксперты АКТЛ, Геоинтеллекта, Veai; приглашённые вузы города — список согласовать.</p>
+        </div>
+        <div>
+          <div class="lbl">Результат</div>
+          <ol>
+            <li><span class="rn">1</span><span>Ключевые задачи объявлены руководством публично</span></li>
+            <li><span class="rn">2</span><span>Команды-кандидаты на темы очереди 1</span></li>
+            <li><span class="rn">3</span><span>Контакты вузов и преподавателей на весну 2027</span></li>
+            <li><span class="rn">4</span><span>Публикации в каналах Комитета и вузов</span></li>
+          </ol>
+        </div>
+        <div>
+          <div class="lbl">Подготовка</div>
+          <p><b>Нед. 2</b> — дата, формат, спикер, музей · <b>Нед. 3</b> — приглашения, анонс, карточки тем · <b>Нед. 5</b> — итоги, сбор команд</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 · Пул задач -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Что делаем</div>
+      <div class="row"><h2>Пул задач-кандидатов</h2><span class="note">На интенсиве отбираются 3–5; уровень и федеральный выход — гипотезы</span></div>
+    </div>
+    <div class="filter">
+      <div class="lbl">Фильтр уровня</div>
+      <div class="f"><i>1</i>Двигает показатель ГП-498 / национальной цели</div>
+      <div class="f"><i>2</i>Результат — решение Губернатора / Правительства СПб или межведомственное</div>
+      <div class="f"><i>3</i>Масштаб — город, а не отдельный объект или событие</div>
+      <div class="f"><i>4</i>Федеральный уровень — методика тиражируема на регионы</div>
+    </div>
+    <table class="plan xs">
+      <thead><tr><th></th><th>Задача</th><th>Уровень</th><th>Прототип к декабрю</th><th>Исполнители</th><th>Документ-выход</th></tr></thead>
+      <tbody>
+        <tr><td class="n">01</td><td><div class="t">Пространственная модель потребности</div>Тепловые карты доступности и дефицита, ответ на три вопроса «что / чего не хватает / где»</td><td><span class="lvl gov">губернаторский</span><br><span class="lvl fed">федер. · гипотеза</span></td><td>Карты по городу + пилот 1–2 районов с оценкой охвата</td><td>Геоинтеллект, sport-geo</td><td>Обоснование к АИП и корректировке ГП-498</td></tr>
+        <tr><td class="n">02</td><td><div class="t">Инвестиционная витрина спортлокаций</div></td><td><span class="lvl gov">губернаторский</span></td><td>Макет: свободные локации с обоснованием потребности</td><td>Геоинтеллект, АКТЛ</td><td>Предложения по инвестпроцессу (ГЧП / концессии)</td></tr>
+        <tr><td class="n">03</td><td><div class="t">Публичный сервис «спорт рядом»</div>Поиск объектов и секций</td><td><span class="lvl gov">губернаторский</span></td><td>Прототип публичной карты</td><td>Геоинтеллект</td><td>Решение о запуске городского сервиса</td></tr>
+        <tr><td class="n">04</td><td><div class="t">ИИ-мониторинг настроений и спроса жителей</div></td><td><span class="lvl gov">губернаторский</span></td><td>Дашборд v1 по открытым источникам, без перс. данных</td><td>Veai, АКТЛ, sport-engagement</td><td>Регулярная справка для руководства города</td></tr>
+        <tr><td class="n">05</td><td><div class="t">Система показателей вовлечения + стратегия коммуникаций</div></td><td><span class="lvl gov">губернаторский</span></td><td>Прототип показателей «верх → низ» + черновик стратегии</td><td>АКТЛ, sport-engagement</td><td>Стратегия коммуникаций Комитета</td></tr>
+        <tr><td class="n">06</td><td><div class="t">ИИ-инструменты Комитета на Veai</div>Семантическая спортивная платформа</td><td><span class="lvl gov">губернаторский</span><br><span class="lvl fed">федер. · гипотеза</span></td><td>2–3 рабочих инструмента в ежедневной работе ядра</td><td>Veai, АКТЛ</td><td>Предложения в МВК по ИИ</td></tr>
+        <tr><td class="n">07</td><td><div class="t">Городская спортивная интеллектуальная площадка</div></td><td><span class="lvl gov">губернаторский</span></td><td>Концепт + первая сессия на демо-дне</td><td>ЭФ СПбГУ, АКТЛ</td><td>Решение о формате и регулярности</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 12 · Темы мастерской: обзор -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Мастерская ЭФ СПбГУ · прикладные темы командных работ</div>
+      <div class="row"><h2>12 тем на семестр → в пул задач Комитета</h2><span class="note">Конкретный объект · измерения анализа · продукт для Комитета · зачёт</span></div>
+    </div>
+    <div class="topics">
+      <div class="tgrp eng">
+        <div class="tgrp-h"><b>Коммуникации и вовлечение</b><span>воркстрим sport-engagement</span></div>
+        <div class="tp"><span class="n">Т1</span><b>Каналы коммуникации: СПб × Москва × город-аналог</b><span class="meta"><span class="pk">→ 05</span><span class="pk q1">очередь 1</span></span></div>
+        <div class="tp"><span class="n">Т2</span><b>Медиаполе спорта СПб за полгода</b><span class="meta"><span class="pk">→ 04</span><span class="pk q1">очередь 1</span></span></div>
+        <div class="tp"><span class="n">Т3</span><b>Массовое событие под микроскопом</b><span class="meta"><span class="pk">→ 05</span><span class="pk">→ 04</span><span class="pk q1">очередь 1</span></span></div>
+        <div class="tp"><span class="n">Т4</span><b>Путь жителя к занятию: «тайный покупатель»</b><span class="meta"><span class="pk">→ 03</span><span class="pk">→ 05</span><span class="pk q1">очередь 1</span></span></div>
+        <div class="tp"><span class="n">Т5</span><b>Как города измеряют вовлечённость</b><span class="meta"><span class="pk">→ 05</span><span class="pk q2">очередь 2</span></span></div>
+      </div>
+      <div class="tgrp">
+        <div class="tgrp-h"><b>Инфраструктура</b><span>воркстрим sport-geo</span></div>
+        <div class="tp"><span class="n">Т6</span><b>Атлас доступности одного района</b><span class="meta"><span class="pk">→ 01</span><span class="pk q1">очередь 1</span></span></div>
+        <div class="tp"><span class="n">Т7</span><b>Дворовые и открытые площадки: выход в поле</b><span class="meta"><span class="pk">→ 01</span><span class="pk">→ 03</span><span class="pk q1">очередь 1</span></span></div>
+        <div class="tp"><span class="n">Т8</span><b>Рынок платного спорта района</b><span class="meta"><span class="pk">→ 02</span><span class="pk">→ 01</span><span class="pk q2">очередь 2</span></span></div>
+        <div class="tp"><span class="n">Т9</span><b>«Что построить на этом участке»</b><span class="meta"><span class="pk">→ 02</span><span class="pk q2">очередь 2</span></span></div>
+        <div class="tp"><span class="n">Т10</span><b>Городские спортивные карты → прототип для СПб</b><span class="meta"><span class="pk">→ 03</span><span class="pk q2">очередь 2</span></span></div>
+      </div>
+      <div class="tgrp ai">
+        <div class="tgrp-h"><b>ИИ и городская площадка</b><span>сквозные темы</span></div>
+        <div class="tp"><span class="n">Т11</span><b>ИИ-помощник по вопросам жителей о спорте</b><span class="meta"><span class="pk">→ 06</span><span class="pk">→ 04</span><span class="pk q1">очередь 1</span></span></div>
+        <div class="tp"><span class="n">Т12</span><b>Первая сессия городской спортивной площадки</b><span class="meta"><span class="pk">→ 07</span><span class="pk q1">очередь 1</span></span></div>
+        <div class="mini">
+          <div class="lbl">Индивидуальные мини-треки</div>
+          <span><i>М1</i>Сверка показателей ГП-498 по первоисточнику</span>
+          <span><i>М2</i>Дизайн-код спортивных событий СПб за год</span>
+          <span><i>М3</i>Карта любительских сообществ района</span>
+          <span><i>М4</i>Каталог открытых данных о спорте СПб</span>
+        </div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--panel)"></i>→ 01…07 — задача пула Комитета</span>
+      <span><i style="background:#D9EFE6"></i>очередь 1 — старт осенью, вход в демо 16.12</span>
+      <span><i style="background:#F6E6CB"></i>очередь 2 — на наследстве очереди 1: осень при наличии команд или весна 2027</span>
+    </div>
+  </section>
+
+  <!-- 13 · Т1 развёрнуто -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Т1 · коммуникации · пул 05 · очередь 1</div>
+      <div class="row"><h2>Каналы коммуникации спорта: СПб × Москва × город-аналог</h2></div>
+    </div>
+    <div class="goal sm">
+      <div class="lbl">Объект</div>
+      <p>Городские спортивные ведомства и их бренды: <span class="accent">Комитет по ФКиС СПб</span> и подведомственные учреждения · <span class="accent">Департамент спорта Москвы</span> · ведомство <span class="accent">города-аналога</span> — выбор на G0 по критериям: второй город страны при столице, население, порт, сезонность, сильная спортивная повестка (кандидаты — Барселона, Мельбурн, Гамбург).</p>
+    </div>
+    <div class="dims">
+      <div class="dim"><span class="n">01</span><b>Каналы</b><ul><li>Сайт и портал</li><li>Соцсети и мессенджеры</li><li>Приложения и городские сервисы</li><li>Наружка, СМИ, партнёры</li><li>Кто владелец, для какой аудитории</li></ul></div>
+      <div class="dim"><span class="n">02</span><b>Метрики</b><ul><li>Аудитория и динамика</li><li>Частота публикаций</li><li>Вовлечённость: реакции / аудитория</li><li>Охваты — где публичны</li><li>Дата снятия у каждой цифры</li></ul></div>
+      <div class="dim"><span class="n">03</span><b>Структура контента</b><ul><li>Рубрикатор</li><li>Форматы: видео, карточки, тексты, трансляции</li><li>Доли тем: анонсы, итоги, объекты, люди, сервисы</li><li>Тон</li></ul></div>
+      <div class="dim"><span class="n">04</span><b>Связь с событийностью</b><ul><li>Как ведут 1–2 крупных события</li><li>Анонс → регистрация → день → итоги</li><li>Единый календарь или разрозненные посты</li><li>Связка события с объектом</li></ul></div>
+      <div class="dim"><span class="n">05</span><b>Дизайн-код</b><ul><li>Айдентика и суббренды</li><li>Шаблоны и типографика</li><li>Единство между каналами и событиями</li><li>Узнаваемость городского спорта</li></ul></div>
+    </div>
+    <div class="t1-foot">
+      <div class="out-big"><span class="lbl">Прикладной результат</span>Сравнительный атлас каналов трёх городов · 10 практик, применимых в СПб · прототип контент-матрицы и событийного контент-календаря Комитета на месяц</div>
+      <div class="band"><div class="lbl">Данные</div><p>Публичные страницы каналов, сайты ведомств, открытая статистика площадок — в пределах их правил; без персональных данных</p></div>
+      <div class="band"><div class="lbl">Зачёт</div><p>Единая методика для трёх городов; метрики с датой снятия; выборка публикаций описана; каждая рекомендация опирается на найденную практику</p></div>
+    </div>
+  </section>
+
+  <!-- 14 · Т2–Т5 -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Темы командных работ · воркстрим sport-engagement</div>
+      <div class="row"><h2>Т2–Т5 · медиа, события, путь жителя, показатели</h2></div>
+    </div>
+    <div class="tks">
+      <div class="tk eng">
+        <div class="tk-h"><span class="n">Т2</span><span class="tags"><span class="pk">→ 04</span><span class="pk q1">очередь 1</span></span></div>
+        <b class="tt">Медиаполе спорта СПб за полгода</b>
+        <span class="lb">Объект</span><span class="ob">Городские СМИ, публичные сообщества районов, «Наш Санкт-Петербург» — 6 месяцев</span>
+        <span class="lb">Разбираем</span><ul><li>Темы и их доли, тональность</li><li>Районы, объекты, виды спорта</li><li>«Боли» жителей</li><li>Пики вокруг событий</li></ul>
+        <div class="out">Дашборд + прототип ежемесячной справки для руководства Комитета (2 стр.) + словарь тем</div>
+        <span class="cr">Зачёт: LLM-разметка проверена вручную, точность указана; только агрегаты, без ПДн</span>
+      </div>
+      <div class="tk eng">
+        <div class="tk-h"><span class="n">Т3</span><span class="tags"><span class="pk">→ 05 · 04</span><span class="pk q1">очередь 1</span></span></div>
+        <b class="tt">Массовое событие под микроскопом</b>
+        <span class="lb">Объект</span><span class="ob">3 массовых события СПб за год (выбор с Комитетом) + сопоставимое событие Москвы</span>
+        <span class="lb">Разбираем</span><ul><li>Коммуникация: анонс → регистрация → день → итоги</li><li>Каналы и охват на каждом этапе</li><li>Участники и затраты по госзакупкам</li><li>Медиаотклик</li></ul>
+        <div class="out">Паспорт каждого события + стоимость привлечения участника + шаблон оценки для Комитета</div>
+        <span class="cr">Зачёт: затраты подтверждены закупками или «нет данных»; шаблон опробован на всех событиях</span>
+      </div>
+      <div class="tk eng">
+        <div class="tk-h"><span class="n">Т4</span><span class="tags"><span class="pk">→ 03 · 05</span><span class="pk q1">очередь 1</span></span></div>
+        <b class="tt">Путь жителя к занятию: «тайный покупатель»</b>
+        <span class="lb">Объект</span><span class="ob">4 сценария в СПб и Москве: секция для ребёнка 7 лет, площадка для бега у дома, ОФП для пенсионера, сдача ГТО</span>
+        <span class="lb">Разбираем</span><ul><li>Шаги, каналы, минуты до результата</li><li>Где житель теряется</li><li>Чего нет в информации</li><li>Порталы, Госуслуги, сайты учреждений</li></ul>
+        <div class="out">Карта пути «сценарий × город» + топ-10 барьеров + требования к «спорт рядом» и контенту каналов</div>
+        <span class="cr">Зачёт: каждый сценарий пройден ≥ 2 участниками, протоколы со скриншотами; реальные заявки не подаются</span>
+      </div>
+      <div class="tk eng">
+        <div class="tk-h"><span class="n">Т5</span><span class="tags"><span class="pk">→ 05</span><span class="pk q2">очередь 2</span></span></div>
+        <b class="tt">Как города измеряют вовлечённость</b>
+        <span class="lb">Объект</span><span class="ob">ГП-498 и нац. цель · госпрограмма Москвы · Англия (опрос Active Lives, Sport England)</span>
+        <span class="lb">Разбираем</span><ul><li>Что измеряют</li><li>Как: статистика, опросы, сервисы</li><li>Периодичность</li><li>Детализация по районам и группам</li></ul>
+        <div class="out">Сравнительная таблица + дерево показателей СПб «от 70% до района и события» + 3–5 недостающих показателей</div>
+        <span class="cr">Зачёт: у каждого показателя — определение и источник; предложения реализуемы на названных данных</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 · Т6–Т9 -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Темы командных работ · воркстрим sport-geo</div>
+      <div class="row"><h2>Т6–Т9 · район, площадки, рынок, участки</h2></div>
+    </div>
+    <div class="tks">
+      <div class="tk">
+        <div class="tk-h"><span class="n">Т6</span><span class="tags"><span class="pk">→ 01</span><span class="pk q1">очередь 1</span></span></div>
+        <b class="tt">Атлас доступности одного района</b>
+        <span class="lb">Объект</span><span class="ob">Один пилотный район СПб — выбор с Комитетом</span>
+        <span class="lb">Разбираем</span><ul><li>Все спортобъекты по типам</li><li>Пешая доступность 10/15 мин</li><li>Доля детей, взрослых, пожилых вне зон</li><li>Обеспеченность по нормативам</li></ul>
+        <div class="out">Атлас района (10–15 карт) + охват по МО + 10 «тёмных пятен» с объяснением</div>
+        <span class="cr">Зачёт: реестр с источниками; параметры модели и метод оценки населения зафиксированы; сверка с куратором</span>
+      </div>
+      <div class="tk">
+        <div class="tk-h"><span class="n">Т7</span><span class="tags"><span class="pk">→ 01 · 03</span><span class="pk q1">очередь 1</span></span></div>
+        <b class="tt">Дворовые и открытые площадки: выход в поле</b>
+        <span class="lb">Объект</span><span class="ob">Бесплатные площадки 1–2 МО: воркаут, футбол, баскетбол, пришкольные стадионы, лыжные трассы</span>
+        <span class="lb">Разбираем</span><ul><li>Открытые данные против реальности</li><li>Состояние по чек-листу: покрытие, оборудование, свет, доступная среда</li><li>Загрузка по времени</li></ul>
+        <div class="out">Реестр с оценкой и фото объектов + карта + расхождения с открытыми данными + приоритеты ремонта</div>
+        <span class="cr">Зачёт: обследованы все площадки из списка; единый чек-лист; люди в кадр не попадают</span>
+      </div>
+      <div class="tk">
+        <div class="tk-h"><span class="n">Т8</span><span class="tags"><span class="pk">→ 02 · 01</span><span class="pk q2">очередь 2</span></span></div>
+        <b class="tt">Рынок платного спорта района</b>
+        <span class="lb">Объект</span><span class="ob">Фитнес-клубы, секции, бассейны пилотного района из Т6</span>
+        <span class="lb">Разбираем</span><ul><li>Размещение и форматы</li><li>Цены по открытым прайсам</li><li>Целевые группы</li><li>Наложение на гос. инфраструктуру</li></ul>
+        <div class="out">Карта рынка + ценовая таблица + «где нужен город, где справится рынок» + предложения по ГЧП</div>
+        <span class="cr">Зачёт: сбор в пределах правил сайтов; цены с датой; выводы следуют из наложения карт</span>
+      </div>
+      <div class="tk">
+        <div class="tk-h"><span class="n">Т9</span><span class="tags"><span class="pk">→ 02</span><span class="pk q2">очередь 2</span></span></div>
+        <b class="tt">«Что построить на этом участке»</b>
+        <span class="lb">Объект</span><span class="ob">3 свободных участка пилотного района</span>
+        <span class="lb">Разбираем</span><ul><li>Спрос в зоне доступности (Т6)</li><li>Конкуренты (Т8)</li><li>2–3 концепции объекта</li><li>CAPEX / OPEX, окупаемость</li><li>Бюджет, ГЧП, концессия, частный инвестор</li></ul>
+        <div class="out">3 инвестиционных паспорта + финмодель XLSX + рекомендация концепции и модели реализации</div>
+        <span class="cr">Зачёт: допущения с источниками; 2–3 сценария и чувствительность; выбор обоснован спросом</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16 · Т10–Т12 + мини-треки -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Темы командных работ · сервис, ИИ, площадка</div>
+      <div class="row"><h2>Т10–Т12 · карта, ИИ-помощник, площадка</h2></div>
+    </div>
+    <div class="tks">
+      <div class="tk">
+        <div class="tk-h"><span class="n">Т10</span><span class="tags"><span class="pk">→ 03</span><span class="pk q2">очередь 2</span></span></div>
+        <b class="tt">Городские спортивные карты → прототип для СПб</b>
+        <span class="lb">Объект</span><span class="ob">5–7 сервисов поиска спорта: Москва, 2–3 региона, 2 зарубежных города</span>
+        <span class="lb">Разбираем</span><ul><li>Функции: поиск, фильтры, запись, расписание</li><li>Источники и обновление данных</li><li>UX и дизайн</li><li>Связь с каналами и событиями</li></ul>
+        <div class="out">Сравнение функций + требования к публичной карте СПб + кликабельный прототип + тест на 5–8 пользователях</div>
+        <span class="cr">Зачёт: единые критерии; прототип прошёл тест; требования готовы к передаче исполнителю</span>
+      </div>
+      <div class="tk ai">
+        <div class="tk-h"><span class="n">Т11</span><span class="tags"><span class="pk">→ 06 · 04</span><span class="pk q1">очередь 1</span></span></div>
+        <b class="tt">ИИ-помощник по вопросам жителей о спорте</b>
+        <span class="lb">Объект</span><span class="ob">Типовые вопросы жителей + открытые документы: ГП-498, правила учреждений, реестр</span>
+        <span class="lb">Разбираем</span><ul><li>10–15 типов вопросов</li><li>Какие документы отвечают</li><li>Где ответа нет</li></ul>
+        <div class="out">База знаний + прототип на Veai + тест на 50 вопросах + «белые пятна» открытой информации</div>
+        <span class="cr">Зачёт: тест оценён двумя проверяющими; ошибки и риски описаны; прототип работает на показе</span>
+      </div>
+      <div class="tk ai">
+        <div class="tk-h"><span class="n">Т12</span><span class="tags"><span class="pk">→ 07</span><span class="pk q1">очередь 1</span></span></div>
+        <b class="tt">Первая сессия городской спортивной площадки</b>
+        <span class="lb">Объект</span><span class="ob">Сессия на демо-дне 16.12 или отдельное событие</span>
+        <span class="lb">Разбираем</span><ul><li>Аналоги форматов</li><li>Участники и их интересы</li><li>Повестка из 5 тем площадки</li></ul>
+        <div class="out">Концепт + программа и модерация + проведённая сессия + отчёт с решениями</div>
+        <span class="cr">Зачёт: форма «событие» — проведено, отчёт и анонимная обратная связь собраны</span>
+      </div>
+      <div class="tk mt">
+        <div class="tk-h"><span class="n">М</span><span class="tags"><span class="pk">несколько занятий</span></span></div>
+        <b class="tt">Индивидуальные мини-треки</b>
+        <span class="ob">Цифровой след + обязательный финальный артефакт — для тех, кто работает один или подключается ненадолго</span>
+        <ul class="mts"><li><i>М1</i>Сверка показателей ГП-498 по первоисточнику → все</li><li><i>М2</i>Дизайн-код спортивных событий СПб за год → 05</li><li><i>М3</i>Карта любительских сообществ района: беговые клубы, лиги → 04, 05</li><li><i>М4</i>Каталог открытых данных о спорте СПб → все</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17 · Маршрут и зачёт -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Как тема становится зачётом</div>
+      <div class="row"><h2>Маршрут темы за семестр</h2></div>
+    </div>
+    <div class="route">
+      <div class="rt"><span class="w">Недели 1–2</span><b>G0 · G1</b><span>Объект и границы согласованы с куратором Комитета; роли распределены</span></div>
+      <div class="rt"><span class="w">Недели 3–4</span><b>G2</b><span>Источники данных найдены и проверены; методика и архитектура модели защищены</span></div>
+      <div class="rt"><span class="w">Недели 5–8</span><b>G3</b><span>Сбор, поле и расчёт; промежуточная сверка с куратором Комитета</span></div>
+      <div class="rt now"><span class="w">Недели 9–10</span><b>G4</b><span>Результат предъявлен; вердикт «беру / беру с условиями / не беру»</span></div>
+      <div class="rt"><span class="w">После хода</span><b>G5</b><span>Пакет наследования для следующей команды</span></div>
+    </div>
+    <div class="credit">
+      <div class="rule">
+        <b>Зачёт за ход в роли</b>
+        <span>Основание — артефакты своей роли к G2/G3, участие в гейтах, рефлексия к G4, подтверждение шерпы. Провал гейта — возврат со списком «чего не хватает», а не незачёт; незачёт — срыв G5 или «тихий выход». Оценивается человек, а не команда. Правила утверждает факультет.</span>
+      </div>
+      <table class="plan xs">
+        <thead><tr><th>Роль</th><th>Артефакт для зачёта</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t">Капитан</div></td><td>План хода, протоколы, пакет наследования G5</td></tr>
+          <tr><td><div class="t">Архитектор модели</div></td><td>Схема модели, метод, допущения</td></tr>
+          <tr><td><div class="t">Аналитик поля</div></td><td>Реестр источников, данные с паспортом</td></tr>
+          <tr><td><div class="t">Интегратор технологий</div></td><td>Скрипты, карты, ИИ-прототипы, инструкция по воспроизведению</td></tr>
+          <tr><td><div class="t">Связной с партнёром</div></td><td>Сверки с куратором Комитета, фиксация обратной связи</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 12 · ДЗ -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Обязательно для ядра</div>
+      <div class="row"><h2>Домашние задания</h2><span class="note">Сдача — за 2 рабочих дня до встречи</span></div>
+    </div>
+    <table class="plan xs">
+      <thead><tr><th>ДЗ</th><th>Выдаётся → срок</th><th>Содержание</th><th>Глава Комитета</th></tr></thead>
+      <tbody>
+        <tr><td class="n">ДЗ-1</td><td class="s">№ 1 · 07.10<small>→ 12.10</small></td><td>Карта своего направления: 3 ключевые задачи, показатели ГП-498 за ними, какие данные и системы есть; вход в Veai и вводный модуль</td><td class="g">Топ-3 приоритета и ожидания от губернаторского уровня</td></tr>
+        <tr><td class="n">ДЗ-2</td><td class="s">№ 2 · 14.10<small>→ 19.10</small></td><td>Паспорт 1–2 задач (проблема, показатель, пользователь, данные, результат к декабрю, уровень); 2 ИИ-сценария на своих обезличенных материалах; пре-ридинг</td><td class="g">Выбор 5–7 кандидатов для интенсива</td></tr>
+        <tr><td class="n">ДЗ-3</td><td class="s">Интенсив · 21.10<small>→ 26.10</small></td><td>Паспорт → ТЗ на прототип: критерии приёмки, данные и доступы, 3–5 пользователей для теста</td><td class="g">Утверждение владельцев задач</td></tr>
+        <tr><td class="n">ДЗ-4</td><td class="s">№ 3 · 28.10<small>→ 06.11</small></td><td>Ежедневное использование инструментов, фидбек-лог; владельцы — подготовка показа v1</td><td class="g">Обратная связь по v0 / v1</td></tr>
+        <tr><td class="n">ДЗ-5</td><td class="s">№ 4 · 10.11<small>→ 16.11</small></td><td>«Управленческая рамка» на 1 странице: какое решение готовит прототип, какой показатель двигает, эффект, федеральный выход</td><td class="g">Какие решения выносим на уровень Губернатора</td></tr>
+        <tr><td class="n">ДЗ-6</td><td class="s">№ 5 · 18.11<small>→ 25.11</small></td><td>Полевой тест прототипа с 3–5 пользователями, результаты</td><td class="g">—</td></tr>
+        <tr><td class="n">ДЗ-7</td><td class="s">№ 6 · 27.11<small>→ 04.12</small></td><td>Черновик управленческого документа по своей задаче</td><td class="g">Правка и приоритизация документов</td></tr>
+        <tr><td class="n">ДЗ-8</td><td class="s">№ 7 · 08.12<small>→ 14.12</small></td><td>Выступление на демо (7 мин) и ответы на ожидаемые вопросы</td><td class="g">Вступительное слово на демо</td></tr>
+        <tr><td class="n">ДЗ-9</td><td class="s">Демо · 16.12<small>→ 21.12</small></td><td>Самооценка; предложения в план 2027 по направлению</td><td class="g">Рамка 2027 г.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 13 · Гейты и данные -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Контрольные точки</div>
+      <div class="row"><h2>Один хребет G0→G5 для ядра и студентов</h2></div>
+      <p class="muted">План ядра проходит те же гейты, что и воркстримы sport-geo и sport-engagement, — так студенческие результаты попадают в задачи ядра вовремя.</p>
+    </div>
+    <div class="gates">
+      <span></span>
+      <div class="h"><b>G0</b><span>Рамка</span></div>
+      <div class="h"><b>G1</b><span>Команда</span></div>
+      <div class="h"><b>G2</b><span>Архитектура</span></div>
+      <div class="h"><b>G3</b><span>Поле</span></div>
+      <div class="h"><b>G4</b><span>Результат</span></div>
+      <div class="h"><b>G5</b><span>Наследование</span></div>
+      <span class="rl">Ядро</span>
+      <div class="c"><b>Нед. 1</b>Стратегия и ядро утверждены</div>
+      <div class="c"><b>Нед. 2</b>Ядро работает, роли</div>
+      <div class="c"><b>Нед. 3–4</b>Интенсив, ТЗ, архитектура решения</div>
+      <div class="c"><b>Нед. 7–8</b>Ревью и полевая проверка</div>
+      <div class="c"><b>Нед. 11</b>Демо-день, вердикт</div>
+      <div class="c"><b>Нед. 12–13</b>План 2027, пакет</div>
+      <span class="rl">Студенты</span>
+      <div class="c st"><b>17.09</b>По календарю курса</div>
+      <div class="c st"><b>24.09</b>По календарю курса</div>
+      <div class="c st"><b>08.10</b>Защита архитектуры</div>
+      <div class="c st"><b>15.10</b>Вход в интенсив</div>
+      <div class="c st"><b>22.10</b>Промежуточное демо; итог — уточнить</div>
+      <div class="c st"><b>После хода</b>Пакет передачи</div>
+    </div>
+    <div class="data-rules">
+      <div class="dr"><b>Открытые данные</b>Студенты работают только с открытыми данными; у каждой цифры — источник и дата</div>
+      <div class="dr"><b>Контур Комитета</b>Служебные данные — подрядчикам по договору и в их контуре</div>
+      <div class="dr"><b>ИИ и данные</b>Персональные и служебные данные — в ИИ-сервисы только по согласованию; условия Veai — уточнить до нед. 2</div>
+      <div class="dr"><b>Публичный след</b>В репозиторий Мастерской — только открытая часть: протоколы по ролям, решения, сроки</div>
+    </div>
+  </section>
+
+  <!-- 14 · Риски -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Что может сорвать план</div>
+      <div class="row"><h2>Риски и меры</h2></div>
+    </div>
+    <div class="risks">
+      <div class="rk"><b>Контрактация не успевает</b><span class="cons">Исполнители не стартуют на неделе 4</span><span class="fix">Маршрут контрактации — решение недели 1; до договора — открытые данные силами Мастерской</span></div>
+      <div class="rk"><b>Загрузка главы Комитета</b><span class="cons">Решения откладываются</span><span class="fix">Обязательно: встречи № 1, 3, 5, 8, интенсив, демо; остальное — через куратора</span></div>
+      <div class="rk"><b>Ядро «на бумаге»</b><span class="cons">Нет владельцев задач</span><span class="fix">Каждый участник ядра — владелец задачи; ДЗ и статус видны всем</span></div>
+      <div class="rk"><b>Нет доступа к данным</b><span class="cons">Прототипы на неполных данных</span><span class="fix">Запрос — неделя 1; эскалация в течение недели; план Б — открытые данные</span></div>
+      <div class="rk"><b>Размывание пула задач</b><span class="cons">Нет прототипов к декабрю</span><span class="fix">Не более 5 задач; фиксация объёма 18.11</span></div>
+      <div class="rk"><b>Уровень снижается до операционного</b><span class="cons">Нет губернаторского результата</span><span class="fix">Фильтр уровня на каждой встрече; ДЗ-5 и ДЗ-7</span></div>
+      <div class="rk"><b>Конец года</b><span class="cons">Бюджетный цикл и праздники сдвигают демо и акты</span><span class="fix">Демо — 16.12, не позже; акты — неделя 12</span></div>
+      <div class="rk"><b>Расписание Мастерской после 22.10</b><span class="cons">Студенты выпадают из второй половины плана</span><span class="fix">Уточнить с мастером на неделе 1; мини-треки, курс ИСЭ</span></div>
+    </div>
+  </section>
+
+  <!-- 15 · Решения недели 1 -->
+  <section class="slide">
+    <div class="s-head">
+      <div class="kicker">Неделя 1 · 05–09.10</div>
+      <div class="row"><h2>Что нужно решить на старте</h2></div>
+    </div>
+    <div class="fin">
+      <div class="decide">
+        <h3>Что утверждаем</h3>
+        <ul>
+          <li>Общую стратегию: две тематики и цели длинного горизонта</li>
+          <li>Состав ядра (5–6 человек, глава — участник) и куратора</li>
+          <li>1–2 пилотных района</li>
+          <li>Доступ к данным: объекты, охват, медиаметрики — перечень и ответственный</li>
+          <li>Ритм: этот план, даты встреч, интенсива и демо-дня</li>
+          <li>Маршрут контрактации по направлениям 01–03</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag"><span class="dot"></span>Открытые вопросы</span>
+        <ul>
+          <li>Состав ядра и куратор — подтверждение главой</li>
+          <li>Даты интенсива (21.10?) и демо-дня (16.12?), площадка</li>
+          <li>Сроки контрактации: АКТЛ, Геоинтеллект (SaaS или собственная платформа), Veai</li>
+          <li>Перечень данных и ответственный за доступ</li>
+          <li>Открытая встреча в Музее спорта: дата, спикер от руководства, вместимость, список вузов</li>
+          <li>Участие руководства города в демо-дне, формат связи с МВК по ИИ</li>
+          <li>Расписание Мастерской ЭФ после 22.10 и роль курса ИСЭ</li>
+        </ul>
+      </div>
+    </div>
+    <p class="src">Бюджеты и состав работ подрядчиков — по слайду «План совместной деятельности до конца года» стратегии «Экономика и технологии в спорте»; условия контрактации не подтверждены. Текстовая версия плана — workstreams/sport-spb/plan-komsport-okt-dek-2026.md.</p>
+  </section>
+
+  <!-- 16 · Контакты -->
+  <section class="slide dark">
+    <div class="s-head">
+      <div class="kicker">Контакты</div>
+      <div class="row"><h2>Связаться с нами</h2></div>
+    </div>
+    <div class="contacts">
+      <div class="contact-card">
+        <div class="lbl">Контактное лицо</div>
+        <div class="who">Денис Кувиков</div>
+        <a class="tel" href="tel:+79633240101">+7 963 324 0101</a>
+      </div>
+      <div class="contact-logo"><img src="assets/logo-klub-tech-leadership.png" alt="Клуб технологического лидерства"></div>
+    </div>
+  </section>
+
+  <div class="counter" id="counter">01 / 23</div>
+  <div class="nav">
+    <button id="prev" aria-label="Назад">‹</button>
+    <div class="dots" id="dots"></div>
+    <button id="next" aria-label="Вперёд">›</button>
+  </div>
+
+</div>
+</div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var i=0, n=slides.length;
+  var counter=document.getElementById('counter');
+  var dotsWrap=document.getElementById('dots');
+  slides.forEach(function(_,k){
+    var d=document.createElement('i');
+    d.addEventListener('click',function(){go(k)});
+    dotsWrap.appendChild(d);
+  });
+  var dots=[].slice.call(dotsWrap.children);
+  function pad(x){return (x<9?'0':'')+(x+1)}
+  function render(){
+    slides.forEach(function(s,k){s.classList.toggle('active',k===i)});
+    dots.forEach(function(d,k){d.classList.toggle('on',k===i)});
+    counter.textContent=pad(i)+' / '+pad(n-1);
+    document.body.style.background = slides[i].classList.contains('dark') ? '#1B2038' : '#FAFBFE';
+  }
+  function go(k){ i=Math.max(0,Math.min(n-1,k)); render(); }
+  function next(){go(i+1)} function prev(){go(i-1)}
+  document.getElementById('next').addEventListener('click',next);
+  document.getElementById('prev').addEventListener('click',prev);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')(next(),e.preventDefault());
+    else if(e.key==='ArrowLeft'||e.key==='PageUp')prev();
+    else if(e.key==='Home')go(0); else if(e.key==='End')go(n-1);
+  });
+  var x0=null;
+  document.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(x0===null)return; var dx=e.changedTouches[0].clientX-x0;
+    if(Math.abs(dx)>50){dx<0?next():prev()} x0=null;
+  },{passive:true});
+  var deck=document.getElementById('deck');
+  var stage=deck.parentNode;
+  function fit(){ deck.style.setProperty('--s', Math.min(stage.clientWidth/1280, stage.clientHeight/720)); }
+  window.addEventListener('resize',fit); fit();
+  render();
+})();
+</script>
+</body>
+</html>
