@@ -53,6 +53,7 @@
 | Досье | Объект | Стадия | Версия | Каталог |
 |---|---|---|---|---|
 | [`red-bull/`](red-bull/README.md) | Red Bull | Зерно | v0.1 | `bm01`, `ca08` · [кейс курса](../../disciplines/technologies-econ-fin/cases/red-bull/README.md) |
+| [`sport-spb/`](sport-spb/README.md) | Спорт Санкт-Петербурга (инфраструктура и вовлечение) | Зерно | v0 | Пул задач Спорткомитета · [дорожная карта](../../workstreams/sport-spb/plan-komsport-okt-dek-2026.md) |
 
 ## Новое досье
 
