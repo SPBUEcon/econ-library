@@ -24,6 +24,13 @@ CASE_PAGES = {
     "red-bull": "../../disciplines/technologies-econ-fin/cases/red-bull/index.html",
 }
 
+# темы архива: задания с одним префиксом id (rb-01, sp-03, tpl05) сворачиваются в одну тему
+GROUPS = [
+    {"prefix": "rb", "title": "Разбор бизнес-модели компании Red Bull"},
+    {"prefix": "sp", "title": "Спорт Санкт-Петербурга: задачи Спорткомитета"},
+    {"prefix": "tpl", "title": "Общие шаблоны заданий"},
+]
+
 
 def load(name):
     with open(os.path.join(CAT, name), encoding="utf-8", newline="") as fh:
@@ -85,6 +92,7 @@ data = {
     "skills": load("skills.csv"),
     "mechanics": load("mechanics.csv"),
     "dossiers": dossiers,
+    "groups": GROUPS,
     "issuesTotal": len(issues),
     "gh": GH,
 }
@@ -141,15 +149,6 @@ h2 .cnt{font-family:var(--body);font-weight:500;font-size:16px;color:var(--grey)
 .stat b{font-family:var(--disp);font-weight:700;font-size:21px;color:#fff;display:block}
 .stat span{font-size:12px;color:var(--ice);letter-spacing:.04em}
 
-/* HOW */
-.kinds{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-@media (max-width:900px){.kinds{grid-template-columns:1fr}}
-.kind{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;border-top:6px solid var(--grey)}
-.kind.fixed{border-top-color:var(--blue)} .kind.param{border-top-color:var(--violet)} .kind.relay{border-top-color:var(--coral)}
-.kind h3{font-family:var(--disp);font-weight:500;font-size:17px;margin-bottom:6px}
-.kind p{font-size:14.5px;color:var(--grey)}
-.kind .ex{margin-top:10px;font-size:13.5px;color:var(--ink)}
-
 /* CONTROLS */
 .nav{position:sticky;top:0;z-index:50;background:rgba(250,251,254,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;flex-direction:column;gap:10px;padding-top:12px;padding-bottom:12px}
@@ -172,39 +171,52 @@ select{max-width:220px}
 @media (max-width:760px){.nav{position:static}.wrap{padding:0 18px}}
 button.reset{font-family:var(--body);font-size:13px;font-weight:600;background:none;border:none;color:var(--coral);cursor:pointer;padding:6px}
 
-/* LIST — задания лентой, одна широкая плашка на задание */
-.list{display:flex;flex-direction:column;gap:10px}
-.card{background:#fff;border:1px solid var(--line);border-left:6px solid var(--grey);border-radius:16px;
-  padding:18px 22px;display:grid;grid-template-columns:150px minmax(0,1fr) 200px;gap:6px 26px;align-items:start}
-.card:hover{box-shadow:0 8px 24px rgba(27,32,56,.07)}
+/* LIST — темы (свёрнутые группы) и узкие плашки заданий */
+.groups{display:flex;flex-direction:column;gap:14px}
+.grp{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.grp-head{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:14px;align-items:center;
+  font-family:var(--body);text-align:left;background:none;border:none;color:var(--ink);padding:18px 22px;cursor:pointer}
+.grp-head:hover{background:var(--panel)}
+.grp-tag{font-family:var(--disp);font-weight:700;font-size:13px;color:#fff;background:var(--ink);border-radius:9px;padding:5px 10px;min-width:44px;text-align:center}
+.grp-title{font-family:var(--disp);font-weight:500;font-size:18px;line-height:1.25}
+.grp-title small{display:block;font-family:var(--body);font-size:13px;font-weight:400;color:var(--grey);margin-top:3px}
+.grp-cnt{font-size:13.5px;font-weight:600;color:var(--grey);white-space:nowrap}
+.grp-tog,.more{font-family:var(--body);font-size:13px;font-weight:600;color:var(--coral);background:#fff;
+  border:1.5px solid var(--line);border-radius:10px;padding:5px 11px;white-space:nowrap;cursor:pointer}
+.grp-head:hover .grp-tog,.more:hover{border-color:var(--coral)}
+.grp-body{display:none;flex-direction:column;gap:8px;padding:4px 16px 16px}
+.grp.open .grp-body{display:flex}
+@media (max-width:760px){.grp-head{grid-template-columns:auto minmax(0,1fr);padding:14px 16px}.grp-cnt,.grp-tog{grid-column:2;justify-self:start}}
+
+.card{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--grey);border-radius:12px;
+  padding:12px 16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 18px;align-items:center}
 .card[data-kind="fixed"]{border-left-color:var(--blue)}
 .card[data-kind="param"]{border-left-color:var(--violet)}
 .card[data-kind="relay"]{border-left-color:var(--coral)}
-.card .side{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
-.cid{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--ink)}
-.badge{font-size:11.5px;font-weight:600;border-radius:999px;padding:2px 9px;background:var(--panel);color:var(--grey)}
+.card .meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:3px}
+.cid{font-family:var(--disp);font-size:13px;font-weight:700;color:var(--ink)}
+.badge{font-size:11.5px;font-weight:600;border-radius:999px;padding:1px 8px;background:var(--panel);color:var(--grey)}
 .badge.fixed{background:#E6EEFB;color:var(--blue)} .badge.param{background:#EEE9FB;color:var(--violet)} .badge.relay{background:#FDE9E6;color:var(--coral)}
 .badge.active{background:#E3F4EC;color:var(--green)}
-.card .ty{font-size:12.5px;color:var(--grey);line-height:1.35}
-.card h4{font-family:var(--disp);font-weight:500;font-size:17px;line-height:1.3;margin-bottom:6px}
-.card p.brief{font-size:14.5px;margin-bottom:8px;max-width:820px}
+.card .ty{font-size:12px;color:var(--grey)}
+.card h4{font-family:var(--disp);font-weight:500;font-size:15.5px;line-height:1.3;margin-bottom:3px}
+.card p.brief{font-size:14px;color:var(--grey);max-width:900px;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+.card.open p.brief{display:block;color:var(--ink)}
+.card .extra{display:none;grid-column:1/-1;padding-top:10px;margin-top:6px;border-top:1px dashed var(--line)}
+.card.open .extra{display:block}
 .facts{font-size:13px;color:var(--grey);margin-bottom:6px}
 .facts b{color:var(--ink);font-weight:600}
 .facts .sep{margin:0 7px;color:var(--line)}
 .sk{display:inline-block;font-size:12px;font-weight:600;background:var(--panel);color:var(--ink);border-radius:7px;padding:1px 8px;margin:0 4px 4px 0}
-details{font-size:13.5px;margin-top:4px}
-details summary{cursor:pointer;font-weight:600;color:var(--coral);width:max-content}
-details p{margin-top:6px;max-width:860px}
-.card .act{display:flex;flex-direction:column;gap:6px;font-size:13.5px}
-.card .act a{font-weight:600;text-decoration:none;color:var(--coral);border:1.5px solid var(--line);border-radius:10px;padding:6px 11px}
+.card .res{font-size:13.5px;max-width:900px}
+.card .res p{margin-top:6px}
+.card .act{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13.5px;margin-top:10px}
+.card .act a{font-weight:600;text-decoration:none;color:var(--coral);border:1.5px solid var(--line);border-radius:10px;padding:5px 11px;background:#fff}
 .card .act a:hover{border-color:var(--coral)}
 .card .act a.main{background:var(--coral);border-color:var(--coral);color:#fff}
 .card .act .muted{color:var(--grey);font-size:12.5px}
-@media (max-width:900px){
-  .card{grid-template-columns:1fr;padding:16px 18px}
-  .card .side{flex-direction:row;flex-wrap:wrap;align-items:center}
-  .card .act{flex-direction:row;flex-wrap:wrap}
-}
+@media (max-width:760px){.card{grid-template-columns:1fr}.card .more{justify-self:start}}
 .empty{display:none;padding:30px;text-align:center;color:var(--grey);background:#fff;border:1px dashed var(--line);border-radius:16px}
 
 /* DOSSIERS */
@@ -244,7 +256,7 @@ footer p{margin-bottom:8px;max-width:920px}
 
 <nav class="nav"><div class="wrap">
   <div class="nav-links">
-    <a href="#how">Как устроено</a><a href="#archive">Архив</a><a href="#dossiers">Досье</a>
+    <a href="#archive">Архив</a><a href="#dossiers">Досье</a>
     <a href="#reference">Типы · навыки · механики</a>
   </div>
   <div class="controls">
@@ -258,37 +270,21 @@ footer p{margin-bottom:8px;max-width:920px}
   </div>
 </div></nav>
 
-<section id="how">
+<section id="archive">
   <div class="wrap">
-    <div class="eyebrow">01 · Как устроено</div>
-    <h2>Три рода заданий</h2>
-    <p class="lead">Род определяет, откуда берётся формулировка. Модель слоя заданий — в
-      <a href="__GH__README.md">assignments/README.md</a>.</p>
-    <div class="kinds">
-      <div class="kind fixed"><h3>Конкретное</h3><p>Один текст выдаётся многим как есть; результаты сравнимы.</p>
-        <div class="ex">Пример: «Red Bull Stratos как хлопушка»</div></div>
-      <div class="kind param"><h3>Параметрическое</h3><p>Шаблон + вариант из пула каталога дисциплины → индивидуальное задание. В группе варианты не повторяются.</p>
-        <div class="ex">Пример: «Компания {company} по трём укладам»</div></div>
-      <div class="kind relay"><h3>Эстафетное</h3><p>Задание продолжает досье: следующий участник получает редакцию по текущему состоянию накопленного.</p>
-        <div class="ex">Пример: досье Red Bull — модель → оппонирование → ставка</div></div>
-    </div>
-  </div>
-</section>
-
-<section id="archive" class="alt">
-  <div class="wrap">
-    <div class="eyebrow">02 · Архив</div>
+    <div class="eyebrow">01 · Архив</div>
     <h2>Задания <span class="cnt" id="c-archive"></span></h2>
-    <p class="lead">Источник правды — <a href="__GH__catalog/templates.csv">catalog/templates.csv</a>.
-      Фильтры сверху; ссылкой с фильтром можно поделиться — он сохраняется в адресе страницы.</p>
-    <div class="list" id="g-archive"></div>
+    <p class="lead">Задания собраны в темы — раскройте нужную. Источник правды —
+      <a href="__GH__catalog/templates.csv">catalog/templates.csv</a>, модель слоя заданий —
+      <a href="__GH__README.md">assignments/README.md</a>. Ссылкой с фильтром можно поделиться — он сохраняется в адресе страницы.</p>
+    <div class="groups" id="g-archive"></div>
     <div class="empty" id="empty">Ничего не найдено. Измените фильтры или <button class="reset" onclick="resetAll()">сбросьте их</button>.</div>
   </div>
 </section>
 
-<section id="dossiers">
+<section id="dossiers" class="alt">
   <div class="wrap">
-    <div class="eyebrow">03 · Накопительные досье</div>
+    <div class="eyebrow">02 ·Накопительные досье</div>
     <h2>Досье</h2>
     <p class="lead">Досье — живой объект (компания, отрасль, технология), над которым работают сменяющие друг друга участники.
       От стадии досье зависит, какое задание выдаётся. Правила — <a href="__GH__dossiers/README.md">dossiers/README.md</a>.</p>
@@ -296,9 +292,9 @@ footer p{margin-bottom:8px;max-width:920px}
   </div>
 </section>
 
-<section id="reference" class="alt">
+<section id="reference">
   <div class="wrap">
-    <div class="eyebrow">04 · Справочники</div>
+    <div class="eyebrow">03 ·Справочники</div>
     <h2>Типы, навыки, механики</h2>
     <p class="lead">Из чего собирается задание. Файлы — в <a href="__GH__catalog/README.md">catalog/</a>.</p>
     <h3 class="ref">Проверяемые навыки</h3>
@@ -376,23 +372,59 @@ function card(t){
   const text = [t.template_id, t.title, t.brief, t.deliverable, t.acceptance, t.parameters, mech,
     TY[t.type_id] ? TY[t.type_id].title : "", t.skill_ids.map(s => SK[s] ? SK[s].title : "").join(" ")].join(" ").toLowerCase();
   return `<article class="card" id="t-${esc(t.template_id)}" data-kind="${esc(t.kind)}" data-text="${esc(text)}">
-    <div class="side"><span class="cid">${esc(t.template_id)}</span>
-      <span class="badge ${esc(t.kind)}">${KIND[t.kind] || esc(t.kind)}</span>
-      ${t.status === "активно" ? '<span class="badge active">активно</span>' : `<span class="badge">${esc(t.status)}</span>`}
-      <span class="ty">${esc(TY[t.type_id] ? TY[t.type_id].title : t.type_id)}</span></div>
-    <div class="body">
+    <div class="head">
+      <div class="meta"><span class="cid">${esc(t.template_id)}</span>
+        <span class="badge ${esc(t.kind)}">${KIND[t.kind] || esc(t.kind)}</span>
+        ${t.status === "активно" ? '<span class="badge active">активно</span>' : `<span class="badge">${esc(t.status)}</span>`}
+        <span class="ty">${esc(TY[t.type_id] ? TY[t.type_id].title : t.type_id)}</span></div>
       <h4>${esc(t.title)}</h4>
       <p class="brief">${esc(t.brief)}</p>
+    </div>
+    <button class="more" type="button" aria-expanded="false">Раскрыть</button>
+    <div class="extra">
       <div class="facts">${facts.join(sep)}</div>
       ${extra.length ? `<div class="facts">${extra.join(sep)}</div>` : ""}
       <div>${skills}</div>
-      <details><summary>Результат и критерии</summary>
-        <p><b>Что сдаётся:</b> ${esc(t.deliverable)}</p><p><b>Критерии приёмки:</b> ${esc(t.acceptance)}</p>
-        ${t.related_questions.length ? `<p><b>Вопросы банка:</b> ${esc(t.related_questions.join(", "))}</p>` : ""}</details>
-    </div>
-    <div class="act">${links.join("")}</div></article>`;
+      <div class="res"><p><b>Что сдаётся:</b> ${esc(t.deliverable)}</p><p><b>Критерии приёмки:</b> ${esc(t.acceptance)}</p>
+        ${t.related_questions.length ? `<p><b>Вопросы банка:</b> ${esc(t.related_questions.join(", "))}</p>` : ""}</div>
+      <div class="act">${links.join("")}</div>
+    </div></article>`;
 }
-document.getElementById("g-archive").innerHTML = T.map(card).join("");
+
+// темы: задания с одним префиксом id (rb-01, sp-03, tpl05) сворачиваются в одну группу
+const prefix = id => (id.match(/^[a-z]+/i) || [id])[0];
+const plural = n => n % 10 === 1 && n % 100 !== 11 ? "задание"
+  : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? "задания" : "заданий";
+const order = DATA.groups.map(g => g.prefix);
+T.forEach(t => { const p = prefix(t.template_id); if (!order.includes(p)) order.push(p); });
+const G = order.map(p => {
+  const items = T.filter(t => prefix(t.template_id) === p);
+  const meta = DATA.groups.find(g => g.prefix === p);
+  const d = items.length ? DOS[items[0].dossier_id] : null;
+  return {prefix: p, items, title: meta ? meta.title : (d ? d.object : p),
+    sub: d ? `Досье «${d.object}» · стадия: ${d.stage}` : "Шаблоны без досье — выдаются в любой дисциплине"};
+}).filter(g => g.items.length);
+document.getElementById("g-archive").innerHTML = G.map(g => `<div class="grp" id="grp-${esc(g.prefix)}">
+  <button class="grp-head" type="button" aria-expanded="false">
+    <span class="grp-tag">${esc(g.prefix)}</span>
+    <span class="grp-title">${esc(g.title)}<small>${esc(g.sub)}</small></span>
+    <span class="grp-cnt"></span>
+    <span class="grp-tog">Раскрыть</span>
+  </button>
+  <div class="grp-body">${g.items.map(card).join("")}</div></div>`).join("");
+
+function setOpen(el, on){
+  el.classList.toggle("open", on);
+  const btn = el.querySelector(el.classList.contains("grp") ? ".grp-head" : ".more");
+  btn.setAttribute("aria-expanded", on);
+  (btn.querySelector(".grp-tog") || btn).textContent = on ? "Скрыть" : "Раскрыть";
+}
+document.getElementById("g-archive").addEventListener("click", e => {
+  const btn = e.target.closest(".more, .grp-head");
+  if (!btn) return;
+  const el = btn.closest(".card, .grp");
+  setOpen(el, !el.classList.contains("open"));
+});
 
 function match(t){
   if (F.kind && t.kind !== F.kind) return false;
@@ -403,15 +435,28 @@ function match(t){
   if (F.dossier && F.dossier !== "none" && t.dossier_id !== F.dossier) return false;
   return true;
 }
+let wasFiltered = false;
 function apply(){
   const q = F.q.trim().toLowerCase();
+  const filtered = Object.values(F).some(v => v);
   let n = 0;
-  T.forEach(t => {
-    const el = document.getElementById("t-" + t.template_id);
-    const ok = match(t) && (!q || el.dataset.text.includes(q));
-    el.style.display = ok ? "" : "none";
-    if (ok) n++;
+  G.forEach(g => {
+    let k = 0;
+    g.items.forEach(t => {
+      const el = document.getElementById("t-" + t.template_id);
+      const ok = match(t) && (!q || el.dataset.text.includes(q));
+      el.style.display = ok ? "" : "none";
+      if (ok) k++;
+    });
+    n += k;
+    const box = document.getElementById("grp-" + g.prefix);
+    box.style.display = k ? "" : "none";
+    box.querySelector(".grp-cnt").textContent = k === g.items.length ? `${k} ${plural(k)}` : `${k} из ${g.items.length}`;
+    // под фильтром темы с найденным раскрываются; после сброса снова сворачиваются
+    if (filtered) setOpen(box, true);
+    else if (wasFiltered) setOpen(box, false);
   });
+  wasFiltered = filtered;
   document.getElementById("c-archive").textContent = n === T.length ? `${n}` : `${n} из ${T.length}`;
   document.getElementById("empty").style.display = n ? "none" : "block";
   document.querySelectorAll("#kinds .chip").forEach(c => c.classList.toggle("on", c.dataset.kind === F.kind));
@@ -421,7 +466,7 @@ function apply(){
   history.replaceState(null, "", h ? "#" + h : location.pathname);
 }
 function resetAll(){ Object.keys(F).forEach(k => F[k] = ""); apply(); }
-function showOne(id){ resetAll(); F.q = id.toLowerCase(); apply(); }
+function showOne(id){ resetAll(); F.q = id.toLowerCase(); apply(); setOpen(document.getElementById("t-" + id), true); }
 document.getElementById("kinds").addEventListener("click", e => { if (e.target.dataset.kind !== undefined) { F.kind = e.target.dataset.kind; apply(); } });
 ["type", "skill", "scale", "dossier"].forEach(k => document.getElementById("f-" + k).addEventListener("change", e => { F[k] = e.target.value; apply(); }));
 document.getElementById("q").addEventListener("input", e => { F.q = e.target.value; apply(); });
