@@ -153,7 +153,8 @@ def blocks(md):
             j = i + 1
             while j < len(lines) and not lines[j].startswith("```"):
                 j += 1
-            out.append(("pre", "\n".join(lines[i + 1:j])))
+            lang = ln[3:].strip()
+            out.append(("cycle" if lang == "cycle" else "pre", "\n".join(lines[i + 1:j])))
             i = j + 1
         elif re.match(r"^#{1,6} ", ln):
             lvl = len(ln) - len(ln.lstrip("#"))
@@ -204,6 +205,8 @@ def render(bl, ctx, layout=""):
             h.append(f'<h{lvl} id="{slug(d[1])}">{inline(d[1], ctx)}</h{lvl}>')
         elif kind == "pre":
             h.append(f"<pre>{esc(d)}</pre>")
+        elif kind == "cycle":
+            h.append(cycle_html(d, ctx))
         elif kind == "quote":
             h.append(f"<blockquote>{render(blocks(d), ctx)}</blockquote>")
         elif kind in ("ul", "ol"):
@@ -214,7 +217,7 @@ def render(bl, ctx, layout=""):
             for k, name in enumerate(head):
                 title, _, sub = name.partition(" · ")
                 items = [r[k] for r in rows if k < len(r) and r[k]]
-                cols.append(f'<div class="col"><div class="col-h">{inline(title, ctx)}'
+                cols.append(f'<div class="col"><div class="col-h"><b>{inline(title, ctx)}</b>'
                             + (f"<span>{inline(sub, ctx)}</span>" if sub else "") + "</div><ul>"
                             + "".join(f"<li>{inline(x, ctx)}</li>" for x in items) + "</ul></div>")
             h.append('<div class="cols">' + "".join(cols) + "</div>")
@@ -224,6 +227,29 @@ def render(bl, ctx, layout=""):
                      + "".join("<tr>" + "".join(f"<td>{inline(c, ctx)}</td>" for c in r) + "</tr>" for r in rows)
                      + "</tbody></table>")
     return "\n".join(h)
+
+
+CYCLE_STEP = re.compile(r"\s*-([^->]*)->\s*")
+
+
+def cycle_html(src, ctx):
+    """```cycle: «A -глагол-> B -глагол-> C -глагол-> A» → схема: узлы, стрелки с подписями, обратная дуга.
+
+    На GitHub блок читается как текст, в HTML — как схема на тонких линиях.
+    """
+    parts = CYCLE_STEP.split(" ".join(src.split()))
+    nodes, verbs = parts[0::2], parts[1::2]
+    loop = len(nodes) > 2 and nodes[-1] == nodes[0]
+    back = verbs.pop() if loop else ""
+    if loop:
+        nodes.pop()
+    row = []
+    for k, n in enumerate(nodes):
+        row.append(f'<span class="cy-node">{inline(n, ctx)}</span>')
+        if k < len(verbs):
+            row.append(f'<span class="cy-arr"><i>{inline(verbs[k], ctx)}</i></span>')
+    return ('<div class="cycle"><div class="cy-row">' + "".join(row) + "</div>"
+            + (f'<div class="cy-back"><i>{inline(back, ctx)}</i></div>' if loop else "") + "</div>")
 
 
 def md_html(md, ctx, layout="", skip_quotes=False):
@@ -279,9 +305,14 @@ def load_thesis(readme):
         if not m:
             t["sections"].append((title, md))
             continue
-        lay = re.search(r"<!--\s*layout:\s*([\w-]+)\s*-->", md)
+        def directive(name):
+            d = re.search(r"<!--\s*" + name + r":\s*(\S+)\s*-->", md)
+            return d.group(1) if d else ""
+
+        lay = directive("layout")
         content, notes = (re.split(r"<!--\s*notes\s*-->", md, maxsplit=1) + [""])[:2]
-        t["slides"].append({"title": m.group(1).strip(), "layout": lay.group(1) if lay else "",
+        t["slides"].append({"title": m.group(1).strip(), "layout": lay,
+                            "logo": directive("logo"), "bg": directive("bg"),
                             "md": content, "notes": notes.strip()})
     tid = meta.get("id", "")
     if not tid:
@@ -415,9 +446,11 @@ def slide_html(t, k, ctx, link, num, total):
     """Слайд. Служебная строка — индекс тезиса (ссылка link) и дата обновления, внизу — номер."""
     s = t["slides"][k]
     lay = s["layout"]
-    return (f'<section class="slide{" l-" + lay if lay else ""}"><div class="s-in">'
+    bg = f' style="background-image:url(\'{esc(link_target(s["bg"], ctx))}\')"' if s["bg"] else ""
+    logo = f'<img class="s-logo" src="{esc(link_target(s["logo"], ctx))}" alt="">' if s["logo"] else ""
+    return (f'<section class="slide{" l-" + lay if lay else ""}"{bg}><div class="s-in">'
             + s_top(f'{t["id"]} · {t["title"]}', link, ctx, t["meta"].get("updated", ""))
-            + f'<h2 class="s-title">{inline(s["title"], ctx)}</h2>'
+            + f'<div class="s-head"><h2 class="s-title">{inline(s["title"], ctx)}</h2>{logo}</div>'
             f'<div class="s-body">{md_html(s["md"], ctx, lay)}</div>'
             f'<div class="s-foot"><span>{FOOT}</span><span>{num} / {total}</span></div>'
             "</div></section>")
