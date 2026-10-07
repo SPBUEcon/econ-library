@@ -140,7 +140,8 @@ mark{background:#FCEBCB;color:inherit;border-bottom:.15em solid var(--amber);bor
    без обратной дуги — цепочка шагов */
 .s-body:has(.cycle){justify-content:center;gap:2.4cqw;padding-bottom:3cqw}
 .cycle{position:relative;margin:1cqw auto}
-.cycle.loop{width:72cqw;padding-bottom:4.6cqw}
+.cycle.loop{width:78cqw;padding-bottom:4.6cqw}
+.loop .cy-node{width:17cqw;padding:1.1cqw 1.3cqw}
 .cycle.chain{width:100%}
 .cy-row{display:flex;align-items:center;justify-content:center}
 .cy-node{flex:none;width:14cqw;text-align:center;font-family:var(--disp);font-weight:500;font-size:1.5cqw;line-height:1.2;
@@ -155,7 +156,7 @@ mark{background:#FCEBCB;color:inherit;border-bottom:.15em solid var(--amber);bor
 .cy-arr i{bottom:.8cqw}
 .chain .cy-arr i,.loop .cy-arr i{white-space:normal;width:8.4cqw;text-align:center;line-height:1.2}
 .loop .cy-arr i{width:13cqw}
-.cy-back{position:absolute;left:7cqw;right:7cqw;top:50%;height:calc(100% - 50% - .4cqw);
+.cy-back{position:absolute;left:8.5cqw;right:8.5cqw;top:50%;height:calc(100% - 50% - .4cqw);
   border:1px dashed var(--grey);border-top:0;border-radius:0 0 2cqw 2cqw}
 .cy-back::before{content:"";position:absolute;left:-.55cqw;top:-.2cqw;border:.5cqw solid transparent;border-bottom:.9cqw solid var(--grey);border-top:0}
 .cy-back i{bottom:-.75cqw;background:#fff;padding:0 .8cqw}
