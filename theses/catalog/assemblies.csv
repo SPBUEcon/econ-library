@@ -1,2 +1,3 @@
 assembly_id,title,kind,frame,theses,planned,status,updated,file
 pim-business-models,Постинформационные модели бизнеса,серия,m01; c01; c19,th01,Patagonia (bm06): этический эталон;Loro Piana (bm10): культурный дизрапт;Como 1907 (bm04): правило трёх доменов;OpenAI (bm05): архитектор рынков,черновик,2026-10-07 18:12,assemblies/pim-business-models.md
+red-bull,Red Bull — от напитка к индустрии экстрима,кейс,m01; c01; c19; c23; m02,th01,,черновик,2026-10-07 19:19,../disciplines/technologies-econ-fin/cases/red-bull/README.md

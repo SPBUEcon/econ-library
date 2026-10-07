@@ -51,7 +51,7 @@
 ### [`cases/`](cases/README.md) — страницы кейсов
 Разборы кейсов для лекций и семинаров: md + HTML + слайды, раздел заданий со ссылкой на карточку в
 [`assignments/`](../../assignments/README.md). Первый — [Red Bull](cases/red-bull/README.md)
-([HTML](cases/red-bull/index.html)).
+([HTML](cases/red-bull/index.html)) — сборка над тезисом [`th01`](../../theses/th01-red-bull-model/README.md).
 
 ### [`site/`](site/) — HTML-курс
 Самодостаточная страница [`site/course.html`](site/course.html): курс с разделами (блоки, темы,

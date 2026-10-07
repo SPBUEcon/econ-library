@@ -331,10 +331,15 @@ ITEM = re.compile(r"`(th\d+)`")
 
 
 def load_assembly(path):
+    """Сборка: разделы со списками `thNN` — группы тезисов, остальные разделы — текст.
+
+    Сборки лежат в theses/assemblies/<id>.md (→ <id>.html, <id>-slides.html) или, для кейса, в
+    README.md папки кейса с `kind: кейс` (→ index.html, slides.html рядом).
+    """
     text = Path(path).read_text(encoding="utf-8").replace("\r\n", "\n")
     meta, body = front(text)
     h1, lead, secs = sections(body)
-    groups = []
+    parts, groups = [], []
     for title, md in secs:
         items = []
         for kind, d in blocks(md):
@@ -342,11 +347,28 @@ def load_assembly(path):
                 for x in d:
                     m = ITEM.search(x)
                     items.append({"id": m.group(1) if m else "", "text": ITEM.sub("", x, count=1).strip() if m else x})
-        groups.append((title, items))
+        if any(i["id"] for i in items):
+            groups.append((title, items))
+            parts.append(("group", title, items))
+        else:
+            parts.append(("text", title, md))
     p = Path(path)
-    return {"meta": meta, "h1": h1, "lead": lead, "groups": groups, "id": meta.get("id", p.stem),
-            "title": meta.get("title", h1), "src": p.resolve(), "dir": p.parent, "out": p.with_suffix(".html"),
-            "deck": p.with_name(p.stem + "-slides.html")}
+    readme = p.name == "README.md"
+    return {"meta": meta, "h1": h1, "lead": lead, "groups": groups, "parts": parts,
+            "id": meta.get("id", p.parent.name if readme else p.stem),
+            "title": meta.get("title", h1), "src": p.resolve(), "dir": p.parent,
+            "out": p.parent / "index.html" if readme else p.with_suffix(".html"),
+            "deck": p.parent / "slides.html" if readme else p.with_name(p.stem + "-slides.html")}
+
+
+def case_sources():
+    """README кейсов дисциплин, размеченные как сборка (`kind: кейс` во frontmatter)."""
+    out = []
+    for p in sorted(glob.glob(str(REPO / "disciplines" / "*" / "cases" / "*" / "README.md"))):
+        meta, _ = front(Path(p).read_text(encoding="utf-8").replace("\r\n", "\n"))
+        if meta.get("kind") == "кейс":
+            out.append(p)
+    return out
 
 
 # ---------------------------------------------------------------- страницы
@@ -504,7 +526,12 @@ CARD_SCRIPT = """<script>
   c.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){go(i+1);e.preventDefault();}
     else if(e.key==='ArrowLeft'){go(i-1);e.preventDefault();}});
   [].forEach.call(items,function(e){e.addEventListener('dblclick',function(){location.href=play.getAttribute('href');});});
+  c.go=go;
 });
+// старые якоря (#formula и т.п.) ведут на слайд тезиса в карусели
+function hashSlide(){var a=location.hash&&document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if(!a||!a.dataset.slide)return;var c=a.parentNode.querySelector('.carousel');if(c&&c.go){c.go(+a.dataset.slide-1);c.scrollIntoView();}}
+window.addEventListener('hashchange',hashSlide);hashSlide();
 </script>"""
 
 
@@ -549,35 +576,65 @@ def members(a, theses):
     return [theses[i["id"]] for _, its in a["groups"] for i in its if i["id"] in theses]
 
 
+def anchors(meta):
+    """`anchors: formula=th01:2; numbers=цифры-и-статус-проверки` → {тезис: [(якорь, слайд)]}, {раздел: [якорь]}.
+
+    Сохраняет старые ссылки на страницу: якорь на слайд тезиса листает карусель, якорь на раздел — синоним.
+    """
+    to_slide, to_sec = {}, {}
+    for pair in split(meta.get("anchors")):
+        name, _, target = pair.partition("=")
+        tid, _, num = target.strip().partition(":")
+        if num:
+            to_slide.setdefault(tid, []).append((name.strip(), int(num)))
+        else:
+            to_sec.setdefault(target.strip(), []).append(name.strip())
+    return to_slide, to_sec
+
+
 def assembly_page(a, theses, links):
-    """Карточка сборки: оглавление и чистые слайды тезисов (индекс ведёт в карточку тезиса)."""
+    """Карточка сборки: разделы по порядку; группа — оглавление и карусели тезисов, текст — как есть."""
     ctx = Ctx(a["dir"], a["dir"], links)
     m = a["meta"]
-    toc, units = [], []
-    for gtitle, items in a["groups"]:
-        lis = []
-        for it in items:
+    to_slide, to_sec = anchors(m)
+    body = []
+    for kind, title, data in a["parts"]:
+        sid = slug(title)
+        alias = "".join(f'<span class="anchor" id="{esc(x)}"></span>' for x in to_sec.get(sid, []))
+        head = f'{alias}<h2 id="{sid}">{inline(title, ctx)}</h2>'
+        if kind == "text":
+            body.append(f'<div class="doc">{head}{md_html(data, ctx)}</div>')
+            continue
+        lis, units = [], []
+        for it in data:
             t = theses.get(it["id"])
             if t:
                 href = rel(t["out"], a["dir"])
                 lis.append(f'<li><a href="{href}"><code>{t["id"]}</code> {esc(t["title"])}</a> — '
                            f'{inline(t["meta"].get("formula", ""), ctx)}</li>')
                 tctx = Ctx(t["dir"], a["dir"], links, clean=True)
-                units.append(f'<div class="unit" id="{t["id"]}"><div class="unit-h"><h2><a href="{href}">'
-                             f'{t["id"]} · {esc(t["title"])}</a></h2><span class="fx">'
+                marks = "".join(f'<span class="anchor" id="{esc(x)}" data-slide="{n}"></span>'
+                                for x, n in to_slide.get(t["id"], []))
+                units.append(f'<div class="unit" id="{t["id"]}">{marks}<div class="unit-h"><h3><a href="{href}">'
+                             f'{t["id"]} · {esc(t["title"])}</a></h3><span class="fx">'
                              f'{inline(t["meta"].get("formula", ""), tctx)}</span></div>'
                              f'{carousel(t, tctx, t["out"])}</div>')
             else:
                 if it["id"]:
                     warn(f'{a["id"]}: тезис {it["id"]} не найден')
                 lis.append(f'<li class="planned">{inline(it["text"], ctx)} <span class="chk">планируется</span></li>')
-        toc.append(f"<h2>{inline(gtitle, ctx)}</h2><ol>{''.join(lis)}</ol>")
-    hero = (f'<div class="crumbs"><a href="../site/index.html">Тезисы</a> · сборки · {esc(a["id"])}</div>'
-            f'<div class="eyebrow">Карточка сборки · {esc(m.get("kind", ""))}</div><h1>{esc(a["title"])}</h1>'
+        body.append(f'<div class="doc">{head}<ol>{"".join(lis)}</ol></div>{"".join(units)}')
+    kind = m.get("kind", "")
+    parent, _, phref = m.get("parent", "").partition("|")
+    crumbs = (f'<a href="{esc(link_target(phref.strip(), ctx))}">{esc(parent.strip())}</a> · {esc(kind)}'
+              if parent else f'<a href="{rel(HERE / "index.html", a["dir"])}">Тезисы</a> · сборки')
+    hero = (f'<div class="crumbs">{crumbs} · {esc(a["id"])}</div>'
+            f'<div class="eyebrow">{"Кейс" if kind == "кейс" else "Карточка сборки · " + esc(kind)}</div>'
+            f'<h1>{esc(a["title"])}</h1>'
+            + (f'<div class="formula">{inline(m["formula"], ctx)}</div>' if m.get("formula") else "")
             + tags(m, ["frame"]) + tools(a["deck"], a["dir"], a["src"]))
-    main = (f'<div class="lead doc">{md_html(a["lead"], ctx, skip_quotes=True)}</div>'
-            f'<div class="doc">{"".join(toc)}</div>{"".join(units)}')
-    return page(f'{a["title"]} · сборка', hero, main)
+    main = f'<div class="lead doc">{md_html(a["lead"], ctx, skip_quotes=True)}</div>{"".join(body)}'
+    return page(f'{a["title"]} · {kind or "сборка"}', hero, main)
 
 
 def assembly_slides(a, theses, links):
@@ -737,7 +794,7 @@ def main():
         if t["id"] in theses:
             warn(f'{t["id"]}: повторяющийся id')
         theses[t["id"]] = t
-    assemblies = [load_assembly(p) for p in sorted(glob.glob(str(ROOT / "assemblies" / "*.md")))]
+    assemblies = [load_assembly(p) for p in sorted(glob.glob(str(ROOT / "assemblies" / "*.md"))) + case_sources()]
 
     links = {t["src"]: t["out"] for t in theses.values()}
     links.update({a["src"]: a["out"] for a in assemblies})
@@ -771,7 +828,7 @@ def main():
                 ";".join(t["id"] for t in members(a, theses)),
                 ";".join(plain(i["text"]) for _, its in a["groups"] for i in its if i["id"] not in theses),
                 a["meta"].get("status", ""), a["meta"].get("updated", ""),
-                a["src"].relative_to(ROOT).as_posix()] for a in assemblies])
+                rel(a["src"], ROOT)] for a in assemblies])
     print("csv  theses/catalog/theses.csv, theses/catalog/assemblies.csv")
 
     if want_pdf or want_pptx:
