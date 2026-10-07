@@ -10,6 +10,9 @@ registry/private/
 disciplines/**/source-private/
 disciplines/**/*.pptx
 
+# Экспорт тезисов (PDF, PPTX, кадры) — собирается из md: python theses/site/build.py --export
+theses/_export/
+
 # Временные файлы редакторов и ОС
 Thumbs.db
 desktop.ini

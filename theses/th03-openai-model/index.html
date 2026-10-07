@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<!-- Сгенерировано theses/site/build.py из md-источников. Не править руками: правьте md и пересоберите. -->
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>th03 · Модель бизнеса OpenAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+/* Единый стиль тезисов: страница, сборка, показ, печать в PDF, кадры для PPTX.
+   Палитра и шрифты — как у страниц кейсов дисциплины (cases/red-bull/index.html).
+   Build встраивает этот файл в каждую страницу, страницы самодостаточны. */
+:root{
+  --ink:#1B2038; --ink2:#272E52;
+  --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0;
+  --green:#2FA37A; --amber:#D9932B; --blue:#3E7BD6; --violet:#7A5AD9;
+  --disp:'Unbounded','Arial Black',sans-serif;
+  --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.5}
+a{color:var(--blue)}
+code{font-family:Consolas,monospace;font-size:.92em;background:var(--panel);border-radius:5px;padding:0 4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+/* ---------- шапка страницы ---------- */
+.hero{background:var(--ink);color:#fff;padding:44px 0 40px}
+.crumbs{font-size:13px;color:var(--ice);margin-bottom:18px}
+.crumbs a{color:var(--ice)}
+.eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:12px}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(24px,3.6vw,40px);line-height:1.15;max-width:980px}
+.hero .formula{margin-top:16px;font-size:clamp(16px,2vw,21px);color:var(--ice);max-width:900px;border-left:4px solid var(--coral);padding-left:16px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.tag{font-size:12px;font-weight:600;letter-spacing:.03em;background:var(--ink2);color:var(--ice);border-radius:8px;padding:4px 10px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.btn{font:600 14px var(--body);background:var(--coral);color:#fff;border:0;border-radius:10px;padding:9px 16px;cursor:pointer;text-decoration:none}
+.btn.ghost{background:transparent;border:1.5px solid var(--ice);color:var(--ice)}
+
+/* ---------- текст страницы ---------- */
+main{padding:36px 0 60px}
+.lead{font-size:17px;color:var(--grey);max-width:860px;margin-bottom:8px}
+.lead p+p{margin-top:8px}
+.doc h2{font-family:var(--disp);font-weight:700;font-size:24px;line-height:1.2;margin:44px 0 14px}
+.doc h3{font-family:var(--disp);font-weight:500;font-size:17px;margin:22px 0 8px}
+.doc p,.doc ul,.doc ol,.doc table,.doc blockquote,.doc pre{margin-bottom:12px;max-width:900px}
+.doc ul,.doc ol{padding-left:24px}
+.doc li{margin-bottom:4px}
+.doc blockquote{border-left:4px solid var(--coral);padding:4px 0 4px 16px;font-size:17px}
+.doc table{border-collapse:collapse;width:100%;max-width:none;font-size:14.5px;background:#fff}
+.doc th,.doc td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.doc th{background:var(--panel);font-weight:600}
+.doc pre{background:var(--panel);border-radius:10px;padding:12px 16px;overflow:auto;font-size:13px}
+.chk{display:inline-block;font-size:.72em;font-weight:600;letter-spacing:.03em;color:var(--amber);font-style:normal;
+  border:1.5px solid var(--amber);border-radius:6px;padding:0 .4em;margin-left:.2em;vertical-align:.1em;white-space:nowrap}
+
+/* подсветка утверждений «проверить»: только в карточке, в чистых слайдах тегов <mark> нет */
+mark{background:#FCEBCB;color:inherit;border-bottom:.15em solid var(--amber);border-radius:.2em;padding:0 .12em}
+.legend{font-size:14px;color:var(--grey);margin:6px 0 12px}
+
+.doc p img{max-width:min(100%,430px);border:1px solid var(--line);border-radius:8px;margin:0 10px 10px 0;vertical-align:top}
+.anchor{display:block;position:relative;top:-16px}
+
+/* ---------- лента слайдов на странице ---------- */
+/* карусель карточки: слайд уменьшен, рядом — показ, список слайдов, комментарий */
+.carousel{display:grid;grid-template-columns:minmax(0,640px) minmax(220px,1fr);gap:22px;align-items:start;margin:14px 0 8px;outline:none}
+.cr-stage{position:relative}
+.cr-item{display:none}
+.cr-item.on{display:block}
+.cr-item .slide{box-shadow:0 4px 16px rgba(27,32,56,.08);cursor:zoom-in}
+.cr-btn{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:1px solid var(--line);
+  background:rgba(255,255,255,.92);color:var(--ink);font:500 20px/1 var(--body);cursor:pointer;opacity:.75}
+.cr-btn:hover{opacity:1;border-color:var(--ink)}
+.cr-prev{left:-17px}.cr-next{right:-17px}
+.cr-side{display:flex;flex-direction:column;gap:12px;font-size:14.5px}
+.cr-play{align-self:flex-start}
+.cr-list{list-style:none;display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.cr-list li{display:flex;gap:10px;padding:7px 2px;border-bottom:1px solid var(--line);cursor:pointer;color:var(--grey)}
+.cr-list li b{font-family:var(--disp);font-weight:500;font-size:12px;color:var(--grey);min-width:16px;padding-top:2px}
+.cr-list li.on{color:var(--ink)}
+.cr-list li.on b{color:var(--coral)}
+.cr-cap{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--coral);margin-bottom:6px}
+.cr-note{display:none;color:var(--grey);font-size:14px}
+.cr-note.on{display:block}
+.cr-note p{margin-bottom:8px}
+.cr-note .empty{font-style:italic}
+@media (max-width:860px){.carousel{grid-template-columns:1fr}.cr-prev{left:6px}.cr-next{right:6px}}
+.deck{display:flex;flex-direction:column;gap:22px;margin:8px 0 10px}
+.unit{margin-top:40px}
+.unit-h{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;margin-bottom:12px}
+.unit-h h2,.unit-h h3{font-family:var(--disp);font-weight:700;font-size:22px;margin:0}
+.unit-h .fx{color:var(--grey);font-size:15px}
+.planned{color:var(--grey)}
+.notes{background:#fff;border:1px dashed var(--line);border-radius:12px;padding:12px 16px;font-size:14.5px;color:var(--grey);max-width:none}
+.notes summary{cursor:pointer;font-weight:600;color:var(--ink)}
+.notes[open] summary{margin-bottom:8px}
+.notes p+p{margin-top:8px}
+
+/* ---------- слайд 16:9; размеры внутри — в cqw, слайд масштабируется целиком ----------
+   Язык схем мастерской: тонкие линии (1px), пунктир, узлы-точки, стрелки, подписи капителью.
+   Никаких плашек с заливкой и толстых цветных полос. */
+.slide{position:relative;width:100%;aspect-ratio:16/9;container-type:inline-size;background:#fff center/cover no-repeat;
+  border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 8px 28px rgba(27,32,56,.08)}
+.s-in{position:absolute;inset:0;display:flex;flex-direction:column;padding:3.1cqw 4cqw 2.4cqw;font-size:1.5cqw;line-height:1.38}
+.s-top{display:flex;justify-content:space-between;align-items:baseline;font-size:.95cqw;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+.s-top .s-id{color:var(--coral);text-decoration:none}
+.s-top .s-id:hover{text-decoration:underline}
+.s-top .s-upd{color:var(--grey);letter-spacing:.06em;text-transform:none;font-weight:500}
+.s-head{display:flex;justify-content:space-between;align-items:flex-start;gap:3cqw;margin:1.2cqw 0 2cqw}
+.s-title{font-family:var(--disp);font-weight:700;font-size:2.9cqw;line-height:1.12}
+.s-logo{height:6.2cqw;width:auto;margin-top:-.4cqw;flex:none}
+.s-body{flex:1;display:flex;flex-direction:column;gap:1.5cqw;min-height:0}
+.s-body p,.s-body li{max-width:none}
+.s-body strong{font-weight:600}
+.s-body ul,.s-body ol{padding-left:2.2cqw;display:flex;flex-direction:column;gap:.6cqw}
+.s-body li::marker{color:var(--coral)}
+.s-body blockquote{border-left:1px solid var(--coral);padding:.2cqw 0 .2cqw 1.6cqw;font-size:1.75cqw;font-weight:500}
+.s-body table{border-collapse:collapse;width:100%;font-size:1.25cqw}
+.s-body th,.s-body td{border-bottom:1px solid var(--line);padding:.6cqw .8cqw;text-align:left;vertical-align:top}
+.s-body th{font-size:.95cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--coral);font-weight:600}
+.s-body img{max-width:100%;max-height:30cqw;object-fit:contain}
+.s-foot{display:flex;justify-content:space-between;font-size:.9cqw;color:var(--grey);border-top:1px solid var(--line);padding-top:.9cqw;margin-top:1.2cqw}
+
+/* раскладка columns: таблица → колонки на оси (заголовок «Название · подпись»).
+   Ось — тонкая линия со стрелкой, на ней узлы; колонки разделены волосяными линиями */
+.cols{position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;flex:1;min-height:0;padding-top:.6cqw}
+.cols::before{content:"";position:absolute;left:0;right:1.2cqw;top:1.25cqw;border-top:1px solid var(--ink)}
+.cols::after{content:"";position:absolute;right:0;top:.62cqw;border:.65cqw solid transparent;border-left:1.2cqw solid var(--ink);border-right:0}
+.col{position:relative;padding:0 2cqw 0 0}
+.col+.col{padding-left:2cqw;border-left:1px dashed var(--line)}
+.col-h{position:relative;padding-top:2.1cqw;margin-bottom:1.4cqw}
+.col-h::before{content:"";position:absolute;left:0;top:.2cqw;width:1.3cqw;height:1.3cqw;border-radius:50%;
+  background:#fff;border:1px solid var(--ink);box-sizing:border-box}
+.col+.col .col-h::before{left:0}
+.col:last-child .col-h::before{background:var(--coral);border-color:var(--coral)}
+.col-h b{display:block;font-family:var(--disp);font-weight:500;font-size:1.4cqw;line-height:1.2}
+.col-h span{display:block;font-size:.95cqw;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--coral);margin-top:.35cqw}
+.col ul{list-style:none;padding:0;gap:0;font-size:1.22cqw;line-height:1.35}
+.col li{padding:.65cqw 0;border-top:1px solid var(--line)}
+.col li:first-child{border-top:0;padding-top:0}
+
+/* раскладка timeline: та же ось, но по высоте содержимого и крупнее — для хронологий */
+.l-timeline .s-body{justify-content:center}
+.l-timeline .cols{flex:0 0 auto;padding-bottom:2cqw}
+.l-timeline .col-h b{font-size:2.6cqw}
+.l-timeline .col ul{font-size:1.5cqw}
+
+/* ```cycle: узлы — контурные овалы, стрелки — тонкие линии с подписью, обратная дуга — пунктир;
+   без обратной дуги — цепочка шагов */
+.s-body:has(.cycle){justify-content:center;gap:2.4cqw;padding-bottom:3cqw}
+.cycle{position:relative;margin:1cqw auto}
+.cycle.loop{width:78cqw;padding-bottom:4.6cqw}
+.loop .cy-node{width:17cqw;padding:1.1cqw 1.3cqw}
+.cycle.chain{width:100%}
+.cy-row{display:flex;align-items:center;justify-content:center}
+.cy-node{flex:none;width:14cqw;text-align:center;font-family:var(--disp);font-weight:500;font-size:1.5cqw;line-height:1.2;
+  border:1px solid var(--ink);border-radius:999px;padding:1.1cqw .8cqw;background:#fff;position:relative;z-index:1}
+.cy-node small{display:block;font-family:var(--body);font-weight:500;font-size:.95cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--coral);margin-top:.3cqw}
+.chain .cy-node{width:auto;flex:1 1 0;max-width:20cqw;border-radius:1.6cqw;font-size:1.3cqw;padding:1cqw 1.1cqw}
+.cy-arr{flex:1 1 4cqw;min-width:4cqw;position:relative;height:1px;background:var(--ink);margin:0 .5cqw 0 .3cqw}
+.chain .cy-arr{flex:0 0 9cqw}
+.cy-arr::after{content:"";position:absolute;right:-.2cqw;top:-.5cqw;border:.5cqw solid transparent;border-left:.9cqw solid var(--ink);border-right:0}
+.cy-arr i,.cy-back i{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;font-style:normal;
+  font-size:.95cqw;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--coral)}
+.cy-arr i{bottom:.8cqw}
+.chain .cy-arr i,.loop .cy-arr i{white-space:normal;width:8.4cqw;text-align:center;line-height:1.2}
+.loop .cy-arr i{width:13cqw}
+.cy-back{position:absolute;left:8.5cqw;right:8.5cqw;top:50%;height:calc(100% - 50% - .4cqw);
+  border:1px dashed var(--grey);border-top:0;border-radius:0 0 2cqw 2cqw}
+.cy-back::before{content:"";position:absolute;left:-.55cqw;top:-.2cqw;border:.5cqw solid transparent;border-bottom:.9cqw solid var(--grey);border-top:0}
+.cy-back i{bottom:-.75cqw;background:#fff;padding:0 .8cqw}
+
+/* раскладка photo: подложка-фото (<!-- bg: … -->), текст на затемнении, цифры строкой внизу */
+.slide.l-photo{background-color:var(--ink);color:#fff}
+.l-photo .s-in{background:linear-gradient(180deg,rgba(14,17,32,.72) 0%,rgba(14,17,32,0) 26%,rgba(14,17,32,0) 52%,rgba(14,17,32,.9) 82%)}
+.l-photo .s-top .s-upd,.l-photo .s-foot{color:var(--ice)}
+.l-photo .s-foot{border-color:rgba(220,230,245,.35)}
+.l-photo .s-body{justify-content:flex-end}
+.l-photo .s-body ul{list-style:none;padding:0;display:grid;grid-template-columns:repeat(6,1fr);gap:0}
+.l-photo .s-body li{padding:0 1.2cqw;border-left:1px solid rgba(220,230,245,.45);font-size:1.1cqw;line-height:1.3;color:var(--ice)}
+.l-photo .s-body li:first-child{border-left:0;padding-left:0}
+.l-photo .s-body li strong{display:block;white-space:nowrap;font-family:var(--disp);font-weight:500;font-size:1.85cqw;line-height:1.15;color:#fff;margin-bottom:.4cqw}
+.l-photo mark{background:rgba(217,147,43,.35);color:#fff}
+
+/* обложка сборки */
+.slide.cover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cover .s-title{font-size:4cqw;margin-top:auto}
+.cover .s-body{flex:0;margin-bottom:auto;color:var(--ice);font-size:1.6cqw}
+.cover .s-foot{color:var(--ice);border-color:var(--ink2)}
+.cover .s-top .s-upd{color:var(--ice)}
+.cover code{background:var(--ink2);color:var(--ice)}
+
+/* ---------- витрина ---------- */
+.u-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:4px 0 12px;position:sticky;top:0;background:var(--paper);padding:8px 0;z-index:5}
+.u-bar input,.u-bar select{font:14px var(--body);border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:#fff;color:var(--ink)}
+.u-bar input{flex:1;min-width:220px}
+.u-cnt{font-size:13px;color:var(--grey)}
+#units td{font-size:14px}
+#units td:first-child{white-space:nowrap}
+.u-sum{font-size:12.5px;color:var(--grey);margin-top:3px}
+.u-st{font-size:11.5px;font-weight:600;letter-spacing:.04em;border-radius:6px;padding:1px 7px;white-space:nowrap;border:1px solid}
+.u-ok{color:var(--green);border-color:var(--green)}
+.u-plan{color:var(--amber);border-color:var(--amber)}
+.u-cand{color:var(--grey);border-color:var(--line)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin:10px 0 20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.card .k{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--coral)}
+.card h3{font-family:var(--disp);font-weight:700;font-size:17px;line-height:1.25}
+.card .fx{color:var(--grey);font-size:14.5px}
+.card .meta{font-size:12.5px;color:var(--grey);margin-top:auto}
+
+/* ---------- страница чистых слайдов (slides.html) ---------- */
+body.deckpage{background:#151A30}
+.deckpage main{padding:28px 0}
+.deckpage .deck{align-items:center;gap:28px;margin:0}
+.deckpage .slide{width:min(calc(100vw - 56px),calc((100vh - 56px)*16/9));border:0;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.fab{position:fixed;right:16px;bottom:16px;display:flex;gap:8px;opacity:.35;transition:opacity .2s}
+.fab:hover{opacity:1}
+.fab button{font:600 15px var(--body);background:var(--ink2);color:#fff;border:0;border-radius:10px;padding:8px 12px;cursor:pointer}
+
+/* ---------- показ: ▶, F или двойной клик по слайду ---------- */
+body.present{background:#000;overflow:hidden}
+body.present > :not(.stage){display:none!important}
+.stage{display:none}
+body.present .stage{display:flex;position:fixed;inset:0;align-items:center;justify-content:center}
+body.present .stage .slide{width:min(100vw,calc(100vh*16/9));border-radius:0;border:0;box-shadow:none}
+
+/* ---------- один кадр для PNG/PPTX: ?frame=N ---------- */
+body.frame{background:var(--paper);overflow:hidden}
+body.frame > :not(.stage){display:none!important}
+body.frame .stage{display:block;position:fixed;inset:0}
+body.frame .stage .slide{width:100vw;height:100vh;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none}
+
+/* ---------- печать. Размер страницы 16:9 (@page) задаётся только на странице слайдов ---------- */
+@media print{
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tools,.stage,.fab,.cr-btn,.cr-play{display:none!important}
+  .carousel{grid-template-columns:1fr}
+  .cr-item{display:block;margin-bottom:12px}
+  .slide{break-inside:avoid}
+  body.deckpage{background:#fff}
+  .deckpage main{padding:0}
+  .deckpage .deck{gap:0}
+  .deckpage .slide{width:1280px;height:720px;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none;break-after:page;page-break-after:always}
+}
+</style></head>
+<body>
+<header class="hero"><div class="wrap">
+<div class="crumbs"><a href="../site/index.html">Тезисы</a> · th03 · <a href="../assemblies/pim-business-models.html">Постинформационные модели бизнеса</a></div><div class="eyebrow">Карточка тезиса · разбор · 3 сл.</div><h1>Модель бизнеса OpenAI</h1><div class="formula">Мы строим супермашину для трансформации всех глобальных рынков.</div><div class="tags"><span class="tag">ai-business</span><span class="tag">management</span><span class="tag">bm05</span><span class="tag">bm13</span><span class="tag">m01</span><span class="tag">c18</span><span class="tag">c28</span><span class="tag">c26</span></div><div class="tags"><span class="tag">черновик · v0.1 · обновлено 2026-10-07 23:33</span></div><div class="tools"><a class="btn" href="slides.html">▶ Слайды</a><a class="btn ghost" href="slides.html?print">⎙ PDF</a><a class="btn ghost" href="https://github.com/SPBUEcon/econ-library/blob/main/theses/th03-openai-model/README.md">md-источник</a></div>
+</div></header>
+<main><div class="wrap">
+<div class="lead doc"><p>OpenAI как «архитектор новых рынков» и модель гиперигрока (<code>c18</code>): совокупный охват «весь мир», ИТ- инфраструктура и финансовое плечо складываются в машину трансформации рынков. Тезис показывает модель по трём укладам, путь компании и денежную машину ИИ вокруг неё. Входит в серию <a href="../assemblies/pim-business-models.html">«Постинформационные модели бизнеса»</a>.</p></div><p class="legend"><mark>Подсвечено</mark> то, что нужно проверить: список — в разделе <a href="#что-проверить">«Что проверить»</a>. В <a href="slides.html">слайдах</a> подсветки нет.</p><div class="carousel" data-n="3"><div class="cr-stage"><div class="cr-item on"><section class="slide l-columns"><div class="s-in"><div class="s-top"><a class="s-id" href="slides.html" data-pages="https://spbuecon.github.io/econ-library/theses/th03-openai-model/slides.html">th03 · Модель бизнеса OpenAI</a><span class="s-upd">обновлено 2026-10-07 23:33</span></div><div class="s-head"><h2 class="s-title">OpenAI по трём укладам</h2><img class="s-logo" src="assets/openai-logo.png" alt=""></div><div class="s-body"><div class="cols"><div class="col"><div class="col-h"><b>Индустриальный</b><span>считает</span></div><ul><li>Совокупный охват клиентов — <mark>800 млн человек</mark> по всему миру</li></ul></div><div class="col"><div class="col-h"><b>Информационный</b><span>анализирует</span></div><ul><li>Создание экосистемы экосистем</li></ul></div><div class="col"><div class="col-h"><b>Постинформационный</b><span>собирает</span></div><ul><li>Трансформация всех глобальных рынков</li><li>Участие в прорывных стартапах с чемпионами мира</li><li>Управление замыслами через сеть архитекторов</li><li>Хостинг сети суперкоманд</li></ul></div></div>
+<p><strong>Формула:</strong> мы строим экосистему экосистем с совокупным охватом клиентов в весь мир, ИТ-инфраструктурой по всему миру, огромным финансовым плечом. Мы строим супермашину для трансформации всех глобальных рынков.</p></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>1 / 3</span></div></div></section></div><div class="cr-item"><section class="slide l-timeline"><div class="s-in"><div class="s-top"><a class="s-id" href="slides.html" data-pages="https://spbuecon.github.io/econ-library/theses/th03-openai-model/slides.html">th03 · Модель бизнеса OpenAI</a><span class="s-upd">обновлено 2026-10-07 23:33</span></div><div class="s-head"><h2 class="s-title">Путь OpenAI</h2><img class="s-logo" src="assets/openai-logo.png" alt=""></div><div class="s-body"><div class="cols"><div class="col"><div class="col-h"><b>2015</b></div><ul><li>Илон Маск, Питер Тиль, Сэм Альтман, Amazon</li></ul></div><div class="col"><div class="col-h"><b>2018–19</b></div><ul><li>Microsoft — <mark>$1 млрд</mark></li></ul></div><div class="col"><div class="col-h"><b>2022–23</b></div><ul><li>Бум генеративного ИИ</li></ul></div><div class="col"><div class="col-h"><b>2023</b></div><ul><li>Microsoft — <mark>$10 млрд</mark></li></ul></div></div></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>2 / 3</span></div></div></section></div><div class="cr-item"><section class="slide"><div class="s-in"><div class="s-top"><a class="s-id" href="slides.html" data-pages="https://spbuecon.github.io/econ-library/theses/th03-openai-model/slides.html">th03 · Модель бизнеса OpenAI</a><span class="s-upd">обновлено 2026-10-07 23:33</span></div><div class="s-head"><h2 class="s-title">Денежная машина ИИ</h2></div><div class="s-body"><div class="cycle loop"><div class="cy-row"><span class="cy-node">OpenAI<small>$500 млрд</small></span><span class="cy-arr"><i>облако за $300 млрд</i></span><span class="cy-node">Oracle</span><span class="cy-arr"><i>десятки млрд на чипы</i></span><span class="cy-node">Nvidia<small>$4,5 трлн</small></span></div><div class="cy-back"><i>до $100 млрд инвестиций</i></div></div>
+<ul><li><strong>AMD:</strong> <mark>6 ГВт GPU для OpenAI</mark>, опцион OpenAI на покупку <mark>до 160 млн акций AMD</mark></li><li><strong>Суперкоманды:</strong> Cognition — четыре чемпиона мира ICPC, включая Геннадия Короткевича (ИТМО), капитализация <mark>$10 млрд</mark>; лид-инвестор — Founders Fund</li><li><strong>Государство:</strong> комиссия Конгресса США, 2024 — первая рекомендация: <mark>программа уровня «Манхэттенского проекта» для гонки за AGI</mark></li></ul></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>3 / 3</span></div></div></section></div><button class="cr-btn cr-prev" aria-label="Предыдущий слайд">‹</button><button class="cr-btn cr-next" aria-label="Следующий слайд">›</button></div><aside class="cr-side"><a class="btn cr-play" href="slides.html?present=1" data-play="slides.html">▶ Показ</a><ol class="cr-list"><li class="on"><b>1</b>OpenAI по трём укладам</li><li class=""><b>2</b>Путь OpenAI</li><li class=""><b>3</b>Денежная машина ИИ</li></ol><div class="cr-notes"><div class="cr-cap">Комментарий к слайду</div><div class="cr-note doc on"><p>Слайд почти пустой слева и плотный справа — и это часть тезиса. Индустриальный слой OpenAI — охват, то есть масштаб, информационный — экосистема. Основное содержание модели — в постинформационной колонке: OpenAI не продаёт продукт, а собирает рынки через сеть архитекторов, стартапов и суперкоманд (<code>c28</code>).</p>
+<p>Формула совпадает с моделью гиперигрока (<code>c18</code>): охват «весь мир» + ИТ-инфраструктура + финансовое плечо = машина трансформации всех глобальных рынков. Та же модель — у Сбера (<code>th04</code>).</p></div><div class="cr-note doc"><p>Четыре шага: команда и замысел, первый крупный капитал, выход на массовый рынок, капитал на порядок больше.</p></div><div class="cr-note doc"><p>Денежные потоки замыкаются: OpenAI покупает облачные мощности у Oracle, Oracle покупает чипы у Nvidia, Nvidia инвестирует в OpenAI. Капитализация участников растёт вместе с контрактами друг с другом — это и есть «огромное финансовое плечо» из формулы. Схема на слайде автора — карта Bloomberg News «How Nvidia and OpenAI Fuel the AI Money Machine»; здесь из неё оставлен главный цикл.</p>
+<p>Вокруг цикла — две опоры. Суперкоманды (<code>c28</code>): чемпионы ICPC как неотчуждаемый ресурс, вокруг которого собирается капитал (<code>bm13</code>). Государство: AGI как цель национального уровня. Вопрос 3 — что из этого устойчиво, а что держится на ожиданиях.</p></div></div></aside></div><div class="doc"><h2 id="вопросы">Вопросы</h2><ol><li>Разберите OpenAI по трём укладам и сформулируйте ключевой переход (<a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/questions.csv"><code>q17</code></a>).</li><li>Чем «экосистема экосистем» отличается от экосистемы одной компании? Приведите пример рынка, который OpenAI трансформирует, не работая на нём напрямую.</li><li>Денежная машина замкнута: деньги ходят между OpenAI, Oracle и Nvidia. Что произойдёт с циклом, если один из участников остановится? Что в нём реальная стоимость, а что ожидания?</li><li>Сравните формулы OpenAI и Сбера (<code>th04</code>): что общего в модели гиперигрока и в чём различие?</li><li>Зачем компании-архитектору суперкоманды вроде Cognition, если у неё есть свои инженеры?</li></ol><h2 id="задания">Задания</h2><table><thead><tr><th>Задание</th><th>Что сделать</th></tr></thead><tbody><tr><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/tpl01-company-three-uklads.md"><code>tpl01</code> Разбор компании по трём укладам</a></td><td>Вариант <code>company = OpenAI (bm05)</code>: проверить тезисы слайдов по первоисточникам и собрать разбор</td></tr></tbody></table>
+<h4 id="что-проверить">Что проверить</h4>
+<p>Утверждения взяты из авторской презентации и по первоисточникам не проверены. В карточке они подсвечены на слайдах, в чистых слайдах подсветки нет. Цифры ИИ-рынка меняются быстро: у каждой — дата, на которую она верна.</p>
+<table><thead><tr><th>Утверждение</th><th>Слайд</th><th>Статус</th><th>Что уточнить</th></tr></thead><tbody><tr><td>Совокупный охват 800 млн человек</td><td>1</td><td>не проверено</td><td>Чья метрика (еженедельные активные пользователи?), на какую дату, заявление компании или оценка</td></tr><tr><td>Состав основателей 2015: Маск, Тиль, Альтман, Amazon</td><td>2</td><td>не проверено</td><td>Сверить с анонсом основания OpenAI (декабрь 2015): кто был сооснователем, а кто спонсором</td></tr><tr><td>Microsoft $1 млрд (2018–19) и $10 млрд (2023)</td><td>2</td><td>не проверено</td><td>Объявления Microsoft и OpenAI, даты и форма инвестиций</td></tr><tr><td>Оценки OpenAI $500 млрд, Nvidia $4,5 трлн, Microsoft $3,9 трлн</td><td>3</td><td>не проверено</td><td>По карте Bloomberg News; на какую дату</td></tr><tr><td>Сделка с Oracle $300 млрд; Nvidia — до $100 млрд в OpenAI</td><td>3</td><td>не проверено</td><td>Первоисточник — объявления компаний; сроки и условия</td></tr><tr><td>AMD: 6 ГВт GPU, опцион до 160 млн акций</td><td>3</td><td>не проверено</td><td>Объявление AMD и OpenAI</td></tr><tr><td>Cognition: четыре чемпиона ICPC, капитализация $10 млрд, лид-инвестор Founders Fund</td><td>3</td><td>не проверено</td><td>Раунд и оценка, дата; состав основателей</td></tr><tr><td>Комиссия Конгресса США, 2024: программа уровня «Манхэттенского проекта» для AGI</td><td>3</td><td>не проверено</td><td>Какая комиссия и её годовой доклад 2024, номер рекомендации</td></tr></tbody></table><h2 id="связи">Связи</h2><ul><li><strong>Опирается на:</strong> три уклада (<code>m01</code>), модель гиперигрока / экосистема экосистем (<code>c18</code>), суперзадачи — суперкоманды — штаб (<code>c28</code>), главный архитектор (<code>c26</code>) — <a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/README.md">каталог дисциплины</a>.</li><li><strong>Объекты каталога:</strong> <code>bm05</code> (модель бизнеса), <code>bm13</code> (стартап чемпионов ICPC).</li><li><strong>Входит в сборки:</strong> серия <a href="../assemblies/pim-business-models.html">«Постинформационные модели бизнеса»</a>.</li><li><strong>Связан с:</strong> <code>th04</code> Сбер — та же модель гиперигрока.</li></ul><h2 id="источники">Источники</h2><ul><li>Хан Д. Авторские презентации курса (деки <code>s-ingos-transform</code>, <code>s-frontier-21-01</code>, <code>s-digital</code>), 2025–2026. Приватные. Слайды «OpenAI» (три уклада, путь компании, денежная машина ИИ), версия 2026-10-07 (переданы автором в рабочей сессии).</li><li>Bloomberg News. How Nvidia and OpenAI Fuel the AI Money Machine — схема на слайде автора; год, ссылка и дата обращения — уточнить.</li><li>Логотип OpenAI — из слайда автора, используется для разбора кейса в учебных целях; товарный знак принадлежит OpenAI.</li></ul>
+<p>Тезис собран с помощью ИИ-ассистента по слайдам автора и требует ревью автора (<a href="https://github.com/SPBUEcon/econ-library/blob/main/rules/ai-usage.md"><code>rules/ai-usage.md</code></a>).</p></div>
+</div></main>
+<script>
+[].forEach.call(document.querySelectorAll('.carousel'),function(c){
+  var items=c.querySelectorAll('.cr-item'),li=c.querySelectorAll('.cr-list li'),notes=c.querySelectorAll('.cr-note'),
+      play=c.querySelector('.cr-play'),i=0;
+  function go(k){i=(k+items.length)%items.length;
+    [items,li,notes].forEach(function(l){[].forEach.call(l,function(e,j){e.classList.toggle('on',j===i);});});
+    play.setAttribute('href',play.dataset.play+'?present='+(i+1));}
+  var p=c.querySelector('.cr-prev'),n=c.querySelector('.cr-next');
+  if(p)p.onclick=function(){go(i-1);}; if(n)n.onclick=function(){go(i+1);};
+  [].forEach.call(li,function(e,j){e.onclick=function(){go(j);};});
+  c.tabIndex=0;
+  c.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){go(i+1);e.preventDefault();}
+    else if(e.key==='ArrowLeft'){go(i-1);e.preventDefault();}});
+  [].forEach.call(items,function(e){e.addEventListener('dblclick',function(){location.href=play.getAttribute('href');});});
+  c.go=go;
+});
+// старые якоря (#formula и т.п.) ведут на слайд тезиса в карусели
+function hashSlide(){var a=location.hash&&document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if(!a||!a.dataset.slide)return;var c=a.parentNode.querySelector('.carousel');if(c&&c.go){c.go(+a.dataset.slide-1);c.scrollIntoView();}}
+window.addEventListener('hashchange',hashSlide);hashSlide();
+</script>
+</body></html>
