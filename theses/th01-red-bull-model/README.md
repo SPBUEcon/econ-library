@@ -4,6 +4,7 @@ title: Модель бизнеса Red Bull
 formula: Напиток финансирует медиа, медиа продвигает бренд, бренд продаёт напиток.
 kind: разбор
 blocks: transition; ai-business
+covers: bm01; ca08
 refs: bm01; ca08; m01; c01; c19; c23; m02
 questions: q17
 assignments: rb-02; tpl07

@@ -4,6 +4,7 @@ title: Название тезиса
 formula: Одна фраза, в которой вся мысль тезиса.
 kind: рамка / разбор / шаг / данные
 blocks: transition
+covers: bm01
 refs: c01; bm01
 questions: q01
 assignments: tpl01
