@@ -366,6 +366,7 @@ DECK_SCRIPT = """<script>
   function start(k){document.body.classList.add('present');show(k||0);
     if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(function(){});}
   function stop(){document.body.classList.remove('present');if(document.fullscreenElement)document.exitFullscreen();}
+  if(q.has('present'))start((+q.get('present')||1)-1);
   function current(){var k=0;slides.forEach(function(s,j){if(s.getBoundingClientRect().top<innerHeight/2)k=j;});return k;}
   [].forEach.call(document.querySelectorAll('[data-present]'),function(b){b.onclick=function(){start(current());};});
   [].forEach.call(document.querySelectorAll('[data-print]'),function(b){b.onclick=function(){window.print();};});
@@ -376,6 +377,7 @@ DECK_SCRIPT = """<script>
       if(['f','F','а','А'].indexOf(e.key)>=0&&!e.ctrlKey&&!e.metaKey)start(current());return;}
     if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].indexOf(e.key)>=0){show(i+1);e.preventDefault();}
     else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].indexOf(e.key)>=0){show(i-1);e.preventDefault();}
+    else if(['f','F','а','А'].indexOf(e.key)>=0&&!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});
     else if(e.key==='Escape')stop();});
   document.addEventListener('fullscreenchange',function(){if(!document.fullscreenElement)document.body.classList.remove('present');});
 })();
@@ -404,6 +406,7 @@ def page(title, hero, main):
 <main><div class="wrap">
 {main}
 </div></main>
+{CARD_SCRIPT}
 </body></html>
 """
 
@@ -466,6 +469,45 @@ def slides_seq(t, ctx, link, notes=False, start=0, total=None):
     return "\n".join(h)
 
 
+def carousel(t, ctx, link, notes=False):
+    """Компактная лента для карточки: один слайд на виду, ‹ ›, список слайдов, ▶ — показ с текущего слайда."""
+    n = len(t["slides"])
+    play = rel(t["deck"], ctx.out_dir)
+    track = "".join(f'<div class="cr-item{" on" if k == 0 else ""}">{slide_html(t, k, ctx, link, k + 1, n)}</div>'
+                    for k in range(n))
+    nav = ('<button class="cr-btn cr-prev" aria-label="Предыдущий слайд">‹</button>'
+           '<button class="cr-btn cr-next" aria-label="Следующий слайд">›</button>') if n > 1 else ""
+    items = "".join(f'<li class="{"on" if k == 0 else ""}"><b>{k + 1}</b>{inline(s["title"], ctx)}</li>'
+                    for k, s in enumerate(t["slides"]))
+    com = ""
+    if notes:
+        com = "".join(f'<div class="cr-note doc{" on" if k == 0 else ""}">'
+                      + (md_html(s["notes"], ctx) if s["notes"] else '<p class="empty">Комментария нет.</p>') + "</div>"
+                      for k, s in enumerate(t["slides"]))
+        com = f'<div class="cr-notes"><div class="cr-cap">Комментарий к слайду</div>{com}</div>'
+    return (f'<div class="carousel" data-n="{n}"><div class="cr-stage">{track}{nav}</div>'
+            f'<aside class="cr-side"><a class="btn cr-play" href="{play}?present=1" data-play="{play}">▶ Показ</a>'
+            f'<ol class="cr-list">{items}</ol>{com}</aside></div>')
+
+
+CARD_SCRIPT = """<script>
+[].forEach.call(document.querySelectorAll('.carousel'),function(c){
+  var items=c.querySelectorAll('.cr-item'),li=c.querySelectorAll('.cr-list li'),notes=c.querySelectorAll('.cr-note'),
+      play=c.querySelector('.cr-play'),i=0;
+  function go(k){i=(k+items.length)%items.length;
+    [items,li,notes].forEach(function(l){[].forEach.call(l,function(e,j){e.classList.toggle('on',j===i);});});
+    play.setAttribute('href',play.dataset.play+'?present='+(i+1));}
+  var p=c.querySelector('.cr-prev'),n=c.querySelector('.cr-next');
+  if(p)p.onclick=function(){go(i-1);}; if(n)n.onclick=function(){go(i+1);};
+  [].forEach.call(li,function(e,j){e.onclick=function(){go(j);};});
+  c.tabIndex=0;
+  c.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){go(i+1);e.preventDefault();}
+    else if(e.key==='ArrowLeft'){go(i-1);e.preventDefault();}});
+  [].forEach.call(items,function(e){e.addEventListener('dblclick',function(){location.href=play.getAttribute('href');});});
+});
+</script>"""
+
+
 def tags(meta, keys):
     out = []
     for k in keys:
@@ -491,7 +533,7 @@ def thesis_page(t, links, member_of):
                   '<a href="#что-проверить">«Что проверить»</a>. В <a href="slides.html">слайдах</a> '
                   'подсветки нет.</p>')
     main = (f'<div class="lead doc">{md_html(t["lead"], ctx, skip_quotes=True)}</div>{legend}'
-            f'<div class="deck">{slides_seq(t, ctx, t["deck"], notes=True)}</div>'
+            + carousel(t, ctx, t["deck"], notes=True)
             + '<div class="doc">' + "".join(f'<h2 id="{slug(title)}">{inline(title, ctx)}</h2>{md_html(md, ctx)}'
                                             for title, md in t["sections"]) + "</div>")
     return page(f'{t["id"]} · {t["title"]}', hero, main)
@@ -524,7 +566,7 @@ def assembly_page(a, theses, links):
                 units.append(f'<div class="unit" id="{t["id"]}"><div class="unit-h"><h2><a href="{href}">'
                              f'{t["id"]} · {esc(t["title"])}</a></h2><span class="fx">'
                              f'{inline(t["meta"].get("formula", ""), tctx)}</span></div>'
-                             f'<div class="deck">{slides_seq(t, tctx, t["out"])}</div></div>')
+                             f'{carousel(t, tctx, t["out"])}</div>')
             else:
                 if it["id"]:
                     warn(f'{a["id"]}: тезис {it["id"]} не найден')
