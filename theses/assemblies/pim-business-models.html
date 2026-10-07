@@ -53,6 +53,10 @@ main{padding:36px 0 60px}
 .chk{display:inline-block;font-size:.72em;font-weight:600;letter-spacing:.03em;color:var(--amber);font-style:normal;
   border:1.5px solid var(--amber);border-radius:6px;padding:0 .4em;margin-left:.2em;vertical-align:.1em;white-space:nowrap}
 
+/* подсветка утверждений «проверить»: только в карточке, в чистых слайдах тегов <mark> нет */
+mark{background:#FCEBCB;color:inherit;border-bottom:.15em solid var(--amber);border-radius:.2em;padding:0 .12em}
+.legend{font-size:14px;color:var(--grey);margin:6px 0 12px}
+
 /* ---------- лента слайдов на странице ---------- */
 .deck{display:flex;flex-direction:column;gap:22px;margin:8px 0 10px}
 .unit{margin-top:40px}
@@ -69,8 +73,10 @@ main{padding:36px 0 60px}
 .slide{position:relative;width:100%;aspect-ratio:16/9;container-type:inline-size;background:var(--paper);
   border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 8px 28px rgba(27,32,56,.08)}
 .s-in{position:absolute;inset:0;display:flex;flex-direction:column;padding:3.1cqw 4cqw 2.4cqw;font-size:1.5cqw;line-height:1.38}
-.s-top{display:flex;justify-content:space-between;font-size:.95cqw;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--coral)}
-.s-top .n{color:var(--grey)}
+.s-top{display:flex;justify-content:space-between;align-items:baseline;font-size:.95cqw;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+.s-top .s-id{color:var(--coral);text-decoration:none}
+.s-top .s-id:hover{text-decoration:underline}
+.s-top .s-upd{color:var(--grey);letter-spacing:.06em;text-transform:none;font-weight:500}
 .s-title{font-family:var(--disp);font-weight:700;font-size:2.9cqw;line-height:1.12;margin:1.2cqw 0 1.6cqw}
 .s-body{flex:1;display:flex;flex-direction:column;gap:1.3cqw;min-height:0}
 .s-body p,.s-body li{max-width:none}
@@ -99,6 +105,7 @@ main{padding:36px 0 60px}
 .cover .s-title{font-size:4cqw;margin-top:auto}
 .cover .s-body{flex:0;margin-bottom:auto;color:var(--ice);font-size:1.6cqw}
 .cover .s-foot{color:var(--ice);border-color:var(--ink2)}
+.cover .s-top .s-upd{color:var(--ice)}
 .cover code{background:var(--ink2);color:var(--ice)}
 
 /* ---------- витрина ---------- */
@@ -109,66 +116,49 @@ main{padding:36px 0 60px}
 .card .fx{color:var(--grey);font-size:14.5px}
 .card .meta{font-size:12.5px;color:var(--grey);margin-top:auto}
 
-/* ---------- режим показа ---------- */
+/* ---------- страница чистых слайдов (slides.html) ---------- */
+body.deckpage{background:#151A30}
+.deckpage main{padding:28px 0}
+.deckpage .deck{align-items:center;gap:28px;margin:0}
+.deckpage .slide{width:min(calc(100vw - 56px),calc((100vh - 56px)*16/9));border:0;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.fab{position:fixed;right:16px;bottom:16px;display:flex;gap:8px;opacity:.35;transition:opacity .2s}
+.fab:hover{opacity:1}
+.fab button{font:600 15px var(--body);background:var(--ink2);color:#fff;border:0;border-radius:10px;padding:8px 12px;cursor:pointer}
+
+/* ---------- показ: ▶, F или двойной клик по слайду ---------- */
 body.present{background:#000;overflow:hidden}
 body.present > :not(.stage){display:none!important}
 .stage{display:none}
 body.present .stage{display:flex;position:fixed;inset:0;align-items:center;justify-content:center}
 body.present .stage .slide{width:min(100vw,calc(100vh*16/9));border-radius:0;border:0;box-shadow:none}
 
-/* ---------- один кадр (для PNG/PPTX): ?frame=N ---------- */
+/* ---------- один кадр для PNG/PPTX: ?frame=N ---------- */
 body.frame{background:var(--paper);overflow:hidden}
 body.frame > :not(.stage){display:none!important}
 body.frame .stage{display:block;position:fixed;inset:0}
 body.frame .stage .slide{width:100vw;height:100vh;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none}
 
-/* ---------- печать: только слайды, один слайд — одна страница 16:9 ---------- */
-@page{size:1280px 720px;margin:0}
+/* ---------- печать. Размер страницы 16:9 (@page) задаётся только на странице слайдов ---------- */
 @media print{
-  body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  body > :not(main){display:none!important}
-  main{padding:0}
-  main .wrap{max-width:none;padding:0}
-  main > .wrap > :not(.deck):not(.unit){display:none!important}
-  .unit{margin:0}
-  .unit > :not(.deck){display:none!important}
-  .deck{gap:0;margin:0}
-  .deck > :not(.slide){display:none!important}
-  .slide{width:1280px;height:720px;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none;break-after:page;page-break-after:always}
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tools,.stage,.fab{display:none!important}
+  .slide{break-inside:avoid}
+  body.deckpage{background:#fff}
+  .deckpage main{padding:0}
+  .deckpage .deck{gap:0}
+  .deckpage .slide{width:1280px;height:720px;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none;break-after:page;page-break-after:always}
 }
 </style></head>
 <body>
 <header class="hero"><div class="wrap">
-<div class="crumbs"><a href="../site/index.html">Тезисы</a> · сборки · pim-business-models</div><div class="eyebrow">Сборка · серия</div><h1>Постинформационные модели бизнеса</h1><div class="tags"><span class="tag">m01</span><span class="tag">c01</span><span class="tag">c19</span></div><div class="tools"><button class="btn" data-present>▶ Показать</button><button class="btn ghost" data-print>⎙ Печать / PDF</button><a class="btn ghost" href="https://github.com/SPBUEcon/econ-library/blob/main/theses/assemblies/pim-business-models.md">md-источник</a></div>
+<div class="crumbs"><a href="../site/index.html">Тезисы</a> · сборки · pim-business-models</div><div class="eyebrow">Карточка сборки · серия</div><h1>Постинформационные модели бизнеса</h1><div class="tags"><span class="tag">m01</span><span class="tag">c01</span><span class="tag">c19</span></div><div class="tools"><a class="btn" href="pim-business-models-slides.html">▶ Слайды</a><a class="btn ghost" href="pim-business-models-slides.html?print">⎙ PDF</a><a class="btn ghost" href="https://github.com/SPBUEcon/econ-library/blob/main/theses/assemblies/pim-business-models.md">md-источник</a></div>
 </div></header>
 <main><div class="wrap">
 <div class="lead doc"><p>Серия разборов компаний в одной рамке: три уклада (<code>m01</code>), воронка · лейка · хлопушка (<code>c01</code>) и ключевой переход (<code>c19</code>). Каждый разбор — отдельный тезис на 1–3 слайда с формулой компании. Вместе они дают ряд сравнимых моделей: что компания реально производит (товар, смысл или рынок) и каким ходом пришла к постинформационному укладу.</p>
-<p>Пункты без <code>th</code>-номера ещё не собраны в тезисы. Источник для них — строки <a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/business-models.csv"><code>business-models.csv</code></a>, а собрать тезис можно в рамках задания <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/tpl01-company-three-uklads.md"><code>tpl01</code></a>.</p></div><div class="doc"><h2>Разборы</h2><ol><li><a href="../th01-red-bull-model/index.html"><code>th01</code> Модель бизнеса Red Bull</a> — Напиток финансирует медиа, медиа продвигает бренд, бренд продаёт напиток.</li><li class="planned">Patagonia (<code>bm06</code>): этический эталон <span class="chk">планируется</span></li><li class="planned">Loro Piana (<code>bm10</code>): культурный дизрапт <span class="chk">планируется</span></li><li class="planned">Como 1907 (<code>bm04</code>): правило трёх доменов <span class="chk">планируется</span></li><li class="planned">OpenAI (<code>bm05</code>): архитектор рынков <span class="chk">планируется</span></li></ol></div><div class="deck"><section class="slide cover"><div class="s-in"><div class="s-top"><span>серия</span><span class="n">pim-business-models</span></div><h2 class="s-title">Постинформационные модели бизнеса</h2><div class="s-body"><ol><li>Модель бизнеса Red Bull</li><li style="opacity:.55">Patagonia (<code>bm06</code>): этический эталон</li><li style="opacity:.55">Loro Piana (<code>bm10</code>): культурный дизрапт</li><li style="opacity:.55">Como 1907 (<code>bm04</code>): правило трёх доменов</li><li style="opacity:.55">OpenAI (<code>bm05</code>): архитектор рынков</li></ol></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>2026-10-07</span></div></div></section></div><div class="unit" id="th01"><div class="unit-h"><h2><a href="../th01-red-bull-model/index.html">th01 · Модель бизнеса Red Bull</a></h2><span class="fx">Напиток финансирует медиа, медиа продвигает бренд, бренд продаёт напиток.</span></div><div class="deck"><section class="slide l-columns"><div class="s-in"><div class="s-top"><span>th01 · Модель бизнеса Red Bull</span><span class="n">1 / 2</span></div><h2 class="s-title">Red Bull по трём укладам</h2><div class="s-body"><blockquote><p><strong>Напиток финансирует медиа, медиа продвигает бренд, бренд продаёт напиток.</strong></p></blockquote>
-<div class="cols"><div class="col"><div class="col-h">Индустриальный<span>считает</span></div><ul><li>Массовое производство энергетика</li><li>Логистика и дистрибуция</li><li>Оборот больше 11 млрд долл. <span class="chk">проверить</span></li></ul></div><div class="col"><div class="col-h">Информационный<span>анализирует</span></div><ul><li>Бренд, ценности, работа с комьюнити</li><li>«Red Bull окрыляет»: молодые, активные</li><li>Медиаимперия: 35 % выручки в маркетинг <span class="chk">проверить</span>, Red Bull TV, звукозапись</li><li>Клубы RB Leipzig и RB Salzburg, команда F1</li></ul></div><div class="col"><div class="col-h">Постинформационный<span>собирает</span></div><ul><li>Экосистема и образ жизни: экстремальный спорт</li><li>Свои форматы: Red Bull BC One, клифф-дайвинг, байк</li><li>Точечные разрывные события: Red Bull Flugtag</li><li>События двигают смежные ниши и сложные технологии</li></ul></div></div>
-<p><strong>Ключевой переход:</strong> от продажи товара и наполнения бренда к экосистеме, где продукт лишь входная дверь в мир экстрима.</p></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>v0.1</span></div></div></section>
-<section class="slide"><div class="s-in"><div class="s-top"><span>th01 · Модель бизнеса Red Bull</span><span class="n">2 / 2</span></div><h2 class="s-title">Red Bull Stratos: хлопушка в действии</h2><div class="s-body"><ul><li>Рекорды высоты и скорости свободного падения</li><li>5 лет подготовки, уникальные технологии</li><li>Стоимость проекта ~50 млн долл. <span class="chk">проверить</span></li><li>7 % роста компании, продажи до 6 млрд долл. <span class="chk">проверить</span></li><li>Медийный охват 5 млрд <span class="chk">проверить</span></li></ul>
-<blockquote><p>Одно точечное событие с планетарным охватом. Импульс-рекорд даёт «осколки»: внимание, продажи, интерес к технологиям и к самому экстриму.</p></blockquote></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>v0.1</span></div></div></section></div></div>
+<p>Пункты без <code>th</code>-номера ещё не собраны в тезисы. Источник для них — строки <a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/business-models.csv"><code>business-models.csv</code></a>, а собрать тезис можно в рамках задания <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/tpl01-company-three-uklads.md"><code>tpl01</code></a>.</p></div><div class="doc"><h2>Разборы</h2><ol><li><a href="../th01-red-bull-model/index.html"><code>th01</code> Модель бизнеса Red Bull</a> — Напиток финансирует медиа, медиа продвигает бренд, бренд продаёт напиток.</li><li class="planned">Patagonia (<code>bm06</code>): этический эталон <span class="chk">планируется</span></li><li class="planned">Loro Piana (<code>bm10</code>): культурный дизрапт <span class="chk">планируется</span></li><li class="planned">Como 1907 (<code>bm04</code>): правило трёх доменов <span class="chk">планируется</span></li><li class="planned">OpenAI (<code>bm05</code>): архитектор рынков <span class="chk">планируется</span></li></ol></div><div class="unit" id="th01"><div class="unit-h"><h2><a href="../th01-red-bull-model/index.html">th01 · Модель бизнеса Red Bull</a></h2><span class="fx">Напиток финансирует медиа, медиа продвигает бренд, бренд продаёт напиток.</span></div><div class="deck"><section class="slide l-columns"><div class="s-in"><div class="s-top"><a class="s-id" href="../th01-red-bull-model/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th01-red-bull-model/index.html">th01 · Модель бизнеса Red Bull</a><span class="s-upd">обновлено 2026-10-07 18:12</span></div><h2 class="s-title">Red Bull по трём укладам</h2><div class="s-body"><blockquote><p><strong>Напиток финансирует медиа, медиа продвигает бренд, бренд продаёт напиток.</strong></p></blockquote>
+<div class="cols"><div class="col"><div class="col-h">Индустриальный<span>считает</span></div><ul><li>Массовое производство энергетика</li><li>Логистика и дистрибуция</li><li>Оборот больше 11 млрд долл.</li></ul></div><div class="col"><div class="col-h">Информационный<span>анализирует</span></div><ul><li>Бренд, ценности, работа с комьюнити</li><li>«Red Bull окрыляет»: молодые, активные</li><li>Медиаимперия: 35 % выручки в маркетинг, Red Bull TV, звукозапись</li><li>Клубы RB Leipzig и RB Salzburg, команда F1</li></ul></div><div class="col"><div class="col-h">Постинформационный<span>собирает</span></div><ul><li>Экосистема и образ жизни: экстремальный спорт</li><li>Свои форматы: Red Bull BC One, клифф-дайвинг, байк</li><li>Точечные разрывные события: Red Bull Flugtag</li><li>События двигают смежные ниши и сложные технологии</li></ul></div></div>
+<p><strong>Ключевой переход:</strong> от продажи товара и наполнения бренда к экосистеме, где продукт лишь входная дверь в мир экстрима.</p></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>1 / 2</span></div></div></section>
+<section class="slide"><div class="s-in"><div class="s-top"><a class="s-id" href="../th01-red-bull-model/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th01-red-bull-model/index.html">th01 · Модель бизнеса Red Bull</a><span class="s-upd">обновлено 2026-10-07 18:12</span></div><h2 class="s-title">Red Bull Stratos: хлопушка в действии</h2><div class="s-body"><ul><li>Рекорды высоты и скорости свободного падения</li><li>5 лет подготовки, уникальные технологии</li><li>Стоимость проекта ~50 млн долл.</li><li>7 % роста компании, продажи до 6 млрд долл.</li><li>Медийный охват 5 млрд</li></ul>
+<blockquote><p>Одно точечное событие с планетарным охватом. Импульс-рекорд даёт «осколки»: внимание, продажи, интерес к технологиям и к самому экстриму.</p></blockquote></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>2 / 2</span></div></div></section></div></div>
 </div></main>
-<div class="stage"></div>
-<script>
-(function(){
-  var slides=[].slice.call(document.querySelectorAll('main .slide')), stage=document.querySelector('.stage'), i=0;
-  function show(k){i=Math.max(0,Math.min(slides.length-1,k));stage.innerHTML='';stage.appendChild(slides[i].cloneNode(true));}
-  var q=new URLSearchParams(location.search);
-  if(q.has('frame')){document.body.classList.add('frame');show((+q.get('frame')||1)-1);return;}
-  function start(k){document.body.classList.add('present');show(k||0);
-    if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(function(){});}
-  function stop(){document.body.classList.remove('present');if(document.fullscreenElement)document.exitFullscreen();}
-  [].forEach.call(document.querySelectorAll('[data-present]'),function(b){b.onclick=function(){start(0);};});
-  [].forEach.call(document.querySelectorAll('[data-print]'),function(b){b.onclick=function(){window.print();};});
-  slides.forEach(function(s,k){s.addEventListener('dblclick',function(){start(k);});s.title='Двойной клик — показ с этого слайда';});
-  stage.addEventListener('click',function(e){show(e.clientX>innerWidth/3?i+1:i-1);});
-  document.addEventListener('keydown',function(e){
-    if(!document.body.classList.contains('present'))return;
-    if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>=0){show(i+1);e.preventDefault();}
-    else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>=0){show(i-1);e.preventDefault();}
-    else if(e.key==='Escape')stop();});
-  document.addEventListener('fullscreenchange',function(){if(!document.fullscreenElement)document.body.classList.remove('present');});
-})();
-</script>
 </body></html>

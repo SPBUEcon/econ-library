@@ -2,7 +2,15 @@
 """Собирает представления тезисов из md-источников.
 
 Источник правды — карточки theses/th*/README.md и сборки theses/assemblies/*.md.
-Всё остальное — представления в едином стиле (theme.css):
+Всё остальное — представления в едином стиле (theme.css). У тезиса и у сборки их два:
+
+- слайды (thNN-…/slides.html, assemblies/<id>-slides.html) — чистый контент: показ, PDF, PPTX;
+- карточка (thNN-…/index.html, assemblies/<id>.html) — слайды с подсветкой проверок, комментарии,
+  вопросы, задания, связи.
+
+Служебная строка слайда — индекс тезиса (ссылка на карточку) и дата обновления.
+
+    python theses/site/build.py            # HTML-страницы, витрина, CSV-индексы
 
     python theses/site/build.py            # HTML-страницы, витрина, CSV-индексы
     python theses/site/build.py --pdf      # + PDF (слайды 16:9, по странице на слайд)
@@ -30,6 +38,7 @@ ROOT = HERE.parent                     # theses/
 REPO = ROOT.parent
 EXPORT = ROOT / "_export"
 GH = "https://github.com/SPBUEcon/econ-library/"
+PAGES = "https://spbuecon.github.io/econ-library/"   # ссылки в PDF и PPTX ведут сюда
 FOOT = "Мастерская «Технологии в экономике» · ЭФ СПбГУ"
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
          '<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700'
@@ -58,10 +67,11 @@ def esc(s):
 class Ctx:
     """Где лежит md-источник и где окажется html (нужно для перевода ссылок)."""
 
-    def __init__(self, src_dir, out_dir, theses=None):
+    def __init__(self, src_dir, out_dir, theses=None, clean=False):
         self.src_dir = Path(src_dir)
         self.out_dir = Path(out_dir)
         self.theses = theses or {}     # путь README.md → путь index.html и т.п.
+        self.clean = clean             # чистые слайды: без подсветки проверок и пометок
 
 
 def link_target(url, ctx):
@@ -102,15 +112,26 @@ def inline(s, ctx):
     s = re.sub(r"\[((?:[^\[\]]|\[[^\]]*\])*)\]\(([^)\s]+)\)",
                lambda m: stash(f'<a href="{esc(link_target(m.group(2), ctx))}">{inline(m.group(1), ctx)}</a>'), s)
     s = re.sub(r"`([^`]+)`", lambda m: stash(f"<code>{esc(m.group(1))}</code>"), s)
+    # <mark>…</mark> — утверждение, которое нужно проверить: в карточке подсвечено, в слайдах — обычный текст
+    s = s.replace("<mark>", "\x01").replace("</mark>", "\x02")
     s = esc(s)
     s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
 
     def em(m):
         t = m.group(1)
-        return '<span class="chk">проверить</span>' if CHK.match(t) else f"<em>{t}</em>"
+        if CHK.match(t):
+            return "" if ctx.clean else '<span class="chk">проверить</span>'
+        return f"<em>{t}</em>"
 
     s = re.sub(r"(?<![*\w])\*(?![\s*])(.+?)(?<![\s*])\*(?![*\w])", em, s)
+    s = s.replace("\x01", "" if ctx.clean else "<mark>").replace("\x02", "" if ctx.clean else "</mark>")
     return re.sub(r"\x00(\d+)\x00", lambda m: keep[int(m.group(1))], s)
+
+
+def slug(text):
+    """Якорь заголовка, как у GitHub: нижний регистр, пробелы → дефис, без пунктуации."""
+    t = re.sub(r"[`*]|\[|\]\([^)]*\)", "", text).strip().lower()
+    return re.sub(r"[^\w\- ]", "", t).replace(" ", "-")
 
 
 LIST = re.compile(r"^\s*([-*]|\d+[.)])\s+(.*)$")
@@ -180,7 +201,7 @@ def render(bl, ctx, layout=""):
             h.append(f"<p>{inline(d, ctx)}</p>")
         elif kind == "h":
             lvl = min(d[0] + 1, 6)
-            h.append(f"<h{lvl}>{inline(d[1], ctx)}</h{lvl}>")
+            h.append(f'<h{lvl} id="{slug(d[1])}">{inline(d[1], ctx)}</h{lvl}>')
         elif kind == "pre":
             h.append(f"<pre>{esc(d)}</pre>")
         elif kind == "quote":
@@ -214,7 +235,7 @@ def md_html(md, ctx, layout="", skip_quotes=False):
 
 def plain(md):
     """md → простой текст (заметки PPTX)."""
-    t = re.sub(r"<!--.*?-->", "", md, flags=re.S)
+    t = re.sub(r"<!--.*?-->|</?mark>", "", md, flags=re.S)
     t = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", t)
     t = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", t)
     t = re.sub(r"[*`]|^> ?|^#+ ", "", t, flags=re.M)
@@ -271,6 +292,7 @@ def load_thesis(readme):
         warn(f"{tid}: слайдов {len(t['slides'])}, а тезис — это 1–3 слайда")
     t["id"], t["title"] = tid, meta.get("title", h1)
     t["out"] = t["dir"] / "index.html"
+    t["deck"] = t["dir"] / "slides.html"
     return t
 
 
@@ -292,35 +314,44 @@ def load_assembly(path):
         groups.append((title, items))
     p = Path(path)
     return {"meta": meta, "h1": h1, "lead": lead, "groups": groups, "id": meta.get("id", p.stem),
-            "title": meta.get("title", h1), "src": p.resolve(), "dir": p.parent, "out": p.with_suffix(".html")}
+            "title": meta.get("title", h1), "src": p.resolve(), "dir": p.parent, "out": p.with_suffix(".html"),
+            "deck": p.with_name(p.stem + "-slides.html")}
 
 
 # ---------------------------------------------------------------- страницы
 
-SCRIPT = """<script>
+DECK_SCRIPT = """<script>
 (function(){
   var slides=[].slice.call(document.querySelectorAll('main .slide')), stage=document.querySelector('.stage'), i=0;
+  var links=[].slice.call(document.querySelectorAll('a[data-pages]')), q=new URLSearchParams(location.search);
+  function web(on){links.forEach(function(a){if(!a.dataset.local)a.dataset.local=a.getAttribute('href');
+    a.setAttribute('href',on?a.dataset.pages:a.dataset.local);});}
   function show(k){i=Math.max(0,Math.min(slides.length-1,k));stage.innerHTML='';stage.appendChild(slides[i].cloneNode(true));}
-  var q=new URLSearchParams(location.search);
+  if(q.has('export'))web(true);
   if(q.has('frame')){document.body.classList.add('frame');show((+q.get('frame')||1)-1);return;}
+  window.addEventListener('beforeprint',function(){web(true);});
+  window.addEventListener('afterprint',function(){if(!q.has('export'))web(false);});
+  if(q.has('print'))(document.fonts?document.fonts.ready:Promise.resolve()).then(function(){setTimeout(function(){window.print();},300);});
   function start(k){document.body.classList.add('present');show(k||0);
     if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(function(){});}
   function stop(){document.body.classList.remove('present');if(document.fullscreenElement)document.exitFullscreen();}
-  [].forEach.call(document.querySelectorAll('[data-present]'),function(b){b.onclick=function(){start(0);};});
+  function current(){var k=0;slides.forEach(function(s,j){if(s.getBoundingClientRect().top<innerHeight/2)k=j;});return k;}
+  [].forEach.call(document.querySelectorAll('[data-present]'),function(b){b.onclick=function(){start(current());};});
   [].forEach.call(document.querySelectorAll('[data-print]'),function(b){b.onclick=function(){window.print();};});
-  slides.forEach(function(s,k){s.addEventListener('dblclick',function(){start(k);});s.title='Двойной клик — показ с этого слайда';});
-  stage.addEventListener('click',function(e){show(e.clientX>innerWidth/3?i+1:i-1);});
+  slides.forEach(function(s,k){s.addEventListener('dblclick',function(){start(k);});});
+  stage.addEventListener('click',function(e){if(e.target.closest('a'))return;show(e.clientX>innerWidth/3?i+1:i-1);});
   document.addEventListener('keydown',function(e){
-    if(!document.body.classList.contains('present'))return;
-    if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>=0){show(i+1);e.preventDefault();}
-    else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>=0){show(i-1);e.preventDefault();}
+    if(!document.body.classList.contains('present')){
+      if(['f','F','а','А'].indexOf(e.key)>=0&&!e.ctrlKey&&!e.metaKey)start(current());return;}
+    if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].indexOf(e.key)>=0){show(i+1);e.preventDefault();}
+    else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].indexOf(e.key)>=0){show(i-1);e.preventDefault();}
     else if(e.key==='Escape')stop();});
   document.addEventListener('fullscreenchange',function(){if(!document.fullscreenElement)document.body.classList.remove('present');});
 })();
 </script>"""
 
 
-def page(title, hero, main):
+def head(title, extra_css=""):
     css = (HERE / "theme.css").read_text(encoding="utf-8")
     return f"""<!DOCTYPE html>
 <!-- Сгенерировано theses/site/build.py из md-источников. Не править руками: правьте md и пересоберите. -->
@@ -329,7 +360,12 @@ def page(title, hero, main):
 <title>{esc(title)}</title>
 {FONTS}
 <style>
-{css}</style></head>
+{css}{extra_css}</style></head>"""
+
+
+def page(title, hero, main):
+    """Карточка: шапка + текст."""
+    return head(title) + f"""
 <body>
 <header class="hero"><div class="wrap">
 {hero}
@@ -337,38 +373,64 @@ def page(title, hero, main):
 <main><div class="wrap">
 {main}
 </div></main>
-<div class="stage"></div>
-{SCRIPT}
 </body></html>
 """
 
 
-def tools(src):
-    return ('<div class="tools"><button class="btn" data-present>▶ Показать</button>'
-            '<button class="btn ghost" data-print>⎙ Печать / PDF</button>'
+def deck_page(title, slides):
+    """Чистые слайды: только слайды; показ, печать 16:9."""
+    return head(title, "@page{size:1280px 720px;margin:0}\n") + f"""
+<body class="deckpage">
+<main><div class="deck">
+{slides}
+</div></main>
+<div class="fab"><button data-present title="Показ: F или двойной клик по слайду">▶</button><button data-print title="Печать / PDF">⎙</button></div>
+<div class="stage"></div>
+{DECK_SCRIPT}
+</body></html>
+"""
+
+
+def rel(target, from_dir):
+    return os.path.relpath(target, from_dir).replace(os.sep, "/")
+
+
+def pages_url(path):
+    return PAGES + Path(path).relative_to(REPO).as_posix()
+
+
+def tools(deck, base, src):
+    href = rel(deck, base)
+    return (f'<div class="tools"><a class="btn" href="{href}">▶ Слайды</a>'
+            f'<a class="btn ghost" href="{href}?print">⎙ PDF</a>'
             f'<a class="btn ghost" href="{GH}blob/main/{src.relative_to(REPO).as_posix()}">md-источник</a></div>')
 
 
-def slide_html(t, k, ctx):
+def s_top(label, link, ctx, updated):
+    return (f'<div class="s-top"><a class="s-id" href="{rel(link, ctx.out_dir)}" data-pages="{pages_url(link)}">'
+            f'{esc(label)}</a><span class="s-upd">обновлено {esc(updated)}</span></div>')
+
+
+def slide_html(t, k, ctx, link, num, total):
+    """Слайд. Служебная строка — индекс тезиса (ссылка link) и дата обновления, внизу — номер."""
     s = t["slides"][k]
     lay = s["layout"]
     return (f'<section class="slide{" l-" + lay if lay else ""}"><div class="s-in">'
-            f'<div class="s-top"><span>{esc(t["id"])} · {esc(t["title"])}</span>'
-            f'<span class="n">{k + 1} / {len(t["slides"])}</span></div>'
-            f'<h2 class="s-title">{inline(s["title"], ctx)}</h2>'
+            + s_top(f'{t["id"]} · {t["title"]}', link, ctx, t["meta"].get("updated", ""))
+            + f'<h2 class="s-title">{inline(s["title"], ctx)}</h2>'
             f'<div class="s-body">{md_html(s["md"], ctx, lay)}</div>'
-            f'<div class="s-foot"><span>{FOOT}</span><span>{esc(t["meta"].get("version", ""))}</span></div>'
+            f'<div class="s-foot"><span>{FOOT}</span><span>{num} / {total}</span></div>'
             "</div></section>")
 
 
-def deck_html(t, ctx, notes=True):
+def slides_seq(t, ctx, link, notes=False, start=0, total=None):
     h = []
     for k, s in enumerate(t["slides"]):
-        h.append(slide_html(t, k, ctx))
+        h.append(slide_html(t, k, ctx, link, start + k + 1, total or len(t["slides"])))
         if notes and s["notes"]:
             h.append(f'<details class="notes doc"><summary>Комментарий к слайду {k + 1}</summary>'
                      f'{md_html(s["notes"], ctx)}</details>')
-    return '<div class="deck">' + "\n".join(h) + "</div>"
+    return "\n".join(h)
 
 
 def tags(meta, keys):
@@ -380,71 +442,106 @@ def tags(meta, keys):
 
 
 def thesis_page(t, links, member_of):
+    """Карточка тезиса: слайды с подсветкой проверок, комментарии, вопросы, задания, связи."""
     ctx = Ctx(t["dir"], t["dir"], links)
     m = t["meta"]
     hero = (f'<div class="crumbs"><a href="../site/index.html">Тезисы</a> · {esc(t["id"])}'
-            + "".join(f' · <a href="{os.path.relpath(a["out"], t["dir"]).replace(os.sep, "/")}">{esc(a["title"])}</a>'
-                      for a in member_of) + "</div>"
-            f'<div class="eyebrow">Тезис · {esc(m.get("kind", ""))} · {len(t["slides"])} сл.</div>'
+            + "".join(f' · <a href="{rel(a["out"], t["dir"])}">{esc(a["title"])}</a>' for a in member_of) + "</div>"
+            f'<div class="eyebrow">Карточка тезиса · {esc(m.get("kind", ""))} · {len(t["slides"])} сл.</div>'
             f'<h1>{esc(t["title"])}</h1><div class="formula">{inline(m.get("formula", ""), ctx)}</div>'
             + tags(m, ["blocks", "refs"])
             + f'<div class="tags"><span class="tag">{esc(m.get("status", ""))} · {esc(m.get("version", ""))}'
-              f' · {esc(m.get("updated", ""))}</span></div>' + tools(t["src"]))
-    main = (f'<div class="lead doc">{md_html(t["lead"], ctx, skip_quotes=True)}</div>'
-            + deck_html(t, ctx)
-            + '<div class="doc">' + "".join(f"<h2>{inline(title, ctx)}</h2>{md_html(md, ctx)}"
+              f' · обновлено {esc(m.get("updated", ""))}</span></div>' + tools(t["deck"], t["dir"], t["src"]))
+    legend = ""
+    if any("<mark>" in s["md"] for s in t["slides"]):
+        legend = ('<p class="legend"><mark>Подсвечено</mark> то, что нужно проверить: список — в разделе '
+                  '<a href="#что-проверить">«Что проверить»</a>. В <a href="slides.html">слайдах</a> '
+                  'подсветки нет.</p>')
+    main = (f'<div class="lead doc">{md_html(t["lead"], ctx, skip_quotes=True)}</div>{legend}'
+            f'<div class="deck">{slides_seq(t, ctx, t["deck"], notes=True)}</div>'
+            + '<div class="doc">' + "".join(f'<h2 id="{slug(title)}">{inline(title, ctx)}</h2>{md_html(md, ctx)}'
                                             for title, md in t["sections"]) + "</div>")
     return page(f'{t["id"]} · {t["title"]}', hero, main)
 
 
+def thesis_slides(t, links):
+    """Чистые слайды тезиса: индекс на слайде ведёт в карточку."""
+    ctx = Ctx(t["dir"], t["dir"], links, clean=True)
+    return deck_page(f'{t["id"]} · {t["title"]}', slides_seq(t, ctx, t["out"]))
+
+
+def members(a, theses):
+    return [theses[i["id"]] for _, its in a["groups"] for i in its if i["id"] in theses]
+
+
 def assembly_page(a, theses, links):
+    """Карточка сборки: оглавление и чистые слайды тезисов (индекс ведёт в карточку тезиса)."""
     ctx = Ctx(a["dir"], a["dir"], links)
     m = a["meta"]
-    toc, units, cover_items = [], [], []
+    toc, units = [], []
     for gtitle, items in a["groups"]:
         lis = []
         for it in items:
             t = theses.get(it["id"])
             if t:
-                href = os.path.relpath(t["out"], a["dir"]).replace(os.sep, "/")
+                href = rel(t["out"], a["dir"])
                 lis.append(f'<li><a href="{href}"><code>{t["id"]}</code> {esc(t["title"])}</a> — '
                            f'{inline(t["meta"].get("formula", ""), ctx)}</li>')
-                cover_items.append(f'<li>{esc(t["title"])}</li>')
-                tctx = Ctx(t["dir"], a["dir"], links)
+                tctx = Ctx(t["dir"], a["dir"], links, clean=True)
                 units.append(f'<div class="unit" id="{t["id"]}"><div class="unit-h"><h2><a href="{href}">'
                              f'{t["id"]} · {esc(t["title"])}</a></h2><span class="fx">'
-                             f'{inline(t["meta"].get("formula", ""), tctx)}</span></div>{deck_html(t, tctx, notes=False)}</div>')
+                             f'{inline(t["meta"].get("formula", ""), tctx)}</span></div>'
+                             f'<div class="deck">{slides_seq(t, tctx, t["out"])}</div></div>')
             else:
                 if it["id"]:
                     warn(f'{a["id"]}: тезис {it["id"]} не найден')
                 lis.append(f'<li class="planned">{inline(it["text"], ctx)} <span class="chk">планируется</span></li>')
-                cover_items.append(f'<li style="opacity:.55">{inline(it["text"], ctx)}</li>')
         toc.append(f"<h2>{inline(gtitle, ctx)}</h2><ol>{''.join(lis)}</ol>")
-    cover = (f'<div class="deck"><section class="slide cover"><div class="s-in">'
-             f'<div class="s-top"><span>{esc(m.get("kind", "сборка"))}</span><span class="n">{esc(a["id"])}</span></div>'
-             f'<h2 class="s-title">{esc(a["title"])}</h2><div class="s-body"><ol>{"".join(cover_items)}</ol></div>'
-             f'<div class="s-foot"><span>{FOOT}</span><span>{esc(m.get("updated", ""))}</span></div></div></section></div>')
     hero = (f'<div class="crumbs"><a href="../site/index.html">Тезисы</a> · сборки · {esc(a["id"])}</div>'
-            f'<div class="eyebrow">Сборка · {esc(m.get("kind", ""))}</div><h1>{esc(a["title"])}</h1>'
-            + tags(m, ["frame"]) + tools(a["src"]))
+            f'<div class="eyebrow">Карточка сборки · {esc(m.get("kind", ""))}</div><h1>{esc(a["title"])}</h1>'
+            + tags(m, ["frame"]) + tools(a["deck"], a["dir"], a["src"]))
     main = (f'<div class="lead doc">{md_html(a["lead"], ctx, skip_quotes=True)}</div>'
-            f'<div class="doc">{"".join(toc)}</div>{cover}{"".join(units)}')
+            f'<div class="doc">{"".join(toc)}</div>{"".join(units)}')
     return page(f'{a["title"]} · сборка', hero, main)
 
 
+def assembly_slides(a, theses, links):
+    """Чистые слайды сборки: обложка + слайды тезисов со сквозной нумерацией."""
+    ctx = Ctx(a["dir"], a["dir"], links, clean=True)
+    m = a["meta"]
+    ts = members(a, theses)
+    total = 1 + sum(len(t["slides"]) for t in ts)
+    items = []
+    for _, its in a["groups"]:
+        for it in its:
+            t = theses.get(it["id"])
+            items.append(f'<li>{esc(t["title"])}</li>' if t else
+                         f'<li style="opacity:.55">{inline(it["text"], ctx)}</li>')
+    h = [f'<section class="slide cover"><div class="s-in">'
+         + s_top(f'{m.get("kind", "сборка")} · {a["title"]}', a["out"], ctx, m.get("updated", ""))
+         + f'<h2 class="s-title">{esc(a["title"])}</h2><div class="s-body"><ol>{"".join(items)}</ol></div>'
+         f'<div class="s-foot"><span>{FOOT}</span><span>1 / {total}</span></div></div></section>']
+    n = 1
+    for t in ts:
+        h.append(slides_seq(t, Ctx(t["dir"], a["dir"], links, clean=True), t["out"], start=n, total=total))
+        n += len(t["slides"])
+    return deck_page(f'{a["title"]} · слайды', "\n".join(h))
+
+
 def index_page(theses, assemblies):
-    cards = "".join(
-        f'<a class="card" style="text-decoration:none;color:inherit" href="../{t["dir"].name}/index.html">'
-        f'<span class="k">{t["id"]} · {esc(t["meta"].get("kind", ""))} · {len(t["slides"])} сл.</span>'
-        f'<h3>{esc(t["title"])}</h3><span class="fx">{esc(t["meta"].get("formula", ""))}</span>'
-        f'<span class="meta">{esc(t["meta"].get("blocks", ""))} · {esc(t["meta"].get("status", ""))} · '
-        f'{esc(t["meta"].get("updated", ""))}</span></a>' for t in theses.values())
-    acards = "".join(
-        f'<a class="card" style="text-decoration:none;color:inherit" href="../assemblies/{a["out"].name}">'
-        f'<span class="k">{esc(a["meta"].get("kind", ""))}</span><h3>{esc(a["title"])}</h3>'
-        f'<span class="meta">{sum(1 for _, its in a["groups"] for i in its if i["id"] in theses)} тезисов собрано · '
-        f'{sum(1 for _, its in a["groups"] for i in its if i["id"] not in theses)} планируется</span></a>'
-        for a in assemblies)
+    def card(kind, title, href, deck, fx, meta):
+        return (f'<div class="card"><span class="k">{kind}</span><h3><a href="{href}">{esc(title)}</a></h3>'
+                f'<span class="fx">{esc(fx)}</span><span class="meta">{meta}</span>'
+                f'<span class="meta"><a href="{href}">карточка</a> · <a href="{deck}">слайды</a></span></div>')
+
+    cards = "".join(card(f'{t["id"]} · {esc(t["meta"].get("kind", ""))} · {len(t["slides"])} сл.', t["title"],
+                         rel(t["out"], HERE), rel(t["deck"], HERE), t["meta"].get("formula", ""),
+                         f'{esc(t["meta"].get("blocks", ""))} · {esc(t["meta"].get("status", ""))} · '
+                         f'обновлено {esc(t["meta"].get("updated", ""))}') for t in theses.values())
+    acards = "".join(card(esc(a["meta"].get("kind", "")), a["title"], rel(a["out"], HERE), rel(a["deck"], HERE), "",
+                          f'{len(members(a, theses))} тезисов собрано · '
+                          f'{sum(1 for _, its in a["groups"] for i in its if i["id"] not in theses)} планируется')
+                     for a in assemblies)
     hero = ('<div class="crumbs"><a href="../../index.html">Мастерская</a> · тезисы</div>'
             '<div class="eyebrow">База единиц контента</div><h1>Тезисы</h1>'
             '<div class="formula">Одна мысль — одна формула — 1–3 слайда. Из тезисов собираются лекции, курсы, '
@@ -500,34 +597,57 @@ def headless(args, url, out):
     shutil.rmtree(prof, ignore_errors=True)
 
 
-def export_pdf(src, name):
+def export_pdf(deck, name):
     out = EXPORT / f"{name}.pdf"
-    headless(["--no-pdf-header-footer", f"--print-to-pdf={out}"], src.as_uri(), out)
+    headless(["--no-pdf-header-footer", f"--print-to-pdf={out}"], deck.as_uri() + "?export", out)
     print("  pdf ", out.relative_to(REPO))
 
 
-def export_pptx(src, name, n, notes):
+def link_box(prs, sl, url, label):
+    """Невидимая кликабельная область поверх индекса на кадре слайда → карточка на GitHub Pages."""
+    from pptx.enum.shapes import MSO_SHAPE
+    from pptx.dml.color import RGBColor
+    from pptx.oxml.ns import qn
+    px = prs.slide_width / 1280
+    w = min(len(label) * 10 + 24, 900)
+    shp = sl.shapes.add_shape(MSO_SHAPE.RECTANGLE, int(44 * px), int(28 * px), int(w * px), int(34 * px))
+    style = shp._element.find(qn("p:style"))
+    if style is not None:
+        shp._element.remove(style)
+    shp.fill.solid()
+    shp.fill.fore_color.rgb = RGBColor(255, 255, 255)
+    clr = shp._element.spPr.find(qn("a:solidFill"))[0]
+    clr.append(clr.makeelement(qn("a:alpha"), {"val": "0"}))
+    shp.line.fill.background()
+    shp.click_action.hyperlink.address = url
+    shp.name = "Ссылка на карточку"
+
+
+def export_pptx(deck, name, frames_info):
+    """frames_info: [(заметки, url карточки, подпись индекса)] по слайдам."""
     from pptx import Presentation
     from pptx.util import Inches
     frames = EXPORT / "frames" / name
     frames.mkdir(parents=True, exist_ok=True)
     prs = Presentation()
     prs.slide_width, prs.slide_height = Inches(13.333), Inches(7.5)
-    for k in range(n):
+    for k, (notes, url, label) in enumerate(frames_info):
         png = frames / f"{k + 1:02d}.png"
         headless(["--window-size=1280,720", "--force-device-scale-factor=2", f"--screenshot={png}"],
-                 f"{src.as_uri()}?frame={k + 1}", png)
+                 f"{deck.as_uri()}?frame={k + 1}", png)
         sl = prs.slides.add_slide(prs.slide_layouts[6])
         sl.shapes.add_picture(str(png), 0, 0, prs.slide_width, prs.slide_height)
-        sl.notes_slide.notes_text_frame.text = notes[k]
+        link_box(prs, sl, url, label)
+        sl.notes_slide.notes_text_frame.text = notes
     out = EXPORT / f"{name}.pptx"
     prs.save(out)
     print("  pptx", out.relative_to(REPO))
 
 
-def slide_notes(t):
-    return [f'{s["title"]}\n\n{plain(s["md"])}' + (f'\n\n— Комментарий —\n{plain(s["notes"])}' if s["notes"] else "")
-            for s in t["slides"]]
+def frames_info(t):
+    label = f'{t["id"]} · {t["title"]}'
+    return [(f'{s["title"]}\n\n{plain(s["md"])}' + (f'\n\n— Комментарий —\n{plain(s["notes"])}' if s["notes"] else ""),
+             pages_url(t["out"]), label) for s in t["slides"]]
 
 
 # ---------------------------------------------------------------- main
@@ -549,14 +669,17 @@ def main():
     member = {tid: [a for a in assemblies if any(i["id"] == tid for _, its in a["groups"] for i in its)]
               for tid in theses}
 
+    def write(path, text):
+        path.write_text(text, encoding="utf-8")
+        print("html", path.relative_to(REPO))
+
     for t in theses.values():
-        t["out"].write_text(thesis_page(t, links, member[t["id"]]), encoding="utf-8")
-        print("html", t["out"].relative_to(REPO))
+        write(t["out"], thesis_page(t, links, member[t["id"]]))
+        write(t["deck"], thesis_slides(t, links))
     for a in assemblies:
-        a["out"].write_text(assembly_page(a, theses, links), encoding="utf-8")
-        print("html", a["out"].relative_to(REPO))
-    (HERE / "index.html").write_text(index_page(theses, assemblies), encoding="utf-8")
-    print("html", (HERE / "index.html").relative_to(REPO))
+        write(a["out"], assembly_page(a, theses, links))
+        write(a["deck"], assembly_slides(a, theses, links))
+    write(HERE / "index.html", index_page(theses, assemblies))
 
     write_csv("theses.csv",
               ["thesis_id", "title", "formula", "kind", "blocks", "refs", "questions", "assignments", "dossier",
@@ -570,7 +693,7 @@ def main():
     write_csv("assemblies.csv",
               ["assembly_id", "title", "kind", "frame", "theses", "planned", "status", "updated", "file"],
               [[a["id"], a["title"], a["meta"].get("kind", ""), a["meta"].get("frame", ""),
-                ";".join(i["id"] for _, its in a["groups"] for i in its if i["id"] in theses),
+                ";".join(t["id"] for t in members(a, theses)),
                 ";".join(plain(i["text"]) for _, its in a["groups"] for i in its if i["id"] not in theses),
                 a["meta"].get("status", ""), a["meta"].get("updated", ""),
                 a["src"].relative_to(ROOT).as_posix()] for a in assemblies])
@@ -581,16 +704,15 @@ def main():
         for t in theses.values():
             name = t["dir"].name
             if want_pdf:
-                export_pdf(t["out"], name)
+                export_pdf(t["deck"], name)
             if want_pptx:
-                export_pptx(t["out"], name, len(t["slides"]), slide_notes(t))
+                export_pptx(t["deck"], name, frames_info(t))
         for a in assemblies:
-            ts = [theses[i["id"]] for _, its in a["groups"] for i in its if i["id"] in theses]
             if want_pdf:
-                export_pdf(a["out"], a["id"])
+                export_pdf(a["deck"], a["id"])
             if want_pptx:
-                notes = [a["title"]] + [n for t in ts for n in slide_notes(t)]
-                export_pptx(a["out"], a["id"], len(notes), notes)
+                cover = (a["title"], pages_url(a["out"]), f'{a["meta"].get("kind", "сборка")} · {a["title"]}')
+                export_pptx(a["deck"], a["id"], [cover] + [f for t in members(a, theses) for f in frames_info(t)])
 
     for w in WARN:
         print("ВНИМАНИЕ:", w)
