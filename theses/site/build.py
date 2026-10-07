@@ -211,7 +211,7 @@ def render(bl, ctx, layout=""):
             h.append(f"<blockquote>{render(blocks(d), ctx)}</blockquote>")
         elif kind in ("ul", "ol"):
             h.append(f"<{kind}>" + "".join(f"<li>{inline(x, ctx)}</li>" for x in d) + f"</{kind}>")
-        elif kind == "table" and layout == "columns":
+        elif kind == "table" and layout in ("columns", "timeline"):
             head, rows = d
             cols = []
             for k, name in enumerate(head):
@@ -239,16 +239,20 @@ def cycle_html(src, ctx):
     """
     parts = CYCLE_STEP.split(" ".join(src.split()))
     nodes, verbs = parts[0::2], parts[1::2]
-    loop = len(nodes) > 2 and nodes[-1] == nodes[0]
+    loop = len(nodes) > 2 and nodes[-1].partition(" · ")[0] == nodes[0].partition(" · ")[0]
     back = verbs.pop() if loop else ""
     if loop:
         nodes.pop()
     row = []
     for k, n in enumerate(nodes):
-        row.append(f'<span class="cy-node">{inline(n, ctx)}</span>')
+        name, _, sub = n.partition(" · ")      # «Логистика · передача» → узел и подпись под ним
+        row.append(f'<span class="cy-node">{inline(name, ctx)}'
+                   + (f'<small>{inline(sub, ctx)}</small>' if sub else "") + "</span>")
         if k < len(verbs):
-            row.append(f'<span class="cy-arr"><i>{inline(verbs[k], ctx)}</i></span>')
-    return ('<div class="cycle"><div class="cy-row">' + "".join(row) + "</div>"
+            label = inline(verbs[k], ctx) if verbs[k].strip() else ""
+            row.append(f'<span class="cy-arr">' + (f"<i>{label}</i>" if label else "") + "</span>")
+    cls = "cycle loop" if loop else "cycle chain"
+    return (f'<div class="{cls}"><div class="cy-row">' + "".join(row) + "</div>"
             + (f'<div class="cy-back"><i>{inline(back, ctx)}</i></div>' if loop else "") + "</div>")
 
 
