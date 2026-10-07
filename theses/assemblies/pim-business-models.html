@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!-- Сгенерировано theses/site/build.py из md-источников. Не править руками: правьте md и пересоберите. -->
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Постинформационные модели бизнеса · сборка</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+/* Единый стиль тезисов: страница, сборка, показ, печать в PDF, кадры для PPTX.
+   Палитра и шрифты — как у страниц кейсов дисциплины (cases/red-bull/index.html).
+   Build встраивает этот файл в каждую страницу, страницы самодостаточны. */
+:root{
+  --ink:#1B2038; --ink2:#272E52;
+  --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0;
+  --green:#2FA37A; --amber:#D9932B; --blue:#3E7BD6; --violet:#7A5AD9;
+  --disp:'Unbounded','Arial Black',sans-serif;
+  --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.5}
+a{color:var(--blue)}
+code{font-family:Consolas,monospace;font-size:.92em;background:var(--panel);border-radius:5px;padding:0 4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+/* ---------- шапка страницы ---------- */
+.hero{background:var(--ink);color:#fff;padding:44px 0 40px}
+.crumbs{font-size:13px;color:var(--ice);margin-bottom:18px}
+.crumbs a{color:var(--ice)}
+.eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:12px}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(24px,3.6vw,40px);line-height:1.15;max-width:980px}
+.hero .formula{margin-top:16px;font-size:clamp(16px,2vw,21px);color:var(--ice);max-width:900px;border-left:4px solid var(--coral);padding-left:16px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.tag{font-size:12px;font-weight:600;letter-spacing:.03em;background:var(--ink2);color:var(--ice);border-radius:8px;padding:4px 10px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.btn{font:600 14px var(--body);background:var(--coral);color:#fff;border:0;border-radius:10px;padding:9px 16px;cursor:pointer;text-decoration:none}
+.btn.ghost{background:transparent;border:1.5px solid var(--ice);color:var(--ice)}
+
+/* ---------- текст страницы ---------- */
+main{padding:36px 0 60px}
+.lead{font-size:17px;color:var(--grey);max-width:860px;margin-bottom:8px}
+.lead p+p{margin-top:8px}
+.doc h2{font-family:var(--disp);font-weight:700;font-size:24px;line-height:1.2;margin:44px 0 14px}
+.doc h3{font-family:var(--disp);font-weight:500;font-size:17px;margin:22px 0 8px}
+.doc p,.doc ul,.doc ol,.doc table,.doc blockquote,.doc pre{margin-bottom:12px;max-width:900px}
+.doc ul,.doc ol{padding-left:24px}
+.doc li{margin-bottom:4px}
+.doc blockquote{border-left:4px solid var(--coral);padding:4px 0 4px 16px;font-size:17px}
+.doc table{border-collapse:collapse;width:100%;max-width:none;font-size:14.5px;background:#fff}
+.doc th,.doc td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.doc th{background:var(--panel);font-weight:600}
+.doc pre{background:var(--panel);border-radius:10px;padding:12px 16px;overflow:auto;font-size:13px}
+.chk{display:inline-block;font-size:.72em;font-weight:600;letter-spacing:.03em;color:var(--amber);font-style:normal;
+  border:1.5px solid var(--amber);border-radius:6px;padding:0 .4em;margin-left:.2em;vertical-align:.1em;white-space:nowrap}
+
+/* ---------- лента слайдов на странице ---------- */
+.deck{display:flex;flex-direction:column;gap:22px;margin:8px 0 10px}
+.unit{margin-top:40px}
+.unit-h{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;margin-bottom:12px}
+.unit-h h2{font-family:var(--disp);font-weight:700;font-size:22px;margin:0}
+.unit-h .fx{color:var(--grey);font-size:15px}
+.planned{color:var(--grey)}
+.notes{background:#fff;border:1px dashed var(--line);border-radius:12px;padding:12px 16px;font-size:14.5px;color:var(--grey);max-width:none}
+.notes summary{cursor:pointer;font-weight:600;color:var(--ink)}
+.notes[open] summary{margin-bottom:8px}
+.notes p+p{margin-top:8px}
+
+/* ---------- слайд 16:9; размеры внутри — в cqw, слайд масштабируется целиком ---------- */
+.slide{position:relative;width:100%;aspect-ratio:16/9;container-type:inline-size;background:var(--paper);
+  border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 8px 28px rgba(27,32,56,.08)}
+.s-in{position:absolute;inset:0;display:flex;flex-direction:column;padding:3.1cqw 4cqw 2.4cqw;font-size:1.5cqw;line-height:1.38}
+.s-top{display:flex;justify-content:space-between;font-size:.95cqw;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--coral)}
+.s-top .n{color:var(--grey)}
+.s-title{font-family:var(--disp);font-weight:700;font-size:2.9cqw;line-height:1.12;margin:1.2cqw 0 1.6cqw}
+.s-body{flex:1;display:flex;flex-direction:column;gap:1.3cqw;min-height:0}
+.s-body p,.s-body li{max-width:none}
+.s-body ul,.s-body ol{padding-left:2.2cqw;display:flex;flex-direction:column;gap:.6cqw}
+.s-body li::marker{color:var(--coral)}
+.s-body blockquote{border-left:.45cqw solid var(--coral);padding:.2cqw 0 .2cqw 1.6cqw;font-size:1.75cqw;font-weight:500}
+.s-body table{border-collapse:collapse;width:100%;font-size:1.25cqw;background:#fff}
+.s-body th,.s-body td{border:1px solid var(--line);padding:.6cqw .8cqw;text-align:left;vertical-align:top}
+.s-body th{background:var(--panel)}
+.s-body img{max-width:100%;max-height:30cqw;object-fit:contain}
+.s-foot{display:flex;justify-content:space-between;font-size:.9cqw;color:var(--grey);border-top:1px solid var(--line);padding-top:.9cqw;margin-top:1.2cqw}
+
+/* раскладка columns: таблица → колонки-карточки (заголовок «Название · подпись») */
+.cols{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:1.4cqw;flex:1;min-height:0}
+.col{background:#fff;border:1px solid var(--line);border-top:.5cqw solid var(--grey);border-radius:1.1cqw;padding:1.2cqw 1.4cqw}
+.col:nth-child(3n+1){border-top-color:var(--blue)}
+.col:nth-child(3n+2){border-top-color:var(--violet)}
+.col:nth-child(3n+3){border-top-color:var(--coral)}
+.col-h{font-family:var(--disp);font-weight:700;font-size:1.45cqw;line-height:1.2;margin-bottom:.9cqw}
+.col-h span{display:block;font-family:var(--body);font-weight:500;font-style:italic;font-size:1.15cqw;color:var(--grey);margin-top:.2cqw}
+.col ul{list-style:none;padding:0;gap:.75cqw;font-size:1.28cqw}
+.col li{padding-left:1cqw;border-left:2px solid var(--line)}
+
+/* обложка сборки */
+.slide.cover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cover .s-title{font-size:4cqw;margin-top:auto}
+.cover .s-body{flex:0;margin-bottom:auto;color:var(--ice);font-size:1.6cqw}
+.cover .s-foot{color:var(--ice);border-color:var(--ink2)}
+.cover code{background:var(--ink2);color:var(--ice)}
+
+/* ---------- витрина ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin:10px 0 20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.card .k{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--coral)}
+.card h3{font-family:var(--disp);font-weight:700;font-size:17px;line-height:1.25}
+.card .fx{color:var(--grey);font-size:14.5px}
+.card .meta{font-size:12.5px;color:var(--grey);margin-top:auto}
+
+/* ---------- режим показа ---------- */
+body.present{background:#000;overflow:hidden}
+body.present > :not(.stage){display:none!important}
+.stage{display:none}
+body.present .stage{display:flex;position:fixed;inset:0;align-items:center;justify-content:center}
+body.present .stage .slide{width:min(100vw,calc(100vh*16/9));border-radius:0;border:0;box-shadow:none}
+
+/* ---------- один кадр (для PNG/PPTX): ?frame=N ---------- */
+body.frame{background:var(--paper);overflow:hidden}
+body.frame > :not(.stage){display:none!important}
+body.frame .stage{display:block;position:fixed;inset:0}
+body.frame .stage .slide{width:100vw;height:100vh;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none}
+
+/* ---------- печать: только слайды, один слайд — одна страница 16:9 ---------- */
+@page{size:1280px 720px;margin:0}
+@media print{
+  body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body > :not(main){display:none!important}
+  main{padding:0}
+  main .wrap{max-width:none;padding:0}
+  main > .wrap > :not(.deck):not(.unit){display:none!important}
+  .unit{margin:0}
+  .unit > :not(.deck){display:none!important}
+  .deck{gap:0;margin:0}
+  .deck > :not(.slide){display:none!important}
+  .slide{width:1280px;height:720px;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none;break-after:page;page-break-after:always}
+}
+</style></head>
+<body>
+<header class="hero"><div class="wrap">
+<div class="crumbs"><a href="../site/index.html">Тезисы</a> · сборки · pim-business-models</div><div class="eyebrow">Сборка · серия</div><h1>Постинформационные модели бизнеса</h1><div class="tags"><span class="tag">m01</span><span class="tag">c01</span><span class="tag">c19</span></div><div class="tools"><button class="btn" data-present>▶ Показать</button><button class="btn ghost" data-print>⎙ Печать / PDF</button><a class="btn ghost" href="https://github.com/SPBUEcon/econ-library/blob/main/theses/assemblies/pim-business-models.md">md-источник</a></div>
+</div></header>
+<main><div class="wrap">
+<div class="lead doc"><p>Серия разборов компаний в одной рамке: три уклада (<code>m01</code>), воронка · лейка · хлопушка (<code>c01</code>) и ключевой переход (<code>c19</code>). Каждый разбор — отдельный тезис на 1–3 слайда с формулой компании. Вместе они дают ряд сравнимых моделей: что компания реально производит (товар, смысл или рынок) и каким ходом пришла к постинформационному укладу.</p>
+<p>Пункты без <code>th</code>-номера ещё не собраны в тезисы. Источник для них — строки <a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/business-models.csv"><code>business-models.csv</code></a>, а собрать тезис можно в рамках задания <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/tpl01-company-three-uklads.md"><code>tpl01</code></a>.</p></div><div class="doc"><h2>Разборы</h2><ol><li><a href="../th01-red-bull-model/index.html"><code>th01</code> Модель бизнеса Red Bull</a> — Напиток финансирует медиа, медиа продвигает бренд, бренд продаёт напиток.</li><li class="planned">Patagonia (<code>bm06</code>): этический эталон <span class="chk">планируется</span></li><li class="planned">Loro Piana (<code>bm10</code>): культурный дизрапт <span class="chk">планируется</span></li><li class="planned">Como 1907 (<code>bm04</code>): правило трёх доменов <span class="chk">планируется</span></li><li class="planned">OpenAI (<code>bm05</code>): архитектор рынков <span class="chk">планируется</span></li></ol></div><div class="deck"><section class="slide cover"><div class="s-in"><div class="s-top"><span>серия</span><span class="n">pim-business-models</span></div><h2 class="s-title">Постинформационные модели бизнеса</h2><div class="s-body"><ol><li>Модель бизнеса Red Bull</li><li style="opacity:.55">Patagonia (<code>bm06</code>): этический эталон</li><li style="opacity:.55">Loro Piana (<code>bm10</code>): культурный дизрапт</li><li style="opacity:.55">Como 1907 (<code>bm04</code>): правило трёх доменов</li><li style="opacity:.55">OpenAI (<code>bm05</code>): архитектор рынков</li></ol></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>2026-10-07</span></div></div></section></div><div class="unit" id="th01"><div class="unit-h"><h2><a href="../th01-red-bull-model/index.html">th01 · Модель бизнеса Red Bull</a></h2><span class="fx">Напиток финансирует медиа, медиа продвигает бренд, бренд продаёт напиток.</span></div><div class="deck"><section class="slide l-columns"><div class="s-in"><div class="s-top"><span>th01 · Модель бизнеса Red Bull</span><span class="n">1 / 2</span></div><h2 class="s-title">Red Bull по трём укладам</h2><div class="s-body"><blockquote><p><strong>Напиток финансирует медиа, медиа продвигает бренд, бренд продаёт напиток.</strong></p></blockquote>
+<div class="cols"><div class="col"><div class="col-h">Индустриальный<span>считает</span></div><ul><li>Массовое производство энергетика</li><li>Логистика и дистрибуция</li><li>Оборот больше 11 млрд долл. <span class="chk">проверить</span></li></ul></div><div class="col"><div class="col-h">Информационный<span>анализирует</span></div><ul><li>Бренд, ценности, работа с комьюнити</li><li>«Red Bull окрыляет»: молодые, активные</li><li>Медиаимперия: 35 % выручки в маркетинг <span class="chk">проверить</span>, Red Bull TV, звукозапись</li><li>Клубы RB Leipzig и RB Salzburg, команда F1</li></ul></div><div class="col"><div class="col-h">Постинформационный<span>собирает</span></div><ul><li>Экосистема и образ жизни: экстремальный спорт</li><li>Свои форматы: Red Bull BC One, клифф-дайвинг, байк</li><li>Точечные разрывные события: Red Bull Flugtag</li><li>События двигают смежные ниши и сложные технологии</li></ul></div></div>
+<p><strong>Ключевой переход:</strong> от продажи товара и наполнения бренда к экосистеме, где продукт лишь входная дверь в мир экстрима.</p></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>v0.1</span></div></div></section>
+<section class="slide"><div class="s-in"><div class="s-top"><span>th01 · Модель бизнеса Red Bull</span><span class="n">2 / 2</span></div><h2 class="s-title">Red Bull Stratos: хлопушка в действии</h2><div class="s-body"><ul><li>Рекорды высоты и скорости свободного падения</li><li>5 лет подготовки, уникальные технологии</li><li>Стоимость проекта ~50 млн долл. <span class="chk">проверить</span></li><li>7 % роста компании, продажи до 6 млрд долл. <span class="chk">проверить</span></li><li>Медийный охват 5 млрд <span class="chk">проверить</span></li></ul>
+<blockquote><p>Одно точечное событие с планетарным охватом. Импульс-рекорд даёт «осколки»: внимание, продажи, интерес к технологиям и к самому экстриму.</p></blockquote></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>v0.1</span></div></div></section></div></div>
+</div></main>
+<div class="stage"></div>
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('main .slide')), stage=document.querySelector('.stage'), i=0;
+  function show(k){i=Math.max(0,Math.min(slides.length-1,k));stage.innerHTML='';stage.appendChild(slides[i].cloneNode(true));}
+  var q=new URLSearchParams(location.search);
+  if(q.has('frame')){document.body.classList.add('frame');show((+q.get('frame')||1)-1);return;}
+  function start(k){document.body.classList.add('present');show(k||0);
+    if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(function(){});}
+  function stop(){document.body.classList.remove('present');if(document.fullscreenElement)document.exitFullscreen();}
+  [].forEach.call(document.querySelectorAll('[data-present]'),function(b){b.onclick=function(){start(0);};});
+  [].forEach.call(document.querySelectorAll('[data-print]'),function(b){b.onclick=function(){window.print();};});
+  slides.forEach(function(s,k){s.addEventListener('dblclick',function(){start(k);});s.title='Двойной клик — показ с этого слайда';});
+  stage.addEventListener('click',function(e){show(e.clientX>innerWidth/3?i+1:i-1);});
+  document.addEventListener('keydown',function(e){
+    if(!document.body.classList.contains('present'))return;
+    if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>=0){show(i+1);e.preventDefault();}
+    else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>=0){show(i-1);e.preventDefault();}
+    else if(e.key==='Escape')stop();});
+  document.addEventListener('fullscreenchange',function(){if(!document.fullscreenElement)document.body.classList.remove('present');});
+})();
+</script>
+</body></html>

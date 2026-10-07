@@ -13,6 +13,7 @@
 | Где разбирается | Тема [`t19`](../../catalog/topics.csv) «Кейсы трансформации моделей бизнеса»; семинар — вопрос [`q17`](../../catalog/questions.csv) |
 | Живое досье | [`assignments/dossiers/red-bull/`](../../../../assignments/dossiers/red-bull/README.md), стадия «зерно», v0.1 |
 | Задание | [`rb-02` Бизнес-модель Red Bull по трём укладам](../../../../assignments/templates/rb-02-red-bull-business-model.md) |
+| Тезис | [`th01` Модель бизнеса Red Bull](../../../../theses/th01-red-bull-model/README.md) — сжатая версия кейса на 2 слайда ([HTML](../../../../theses/th01-red-bull-model/index.html)), серия [«Постинформационные модели бизнеса»](../../../../theses/assemblies/pim-business-models.md) |
 
 ## Формула
 

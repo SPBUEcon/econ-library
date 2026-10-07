@@ -1,0 +1,2 @@
+thesis_id,title,formula,kind,blocks,refs,questions,assignments,dossier,slides,assemblies,status,version,updated,file
+th01,Модель бизнеса Red Bull,"Напиток финансирует медиа, медиа продвигает бренд, бренд продаёт напиток.",разбор,transition; ai-business,bm01; ca08; m01; c01; c19; c23; m02,q17,rb-02; tpl07,red-bull,2,pim-business-models,черновик,v0.1,2026-10-07,th01-red-bull-model/README.md
