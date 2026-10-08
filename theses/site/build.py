@@ -232,12 +232,26 @@ def render(bl, ctx, layout=""):
 CYCLE_STEP = re.compile(r"\s*-([^->]*)->\s*")
 
 
+def cycle_node(n, ctx, extra=""):
+    name, _, sub = n.partition(" · ")      # «Логистика · передача» → узел и подпись под ним
+    return (f'<span class="cy-node{extra}">{inline(name, ctx)}'
+            + (f'<small>{inline(sub, ctx)}</small>' if sub else "") + "</span>")
+
+
+def cycle_arrow(verb, ctx):
+    label = inline(verb, ctx) if verb.strip() else ""
+    return '<span class="cy-arr">' + (f"<i>{label}</i>" if label else "") + "</span>"
+
+
 def cycle_html(src, ctx):
     """```cycle: «A -глагол-> B -глагол-> C -глагол-> A» → схема: узлы, стрелки с подписями, обратная дуга.
 
+    Первая строка — цикл (или цепочка, если последний узел не повторяет первый). Следующие строки вида
+    «C -глагол-> D», где C — последний узел цикла, — ответвление: узел D дорисовывается справа от цикла.
     На GitHub блок читается как текст, в HTML — как схема на тонких линиях.
     """
-    parts = CYCLE_STEP.split(" ".join(src.split()))
+    lines = [ln.strip() for ln in src.splitlines() if ln.strip()]
+    parts = CYCLE_STEP.split(lines[0])
     nodes, verbs = parts[0::2], parts[1::2]
     loop = len(nodes) > 2 and nodes[-1].partition(" · ")[0] == nodes[0].partition(" · ")[0]
     back = verbs.pop() if loop else ""
@@ -245,13 +259,18 @@ def cycle_html(src, ctx):
         nodes.pop()
     row = []
     for k, n in enumerate(nodes):
-        name, _, sub = n.partition(" · ")      # «Логистика · передача» → узел и подпись под ним
-        row.append(f'<span class="cy-node">{inline(name, ctx)}'
-                   + (f'<small>{inline(sub, ctx)}</small>' if sub else "") + "</span>")
+        row.append(cycle_node(n, ctx))
         if k < len(verbs):
-            label = inline(verbs[k], ctx) if verbs[k].strip() else ""
-            row.append(f'<span class="cy-arr">' + (f"<i>{label}</i>" if label else "") + "</span>")
-    cls = "cycle loop" if loop else "cycle chain"
+            row.append(cycle_arrow(verbs[k], ctx))
+    ext = 0
+    for ln in lines[1:]:
+        bp = CYCLE_STEP.split(ln)
+        if len(bp) == 3 and bp[0].partition(" · ")[0] == nodes[-1].partition(" · ")[0]:
+            row += [cycle_arrow(bp[1], ctx), cycle_node(bp[2], ctx, " cy-ext")]
+            ext += 1
+        else:
+            warn(f"cycle: ответвление «{ln}» должно начинаться с последнего узла цикла «{nodes[-1]}»")
+    cls = ("cycle loop" if loop else "cycle chain") + (f" ext{ext}" if ext else "")
     return (f'<div class="{cls}"><div class="cy-row">' + "".join(row) + "</div>"
             + (f'<div class="cy-back"><i>{inline(back, ctx)}</i></div>' if loop else "") + "</div>")
 
