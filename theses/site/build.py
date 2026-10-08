@@ -486,8 +486,8 @@ def tools(deck, base, src):
 
 
 def s_top(label, link, ctx, updated):
-    return (f'<div class="s-top"><a class="s-id" href="{rel(link, ctx.out_dir)}" data-pages="{pages_url(link)}">'
-            f'{esc(label)}</a><span class="s-upd">обновлено {esc(updated)}</span></div>')
+    return (f'<div class="s-top"><a class="s-id" href="{rel(link, ctx.out_dir)}" data-pages="{pages_url(link)}"'
+            f' title="Открыть карточку тезиса">{esc(label)}</a><span class="s-upd">обновлено {esc(updated)}</span></div>')
 
 
 def slide_html(t, k, ctx, link, num, total):
