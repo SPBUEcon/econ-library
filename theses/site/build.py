@@ -698,22 +698,27 @@ def assembly_page(a, theses, links):
     return page(f'{a["title"]} · {kind or "сборка"}', hero, main)
 
 
-def assembly_slides(a, theses, links):
-    """Чистые слайды сборки: обложка + слайды тезисов со сквозной нумерацией."""
-    ctx = Ctx(a["dir"], a["dir"], links, clean=True)
+def cover_html(a, theses, ctx, total):
+    """Обложка сборки: название и оглавление (несобранные пункты — бледнее)."""
     m = a["meta"]
-    ts = members(a, theses)
-    total = 1 + sum(len(t["slides"]) for t in ts)
     items = []
     for _, its in a["groups"]:
         for it in its:
             t = theses.get(it["id"])
             items.append(f'<li>{esc(t["title"])}</li>' if t else
                          f'<li style="opacity:.55">{inline(it["text"], ctx)}</li>')
-    h = [f'<section class="slide cover"><div class="s-in">'
-         + s_top(f'{m.get("kind", "сборка")} · {a["title"]}', a["out"], ctx, m.get("updated", ""))
-         + f'<h2 class="s-title">{esc(a["title"])}</h2><div class="s-body"><ol>{"".join(items)}</ol></div>'
-         f'<div class="s-foot"><span>{FOOT}</span><span>1 / {total}</span></div></div></section>']
+    return (f'<section class="slide cover"><div class="s-in">'
+            + s_top(f'{m.get("kind", "сборка")} · {a["title"]}', a["out"], ctx, m.get("updated", ""))
+            + f'<h2 class="s-title">{esc(a["title"])}</h2><div class="s-body"><ol>{"".join(items)}</ol></div>'
+            f'<div class="s-foot"><span>{FOOT}</span><span>1 / {total}</span></div></div></section>')
+
+
+def assembly_slides(a, theses, links):
+    """Чистые слайды сборки: обложка + слайды тезисов со сквозной нумерацией."""
+    ctx = Ctx(a["dir"], a["dir"], links, clean=True)
+    ts = members(a, theses)
+    total = 1 + sum(len(t["slides"]) for t in ts)
+    h = [cover_html(a, theses, ctx, total)]
     n = 1
     for t in ts:
         h.append(slides_seq(t, Ctx(t["dir"], a["dir"], links, clean=True), t["out"], start=n, total=total))
@@ -792,6 +797,39 @@ def units(theses, assemblies):
     return rows
 
 
+def unlink(h):
+    """Ссылки внутри слайда → span с тем же классом: миниатюра сама целиком ссылка, вложенные <a> нельзя."""
+    def tag(m):
+        c = re.search(r'class="[^"]*"', m.group(0))
+        return f"<span {c.group(0)}>" if c else "<span>"
+    return re.sub(r"<a\b[^>]*>", tag, h).replace("</a>", "</span>")
+
+
+def thumb(slide, href, title):
+    """Миниатюра для витрины — тот же слайд, уменьшенный: размеры внутри слайда в cqw."""
+    return f'<a class="thumb" href="{href}" title="{esc(title)}">{unlink(slide)}</a>'
+
+
+def thesis_thumb(t, links):
+    """Превью тезиса: слайд из поля `preview` (номер), по умолчанию первый. Ведёт в карточку."""
+    k = min(max(int(t["meta"].get("preview") or 1), 1), len(t["slides"])) - 1
+    s = slide_html(t, k, Ctx(t["dir"], HERE, links, clean=True), t["out"], k + 1, len(t["slides"]))
+    return thumb(s, rel(t["out"], HERE), f'{t["id"]} · слайд {k + 1}')
+
+
+def assembly_thumb(a, theses, links):
+    """Превью сборки: `preview: thNN:k` — слайд тезиса, по умолчанию обложка. Ведёт в карточку сборки."""
+    tid, _, k = a["meta"].get("preview", "").partition(":")
+    t = theses.get(tid.strip())
+    if t:
+        k = min(max(int(k or 1), 1), len(t["slides"])) - 1
+        s = slide_html(t, k, Ctx(t["dir"], HERE, links, clean=True), t["out"], k + 1, len(t["slides"]))
+    else:
+        total = 1 + sum(len(x["slides"]) for x in members(a, theses))
+        s = cover_html(a, theses, Ctx(a["dir"], HERE, links, clean=True), total)
+    return thumb(s, rel(a["out"], HERE), a["title"])
+
+
 def dset(v):
     """Значения для data-атрибута фильтра: «|a|b|» — строка подходит, если в ней есть выбранное значение."""
     return "|" + "|".join(split(v)) + "|"
@@ -799,7 +837,7 @@ def dset(v):
 
 UNITS_SCRIPT = """<script>
 (function(){
-  var rows=[].slice.call(document.querySelectorAll('#units tbody tr')),q=document.getElementById('u-q'),
+  var rows=[].slice.call(document.querySelectorAll('#units>tbody>tr')),q=document.getElementById('u-q'),
       sel=[].slice.call(document.querySelectorAll('.u-f')),cnt=document.getElementById('u-n');
   function run(){var s=q.value.trim().toLowerCase(),n=0;
     rows.forEach(function(r){var ok=(!s||r.textContent.toLowerCase().indexOf(s)>=0)&&
@@ -816,8 +854,19 @@ UNITS_SCRIPT = """<script>
 </script>"""
 
 
-def units_html(rows, theses, assemblies):
+def catalog_titles():
+    """id строки каталога → название: подписи к полю covers («из каталога: bm01 · Red Bull»)."""
+    out = {}
+    for _, cat in catalogs():
+        for fname, idc, titlec, *_ in UNIT_SOURCES:
+            if (cat / fname).exists():
+                out.update({r[idc]: r[titlec] for r in read_csv(cat / fname)})
+    return out
+
+
+def units_html(rows, theses, assemblies, links):
     by_id = {a["id"]: a for a in assemblies}
+    names = catalog_titles()
 
     def options(key, label, names=None):
         vals = sorted({v for r in rows for v in split(r[key])})
@@ -834,7 +883,9 @@ def units_html(rows, theses, assemblies):
             st = (f'<a href="{href}">карточка</a> · <a href="{rel(t["deck"], HERE)}">слайды</a> · {r["slides"]} сл.'
                   + "".join(f'<br>→ <a href="{rel(by_id[x]["out"], HERE)}">{esc(by_id[x]["title"])}</a>'
                             for x in split(r["assemblies"]))
-                  + (f'<br>раскрывает <code>{esc(r["covers"].replace(";", ", "))}</code>' if r["covers"] else ""))
+                  + "".join(f'<br><span title="Строка каталога дисциплины, которую раскрыл тезис: раньше — кандидат">'
+                            f'из каталога: <code>{esc(c)}</code> {esc(names.get(c, ""))}</span>'
+                            for c in split(r["covers"])))
         elif r["assemblies"]:
             uid = f'<code>{esc(r["unit_id"])}</code>'
             st = " ".join(f'<a href="{rel(by_id[x]["out"], HERE)}">{esc(by_id[x]["title"])}</a>'
@@ -846,9 +897,11 @@ def units_html(rows, theses, assemblies):
         blocks_ = ", ".join(BLOCKS.get(b, b) for b in split(r["block"]))
         clamp = ' clamp" title="Показать целиком' if len(r["summary"]) > 170 else ""
         cls = "ok" if r["status"] == "собран" else "plan" if r["status"] == "в сборке" else "cand"
+        pic = thesis_thumb(theses[r["theses"]], links) if r["status"] == "собран" else ""
         trs.append(f'<tr data-kind="{esc(dset(r["kind"]))}" data-block="{esc(dset(r["block"]))}" '
-                   f'data-status="{esc(dset(r["status"]))}"><td>{uid}</td><td><b>{esc(r["title"])}</b>'
-                   f'<div class="u-sum{clamp}">{esc(r["summary"])}</div></td><td>{esc(r["kind"])}</td>'
+                   f'data-status="{esc(dset(r["status"]))}"><td>{uid}</td><td><div class="u-t">{pic}<div>'
+                   f'<b>{esc(r["title"])}</b><div class="u-sum{clamp}">{esc(r["summary"])}</div></div></div></td>'
+                   f'<td>{esc(r["kind"])}</td>'
                    f'<td class="u-bl">{esc(blocks_)}</td><td><span class="u-st u-{cls}">{esc(r["status"])}</span>'
                    f'<div class="u-sum">{st}</div></td></tr>')
     stat = {s: sum(1 for r in rows if r["status"] == s) for s in ("собран", "в сборке", "кандидат")}
@@ -857,7 +910,7 @@ def units_html(rows, theses, assemblies):
             f'<p class="lead">Сверху — собранные тезисы. Ниже — кандидаты: строки каталогов дисциплин, '
             f'извлечённые из авторских презентаций (концепты, методологии, модели бизнеса, кейсы, отрасли, '
             f'технологии, темы). Кандидат становится тезисом, когда его собирают в карточку на 1–3 слайда; '
-            f'строка каталога тогда вливается в строку тезиса. В сборках запланировано — {stat["в сборке"]}, '
+            f'строка каталога тогда вливается в строку тезиса — в статусе это подпись «из каталога». В сборках запланировано — {stat["в сборке"]}, '
             f'кандидатов — {stat["кандидат"]}. Таблица для Excel — '
             f'<a href="{GH}blob/main/theses/catalog/units.csv"><code>catalog/units.csv</code></a>.</p></div>'
             f'<div class="u-bar"><input id="u-q" type="search" placeholder="Поиск по названию и сути…">'
@@ -874,7 +927,7 @@ def lead_text(a, limit=230):
     return t if len(t) <= limit else t[:limit - 5].rsplit(" ", 1)[0] + "…"
 
 
-def assemblies_html(assemblies, theses, rows):
+def assemblies_html(assemblies, theses, rows, links):
     """Сборки карточками по видам; над ними — виды сборок со счётчиками готовых и кандидатов."""
     order = [k for k, _, _ in ASSEMBLY_KINDS]
     kinds = []
@@ -899,7 +952,7 @@ def assemblies_html(assemblies, theses, rows):
         ts = members(a, theses)
         plan = sum(1 for _, its in a["groups"] for i in its if i["id"] not in theses)
         href = rel(a["out"], HERE)
-        cards.append(f'<div class="card"><span class="k">{esc(m.get("kind", "сборка"))} · {esc(m.get("status", ""))}</span>'
+        cards.append(f'<div class="card">{assembly_thumb(a, theses, links)}<span class="k">{esc(m.get("kind", "сборка"))} · {esc(m.get("status", ""))}</span>'
                      f'<h3><a href="{href}">{esc(a["title"])}</a></h3><span class="fx">{esc(lead_text(a))}</span>'
                      f'<span class="meta">{len(ts)} тез. · {1 + sum(len(t["slides"]) for t in ts)} сл.'
                      + (f' · {plan} планируется' if plan else "") + f' · обновлено {esc(m.get("updated", ""))}</span>'
@@ -938,7 +991,7 @@ def catalog_tables():
             f'<th>Слайдов</th></tr></thead><tbody>{srows}</tbody></table></details></div>')
 
 
-def index_page(theses, assemblies, rows):
+def index_page(theses, assemblies, rows, links):
     hero = ('<div class="crumbs"><a href="../../index.html">Мастерская</a> · тезисы и сборки</div>'
             '<div class="eyebrow">База контента мастерской</div><h1>Тезисы и сборки</h1>'
             '<div class="formula">Тезис — базовая единица контента: одна мысль, одна формула, 1–3 слайда. '
@@ -947,7 +1000,8 @@ def index_page(theses, assemblies, rows):
             f'<a class="btn" href="#theses">Тезисы · {len(theses)}</a>'
             f'<a class="btn ghost" href="#questions">Вопросы и источники</a>'
             f'<a class="btn ghost" href="{GH}blob/main/theses/README.md">Модель слоя</a></div>')
-    main = assemblies_html(assemblies, theses, rows) + units_html(rows, theses, assemblies) + catalog_tables()
+    main = (assemblies_html(assemblies, theses, rows, links) + units_html(rows, theses, assemblies, links)
+            + catalog_tables())
     return page("Тезисы и сборки · мастерская", hero, main)
 
 
@@ -1079,7 +1133,7 @@ def main():
         write(a["out"], assembly_page(a, theses, links))
         write(a["deck"], assembly_slides(a, theses, links))
     rows = units(theses, assemblies)
-    write(HERE / "index.html", index_page(theses, assemblies, rows))
+    write(HERE / "index.html", index_page(theses, assemblies, rows, links))
     write_csv("units.csv", list(rows[0].keys()), [list(r.values()) for r in rows])
 
     write_csv("theses.csv",

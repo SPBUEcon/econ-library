@@ -3,6 +3,7 @@ id: pim-business-models
 title: Постинформационные модели бизнеса
 kind: серия
 frame: m01; c01; c19
+preview: th01:2
 status: черновик
 updated: 2026-10-07 23:33
 ---

@@ -6,6 +6,7 @@ formula: Напиток финансирует медиа, медиа продв
 frame: m01; c01; c19; c23; m02
 parent: Тезисы и сборки | ../../../../theses/site/index.html
 anchors: formula=th01:2; transition=th01:2; uklads=th01:1; stratos=th01:3; numbers=цифры-и-статус-проверки; seminar=вопросы-для-семинара; tasks=задания; slides=слайды
+preview: th01:3
 status: черновик
 updated: 2026-10-07 19:19
 ---

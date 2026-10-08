@@ -3,6 +3,7 @@ id: lec-it-market-russia
 title: Рынок информационных систем в России
 kind: лекция
 frame: t09; t07
+preview: th07:2
 status: черновик
 updated: 2026-10-08 17:58
 ---

@@ -9,6 +9,7 @@ refs: bm10; c23; c19; m01
 questions: q17
 assignments: tpl01
 dossier:
+preview: 2
 status: черновик
 version: v0.2
 updated: 2026-10-07 23:53

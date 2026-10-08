@@ -9,6 +9,7 @@ refs: t09; t08
 questions:
 assignments:
 dossier:
+preview: 2
 status: черновик
 version: v0.1
 updated: 2026-10-08 17:58
