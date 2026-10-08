@@ -58,25 +58,22 @@
 | Архитектура воркстримов | Как устроены слои и гейты | Витрина | [`program/site/workstreams_architecture.html`](program/site/workstreams_architecture.html) |
 | Лендинг курса | Вводная страница мастерской | Витрина | [`program/site/landing_tech_econ.html`](program/site/landing_tech_econ.html) |
 | Участники и доступы | Одностраничник по участию и доступам | Витрина | [`program/site/participants-and-access-onepager.html`](program/site/participants-and-access-onepager.html) |
-| Курс дисциплины (HTML) | Темы, концепты, методологии, кейсы, вопросы + поиск | Приложение | [`disciplines/technologies-econ-fin/site/course.html`](disciplines/technologies-econ-fin/site/course.html) |
 | Архив заданий (HTML) | Все задания для групп: конкретные, параметрические, эстафетные; фильтры по навыку, типу, досье | Приложение | [`assignments/site/index.html`](assignments/site/index.html) · источник — [`assignments/catalog/templates.csv`](assignments/catalog/templates.csv) |
-| Тезисы (HTML) | Единицы контента на 1–3 слайда: собранные тезисы, сборки (лекции, серии, кейсы), пул всех единиц из каталога с фильтрами | Приложение | [`theses/site/index.html`](theses/site/index.html) · реестр — [`theses/catalog/units.csv`](theses/catalog/units.csv) |
+| Тезисы и сборки (HTML) | База контента: сборки (лекции, серии, кейсы) карточками; тезисы и кандидаты из каталога дисциплины — таблицей с фильтрами; вопросы и источники | Приложение | [`theses/site/index.html`](theses/site/index.html) · реестр — [`theses/catalog/units.csv`](theses/catalog/units.csv) |
 | План работ со Спорткомитетом (HTML) | Дорожная карта 05.10–31.12.2026: ядро, интенсив, открытая встреча, демо-день, темы для команд | Витрина | [`workstreams/sport-spb/deliverables/plan-komsport-okt-dek-2026.html`](workstreams/sport-spb/deliverables/plan-komsport-okt-dek-2026.html) · источник — [`plan-komsport-okt-dek-2026.md`](workstreams/sport-spb/plan-komsport-okt-dek-2026.md) |
 | Каталог дисциплины (CSV) | «Источник правды» контента дисциплины | Каталог | [`disciplines/technologies-econ-fin/catalog/`](disciplines/technologies-econ-fin/catalog/) |
 | Репозиторий `econ-library` | Среда управления мастерской (этот репозиторий) | Репо | [`README.md`](README.md) |
 
 > HTML-витрины собираются вручную / скриптом и держатся в синхроне с markdown-первоисточниками.
-> Курс дисциплины пересобирается из каталога: `python disciplines/technologies-econ-fin/site/build.py`.
 > Архив заданий пересобирается из каталога заданий: `python assignments/site/build.py`.
-> Тезисы, кейсы-сборки и реестр единиц пересобираются: `python theses/site/build.py`.
+> Тезисы, сборки (лекции, серии, кейсы) и реестр единиц с кандидатами из каталога пересобираются: `python theses/site/build.py`.
 
 **Публичные ссылки (GitHub Pages).** Витрины доступны публично:
 
 - 🧭 **Дашборд (главная)** — `https://spbuecon.github.io/econ-library/`
 - Витрина воркстримов — `https://spbuecon.github.io/econ-library/program/site/workstreams_board.html`
-- Курс дисциплины — `https://spbuecon.github.io/econ-library/disciplines/technologies-econ-fin/site/course.html`
 - Архив заданий — `https://spbuecon.github.io/econ-library/assignments/site/index.html`
-- Тезисы и все единицы — `https://spbuecon.github.io/econ-library/theses/site/index.html`
+- Тезисы и сборки (заменяет страницу курса дисциплины) — `https://spbuecon.github.io/econ-library/theses/site/index.html`
 
 > Дашборд — это корневой `index.html`; `program/site/dashboard.html` оставлен редиректом на главную.
 
@@ -161,7 +158,7 @@
 | Матрица укладов по отраслям | 15 | [`industries.csv`](disciplines/technologies-econ-fin/catalog/industries.csv) |
 | Источники (презентации) | 14 | [`sources.csv`](disciplines/technologies-econ-fin/catalog/sources.csv) |
 
-**Курс в HTML** (фильтр по блокам + поиск): [`site/course.html`](disciplines/technologies-econ-fin/site/course.html).
+**В HTML** — витрина [«Тезисы и сборки»](theses/site/index.html): строки каталога там — кандидаты в тезисы и сборки (фильтр по блокам + поиск), там же вопросы и источники.
 **Опорные заметки:** [`notes/`](disciplines/technologies-econ-fin/notes/).
 
 ---

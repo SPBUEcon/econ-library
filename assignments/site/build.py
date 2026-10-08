@@ -312,7 +312,7 @@ footer p{margin-bottom:8px;max-width:920px}
       <a href="__GH__templates/_card-template.md">шаблону</a>, и пересоберите страницу:
       <code>python assignments/site/build.py</code>. Изменения — через Pull request.</p>
     <p>Выдачи — по никам и <code>team_id</code>, без ФИО; оценки здесь не хранятся. Собрано: __GEN_DATE__.</p>
-    <p><a href="../../index.html">← Дашборд мастерской</a> · <a href="../../disciplines/technologies-econ-fin/site/course.html">Курс дисциплины</a></p>
+    <p><a href="../../index.html">← Дашборд мастерской</a> · <a href="../../theses/site/index.html">Тезисы и сборки</a></p>
   </div>
 </footer>
 
