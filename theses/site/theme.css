@@ -158,6 +158,13 @@ mark{background:#FCEBCB;color:inherit;border-bottom:.15em solid var(--amber);bor
 .loop .cy-arr i{width:13cqw}
 .cy-back{position:absolute;left:8.5cqw;right:8.5cqw;top:50%;height:calc(100% - 50% - .4cqw);
   border:1px dashed var(--grey);border-top:0;border-radius:0 0 2cqw 2cqw}
+/* цикл с ответвлением: стрелки фиксированной ширины, дуга — от первого до последнего узла цикла */
+.cycle.loop.ext1{width:91.6cqw}
+.ext1 .cy-node{width:15cqw}
+.ext1 .cy-arr{flex:0 0 9cqw}
+.ext1 .cy-back{left:7.5cqw;right:calc(7.5cqw + 9.8cqw + 17.2cqw)}
+.cy-node.cy-ext{border-style:dashed;border-color:var(--coral)}
+.ext1 .cy-node.cy-ext{width:17.2cqw;font-size:1.3cqw;border-radius:2cqw}
 .cy-back::before{content:"";position:absolute;left:-.55cqw;top:-.2cqw;border:.5cqw solid transparent;border-bottom:.9cqw solid var(--grey);border-top:0}
 .cy-back i{bottom:-.75cqw;background:#fff;padding:0 .8cqw}
 
