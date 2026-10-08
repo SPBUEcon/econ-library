@@ -211,6 +211,12 @@ def render(bl, ctx, layout=""):
             h.append(f"<blockquote>{render(blocks(d), ctx)}</blockquote>")
         elif kind in ("ul", "ol"):
             h.append(f"<{kind}>" + "".join(f"<li>{inline(x, ctx)}</li>" for x in d) + f"</{kind}>")
+        elif kind == "table" and layout == "numbers" and all(len(r) > 1 and number(r[1]) is not None for r in d[1]):
+            # таблица с числами во втором столбце — диаграмма; таблицы подряд — диаграммы рядом
+            if h and isinstance(h[-1], list):
+                h[-1].append(d)
+            else:
+                h.append([d])
         elif kind == "table" and layout in ("columns", "timeline"):
             head, rows = d
             cols = []
@@ -226,7 +232,39 @@ def render(bl, ctx, layout=""):
             h.append("<table><thead><tr>" + "".join(f"<th>{inline(c, ctx)}</th>" for c in head) + "</tr></thead><tbody>"
                      + "".join("<tr>" + "".join(f"<td>{inline(c, ctx)}</td>" for c in r) + "</tr>" for r in rows)
                      + "</tbody></table>")
-    return "\n".join(h)
+    return "\n".join(charts_html(x, ctx) if isinstance(x, list) else x for x in h)
+
+
+def number(s):
+    """«4,03 трлн», «<mark>211,0</mark>» → 4.03, 211.0; без числа — None."""
+    m = re.search(r"\d[\d\s]*(?:[.,]\d+)?", re.sub(r"<[^>]+>", "", s))
+    return float(re.sub(r"\s", "", m.group(0)).replace(",", ".")) if m else None
+
+
+def charts_html(tables, ctx):
+    """Диаграммы рядом. У всех одна единица (второй столбец шапки) — общий масштаб, чтобы длины сравнивались."""
+    top = None
+    if len({t[0][1] if len(t[0]) > 1 else "" for t in tables}) == 1:
+        top = max(number(r[1]) or 0 for t in tables for r in t[1]) or None
+    return '<div class="charts">' + "".join(bars_html(*t, ctx, top) for t in tables) + "</div>"
+
+
+def bars_html(head, rows, ctx, top=None):
+    """Таблица «название | число | пометка» → диаграмма-«леденец»: тонкая линия и точка на конце.
+
+    Шапка — подпись диаграммы: «Выручка за 2025 год | млрд ₽». Длина линии — доля от максимума (top).
+    """
+    vals = [number(r[1]) if len(r) > 1 else None for r in rows]
+    top = top or max([v for v in vals if v] or [1])
+    cap = " · ".join(inline(c, ctx) for c in head[:2] if c)
+    out = []
+    for r, v in zip(rows, vals):
+        w = (v or 0) / top * 78                # место справа — под значение
+        note = f'<i>{inline(r[2], ctx)}</i>' if len(r) > 2 and r[2] else ""
+        out.append(f'<div class="b-row"><span class="b-lab">{inline(r[0], ctx)}</span><span class="b-track">'
+                   f'<span class="b-line" style="width:{w:.1f}%"><b class="b-val">'
+                   f'{inline(r[1] if len(r) > 1 else "", ctx)}{note}</b></span></span></div>')
+    return f'<div class="bars"><div class="b-cap">{cap}</div>{"".join(out)}</div>'
 
 
 CYCLE_STEP = re.compile(r"\s*-([^->]*)->\s*")

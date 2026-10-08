@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<!-- Сгенерировано theses/site/build.py из md-источников. Не править руками: правьте md и пересоберите. -->
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Рынок информационных систем в России · лекция</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+/* Единый стиль тезисов: страница, сборка, показ, печать в PDF, кадры для PPTX.
+   Палитра и шрифты — как у страниц кейсов дисциплины (cases/red-bull/index.html).
+   Build встраивает этот файл в каждую страницу, страницы самодостаточны. */
+:root{
+  --ink:#1B2038; --ink2:#272E52;
+  --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0;
+  --green:#2FA37A; --amber:#D9932B; --blue:#3E7BD6; --violet:#7A5AD9;
+  --disp:'Unbounded','Arial Black',sans-serif;
+  --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.5}
+a{color:var(--blue)}
+code{font-family:Consolas,monospace;font-size:.92em;background:var(--panel);border-radius:5px;padding:0 4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+/* ---------- шапка страницы ---------- */
+.hero{background:var(--ink);color:#fff;padding:44px 0 40px}
+.crumbs{font-size:13px;color:var(--ice);margin-bottom:18px}
+.crumbs a{color:var(--ice)}
+.eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:12px}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(24px,3.6vw,40px);line-height:1.15;max-width:980px}
+.hero .formula{margin-top:16px;font-size:clamp(16px,2vw,21px);color:var(--ice);max-width:900px;border-left:4px solid var(--coral);padding-left:16px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.tag{font-size:12px;font-weight:600;letter-spacing:.03em;background:var(--ink2);color:var(--ice);border-radius:8px;padding:4px 10px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.btn{font:600 14px var(--body);background:var(--coral);color:#fff;border:0;border-radius:10px;padding:9px 16px;cursor:pointer;text-decoration:none}
+.btn.ghost{background:transparent;border:1.5px solid var(--ice);color:var(--ice)}
+
+/* ---------- текст страницы ---------- */
+main{padding:36px 0 60px}
+.lead{font-size:17px;color:var(--grey);max-width:860px;margin-bottom:8px}
+.lead p+p{margin-top:8px}
+.doc h2{font-family:var(--disp);font-weight:700;font-size:24px;line-height:1.2;margin:44px 0 14px}
+.doc h3{font-family:var(--disp);font-weight:500;font-size:17px;margin:22px 0 8px}
+.doc p,.doc ul,.doc ol,.doc table,.doc blockquote,.doc pre{margin-bottom:12px;max-width:900px}
+.doc ul,.doc ol{padding-left:24px}
+.doc li{margin-bottom:4px}
+.doc blockquote{border-left:4px solid var(--coral);padding:4px 0 4px 16px;font-size:17px}
+.doc table{border-collapse:collapse;width:100%;max-width:none;font-size:14.5px;background:#fff}
+.doc th,.doc td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.doc th{background:var(--panel);font-weight:600}
+.doc pre{background:var(--panel);border-radius:10px;padding:12px 16px;overflow:auto;font-size:13px}
+.chk{display:inline-block;font-size:.72em;font-weight:600;letter-spacing:.03em;color:var(--amber);font-style:normal;
+  border:1.5px solid var(--amber);border-radius:6px;padding:0 .4em;margin-left:.2em;vertical-align:.1em;white-space:nowrap}
+
+/* подсветка утверждений «проверить»: только в карточке, в чистых слайдах тегов <mark> нет */
+mark{background:#FCEBCB;color:inherit;border-bottom:.15em solid var(--amber);border-radius:.2em;padding:0 .12em}
+.legend{font-size:14px;color:var(--grey);margin:6px 0 12px}
+
+.doc p img{max-width:min(100%,430px);border:1px solid var(--line);border-radius:8px;margin:0 10px 10px 0;vertical-align:top}
+.anchor{display:block;position:relative;top:-16px}
+
+/* ---------- лента слайдов на странице ---------- */
+/* карусель карточки: слайд уменьшен, рядом — показ, список слайдов, комментарий */
+.carousel{display:grid;grid-template-columns:minmax(0,640px) minmax(220px,1fr);gap:22px;align-items:start;margin:14px 0 8px;outline:none}
+.cr-stage{position:relative}
+.cr-item{display:none}
+.cr-item.on{display:block}
+.cr-item .slide{box-shadow:0 4px 16px rgba(27,32,56,.08);cursor:zoom-in}
+.cr-btn{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:1px solid var(--line);
+  background:rgba(255,255,255,.92);color:var(--ink);font:500 20px/1 var(--body);cursor:pointer;opacity:.75}
+.cr-btn:hover{opacity:1;border-color:var(--ink)}
+.cr-prev{left:-17px}.cr-next{right:-17px}
+.cr-side{display:flex;flex-direction:column;gap:12px;font-size:14.5px}
+.cr-play{align-self:flex-start}
+.cr-list{list-style:none;display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.cr-list li{display:flex;gap:10px;padding:7px 2px;border-bottom:1px solid var(--line);cursor:pointer;color:var(--grey)}
+.cr-list li b{font-family:var(--disp);font-weight:500;font-size:12px;color:var(--grey);min-width:16px;padding-top:2px}
+.cr-list li.on{color:var(--ink)}
+.cr-list li.on b{color:var(--coral)}
+.cr-cap{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--coral);margin-bottom:6px}
+.cr-note{display:none;color:var(--grey);font-size:14px}
+.cr-note.on{display:block}
+.cr-note p{margin-bottom:8px}
+.cr-note .empty{font-style:italic}
+@media (max-width:860px){.carousel{grid-template-columns:1fr}.cr-prev{left:6px}.cr-next{right:6px}}
+.deck{display:flex;flex-direction:column;gap:22px;margin:8px 0 10px}
+.unit{margin-top:40px}
+.unit-h{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;margin-bottom:12px}
+.unit-h h2,.unit-h h3{font-family:var(--disp);font-weight:700;font-size:22px;margin:0}
+.unit-h .fx{color:var(--grey);font-size:15px}
+.planned{color:var(--grey)}
+.notes{background:#fff;border:1px dashed var(--line);border-radius:12px;padding:12px 16px;font-size:14.5px;color:var(--grey);max-width:none}
+.notes summary{cursor:pointer;font-weight:600;color:var(--ink)}
+.notes[open] summary{margin-bottom:8px}
+.notes p+p{margin-top:8px}
+
+/* ---------- слайд 16:9; размеры внутри — в cqw, слайд масштабируется целиком ----------
+   Язык схем мастерской: тонкие линии (1px), пунктир, узлы-точки, стрелки, подписи капителью.
+   Никаких плашек с заливкой и толстых цветных полос. */
+.slide{position:relative;width:100%;aspect-ratio:16/9;container-type:inline-size;background:#fff center/cover no-repeat;
+  border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 8px 28px rgba(27,32,56,.08)}
+.s-in{position:absolute;inset:0;display:flex;flex-direction:column;padding:3.1cqw 4cqw 2.4cqw;font-size:1.5cqw;line-height:1.38}
+.s-top{display:flex;justify-content:space-between;align-items:baseline;font-size:.95cqw;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+/* индекс тезиса — ссылка на карточку: пунктирное подчёркивание и стрелка ↗, которая «подмигивает»
+   при загрузке и уходит вверх-вправо при наведении */
+.s-top .s-id{color:var(--coral);text-decoration:none;border-bottom:1px dashed currentColor;padding-bottom:.1cqw;
+  display:inline-flex;align-items:baseline;gap:.45cqw;transition:border-color .15s ease}
+.s-top .s-id::after{content:"↗";display:inline-block;font-size:1.15em;line-height:1;letter-spacing:0;
+  transition:transform .2s ease;animation:s-id-nudge 1.6s ease-in-out .6s 2}
+.s-top .s-id:hover{border-bottom-style:solid}
+.s-top .s-id:hover::after{transform:translate(.25cqw,-.25cqw)}
+.s-top .s-id:focus-visible{outline:2px solid var(--coral);outline-offset:.3cqw;border-radius:.2cqw}
+@keyframes s-id-nudge{0%,60%,100%{transform:none}30%{transform:translate(.25cqw,-.25cqw)}}
+@media (prefers-reduced-motion:reduce){.s-top .s-id::after{animation:none;transition:none}}
+body.frame .s-top .s-id::after{animation:none}
+.s-top .s-upd{color:var(--grey);letter-spacing:.06em;text-transform:none;font-weight:500}
+.s-head{display:flex;justify-content:space-between;align-items:flex-start;gap:3cqw;margin:1.2cqw 0 2cqw}
+.s-title{font-family:var(--disp);font-weight:700;font-size:2.9cqw;line-height:1.12}
+.s-logo{height:6.2cqw;width:auto;margin-top:-.4cqw;flex:none}
+.s-body{flex:1;display:flex;flex-direction:column;gap:1.5cqw;min-height:0}
+.s-body p,.s-body li{max-width:none}
+.s-body strong{font-weight:600}
+.s-body ul,.s-body ol{padding-left:2.2cqw;display:flex;flex-direction:column;gap:.6cqw}
+.s-body li::marker{color:var(--coral)}
+.s-body blockquote{border-left:1px solid var(--coral);padding:.2cqw 0 .2cqw 1.6cqw;font-size:1.75cqw;font-weight:500}
+.s-body table{border-collapse:collapse;width:100%;font-size:1.25cqw}
+.s-body th,.s-body td{border-bottom:1px solid var(--line);padding:.6cqw .8cqw;text-align:left;vertical-align:top}
+.s-body th{font-size:.95cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--coral);font-weight:600}
+.s-body img{max-width:100%;max-height:30cqw;object-fit:contain}
+.s-foot{display:flex;justify-content:space-between;font-size:.9cqw;color:var(--grey);border-top:1px solid var(--line);padding-top:.9cqw;margin-top:1.2cqw}
+
+/* раскладка columns: таблица → колонки на оси (заголовок «Название · подпись»).
+   Ось — тонкая линия со стрелкой, на ней узлы; колонки разделены волосяными линиями */
+.cols{position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;flex:1;min-height:0;padding-top:.6cqw}
+.cols::before{content:"";position:absolute;left:0;right:1.2cqw;top:1.25cqw;border-top:1px solid var(--ink)}
+.cols::after{content:"";position:absolute;right:0;top:.62cqw;border:.65cqw solid transparent;border-left:1.2cqw solid var(--ink);border-right:0}
+.col{position:relative;padding:0 2cqw 0 0}
+.col+.col{padding-left:2cqw;border-left:1px dashed var(--line)}
+.col-h{position:relative;padding-top:2.1cqw;margin-bottom:1.4cqw}
+.col-h::before{content:"";position:absolute;left:0;top:.2cqw;width:1.3cqw;height:1.3cqw;border-radius:50%;
+  background:#fff;border:1px solid var(--ink);box-sizing:border-box}
+.col+.col .col-h::before{left:0}
+.col:last-child .col-h::before{background:var(--coral);border-color:var(--coral)}
+.col-h b{display:block;font-family:var(--disp);font-weight:500;font-size:1.4cqw;line-height:1.2}
+.col-h span{display:block;font-size:.95cqw;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--coral);margin-top:.35cqw}
+.col ul{list-style:none;padding:0;gap:0;font-size:1.22cqw;line-height:1.35}
+.col li{padding:.65cqw 0;border-top:1px solid var(--line)}
+.col li:first-child{border-top:0;padding-top:0}
+
+/* раскладка timeline: та же ось, но по высоте содержимого и крупнее — для хронологий */
+.l-timeline .s-body{justify-content:center}
+.l-timeline .cols{flex:0 0 auto;padding-bottom:2cqw}
+.l-timeline .col-h b{font-size:2.6cqw}
+.l-timeline .col ul{font-size:1.5cqw}
+
+/* ```cycle: узлы — контурные овалы, стрелки — тонкие линии с подписью, обратная дуга — пунктир;
+   без обратной дуги — цепочка шагов */
+.s-body:has(.cycle){justify-content:center;gap:2.4cqw;padding-bottom:3cqw}
+.cycle{position:relative;margin:1cqw auto}
+.cycle.loop{width:78cqw;padding-bottom:4.6cqw}
+.loop .cy-node{width:17cqw;padding:1.1cqw 1.3cqw}
+.cycle.chain{width:100%}
+.cy-row{display:flex;align-items:center;justify-content:center}
+.cy-node{flex:none;width:14cqw;text-align:center;font-family:var(--disp);font-weight:500;font-size:1.5cqw;line-height:1.2;
+  border:1px solid var(--ink);border-radius:999px;padding:1.1cqw .8cqw;background:#fff;position:relative;z-index:1}
+.cy-node small{display:block;font-family:var(--body);font-weight:500;font-size:.95cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--coral);margin-top:.3cqw}
+.chain .cy-node{width:auto;flex:1 1 0;max-width:20cqw;border-radius:1.6cqw;font-size:1.3cqw;padding:1cqw 1.1cqw}
+.cy-arr{flex:1 1 4cqw;min-width:4cqw;position:relative;height:1px;background:var(--ink);margin:0 .5cqw 0 .3cqw}
+.chain .cy-arr{flex:0 0 9cqw}
+.cy-arr::after{content:"";position:absolute;right:-.2cqw;top:-.5cqw;border:.5cqw solid transparent;border-left:.9cqw solid var(--ink);border-right:0}
+.cy-arr i,.cy-back i{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;font-style:normal;
+  font-size:.95cqw;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--coral)}
+.cy-arr i{bottom:.8cqw}
+.chain .cy-arr i,.loop .cy-arr i{white-space:normal;width:8.4cqw;text-align:center;line-height:1.2}
+.loop .cy-arr i{width:13cqw}
+.cy-back{position:absolute;left:8.5cqw;right:8.5cqw;top:50%;height:calc(100% - 50% - .4cqw);
+  border:1px dashed var(--grey);border-top:0;border-radius:0 0 2cqw 2cqw}
+/* цикл с ответвлением: стрелки фиксированной ширины, дуга — от первого до последнего узла цикла */
+.cycle.loop.ext1{width:91.6cqw}
+.ext1 .cy-node{width:15cqw}
+.ext1 .cy-arr{flex:0 0 9cqw}
+.ext1 .cy-back{left:7.5cqw;right:calc(7.5cqw + 9.8cqw + 17.2cqw)}
+.cy-node.cy-ext{border-style:dashed;border-color:var(--coral)}
+.ext1 .cy-node.cy-ext{width:17.2cqw;font-size:1.3cqw;border-radius:2cqw}
+.cy-back::before{content:"";position:absolute;left:-.55cqw;top:-.2cqw;border:.5cqw solid transparent;border-bottom:.9cqw solid var(--grey);border-top:0}
+.cy-back i{bottom:-.75cqw;background:#fff;padding:0 .8cqw}
+
+/* раскладка photo: подложка-фото (<!-- bg: … -->), текст на затемнении, цифры строкой внизу */
+.slide.l-photo{background-color:var(--ink);color:#fff}
+.l-photo .s-in{background:linear-gradient(180deg,rgba(14,17,32,.72) 0%,rgba(14,17,32,0) 26%,rgba(14,17,32,0) 52%,rgba(14,17,32,.9) 82%)}
+.l-photo .s-top .s-upd,.l-photo .s-foot{color:var(--ice)}
+.l-photo .s-foot{border-color:rgba(220,230,245,.35)}
+.l-photo .s-body{justify-content:flex-end}
+.l-photo .s-body ul{list-style:none;padding:0;display:grid;grid-template-columns:repeat(6,1fr);gap:0}
+.l-photo .s-body li{padding:0 1.2cqw;border-left:1px solid rgba(220,230,245,.45);font-size:1.1cqw;line-height:1.3;color:var(--ice)}
+.l-photo .s-body li:first-child{border-left:0;padding-left:0}
+.l-photo .s-body li strong{display:block;white-space:nowrap;font-family:var(--disp);font-weight:500;font-size:1.85cqw;line-height:1.15;color:#fff;margin-bottom:.4cqw}
+.l-photo mark{background:rgba(217,147,43,.35);color:#fff}
+
+/* раскладка numbers: список «**цифра** подпись» — строка показателей; таблица «название | число | пометка» —
+   диаграмма-«леденец» (тонкая линия, точка на конце, значение за точкой); таблицы подряд встают рядом */
+.l-numbers .s-body>ul{list-style:none;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:0}
+.l-numbers .s-body>ul li{padding:0 1.4cqw;border-left:1px solid var(--line);font-size:1.1cqw;line-height:1.3;color:var(--grey)}
+.l-numbers .s-body>ul li:first-child{border-left:0;padding-left:0}
+.l-numbers .s-body>ul li strong{display:block;white-space:nowrap;font-family:var(--disp);font-weight:500;font-size:2.3cqw;
+  line-height:1.1;color:var(--ink);margin-bottom:.45cqw}
+.l-numbers .s-body>p{font-size:1.15cqw;color:var(--grey)}
+.charts{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4cqw;align-items:start}
+.b-cap{font-size:.95cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--coral);font-weight:600;
+  padding-bottom:.6cqw;margin-bottom:.4cqw;border-bottom:1px solid var(--line)}
+.b-row{display:grid;grid-template-columns:36% 1fr;align-items:center;column-gap:1.2cqw;font-size:1.25cqw;line-height:1.2;padding:.4cqw 0}
+.b-track{position:relative;height:1.5cqw}
+.b-line{position:absolute;left:0;top:50%;border-top:1px solid var(--ink)}
+.b-line::after{content:"";position:absolute;right:-.45cqw;top:-.5cqw;width:.9cqw;height:.9cqw;border-radius:50%;background:var(--coral)}
+.b-val{position:absolute;left:100%;top:0;transform:translateY(-50%);margin-left:1cqw;white-space:nowrap;font-weight:600}
+.b-val i{font-style:normal;font-weight:500;color:var(--grey);margin-left:.7cqw;font-size:.95cqw}
+
+/* обложка сборки */
+.slide.cover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cover .s-title{font-size:4cqw;margin-top:auto}
+.cover .s-body{flex:0;margin-bottom:auto;color:var(--ice);font-size:1.6cqw}
+/* длинное оглавление (8+ пунктов) — в две колонки */
+.cover .s-body ol:has(>li:nth-child(8)){display:block;columns:2;column-gap:4cqw}
+.cover .s-body ol:has(>li:nth-child(8)) li{break-inside:avoid;margin-bottom:.6cqw}
+.cover .s-foot{color:var(--ice);border-color:var(--ink2)}
+.cover .s-top .s-upd{color:var(--ice)}
+.cover code{background:var(--ink2);color:var(--ice)}
+
+/* ---------- витрина ---------- */
+.u-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:4px 0 12px;position:sticky;top:0;background:var(--paper);padding:8px 0;z-index:5}
+.u-bar input,.u-bar select{font:14px var(--body);border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:#fff;color:var(--ink)}
+.u-bar input{flex:1;min-width:220px}
+.u-cnt{font-size:13px;color:var(--grey)}
+#units td{font-size:14px}
+#units td:first-child{white-space:nowrap}
+.u-sum{font-size:12.5px;color:var(--grey);margin-top:3px}
+.u-st{font-size:11.5px;font-weight:600;letter-spacing:.04em;border-radius:6px;padding:1px 7px;white-space:nowrap;border:1px solid}
+.u-ok{color:var(--green);border-color:var(--green)}
+.u-plan{color:var(--amber);border-color:var(--amber)}
+.u-cand{color:var(--grey);border-color:var(--line)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin:10px 0 20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.card .k{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--coral)}
+.card h3{font-family:var(--disp);font-weight:700;font-size:17px;line-height:1.25}
+.card .fx{color:var(--grey);font-size:14.5px}
+.card .meta{font-size:12.5px;color:var(--grey);margin-top:auto}
+
+/* ---------- страница чистых слайдов (slides.html) ---------- */
+body.deckpage{background:#151A30}
+.deckpage main{padding:28px 0}
+.deckpage .deck{align-items:center;gap:28px;margin:0}
+.deckpage .slide{width:min(calc(100vw - 56px),calc((100vh - 56px)*16/9));border:0;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.fab{position:fixed;right:16px;bottom:16px;display:flex;gap:8px;opacity:.35;transition:opacity .2s}
+.fab:hover{opacity:1}
+.fab button{font:600 15px var(--body);background:var(--ink2);color:#fff;border:0;border-radius:10px;padding:8px 12px;cursor:pointer}
+
+/* ---------- показ: ▶, F или двойной клик по слайду ---------- */
+body.present{background:#000;overflow:hidden}
+body.present > :not(.stage){display:none!important}
+.stage{display:none}
+body.present .stage{display:flex;position:fixed;inset:0;align-items:center;justify-content:center}
+body.present .stage .slide{width:min(100vw,calc(100vh*16/9));border-radius:0;border:0;box-shadow:none}
+
+/* ---------- один кадр для PNG/PPTX: ?frame=N ---------- */
+body.frame{background:var(--paper);overflow:hidden}
+body.frame > :not(.stage){display:none!important}
+body.frame .stage{display:block;position:fixed;inset:0}
+body.frame .stage .slide{width:100vw;height:100vh;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none}
+
+/* ---------- печать. Размер страницы 16:9 (@page) задаётся только на странице слайдов ---------- */
+@media print{
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tools,.stage,.fab,.cr-btn,.cr-play{display:none!important}
+  .carousel{grid-template-columns:1fr}
+  .cr-item{display:block;margin-bottom:12px}
+  .slide{break-inside:avoid}
+  body.deckpage{background:#fff}
+  .deckpage main{padding:0}
+  .deckpage .deck{gap:0}
+  .deckpage .slide{width:1280px;height:720px;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none;break-after:page;page-break-after:always}
+}
+</style></head>
+<body>
+<header class="hero"><div class="wrap">
+<div class="crumbs"><a href="../site/index.html">Тезисы</a> · сборки · lec-it-market-russia</div><div class="eyebrow">Карточка сборки · лекция</div><h1>Рынок информационных систем в России</h1><div class="tags"><span class="tag">t09</span><span class="tag">t07</span></div><div class="tools"><a class="btn" href="lec-it-market-russia-slides.html">▶ Слайды</a><a class="btn ghost" href="lec-it-market-russia-slides.html?print">⎙ PDF</a><a class="btn ghost" href="https://github.com/SPBUEcon/econ-library/blob/main/theses/assemblies/lec-it-market-russia.md">md-источник</a></div>
+</div></header>
+<main><div class="wrap">
+<div class="lead doc"><p>Объём ИТ-рынка России, ключевые игроки, реестры, ассоциации и государственная политика — по данным за 2025 год. Лекция идёт в три хода: <strong>рынок → игроки → государство</strong> — и заканчивается вопросом о том, что станет драйвером рынка после волны импортозамещения. Рамка — «Рынки · Потоки · Игроки» (<code>t09</code>) и управление технологическим развитием (<code>t07</code>) из <a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/README.md">каталога дисциплины</a>.</p>
+<p>Цифры перенесены со слайдов лекции вместе со ссылками на источники и по первоисточникам не перепроверялись: что уточнить — в разделе «Что проверить» каждого тезиса.</p></div><div class="doc"><h2 id="рынок">Рынок</h2><ol><li><a href="../th07-it-market-size-russia/index.html"><code>th07</code> Объём ИТ-рынка России</a> — ИТ-рынок России — около 4 трлн ₽ и 2,7% ВВП: заметная отрасль, но меньше выручки одного Газпрома, и её рост замедляется.</li></ol></div><div class="unit" id="th07"><div class="unit-h"><h3><a href="../th07-it-market-size-russia/index.html">th07 · Объём ИТ-рынка России</a></h3><span class="fx">ИТ-рынок России — около 4 трлн ₽ и 2,7% ВВП: заметная отрасль, но меньше выручки одного Газпрома, и её рост замедляется.</span></div><div class="carousel" data-n="2"><div class="cr-stage"><div class="cr-item on"><section class="slide l-numbers"><div class="s-in"><div class="s-top"><a class="s-id" href="../th07-it-market-size-russia/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th07-it-market-size-russia/index.html" title="Открыть карточку тезиса">th07 · Объём ИТ-рынка России</a><span class="s-upd">обновлено 2026-10-08 17:58</span></div><div class="s-head"><h2 class="s-title">Около 4 трлн ₽ — и заметное замедление роста</h2></div><div class="s-body"><ul><li><strong>≈4 трлн ₽</strong> ИТ-рынок в 2025 году, +13% (Strategy Partners)</li><li><strong>5,15 трлн ₽</strong> продажи отечественных ИТ-решений и услуг, +14,5% (Минцифры)</li><li><strong>2,7%</strong> доля ИТ в ВВП — вдвое больше, чем в 2020 году</li><li><strong>1,12 млн</strong> сотрудников ИТ-компаний, средняя зарплата 218 тыс. ₽</li></ul>
+<div class="charts"><div class="bars"><div class="b-cap">Оценка ИТ-рынка за 2025 год · трлн ₽</div><div class="b-row"><span class="b-lab">«Квадрант Технологий»</span><span class="b-track"><span class="b-line" style="width:45.4%"><b class="b-val">3,0</b></span></span></div><div class="b-row"><span class="b-lab">CNews</span><span class="b-track"><span class="b-line" style="width:53.8%"><b class="b-val">3,55</b></span></span></div><div class="b-row"><span class="b-lab">TAdviser</span><span class="b-track"><span class="b-line" style="width:57.6%"><b class="b-val">3,8</b></span></span></div><div class="b-row"><span class="b-lab">Strategy Partners</span><span class="b-track"><span class="b-line" style="width:61.0%"><b class="b-val">4,03</b></span></span></div><div class="b-row"><span class="b-lab">Минцифры*</span><span class="b-track"><span class="b-line" style="width:78.0%"><b class="b-val">5,15</b></span></span></div></div></div>
+<p>Цифры расходятся из-за методики: затраты заказчиков, выручка поставщиков или (*) продажи всех отечественных решений. Структура рынка: оборудование — 63%, ПО и ИТ-услуги — 37%.</p></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>1 / 2</span></div></div></section></div><div class="cr-item"><section class="slide l-numbers"><div class="s-in"><div class="s-top"><a class="s-id" href="../th07-it-market-size-russia/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th07-it-market-size-russia/index.html" title="Открыть карточку тезиса">th07 · Объём ИТ-рынка России</a><span class="s-upd">обновлено 2026-10-08 17:58</span></div><div class="s-head"><h2 class="s-title">ИТ-рынок на фоне компаний и отраслей</h2></div><div class="s-body"><div class="charts"><div class="bars"><div class="b-cap">Выручка и оборот за 2025 год · трлн ₽</div><div class="b-row"><span class="b-lab">Газпром — выручка</span><span class="b-track"><span class="b-line" style="width:78.0%"><b class="b-val">9,77</b></span></span></div><div class="b-row"><span class="b-lab">Wildberries &amp; Russ — оборот</span><span class="b-track"><span class="b-line" style="width:48.7%"><b class="b-val">6,1</b></span></span></div><div class="b-row"><span class="b-lab">500 крупнейших ИТ-компаний</span><span class="b-track"><span class="b-line" style="width:38.3%"><b class="b-val">4,8</b></span></span></div><div class="b-row"><span class="b-lab"><strong>Весь ИТ-рынок России</strong></span><span class="b-track"><span class="b-line" style="width:31.9%"><b class="b-val"><strong>4,0</strong></b></span></span></div><div class="b-row"><span class="b-lab">РЖД — доходы</span><span class="b-track"><span class="b-line" style="width:29.1%"><b class="b-val">3,64</b></span></span></div><div class="b-row"><span class="b-lab">Wildberries &amp; Russ — выручка</span><span class="b-track"><span class="b-line" style="width:9.5%"><b class="b-val">1,19</b></span></span></div><div class="b-row"><span class="b-lab">Т1 — крупнейший интегратор</span><span class="b-track"><span class="b-line" style="width:1.7%"><b class="b-val">0,21</b></span></span></div></div></div>
+<ul><li><strong>14,9%</strong> обработка — доля в ВВП за 2025 год</li><li><strong>11,7%</strong> торговля</li><li><strong>9,5%</strong> добыча</li><li><strong>7,1%</strong> транспорт</li><li><strong>2,7%</strong> ИТ (оценка Минцифры)</li></ul>
+<p>Оборот ≠ выручка: оборот Wildberries — продажи всех продавцов на площадке, а выручка — комиссии, реклама и логистика. Весь ИТ-рынок меньше выручки одного Газпрома. Доли в ВВП — Росстат, ИТ — оценка Минцифры.</p></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>2 / 2</span></div></div></section></div><button class="cr-btn cr-prev" aria-label="Предыдущий слайд">‹</button><button class="cr-btn cr-next" aria-label="Следующий слайд">›</button></div><aside class="cr-side"><a class="btn cr-play" href="../th07-it-market-size-russia/slides.html?present=1" data-play="../th07-it-market-size-russia/slides.html">▶ Показ</a><ol class="cr-list"><li class="on"><b>1</b>Около 4 трлн ₽ — и заметное замедление роста</li><li class=""><b>2</b>ИТ-рынок на фоне компаний и отраслей</li></ol></aside></div></div><div class="doc"><h2 id="игроки">Игроки</h2><ol><li><a href="../th08-it-market-players-russia/index.html"><code>th08</code> Игроки ИТ-рынка России</a> — На ИТ-рынке шесть типов игроков, выручка сосредоточена у компаний, связанных с госкорпорациями и экосистемами, а быстрее всех растут облака.</li><li><a href="../th09-it-registries-russia/index.html"><code>th09</code> Реестры: кто «свой» на ИТ-рынке</a> — Реестры определяют, кто на рынке «свой»: запись в реестре открывает госзакупки, налоговые льготы и гранты.</li><li><a href="../th10-it-associations-russia/index.html"><code>th10</code> Ассоциации ИТ-отрасли</a> — Ассоциации и индустриальные центры компетенций — голос отрасли и крупных заказчиков в диалоге с государством.</li></ol></div><div class="unit" id="th08"><div class="unit-h"><h3><a href="../th08-it-market-players-russia/index.html">th08 · Игроки ИТ-рынка России</a></h3><span class="fx">На ИТ-рынке шесть типов игроков, выручка сосредоточена у компаний, связанных с госкорпорациями и экосистемами, а быстрее всех растут облака.</span></div><div class="carousel" data-n="3"><div class="cr-stage"><div class="cr-item on"><section class="slide"><div class="s-in"><div class="s-top"><a class="s-id" href="../th08-it-market-players-russia/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th08-it-market-players-russia/index.html" title="Открыть карточку тезиса">th08 · Игроки ИТ-рынка России</a><span class="s-upd">обновлено 2026-10-08 17:58</span></div><div class="s-head"><h2 class="s-title">Кто работает на рынке: шесть типов компаний</h2></div><div class="s-body"><table><thead><tr><th>Тип</th><th>Что делают</th><th>Примеры</th></tr></thead><tbody><tr><td><strong>Разработчики ПО</strong></td><td>Создают собственные продукты, продают лицензии и подписки</td><td>1С, Лаборатория Касперского, Группа Астра, Positive Technologies, Контур</td></tr><tr><td><strong>Производители оборудования</strong></td><td>Серверы, СХД, ПК, сеть, программно-аппаратные комплексы</td><td>Ростех, ИКС Холдинг (YADRO), Аквариус</td></tr><tr><td><strong>Дистрибьюторы</strong></td><td>Поставляют оборудование и ПО партнёрам и рознице</td><td>OCS, 3Logic Group, Merlion</td></tr><tr><td><strong>Системные интеграторы</strong></td><td>Внедряют решения разных вендоров под задачу заказчика</td><td>Т1, Софтлайн, Ланит, ICL, «Инфосистемы Джет»</td></tr><tr><td><strong>Облачные и сервисные</strong></td><td>Инфраструктура и ПО как сервис, ЦОД, поддержка, аутсорсинг</td><td>Cloud.ru, Yandex Cloud, VK Tech, MWS, Ростелеком</td></tr><tr><td><strong>Обучение и кадры</strong></td><td>Онлайн-школы, учебные центры вендоров и корпораций</td><td>Яндекс Практикум, Skillbox, академии Астры и 1С</td></tr></tbody></table></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>1 / 3</span></div></div></section></div><div class="cr-item"><section class="slide l-numbers"><div class="s-in"><div class="s-top"><a class="s-id" href="../th08-it-market-players-russia/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th08-it-market-players-russia/index.html" title="Открыть карточку тезиса">th08 · Игроки ИТ-рынка России</a><span class="s-upd">обновлено 2026-10-08 17:58</span></div><div class="s-head"><h2 class="s-title">Топ-10 ИТ-компаний России по выручке за 2025 год</h2></div><div class="s-body"><div class="charts"><div class="bars"><div class="b-cap">Выручка за 2025 год · млрд ₽</div><div class="b-row"><span class="b-lab">Ростех (радиоэлектроника)</span><span class="b-track"><span class="b-line" style="width:78.0%"><b class="b-val">466,6</b></span></span></div><div class="b-row"><span class="b-lab">Ростелеком</span><span class="b-track"><span class="b-line" style="width:36.4%"><b class="b-val">217,9</b></span></span></div><div class="b-row"><span class="b-lab">Т1</span><span class="b-track"><span class="b-line" style="width:35.3%"><b class="b-val">211,0</b></span></span></div><div class="b-row"><span class="b-lab">OCS</span><span class="b-track"><span class="b-line" style="width:34.0%"><b class="b-val">203,6</b></span></span></div><div class="b-row"><span class="b-lab">ИКС Холдинг</span><span class="b-track"><span class="b-line" style="width:34.0%"><b class="b-val">203,2</b></span></span></div><div class="b-row"><span class="b-lab">Софтлайн</span><span class="b-track"><span class="b-line" style="width:22.0%"><b class="b-val">131,9</b></span></span></div><div class="b-row"><span class="b-lab">3Logic Group</span><span class="b-track"><span class="b-line" style="width:17.1%"><b class="b-val">102,5</b></span></span></div><div class="b-row"><span class="b-lab">Cloud.ru</span><span class="b-track"><span class="b-line" style="width:12.8%"><b class="b-val">76,5</b></span></span></div><div class="b-row"><span class="b-lab">MWS (МТС)</span><span class="b-track"><span class="b-line" style="width:10.7%"><b class="b-val">63,8</b></span></span></div><div class="b-row"><span class="b-lab">Лаборатория Касперского</span><span class="b-track"><span class="b-line" style="width:10.0%"><b class="b-val">60,0</b></span></span></div></div></div>
+<ul><li><strong>≈4,8 трлн ₽</strong> совокупная выручка 500 крупнейших; порог входа — 1 млрд ₽</li><li><strong>+50% · +39% · +38%</strong> быстрее всех растут облака: Cloud.ru, Yandex Cloud, VK Tech</li><li><strong>−15,5%</strong> выручка Т1 — лидер прошлых лет теряет позиции; в рейтинге CNews первое место впервые у Ростелекома</li></ul></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>2 / 3</span></div></div></section></div><div class="cr-item"><section class="slide l-numbers"><div class="s-in"><div class="s-top"><a class="s-id" href="../th08-it-market-players-russia/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th08-it-market-players-russia/index.html" title="Открыть карточку тезиса">th08 · Игроки ИТ-рынка России</a><span class="s-upd">обновлено 2026-10-08 17:58</span></div><div class="s-head"><h2 class="s-title">Крупнейшие интеграторы и разработчики ПО</h2></div><div class="s-body"><div class="charts"><div class="bars"><div class="b-cap">Системные интеграторы · млрд ₽</div><div class="b-row"><span class="b-lab">Т1</span><span class="b-track"><span class="b-line" style="width:78.0%"><b class="b-val">211,0<i>−15%</i></b></span></span></div><div class="b-row"><span class="b-lab">Софтлайн</span><span class="b-track"><span class="b-line" style="width:48.8%"><b class="b-val">131,9<i>+9%</i></b></span></span></div><div class="b-row"><span class="b-lab">«Инфосистемы Джет»</span><span class="b-track"><span class="b-line" style="width:14.5%"><b class="b-val">39,3<i>+7%</i></b></span></span></div><div class="b-row"><span class="b-lab">ICL</span><span class="b-track"><span class="b-line" style="width:12.7%"><b class="b-val">34,3<i>2024</i></b></span></span></div><div class="b-row"><span class="b-lab">Ай-Теко</span><span class="b-track"><span class="b-line" style="width:9.6%"><b class="b-val">26,1<i>+18%</i></b></span></span></div><div class="b-row"><span class="b-lab">IBS</span><span class="b-track"><span class="b-line" style="width:8.4%"><b class="b-val">22,8<i>2024</i></b></span></span></div></div><div class="bars"><div class="b-cap">Разработчики ПО · млрд ₽</div><div class="b-row"><span class="b-lab">Лаборатория Касперского</span><span class="b-track"><span class="b-line" style="width:22.2%"><b class="b-val">60,0<i>+7%</i></b></span></span></div><div class="b-row"><span class="b-lab">Контур</span><span class="b-track"><span class="b-line" style="width:17.3%"><b class="b-val">46,8<i>+20%</i></b></span></span></div><div class="b-row"><span class="b-lab">Positive Technologies</span><span class="b-track"><span class="b-line" style="width:11.4%"><b class="b-val">30,9<i>+26%</i></b></span></span></div><div class="b-row"><span class="b-lab">СберТех</span><span class="b-track"><span class="b-line" style="width:10.5%"><b class="b-val">28,3<i>+37%</i></b></span></span></div><div class="b-row"><span class="b-lab">Солар</span><span class="b-track"><span class="b-line" style="width:9.5%"><b class="b-val">25,6<i>+15%</i></b></span></span></div><div class="b-row"><span class="b-lab">Группа Астра</span><span class="b-track"><span class="b-line" style="width:7.5%"><b class="b-val">20,4<i>+18%</i></b></span></span></div></div></div>
+<p>Выручка за 2025 год. Ланит консолидированную выручку не раскрывает, 1С отчётность не публикует; Касперский — выручка в России; ICL и IBS — данные за 2024 год.</p></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>3 / 3</span></div></div></section></div><button class="cr-btn cr-prev" aria-label="Предыдущий слайд">‹</button><button class="cr-btn cr-next" aria-label="Следующий слайд">›</button></div><aside class="cr-side"><a class="btn cr-play" href="../th08-it-market-players-russia/slides.html?present=1" data-play="../th08-it-market-players-russia/slides.html">▶ Показ</a><ol class="cr-list"><li class="on"><b>1</b>Кто работает на рынке: шесть типов компаний</li><li class=""><b>2</b>Топ-10 ИТ-компаний России по выручке за 2025 год</li><li class=""><b>3</b>Крупнейшие интеграторы и разработчики ПО</li></ol></aside></div></div><div class="unit" id="th09"><div class="unit-h"><h3><a href="../th09-it-registries-russia/index.html">th09 · Реестры: кто «свой» на ИТ-рынке</a></h3><span class="fx">Реестры определяют, кто на рынке «свой»: запись в реестре открывает госзакупки, налоговые льготы и гранты.</span></div><div class="carousel" data-n="2"><div class="cr-stage"><div class="cr-item on"><section class="slide l-numbers"><div class="s-in"><div class="s-top"><a class="s-id" href="../th09-it-registries-russia/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th09-it-registries-russia/index.html" title="Открыть карточку тезиса">th09 · Реестры: кто «свой» на ИТ-рынке</a><span class="s-upd">обновлено 2026-10-08 17:58</span></div><div class="s-head"><h2 class="s-title">Реестры определяют, кто «свой» на рынке</h2></div><div class="s-body"><ul><li><strong>&gt;32 тыс.</strong> записей в реестре российского ПО (Минцифры)</li><li><strong>&gt;21 тыс.</strong> аккредитованных ИТ-компаний</li><li><strong>≈7 тыс.</strong> малых технологических компаний, выручка 1,4 трлн ₽</li><li><strong>≈20 тыс.</strong> позиций в реестре российской радиоэлектроники (Минпромторг)</li></ul>
+<table><thead><tr><th>Зачем компании попадать в реестры</th><th>Что изменилось в 2026 году</th></tr></thead><tbody><tr><td>Доступ к госзакупкам и закупкам объектов КИИ</td><td>Вместо доли владения — критерий российского контроля</td></tr><tr><td>Налоговые льготы: прибыль, взносы, НДС</td><td>ПО должно работать минимум с двумя доверенными ОС</td></tr><tr><td>Гранты, льготные кредиты, отсрочка для сотрудников</td><td>Перечень доверенного ПО: в закупках остальное приравнено к иностранному</td></tr></tbody></table></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>1 / 2</span></div></div></section></div><div class="cr-item"><section class="slide"><div class="s-in"><div class="s-top"><a class="s-id" href="../th09-it-registries-russia/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th09-it-registries-russia/index.html" title="Открыть карточку тезиса">th09 · Реестры: кто «свой» на ИТ-рынке</a><span class="s-upd">обновлено 2026-10-08 17:58</span></div><div class="s-head"><h2 class="s-title">Кто считается ИТ-компанией, а кто — МТК</h2></div><div class="s-body"><table><thead><tr><th>Параметр</th><th>Аккредитованная ИТ-компания</th><th>Малая технологическая компания</th></tr></thead><tbody><tr><td>Основа</td><td>Постановление № 1949 (с 01.01.2026), реестр ведёт Минцифры</td><td>478-ФЗ о технологических компаниях, реестр ведёт Минэкономразвития</td></tr><tr><td>Выручка</td><td>Без верхнего порога</td><td>До 4 млрд ₽: стартап — до 300 млн, ранняя — до 2 млрд, зрелая — до 4 млрд</td></tr><tr><td>Профиль</td><td>Доля ИТ в выручке больше 30%; для налоговых льгот — от 70%</td><td>Основной ОКВЭД из перечня правительства (более 90 видов деятельности)</td></tr><tr><td>Технологичность</td><td>Разработка и внедрение ПО, ИТ-услуги, ОКВЭД по подклассу</td><td>Права на РИД или положительная экспертиза</td></tr><tr><td>Персонал</td><td>Средняя зарплата не ниже средней по России или региону</td><td>Ограничений по численности нет</td></tr><tr><td>Собственность</td><td>Российское участие не менее 50%, иначе аккредитацию аннулируют</td><td>Российская коммерческая организация</td></tr><tr><td>Подтверждение</td><td>Ежегодно до 1 июня</td><td>Статус на 3 года (обсуждается продление до 5 лет)</td></tr><tr><td>Что даёт</td><td>Налог на прибыль 5%, взносы 15%, отсрочка, ИТ-ипотека</td><td>Льготные кредиты, гранты, региональные льготы по налогу на прибыль</td></tr></tbody></table></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>2 / 2</span></div></div></section></div><button class="cr-btn cr-prev" aria-label="Предыдущий слайд">‹</button><button class="cr-btn cr-next" aria-label="Следующий слайд">›</button></div><aside class="cr-side"><a class="btn cr-play" href="../th09-it-registries-russia/slides.html?present=1" data-play="../th09-it-registries-russia/slides.html">▶ Показ</a><ol class="cr-list"><li class="on"><b>1</b>Реестры определяют, кто «свой» на рынке</li><li class=""><b>2</b>Кто считается ИТ-компанией, а кто — МТК</li></ol></aside></div></div><div class="unit" id="th10"><div class="unit-h"><h3><a href="../th10-it-associations-russia/index.html">th10 · Ассоциации ИТ-отрасли</a></h3><span class="fx">Ассоциации и индустриальные центры компетенций — голос отрасли и крупных заказчиков в диалоге с государством.</span></div><div class="carousel" data-n="1"><div class="cr-stage"><div class="cr-item on"><section class="slide"><div class="s-in"><div class="s-top"><a class="s-id" href="../th10-it-associations-russia/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th10-it-associations-russia/index.html" title="Открыть карточку тезиса">th10 · Ассоциации ИТ-отрасли</a><span class="s-upd">обновлено 2026-10-08 17:58</span></div><div class="s-head"><h2 class="s-title">Ассоциации: голос отрасли в диалоге с государством</h2></div><div class="s-body"><table><thead><tr><th>Объединение</th><th>Кого объединяет и что делает</th><th>Масштаб</th></tr></thead><tbody><tr><td><strong>РУССОФТ</strong></td><td>Разработчики ПО, экспорт; ежегодное исследование софтверной отрасли</td><td>386 компаний</td></tr><tr><td><strong>АПКИТ</strong></td><td>Самое широкое объединение ИТ-бизнеса, «ассоциация ассоциаций», работа над законами</td><td>с 1994 года</td></tr><tr><td><strong>АРПП «Отечественный софт»</strong></td><td>Производители тиражируемого ПО, продвижение импортозамещения</td><td>305 компаний · председатель — Н. Касперская</td></tr><tr><td><strong>АНО «Цифровая экономика»</strong></td><td>Площадка «бизнес — государство»: регулирование, мониторинг отрасли, ИИ</td><td>Сбер, VK, Росатом, Ростех, 1С</td></tr><tr><td><strong>РАЭК</strong></td><td>Интернет-отрасль, доклад «Экономика Рунета»</td><td>Яндекс, VK и др.</td></tr><tr><td><strong>ИЦК</strong></td><td>Индустриальные центры компетенций: крупные заказчики формируют спрос на отечественное ПО</td><td>35 центров · 175 проектов</td></tr></tbody></table></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>1 / 1</span></div></div></section></div></div><aside class="cr-side"><a class="btn cr-play" href="../th10-it-associations-russia/slides.html?present=1" data-play="../th10-it-associations-russia/slides.html">▶ Показ</a><ol class="cr-list"><li class="on"><b>1</b>Ассоциации: голос отрасли в диалоге с государством</li></ol></aside></div></div><div class="doc"><h2 id="государство">Государство</h2><ol><li><a href="../th11-it-governance-russia/index.html"><code>th11</code> Кто управляет ИТ-отраслью</a> — ИТ-отраслью управляет вертикаль: президент задаёт национальные цели, правительство — задачи, министерства — реестры, льготы и деньги институтов развития.</li><li><a href="../th12-it-regulation-russia/index.html"><code>th12</code> Регулирование ИТ: стимулы и требования</a> — Государство одновременно стимулирует ИТ-компании льготами и требует от рынка отечественного ПО на КИИ, приоритета реестров в закупках и хранения данных в России.</li><li><a href="../th13-it-policy-evolution-russia/index.html"><code>th13</code> От импортозамещения к технологическому лидерству</a> — ИТ-политика прошла путь от замены ушедших западных продуктов к строительству собственных экосистем, где государство — архитектор, а спрос формируют квалифицированные заказчики.</li></ol></div><div class="unit" id="th11"><div class="unit-h"><h3><a href="../th11-it-governance-russia/index.html">th11 · Кто управляет ИТ-отраслью</a></h3><span class="fx">ИТ-отраслью управляет вертикаль: президент задаёт национальные цели, правительство — задачи, министерства — реестры, льготы и деньги институтов развития.</span></div><div class="carousel" data-n="2"><div class="cr-stage"><div class="cr-item on"><section class="slide"><div class="s-in"><div class="s-top"><a class="s-id" href="../th11-it-governance-russia/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th11-it-governance-russia/index.html" title="Открыть карточку тезиса">th11 · Кто управляет ИТ-отраслью</a><span class="s-upd">обновлено 2026-10-08 17:58</span></div><div class="s-head"><h2 class="s-title">Кто управляет ИТ-рынком: вертикаль власти</h2></div><div class="s-body"><table><thead><tr><th>Уровень</th><th>Кто</th><th>За что отвечает</th></tr></thead><tbody><tr><td><strong>Стратегия</strong></td><td>Президент</td><td>Национальные цели «Технологическое лидерство» и «Цифровая трансформация» (Указ № 309), Совет по стратегическому развитию и нацпроектам, указы о КИИ</td></tr><tr><td><strong>Правительство</strong></td><td>М. Мишустин, Председатель Правительства</td><td>Ставит задачи отрасли, утверждает нацпроекты и меры поддержки</td></tr><tr><td><strong>Кураторы</strong></td><td>Д. Григоренко, вице-премьер — руководитель аппарата</td><td>Цифровая экономика, ИТ и ИИ, Правкомиссия по цифровому развитию, ИЦК</td></tr><tr><td></td><td>Д. Мантуров, первый вице-премьер</td><td>Промышленность, технологическое лидерство, радиоэлектроника</td></tr><tr><td><strong>Министерства</strong></td><td>Минцифры — М. Шадаев</td><td>Аккредитация, реестры ПО и ПАК, льготы, «Экономика данных»</td></tr><tr><td></td><td>Минпромторг — А. Алиханов</td><td>Радиоэлектроника, реестр российской продукции, ФРП</td></tr><tr><td></td><td>Минэкономразвития — М. Решетников</td><td>Малые технологические компании, технологическая политика</td></tr><tr><td><strong>Регуляторы</strong></td><td>ФСТЭК, ФСБ, РКН</td><td>Защита информации и КИИ; Роскомнадзор — персональные данные</td></tr></tbody></table></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>1 / 2</span></div></div></section></div><div class="cr-item"><section class="slide"><div class="s-in"><div class="s-top"><a class="s-id" href="../th11-it-governance-russia/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th11-it-governance-russia/index.html" title="Открыть карточку тезиса">th11 · Кто управляет ИТ-отраслью</a><span class="s-upd">обновлено 2026-10-08 17:58</span></div><div class="s-head"><h2 class="s-title">Чем государство развивает отрасль</h2></div><div class="s-body"><table><thead><tr><th>Инструмент</th><th>Что это</th></tr></thead><tbody><tr><td><strong>Нацпроект «Экономика данных»</strong></td><td>2025–2030 годы, около 1 трлн ₽ из федерального бюджета. Цель — 80% компаний ключевых отраслей на отечественном ПО</td></tr><tr><td><strong>Гранты и субсидии</strong></td><td>РФРИТ: особо значимые проекты, до 80% стоимости для ИИ и ОПК; льготные кредиты на цифровую трансформацию; поддержка МТК — 20 млрд ₽ в 2026 году</td></tr><tr><td><strong>Институты развития</strong></td><td>РФРИТ, Фонд содействия инновациям, Сколково, ВЭБ.РФ, Корпорация МСП, Фонд развития промышленности, Платформа НТИ</td></tr><tr><td><strong>Советы и комиссии</strong></td><td>Правкомиссия по цифровому развитию; 35 ИЦК и 16 отраслевых комитетов; центры компетенций разработки; АНО «Цифровая экономика»</td></tr><tr><td><strong>Льготы сотрудникам</strong></td><td>Отсрочка от призыва для специалистов аккредитованных компаний; ИТ-ипотека 6% до 9 млн ₽, продлена до 2030 года</td></tr><tr><td><strong>Кадры и образование</strong></td><td>«Код будущего» для школьников, «Цифровые кафедры» в вузах; крупные ИТ-компании направляют 3% сэкономленного на льготах в вузы</td></tr></tbody></table></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>2 / 2</span></div></div></section></div><button class="cr-btn cr-prev" aria-label="Предыдущий слайд">‹</button><button class="cr-btn cr-next" aria-label="Следующий слайд">›</button></div><aside class="cr-side"><a class="btn cr-play" href="../th11-it-governance-russia/slides.html?present=1" data-play="../th11-it-governance-russia/slides.html">▶ Показ</a><ol class="cr-list"><li class="on"><b>1</b>Кто управляет ИТ-рынком: вертикаль власти</li><li class=""><b>2</b>Чем государство развивает отрасль</li></ol></aside></div></div><div class="unit" id="th12"><div class="unit-h"><h3><a href="../th12-it-regulation-russia/index.html">th12 · Регулирование ИТ: стимулы и требования</a></h3><span class="fx">Государство одновременно стимулирует ИТ-компании льготами и требует от рынка отечественного ПО на КИИ, приоритета реестров в закупках и хранения данных в России.</span></div><div class="carousel" data-n="1"><div class="cr-stage"><div class="cr-item on"><section class="slide l-numbers"><div class="s-in"><div class="s-top"><a class="s-id" href="../th12-it-regulation-russia/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th12-it-regulation-russia/index.html" title="Открыть карточку тезиса">th12 · Регулирование ИТ: стимулы и требования</a><span class="s-upd">обновлено 2026-10-08 17:58</span></div><div class="s-head"><h2 class="s-title">Стимулы и требования государства</h2></div><div class="s-body"><ul><li><strong>5%</strong> налог на прибыль вместо 25% (2025–2030)</li><li><strong>15%</strong> страховые взносы с 2026 года: было 7,6%, общий тариф — 30%</li><li><strong>0%</strong> НДС на ПО из реестра — льгота сохранена при общей ставке 22%</li><li><strong>+</strong> отсрочка от призыва, ИТ-ипотека 6%, гранты РФРИТ до 80% стоимости проекта</li></ul>
+<table><thead><tr><th>Требование</th><th>Что оно значит</th></tr></thead><tbody><tr><td><strong>КИИ</strong></td><td>Указ № 166: с 2025 года иностранное ПО запрещено на значимых объектах</td></tr><tr><td><strong>Закупки</strong></td><td>Национальный режим: приоритет ПО и оборудования из реестров</td></tr><tr><td><strong>Данные</strong></td><td>152-ФЗ: персональные данные россиян — только в базах на территории РФ</td></tr><tr><td><strong>Платформы</strong></td><td>Закон о платформенной экономике — в силе с 1 октября 2026 года</td></tr></tbody></table></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>1 / 1</span></div></div></section></div></div><aside class="cr-side"><a class="btn cr-play" href="../th12-it-regulation-russia/slides.html?present=1" data-play="../th12-it-regulation-russia/slides.html">▶ Показ</a><ol class="cr-list"><li class="on"><b>1</b>Стимулы и требования государства</li></ol></aside></div></div><div class="unit" id="th13"><div class="unit-h"><h3><a href="../th13-it-policy-evolution-russia/index.html">th13 · От импортозамещения к технологическому лидерству</a></h3><span class="fx">ИТ-политика прошла путь от замены ушедших западных продуктов к строительству собственных экосистем, где государство — архитектор, а спрос формируют квалифицированные заказчики.</span></div><div class="carousel" data-n="2"><div class="cr-stage"><div class="cr-item on"><section class="slide l-columns"><div class="s-in"><div class="s-top"><a class="s-id" href="../th13-it-policy-evolution-russia/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th13-it-policy-evolution-russia/index.html" title="Открыть карточку тезиса">th13 · От импортозамещения к технологическому лидерству</a><span class="s-upd">обновлено 2026-10-08 17:58</span></div><div class="s-head"><h2 class="s-title">От импортозамещения к технологическому лидерству</h2></div><div class="s-body"><div class="cols"><div class="col"><div class="col-h"><b>2015–2016</b><span>импортозамещение</span></div><ul><li>Запрет закупок иностранного ПО для госнужд (ПП № 1236)</li><li>Запуск реестра российского ПО</li></ul></div><div class="col"><div class="col-h"><b>2020</b><span>импортозамещение</span></div><ul><li>Налоговый манёвр для ИТ-компаний</li><li>Налог на прибыль 3%, страховые взносы 7,6%</li></ul></div><div class="col"><div class="col-h"><b>2022</b><span>экстренное замещение</span></div><ul><li>Уход западных вендоров</li><li>Налог 0%, отсрочка, ИТ-ипотека</li><li>Указы № 166 и № 250, создание ИЦК</li></ul></div><div class="col"><div class="col-h"><b>2023</b><span>экстренное замещение</span></div><ul><li>Концепция технологического развития до 2030 года</li><li>Закон о технологических компаниях (МТК)</li></ul></div><div class="col"><div class="col-h"><b>2024</b><span>технологическое лидерство</span></div><ul><li>Указ № 309: цель «технологическое лидерство»</li><li>Нацпроекты</li><li>Закон о технологической политике</li></ul></div><div class="col"><div class="col-h"><b>2025–2026</b><span>технологическое лидерство</span></div><ul><li>Налог 5%, взносы 15%</li><li>Запрет иностранного ПО на значимых объектах КИИ; доверенное ПО</li><li>Ставка на экосистемы и ИИ</li></ul></div></div>
+<blockquote><p>«Государство — это архитектор индустриального развития. …без квалифицированных заказчиков это невозможно» — М. Мишустин, ЦИПР-2026</p></blockquote></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>1 / 2</span></div></div></section></div><div class="cr-item"><section class="slide l-numbers"><div class="s-in"><div class="s-top"><a class="s-id" href="../th13-it-policy-evolution-russia/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th13-it-policy-evolution-russia/index.html" title="Открыть карточку тезиса">th13 · От импортозамещения к технологическому лидерству</a><span class="s-upd">обновлено 2026-10-08 17:58</span></div><div class="s-head"><h2 class="s-title">ЦИПР-2026: от замены к созданию экосистем</h2></div><div class="s-body"><blockquote><p>«Мы перешли от поиска замены ушедшим западным продуктам к активному внедрению собственных» — М. Мишустин, пленарное заседание ЦИПР-2026, Нижний Новгород, 18 мая 2026 года</p></blockquote>
+<ul><li><strong>82%</strong> доля российского ПО в закупках крупного и среднего бизнеса (в 2019 году — 24%)</li><li><strong>13 тыс.+</strong> участников ЦИПР-2026 из 46 стран: отрасль, госкомпании и министерства</li></ul>
+<p><strong>Задачи, поставленные правительством:</strong></p>
+<ol><li>Перевести КИИ на отечественное ПО гибко, но «без лазеек»; Минцифры — мониторинг закупок</li><li>Поднять софинансирование особо значимых проектов с 50% до 80%</li><li>Через ИЦК предложить ИИ-сервисы для каждой отрасли</li><li>Создать гарантированный спрос на отечественные LLM и вычислительную инфраструктуру</li><li>Рассмотреть расширение льгот для ИТ-компаний на упрощённой системе налогообложения</li></ol></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>2 / 2</span></div></div></section></div><button class="cr-btn cr-prev" aria-label="Предыдущий слайд">‹</button><button class="cr-btn cr-next" aria-label="Следующий слайд">›</button></div><aside class="cr-side"><a class="btn cr-play" href="../th13-it-policy-evolution-russia/slides.html?present=1" data-play="../th13-it-policy-evolution-russia/slides.html">▶ Показ</a><ol class="cr-list"><li class="on"><b>1</b>От импортозамещения к технологическому лидерству</li><li class=""><b>2</b>ЦИПР-2026: от замены к созданию экосистем</li></ol></aside></div></div><div class="doc"><h2 id="итоги">Итоги</h2><ol><li><a href="../th14-it-market-russia-summary/index.html"><code>th14</code> ИТ-рынок России: что важно запомнить</a> — Рост ИТ-рынка замедляется, рынок концентрирован, драйверы смещаются к облакам и ИИ, а политика — от импортозамещения к экосистемам.</li></ol></div><div class="unit" id="th14"><div class="unit-h"><h3><a href="../th14-it-market-russia-summary/index.html">th14 · ИТ-рынок России: что важно запомнить</a></h3><span class="fx">Рост ИТ-рынка замедляется, рынок концентрирован, драйверы смещаются к облакам и ИИ, а политика — от импортозамещения к экосистемам.</span></div><div class="carousel" data-n="1"><div class="cr-stage"><div class="cr-item on"><section class="slide l-columns"><div class="s-in"><div class="s-top"><a class="s-id" href="../th14-it-market-russia-summary/index.html" data-pages="https://spbuecon.github.io/econ-library/theses/th14-it-market-russia-summary/index.html" title="Открыть карточку тезиса">th14 · ИТ-рынок России: что важно запомнить</a><span class="s-upd">обновлено 2026-10-08 17:58</span></div><div class="s-head"><h2 class="s-title">Что важно запомнить о рынке</h2></div><div class="s-body"><div class="cols"><div class="col"><div class="col-h"><b>Рост замедляется</b><span>рынок</span></div><ul><li>После +15–19% в 2024 году оценки 2025-го — от −3% до +14%, на 2026 год прогнозы 0–11%</li></ul></div><div class="col"><div class="col-h"><b>Рынок концентрирован</b><span>игроки</span></div><ul><li>Топ-100 даёт почти 80% выручки крупнейших 500 компаний</li><li>Лидеры связаны с госкорпорациями и экосистемами</li></ul></div><div class="col"><div class="col-h"><b>Драйверы смещаются</b><span>игроки</span></div><ul><li>Облака и ИИ растут быстрее рынка</li><li>Чистая прибыль разработчиков ПО упала на 34% (РУССОФТ)</li></ul></div><div class="col"><div class="col-h"><b>Импортозамещение → экосистемы</b><span>государство</span></div><ul><li>Государство — «архитектор», заказчики через ИЦК формируют спрос</li><li>Льготы частично сокращаются</li></ul></div></div>
+<p><strong>Вопрос для обсуждения:</strong> что станет драйвером рынка, когда волна импортозамещения завершится?</p></div><div class="s-foot"><span>Мастерская «Технологии в экономике» · ЭФ СПбГУ</span><span>1 / 1</span></div></div></section></div></div><aside class="cr-side"><a class="btn cr-play" href="../th14-it-market-russia-summary/slides.html?present=1" data-play="../th14-it-market-russia-summary/slides.html">▶ Показ</a><ol class="cr-list"><li class="on"><b>1</b>Что важно запомнить о рынке</li></ol></aside></div></div><div class="doc"><h2 id="где-читалась">Где читалась</h2><table><thead><tr><th>Дата</th><th>Трек</th><th>Время</th><th>Что</th></tr></thead><tbody><tr><td>01.10.2026</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/econ-3/2026-fall/sessions.md"><code>econ-3</code></a> · Экономика, 3 курс</td><td>9:00–12:15</td><td>Занятие 3, вся лекция (15 слайдов)</td></tr></tbody></table>
+<p>Исходная презентация — «Рынок ИС в России — лекция (с управлением)», 15 слайдов, приватная; в репозиторий не кладётся (<a href="https://github.com/SPBUEcon/econ-library/blob/main/theses/README.md"><code>theses/README.md</code></a>: PDF и PPTX в git не хранятся).</p></div>
+</div></main>
+<script>
+[].forEach.call(document.querySelectorAll('.carousel'),function(c){
+  var items=c.querySelectorAll('.cr-item'),li=c.querySelectorAll('.cr-list li'),notes=c.querySelectorAll('.cr-note'),
+      play=c.querySelector('.cr-play'),i=0;
+  function go(k){i=(k+items.length)%items.length;
+    [items,li,notes].forEach(function(l){[].forEach.call(l,function(e,j){e.classList.toggle('on',j===i);});});
+    play.setAttribute('href',play.dataset.play+'?present='+(i+1));}
+  var p=c.querySelector('.cr-prev'),n=c.querySelector('.cr-next');
+  if(p)p.onclick=function(){go(i-1);}; if(n)n.onclick=function(){go(i+1);};
+  [].forEach.call(li,function(e,j){e.onclick=function(){go(j);};});
+  c.tabIndex=0;
+  c.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){go(i+1);e.preventDefault();}
+    else if(e.key==='ArrowLeft'){go(i-1);e.preventDefault();}});
+  [].forEach.call(items,function(e){e.addEventListener('dblclick',function(){location.href=play.getAttribute('href');});});
+  c.go=go;
+});
+// старые якоря (#formula и т.п.) ведут на слайд тезиса в карусели
+function hashSlide(){var a=location.hash&&document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if(!a||!a.dataset.slide)return;var c=a.parentNode.querySelector('.carousel');if(c&&c.go){c.go(+a.dataset.slide-1);c.scrollIntoView();}}
+window.addEventListener('hashchange',hashSlide);hashSlide();
+</script>
+</body></html>
