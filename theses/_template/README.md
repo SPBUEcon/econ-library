@@ -9,6 +9,7 @@ refs: c01; bm01
 questions: q01
 assignments: tpl01
 dossier:
+preview: 1
 status: черновик
 version: v0.1
 updated: ГГГГ-ММ-ДД ЧЧ:ММ

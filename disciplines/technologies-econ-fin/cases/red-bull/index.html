@@ -40,16 +40,16 @@ code{font-family:Consolas,monospace;font-size:.92em;background:var(--panel);bord
 main{padding:36px 0 60px}
 .lead{font-size:17px;color:var(--grey);max-width:860px;margin-bottom:8px}
 .lead p+p{margin-top:8px}
-.doc h2{font-family:var(--disp);font-weight:700;font-size:24px;line-height:1.2;margin:44px 0 14px}
-.doc h3{font-family:var(--disp);font-weight:500;font-size:17px;margin:22px 0 8px}
-.doc p,.doc ul,.doc ol,.doc table,.doc blockquote,.doc pre{margin-bottom:12px;max-width:900px}
-.doc ul,.doc ol{padding-left:24px}
-.doc li{margin-bottom:4px}
-.doc blockquote{border-left:4px solid var(--coral);padding:4px 0 4px 16px;font-size:17px}
-.doc table{border-collapse:collapse;width:100%;max-width:none;font-size:14.5px;background:#fff}
-.doc th,.doc td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
-.doc th{background:var(--panel);font-weight:600}
-.doc pre{background:var(--panel);border-radius:10px;padding:12px 16px;overflow:auto;font-size:13px}
+.doc h2:not(.slide *){font-family:var(--disp);font-weight:700;font-size:24px;line-height:1.2;margin:44px 0 14px}
+.doc h3:not(.slide *){font-family:var(--disp);font-weight:500;font-size:17px;margin:22px 0 8px}
+.doc p:not(.slide *),.doc ul:not(.slide *),.doc ol:not(.slide *),.doc table:not(.slide *),.doc blockquote:not(.slide *),.doc pre:not(.slide *){margin-bottom:12px;max-width:900px}
+.doc ul:not(.slide *),.doc ol:not(.slide *){padding-left:24px}
+.doc li:not(.slide *){margin-bottom:4px}
+.doc blockquote:not(.slide *){border-left:4px solid var(--coral);padding:4px 0 4px 16px;font-size:17px}
+.doc table:not(.slide *){border-collapse:collapse;width:100%;max-width:none;font-size:14.5px;background:#fff}
+.doc th:not(.slide *),.doc td:not(.slide *){border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.doc th:not(.slide *){background:var(--panel);font-weight:600}
+.doc pre:not(.slide *){background:var(--panel);border-radius:10px;padding:12px 16px;overflow:auto;font-size:13px}
 .chk{display:inline-block;font-size:.72em;font-weight:600;letter-spacing:.03em;color:var(--amber);font-style:normal;
   border:1.5px solid var(--amber);border-radius:6px;padding:0 .4em;margin-left:.2em;vertical-align:.1em;white-space:nowrap}
 
@@ -57,7 +57,7 @@ main{padding:36px 0 60px}
 mark{background:#FCEBCB;color:inherit;border-bottom:.15em solid var(--amber);border-radius:.2em;padding:0 .12em}
 .legend{font-size:14px;color:var(--grey);margin:6px 0 12px}
 
-.doc p img{max-width:min(100%,430px);border:1px solid var(--line);border-radius:8px;margin:0 10px 10px 0;vertical-align:top}
+.doc p img:not(.slide *){max-width:min(100%,430px);border:1px solid var(--line);border-radius:8px;margin:0 10px 10px 0;vertical-align:top}
 .anchor{display:block;position:relative;top:-16px}
 
 /* ---------- лента слайдов на странице ---------- */
@@ -81,7 +81,7 @@ mark{background:#FCEBCB;color:inherit;border-bottom:.15em solid var(--amber);bor
 .cr-cap{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--coral);margin-bottom:6px}
 .cr-note{display:none;color:var(--grey);font-size:14px}
 .cr-note.on{display:block}
-.cr-note p{margin-bottom:8px}
+.cr-note.doc p{margin-bottom:8px}
 .cr-note .empty{font-style:italic}
 @media (max-width:860px){.carousel{grid-template-columns:1fr}.cr-prev{left:6px}.cr-next{right:6px}}
 .deck{display:flex;flex-direction:column;gap:22px;margin:8px 0 10px}
@@ -232,13 +232,38 @@ body.frame .s-top .s-id::after{animation:none}
 .u-bar input,.u-bar select{font:14px var(--body);border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:#fff;color:var(--ink)}
 .u-bar input{flex:1;min-width:220px}
 .u-cnt{font-size:13px;color:var(--grey)}
-#units td{font-size:14px}
-#units td:first-child{white-space:nowrap}
+#units>tbody>tr>td{font-size:14px}
+#units>tbody>tr>td:first-child{white-space:nowrap}
 .u-sum{font-size:12.5px;color:var(--grey);margin-top:3px}
 .u-st{font-size:11.5px;font-weight:600;letter-spacing:.04em;border-radius:6px;padding:1px 7px;white-space:nowrap;border:1px solid}
 .u-ok{color:var(--green);border-color:var(--green)}
 .u-plan{color:var(--amber);border-color:var(--amber)}
 .u-cand{color:var(--grey);border-color:var(--line)}
+#units .u-bl{font-size:12.5px;color:var(--grey);min-width:120px}
+.u-sum.clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+.u-sum.clamp.open{display:block;cursor:pointer}
+.u-sum.clamp:not(.open):hover{color:var(--ink)}
+/* стили страницы (.doc, #units) не действуют внутри слайдов — см. :not(.slide *) выше.
+   превью: настоящий слайд в уменьшенном виде (размеры слайда — в cqw), целиком ссылка в карточку */
+.thumb{display:block;flex:none;text-decoration:none;color:inherit}
+.thumb .slide{border-radius:6px;box-shadow:0 2px 8px rgba(27,32,56,.10);pointer-events:none;transition:box-shadow .15s ease}
+.thumb:hover .slide{box-shadow:0 6px 18px rgba(27,32,56,.20)}
+.thumb .s-id::after{animation:none}
+.u-t{display:flex;gap:14px;align-items:flex-start}
+.u-t .thumb{width:176px}
+.card .thumb{margin-bottom:6px}
+.card .thumb .slide{border-radius:10px}
+/* виды сборок: что это, сколько готово, ссылка на кандидатов в таблице */
+.kinds{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:0;margin:6px 0 18px;border-top:1px solid var(--line)}
+.kind{padding:12px 16px 12px 0;display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--grey)}
+.kind+.kind{padding-left:16px;border-left:1px dashed var(--line)}
+.kind b{font-family:var(--disp);font-weight:500;font-size:15px;color:var(--ink)}
+.kind em{font-style:normal;font-weight:600;color:var(--ink);margin-top:auto}
+.kind a{color:var(--coral)}
+/* вопросы и источники — раскрывающиеся разделы */
+details.more{border-top:1px solid var(--line);padding:14px 0}
+details.more summary{cursor:pointer;font-family:var(--disp);font-weight:700;font-size:22px}
+details.more[open] summary{margin-bottom:12px}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin:10px 0 20px}
 .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
 .card .k{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--coral)}
@@ -283,7 +308,7 @@ body.frame .stage .slide{width:100vw;height:100vh;aspect-ratio:auto;border:0;bor
 </style></head>
 <body>
 <header class="hero"><div class="wrap">
-<div class="crumbs"><a href="../../site/course.html">Технологии (ИСЭиФ)</a> · кейс · red-bull</div><div class="eyebrow">Кейс</div><h1>Red Bull — от напитка к индустрии экстрима</h1><div class="formula">Напиток финансирует медиа, медиа продвигает бренд, бренд продаёт напиток.</div><div class="tags"><span class="tag">m01</span><span class="tag">c01</span><span class="tag">c19</span><span class="tag">c23</span><span class="tag">m02</span></div><div class="tools"><a class="btn" href="slides.html">▶ Слайды</a><a class="btn ghost" href="slides.html?print">⎙ PDF</a><a class="btn ghost" href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/cases/red-bull/README.md">md-источник</a></div>
+<div class="crumbs"><a href="../../../../theses/site/index.html">Тезисы и сборки</a> · кейс · red-bull</div><div class="eyebrow">Кейс</div><h1>Red Bull — от напитка к индустрии экстрима</h1><div class="formula">Напиток финансирует медиа, медиа продвигает бренд, бренд продаёт напиток.</div><div class="tags"><span class="tag">m01</span><span class="tag">c01</span><span class="tag">c19</span><span class="tag">c23</span><span class="tag">m02</span></div><div class="tools"><a class="btn" href="slides.html">▶ Слайды</a><a class="btn ghost" href="slides.html?print">⎙ PDF</a><a class="btn ghost" href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/cases/red-bull/README.md">md-источник</a></div>
 </div></header>
 <main><div class="wrap">
 <div class="lead doc"><p>Кейс дисциплины <a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/README.md">«Технологии (ИСЭиФ)»</a>, блоки <code>transition</code> и <code>ai-business</code>. Кейс — <strong>сборка над тезисами</strong> (<a href="https://github.com/SPBUEcon/econ-library/blob/main/theses/README.md">модель слоя</a>): содержание — слайды, комментарии, вопросы, что проверить — живёт в тезисах, а здесь — то, что относится к компании целиком: паспорт, досье, маршрут заданий, исходные слайды автора и цикл обновления.</p>

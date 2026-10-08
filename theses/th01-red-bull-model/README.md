@@ -9,6 +9,7 @@ refs: bm01; ca08; m01; c01; c19; c23; m02
 questions: q17
 assignments: rb-02; tpl07
 dossier: red-bull
+preview: 3
 status: черновик
 version: v0.3
 updated: 2026-10-08 16:24

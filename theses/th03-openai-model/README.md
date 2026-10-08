@@ -9,6 +9,7 @@ refs: bm05; bm13; m01; c18; c28; c26
 questions: q17
 assignments: tpl01
 dossier:
+preview: 2
 status: черновик
 version: v0.1
 updated: 2026-10-07 23:33

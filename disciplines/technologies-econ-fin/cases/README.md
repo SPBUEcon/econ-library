@@ -36,7 +36,7 @@ cases/<кейс>/
 1. Собрать тезисы компании в [`theses/`](../../../theses/README.md), затем скопировать `red-bull/README.md`:
    frontmatter `kind: кейс`, паспорт, раздел «Тезисы» со списком `thNN`, задания, реестр слайдов.
    Пересобрать `python theses/site/build.py`.
-2. Добавить страницу в `CASE_PAGES` в [`../site/build.py`](../site/build.py) и пересобрать курс. Тогда
-   у карточки кейса в `course.html` появится ссылка на страницу.
+2. Кейс появится карточкой в разделе «Сборки» [витрины тезисов](../../../theses/site/index.html), а строки
+   каталога, которые раскрывают его тезисы (`covers`), — строками этих тезисов.
 3. Завести карточку задания по [шаблону](../../../assignments/templates/_card-template.md) и, если
    кейс живой, досье в [`assignments/dossiers/`](../../../assignments/dossiers/README.md).
