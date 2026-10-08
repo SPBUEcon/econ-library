@@ -4,7 +4,7 @@
 > риск — стенд собирает конфигурацию, в которой это можно проектировать, считать и проверять.
 
 > **Черновик · пилот осени 2026 (2026-10-08).** Модель стендов — [`../README.md`](../README.md),
-> архитектура — [`../../program/architecture-draft.md`](../../program/architecture-draft.md). Основа —
+> архитектура — [`../../program/architecture.md`](../../program/architecture.md). Основа —
 > три темы Ингосстраха ([`tasks/`](../../partners/ingosstrakh/tasks/README.md)) и воркстрим
 > [`insurance`](../../workstreams/insurance/README.md). Данных партнёра на стенде нет: всё — открытые
 > источники. Студенческий проект, не официальная позиция компании.

@@ -5,7 +5,7 @@
 > пользуется.
 
 > **Черновик · пилот осени 2026 (2026-10-08).** Модель стендов — [`../README.md`](../README.md),
-> архитектура — [`../../program/architecture-draft.md`](../../program/architecture-draft.md). Основа —
+> архитектура — [`../../program/architecture.md`](../../program/architecture.md). Основа —
 > задача 1 Спорткомитета ([`task-1`](../../partners/komsport-spb/tasks/task-1-geoanalytics.md)),
 > воркстрим [`sport-geo`](../../workstreams/sport-geo/README.md), досье
 > [`sport-spb`](../../assignments/dossiers/sport-spb/README.md), КП Геоинтеллекта от 18.09.2026
