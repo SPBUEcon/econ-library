@@ -13,8 +13,7 @@
 | **Роль партнёра** | Эксперт + событие |
 | **Шерпа / ответственный** | Геоинтеллект |
 | **Источники команд** | Оба курса + внешние вузы |
-| **Текущий гейт** | G0 — рамка |
-| **Целевой гейт к концу семестра** | Событие |
+| **Состояние** | событие — даты уточняются |
 | **Статус** | Событие |
 
 ## Суперзадача
@@ -48,11 +47,11 @@
   [«Заявка на вход»](../../.github/ISSUE_TEMPLATE/join-workstream.md) →
   [соглашение о входе](../_template/onboarding.md) → роль ([роли](../../roles/README.md)).
 
-Статус — на [витрине](../../program/site/workstreams_board.html) и [доске](../board.md).
+Витрина — [`../../program/site/workstreams_board.html`](../../program/site/workstreams_board.html).
 
 ## Разделы папки
 
-[`gates/`](gates/) · [`data/raw/`](data/raw/) · [`data/processed/`](data/processed/) ·
+[`data/raw/`](data/raw/) · [`data/processed/`](data/processed/) ·
 [`meetings/`](meetings/) · [`deliverables/`](deliverables/)
 
 Связанный воркстрим — «Экономика и технологии в спорте» ([`../sport-spb/`](../sport-spb/)) — тот же

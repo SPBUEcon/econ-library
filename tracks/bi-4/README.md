@@ -3,7 +3,7 @@
 Поток «Бизнес-информатика» (направление ИСЭ — информационные системы в экономике) 4 курса, 2 учебные
 группы вместе. Дисциплина —
 [Технологии (информационные системы в экономике и финансах)](../../disciplines/technologies-econ-fin/README.md),
-ведёт Д. Хан. Идёт **параллельно** потоку [`econ-3`](../econ-3/README.md): гейты общие, даты свои.
+ведёт Д. Хан. Идёт **параллельно** потоку [`econ-3`](../econ-3/README.md): события общие, даты свои.
 
 ## Паспорт трека
 
@@ -26,5 +26,5 @@
 
 Команды потока подключаются к спортивным воркстримам ([`sport-geo`](../../workstreams/sport-geo/),
 [`sport-engagement`](../../workstreams/sport-engagement/), общая рамка —
-[`sport-spb`](../../workstreams/sport-spb/)) и проходят гейты G0→G5. Состав и роли —
-в [реестре](../../registry/README.md); статус — на [доске](../../workstreams/board.md).
+[`sport-spb`](../../workstreams/sport-spb/)) и работают на стенде [`geo-sport-spb`](../../stands/geo-sport-spb/README.md). Состав и роли —
+в [реестре](../../registry/README.md).

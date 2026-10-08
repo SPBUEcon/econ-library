@@ -6,4 +6,4 @@
   быстрый старт, выбор роли.
 
 См. также: [витрина воркстримов](../program/site/workstreams_board.html) ·
-[доска «воркстрим × гейт»](../workstreams/board.md) · [как участвовать](../CONTRIBUTING.md).
+[стенды](../stands/README.md) · [как участвовать](../CONTRIBUTING.md).
