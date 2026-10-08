@@ -190,10 +190,31 @@ body.frame .s-top .s-id::after{animation:none}
 .l-photo .s-body li strong{display:block;white-space:nowrap;font-family:var(--disp);font-weight:500;font-size:1.85cqw;line-height:1.15;color:#fff;margin-bottom:.4cqw}
 .l-photo mark{background:rgba(217,147,43,.35);color:#fff}
 
+/* раскладка numbers: список «**цифра** подпись» — строка показателей; таблица «название | число | пометка» —
+   диаграмма-«леденец» (тонкая линия, точка на конце, значение за точкой); таблицы подряд встают рядом */
+.l-numbers .s-body>ul{list-style:none;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:0}
+.l-numbers .s-body>ul li{padding:0 1.4cqw;border-left:1px solid var(--line);font-size:1.1cqw;line-height:1.3;color:var(--grey)}
+.l-numbers .s-body>ul li:first-child{border-left:0;padding-left:0}
+.l-numbers .s-body>ul li strong{display:block;white-space:nowrap;font-family:var(--disp);font-weight:500;font-size:2.3cqw;
+  line-height:1.1;color:var(--ink);margin-bottom:.45cqw}
+.l-numbers .s-body>p{font-size:1.15cqw;color:var(--grey)}
+.charts{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4cqw;align-items:start}
+.b-cap{font-size:.95cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--coral);font-weight:600;
+  padding-bottom:.6cqw;margin-bottom:.4cqw;border-bottom:1px solid var(--line)}
+.b-row{display:grid;grid-template-columns:36% 1fr;align-items:center;column-gap:1.2cqw;font-size:1.25cqw;line-height:1.2;padding:.4cqw 0}
+.b-track{position:relative;height:1.5cqw}
+.b-line{position:absolute;left:0;top:50%;border-top:1px solid var(--ink)}
+.b-line::after{content:"";position:absolute;right:-.45cqw;top:-.5cqw;width:.9cqw;height:.9cqw;border-radius:50%;background:var(--coral)}
+.b-val{position:absolute;left:100%;top:0;transform:translateY(-50%);margin-left:1cqw;white-space:nowrap;font-weight:600}
+.b-val i{font-style:normal;font-weight:500;color:var(--grey);margin-left:.7cqw;font-size:.95cqw}
+
 /* обложка сборки */
 .slide.cover{background:var(--ink);color:#fff;border-color:var(--ink)}
 .cover .s-title{font-size:4cqw;margin-top:auto}
 .cover .s-body{flex:0;margin-bottom:auto;color:var(--ice);font-size:1.6cqw}
+/* длинное оглавление (8+ пунктов) — в две колонки */
+.cover .s-body ol:has(>li:nth-child(8)){display:block;columns:2;column-gap:4cqw}
+.cover .s-body ol:has(>li:nth-child(8)) li{break-inside:avoid;margin-bottom:.6cqw}
 .cover .s-foot{color:var(--ice);border-color:var(--ink2)}
 .cover .s-top .s-upd{color:var(--ice)}
 .cover code{background:var(--ink2);color:var(--ice)}
