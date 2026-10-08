@@ -14,6 +14,7 @@
 | Ведёт | Д. Хан |
 | Питает воркстримы | [`insurance`](../../workstreams/insurance/), [`phygital-sport`](../../workstreams/phygital-sport/) |
 | Ритм | Четверги (первый ход осени 2026) |
+| Страница трека | [`site/index.html`](site/index.html) — расписание занятий и материалы |
 
 ## Прогоны
 
