@@ -13,9 +13,7 @@
 | **Роль партнёра** | Владелец + Эксперт (утверждено) |
 | **Шерпа / ответственный** | *уточнить* |
 | **Источники команд** | Экономика, 3 к. + возможно СПбГМТУ (море / дайвинг) |
-| **Текущий гейт** | G0 — рамка |
-| **Целевой гейт к концу семестра** | G2–G3 |
-| **Статус** | G0 — рамка |
+| **Состояние** | рамка собирается |
 
 ## Суперзадача
 
@@ -49,12 +47,12 @@
   [«Заявка на вход»](../../.github/ISSUE_TEMPLATE/join-workstream.md) →
   [соглашение о входе](../_template/onboarding.md) → роль ([роли](../../roles/README.md)).
 
-Открытые для входа гейты — **G2 и G4** ([гейты](../../program/gates.md)). Статус — на
-[витрине](../../program/site/workstreams_board.html) и [доске](../board.md).
+Самый короткий вход — механики стенда прямо на занятии ([механики вовлечения](../../stands/engagement.md)).
+Витрина — [`../../program/site/workstreams_board.html`](../../program/site/workstreams_board.html).
 
 ## Разделы папки
 
-[`gates/`](gates/) · [`data/raw/`](data/raw/) · [`data/processed/`](data/processed/) ·
+[`data/raw/`](data/raw/) · [`data/processed/`](data/processed/) ·
 [`meetings/`](meetings/) · [`deliverables/`](deliverables/)
 
 Связанный флагман — «Сеть фиджитал дайвинг-центров» ([`../flagships.md`](../flagships.md)).

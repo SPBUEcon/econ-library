@@ -82,6 +82,7 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
 
 /* gate rail */
 .rail{display:flex;gap:5px;margin-bottom:16px}
+.rail a.g{text-decoration:none}
 .rail .g{flex:1;text-align:center;font-family:var(--disp);font-weight:700;font-size:11px;padding:6px 0;border-radius:7px;
   background:var(--panel);color:#9AA3C4;border:1px solid transparent}
 .rail .g.done{background:var(--ice);color:var(--ink2)}
@@ -163,8 +164,8 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
     <div class="stat-row">
       <div class="stat"><b>7</b><span>оперативных · семестр (A)</span></div>
       <div class="stat"><b>4</b><span>флагмана · год+ (B)</span></div>
-      <div class="stat"><b>G0→G5</b><span>гейты одного хода</span></div>
-      <div class="stat"><b>G2·G4</b><span>открыты для входа</span></div>
+      <div class="stat"><b>2</b><span>пилотных стенда</span></div>
+      <div class="stat"><b>15 мин</b><span>первый шаг на занятии</span></div>
     </div>
     <div class="cta-row">
       <a class="btn" href="#join">Как включиться</a>
@@ -186,16 +187,15 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         <div class="lvl rv"><span class="tag event">Событие</span><p><b>Формат-событие.</b> Конкурс / выставка с отдельным ритмом; роль студентов определяется под событие.</p></div>
       </div>
       <div class="gate-legend rv">
-        <h3>Гейты — точки входа и развития воркстримов</h3>
+        <h3>Как войти — без гейтов</h3>
         <ol>
-          <li>Рамка — суперзадача и ставка партнёра подтверждены</li>
-          <li>Команда — роли распределены, наследство принято</li>
-          <li>Архитектура — концепция модели или задачи принята</li>
-          <li>Поле — модель проверена реальной средой</li>
-          <li>Результат — вердикт партнёра «беру / беру с условиями / не беру»</li>
-          <li>Наследование — пакет передачи следующей команде</li>
+          <li>Механика стенда на занятии — 15 минут: проверить цифру, сделать прогноз, разметить площадку</li>
+          <li>Задание на 1–3 занятия: закрыть пробел, собрать набор, провести интервью</li>
+          <li>Роль в команде на семестр — задача на стенде</li>
+          <li>Держатель узла стенда: данные, агент, связь с партнёром, ставка</li>
+          <li>Куратор следующего хода — передаёт наследство дальше</li>
         </ol>
-        <p class="open"><b>G2 и G4 открыты</b> для студентов и преподавателей других вузов до всякого формального партнёрства — это главный канал входа следующих команд.</p>
+        <p class="open"><b>Гейты G0–G5 отменены 2026-10-09.</b> Воркстрим — тематический поток: формула, инверт, барьеры, участники. Войти можно в любой момент.</p>
       </div>
     </div>
   </div>
@@ -212,15 +212,13 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">01</span><span class="tag a">A · семестр</span></div>
         <h3>Страхование</h3>
-        <div class="rail" aria-label="Текущий гейт G0, целевой G4">
-          <span class="g now">G0</span><span class="g">G1</span><span class="g open">G2</span><span class="g">G3</span><span class="g target open">G4</span><span class="g">G5</span>
-        </div>
+        <div class="rail" aria-label="Стенд"><a class="g now" href="https://github.com/SPBUEcon/econ-library/blob/main/stands/insurance/README.md">стенд insurance</a></div>
         <p class="super">Новые ниши и embedded-insurance · онлайн vs агентский канал · продвижение киберстрахования. На первый ход — 1–2 фокуса.</p>
         <div class="meta">
           <div class="row"><span class="k">Партнёр</span><span class="v">Ингосстрах — Г. Владельщикова <small>вице-президент · Владелец + Эксперт</small></span></div>
           <div class="row"><span class="k">Команды</span><span class="v">Экономика, 3 к. + группы ЭФ</span></div>
         </div>
-        <span class="status frame"><span class="dot"></span>G0 — рамка</span>
+        <span class="status frame"><span class="dot"></span>рамка собирается</span>
         <div class="join">
           <span class="contact">Контакт: <b>шерпа — уточнить</b></span>
           <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/insurance">Войти →</a>
@@ -231,16 +229,14 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">02</span><span class="tag a">A · семестр</span></div>
         <h3>Геоаналитика спортинфраструктуры</h3>
-        <div class="rail" aria-label="Текущий гейт G0, целевой G3">
-          <span class="g now">G0</span><span class="g">G1</span><span class="g open">G2</span><span class="g target">G3</span><span class="g open">G4</span><span class="g">G5</span>
-        </div>
+        <div class="rail" aria-label="Стенд"><a class="g now" href="https://github.com/SPBUEcon/econ-library/blob/main/stands/geo-sport-spb/README.md">стенд geo-sport-spb</a></div>
         <p class="super">ГИС-анализ и доказательное планирование размещения спортобъектов: что построить · чего не хватает · где строить. Поток «Экономика и технологии в спорте», задача 1 Спорткомитета.</p>
         <div class="meta">
           <div class="row"><span class="k">Партнёр</span><span class="v">Спорткомитет СПб — А. Шантырь, И. Сологуб <small>Владелец</small></span></div>
           <div class="row"><span class="k">Технолог</span><span class="v">Геоинтеллект — Д. Структов <small>шерпа-технолог (ГИС)</small></span></div>
           <div class="row"><span class="k">Команды</span><span class="v">ИСЭ, 4 к. + возм. Университет МЧС</span></div>
         </div>
-        <span class="status frame"><span class="dot"></span>G0 — рамка (hot)</span>
+        <span class="status frame"><span class="dot"></span>живой · стенд</span>
         <div class="join">
           <span class="contact">Контакт: <b>Геоинтеллект (ГИС)</b></span>
           <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-geo">Войти →</a>
@@ -251,16 +247,14 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">03</span><span class="tag a">A · семестр</span></div>
         <h3>Вовлечение и коммуникация в спорте</h3>
-        <div class="rail" aria-label="Текущий гейт G0, целевой G3">
-          <span class="g now">G0</span><span class="g">G1</span><span class="g open">G2</span><span class="g target">G3</span><span class="g open">G4</span><span class="g">G5</span>
-        </div>
+        <div class="rail" aria-label="Стенд"><a class="g now" href="https://github.com/SPBUEcon/econ-library/blob/main/stands/geo-sport-spb/README.md">стенд geo-sport-spb</a></div>
         <p class="super">Сквозная система «инфраструктура/событие → канал → житель → обратная связь»: аудит каналов, медиасрез, показатели и стратегия коммуникаций. Поток «Экономика и технологии в спорте», задача 2 Спорткомитета.</p>
         <div class="meta">
           <div class="row"><span class="k">Партнёр</span><span class="v">Спорткомитет СПб — А. Шантырь, И. Сологуб <small>Владелец</small></span></div>
           <div class="row"><span class="k">Шерпа</span><span class="v">уточнить <small>возм. ИИтех — ИИ-мониторинг медиа</small></span></div>
           <div class="row"><span class="k">Команды</span><span class="v">ИСЭ, 4 к. + возм. ЭФ</span></div>
         </div>
-        <span class="status frame"><span class="dot"></span>G0 — рамка (hot)</span>
+        <span class="status frame"><span class="dot"></span>живой · стенд</span>
         <div class="join">
           <span class="contact">Контакт: <b>Спорткомитет СПб</b></span>
           <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-engagement">Войти →</a>
@@ -271,15 +265,12 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">04</span><span class="tag a">A · семестр</span></div>
         <h3>Фиджитал-спорт</h3>
-        <div class="rail" aria-label="Текущий гейт G0, целевой G3">
-          <span class="g now">G0</span><span class="g">G1</span><span class="g open target">G2</span><span class="g target">G3</span><span class="g open">G4</span><span class="g">G5</span>
-        </div>
-        <p class="super">Оценка международного рынка фиджитал-дайвинга: объём, сегменты, каналы, зарубежное продвижение.</p>
+                <p class="super">Оценка международного рынка фиджитал-дайвинга: объём, сегменты, каналы, зарубежное продвижение.</p>
         <div class="meta">
           <div class="row"><span class="k">Партнёр</span><span class="v">Федерация фиджитал-спорта СПб — А. Спелов <small>Владелец + Эксперт</small></span></div>
           <div class="row"><span class="k">Команды</span><span class="v">Экономика, 3 к. + возм. СПбГМТУ</span></div>
         </div>
-        <span class="status frame"><span class="dot"></span>G0 — рамка</span>
+        <span class="status frame"><span class="dot"></span>рамка собирается</span>
         <div class="join">
           <span class="contact">Контакт: <b>шерпа — уточнить</b></span>
           <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/phygital-sport">Войти →</a>
@@ -290,10 +281,7 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">13</span><span class="tag cross">Сквозной · зонтик</span></div>
         <h3>Среда управления</h3>
-        <div class="rail" aria-label="Текущий гейт G1, целевой G3">
-          <span class="g done">G0</span><span class="g now">G1</span><span class="g open">G2</span><span class="g target">G3</span><span class="g open">G4</span><span class="g">G5</span>
-        </div>
-        <p class="super">Единая вузонезависимая среда: репозиторий воркстримов, доска «воркстрим × гейт», шаблоны, автоматизация, эта витрина.</p>
+                <p class="super">Единая вузонезависимая среда: репозиторий воркстримов, стенды, шаблоны, автоматизация, эта витрина.</p>
         <div class="meta">
           <div class="row"><span class="k">Владелец</span><span class="v">Мастерская (Хан)</span></div>
           <div class="row"><span class="k">Ставка</span><span class="v">В. В. Иванова <small>зав. кафедрой ИСвЭ</small></span></div>
@@ -310,15 +298,12 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">05</span><span class="tag cross">Сквозной</span></div>
         <h3>ИИ, цифровые двойники и симуляции</h3>
-        <div class="rail" aria-label="Сквозной, текущий гейт G0">
-          <span class="g now">G0</span><span class="g">G1</span><span class="g">G2</span><span class="g">G3</span><span class="g">G4</span><span class="g">G5</span>
-        </div>
-        <p class="super">Сквозная AI-линия: ИИ-агенты, AI-native подход, ИИ-инструменты в ежедневной работе всех команд.</p>
+                <p class="super">Сквозная AI-линия: ИИ-агенты, AI-native подход, ИИ-инструменты в ежедневной работе всех команд.</p>
         <div class="meta">
           <div class="row"><span class="k">Партнёр</span><span class="v">ИИтех (veai) — М. Костицин <small>Эксперт · среда / лаборатория</small></span></div>
           <div class="row"><span class="k">Команды</span><span class="v">Оба курса + все команды</span></div>
         </div>
-        <span class="status frame"><span class="dot"></span>G0 — рамка · сквозной</span>
+        <span class="status frame"><span class="dot"></span>сквозной</span>
         <div class="join">
           <span class="contact">Контакт: <b>шерпа — уточнить</b></span>
           <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/ai-environment">Войти →</a>
@@ -329,15 +314,12 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">06</span><span class="tag a">A/B · семестр→год</span></div>
         <h3>Технологии и производство / венчур</h3>
-        <div class="rail" aria-label="Текущий гейт G0, целевой G1">
-          <span class="g now">G0</span><span class="g target">G1</span><span class="g open">G2</span><span class="g">G3</span><span class="g open">G4</span><span class="g">G5</span>
-        </div>
-        <p class="super">Венчурный и технологический рынок. Отдельная возможность — оргкоманда Хайпарк.Форума (12–13.11.2026).</p>
+                <p class="super">Венчурный и технологический рынок. Отдельная возможность — оргкоманда Хайпарк.Форума (12–13.11.2026).</p>
         <div class="meta">
           <div class="row"><span class="k">Партнёр</span><span class="v">ИТМО Хайпарк — М. Мастин <small>Эксперт + Владелец флагмана</small></span></div>
           <div class="row"><span class="k">Команды</span><span class="v">Оба курса</span></div>
         </div>
-        <span class="status frame"><span class="dot"></span>G0 — рамка</span>
+        <span class="status frame"><span class="dot"></span>рамка собирается</span>
         <div class="join">
           <span class="contact">Контакт: <b>шерпа — уточнить</b></span>
           <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/venture-tech">Войти →</a>
@@ -348,10 +330,7 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">07</span><span class="tag event">Событие</span></div>
         <h3>Экология / данные — Биеннале карт</h3>
-        <div class="rail" aria-label="Формат события, текущий гейт G0">
-          <span class="g now">G0</span><span class="g">G1</span><span class="g">G2</span><span class="g">G3</span><span class="g">G4</span><span class="g">G5</span>
-        </div>
-        <p class="super">Всероссийский конкурс по картографии / геоаналитике + выставка: без победителей и призов, бесплатно, отбор на выставку.</p>
+                <p class="super">Всероссийский конкурс по картографии / геоаналитике + выставка: без победителей и призов, бесплатно, отбор на выставку.</p>
         <div class="meta">
           <div class="row"><span class="k">Партнёр</span><span class="v">Геоинтеллект — Д. Структов <small>Эксперт + событие</small></span></div>
           <div class="row"><span class="k">Команды</span><span class="v">Оба курса + внешние вузы</span></div>
@@ -367,15 +346,12 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <div class="ws flag rv">
         <div class="ws-top"><span class="ws-num">08</span><span class="tag b">B · флагман</span></div>
         <h3>Кибер-фиджитал арена</h3>
-        <div class="rail" aria-label="Флагман, диапазон G0–G2">
-          <span class="g now">G0</span><span class="g">G1</span><span class="g target open">G2</span><span class="g">G3</span><span class="g">G4</span><span class="g">G5</span>
-        </div>
-        <p class="super">Международная кибер-фиджитал арена в Петербурге (спорт × фиджитал × инфраструктура). Вход студентов — фрагментами.</p>
+                <p class="super">Международная кибер-фиджитал арена в Петербурге (спорт × фиджитал × инфраструктура). Вход студентов — фрагментами.</p>
         <div class="meta">
           <div class="row"><span class="k">Куратор</span><span class="v">М. Мастин (Хайпарк) <small>Владелец флагмана</small></span></div>
           <div class="row"><span class="k">Команды</span><span class="v">Межвузовский</span></div>
         </div>
-        <span class="status idea"><span class="dot"></span>Идея · G0–G2</span>
+        <span class="status idea"><span class="dot"></span>Идея</span>
         <div class="join">
           <span class="contact">Связать с №2, №3, №4</span>
           <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Войти →</a>
@@ -386,15 +362,12 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <div class="ws flag rv">
         <div class="ws-top"><span class="ws-num">09</span><span class="tag b">B · флагман</span></div>
         <h3>Международный технологический центр</h3>
-        <div class="rail" aria-label="Флагман, диапазон G0–G2">
-          <span class="g now">G0</span><span class="g">G1</span><span class="g target open">G2</span><span class="g">G3</span><span class="g">G4</span><span class="g">G5</span>
-        </div>
-        <p class="super">«Новый международный ВДНХ» для стран-партнёров техлидеров (Китай, Индия, ЮВА и др.). Студенческие фрагменты — бенчмарки, рынки.</p>
+                <p class="super">«Новый международный ВДНХ» для стран-партнёров техлидеров (Китай, Индия, ЮВА и др.). Студенческие фрагменты — бенчмарки, рынки.</p>
         <div class="meta">
           <div class="row"><span class="k">Владельцы</span><span class="v">М. Мастин, Ирен Артемова <small>Владелец флагмана</small></span></div>
           <div class="row"><span class="k">Команды</span><span class="v">Межвузовский</span></div>
         </div>
-        <span class="status idea"><span class="dot"></span>Идея · G0–G2</span>
+        <span class="status idea"><span class="dot"></span>Идея</span>
         <div class="join">
           <span class="contact">Оформить рамку</span>
           <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Войти →</a>
@@ -405,15 +378,12 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <div class="ws flag rv">
         <div class="ws-top"><span class="ws-num">10</span><span class="tag b">B · флагман</span></div>
         <h3>Сеть фиджитал дайвинг-центров</h3>
-        <div class="rail" aria-label="Флагман, диапазон G0–G2">
-          <span class="g now">G0</span><span class="g">G1</span><span class="g target open">G2</span><span class="g">G3</span><span class="g">G4</span><span class="g">G5</span>
-        </div>
-        <p class="super">Сеть фиджитал дайвинг-центров как мягкая сила и продвижение российских технологий. Вырастает из воркстрима №4.</p>
+                <p class="super">Сеть фиджитал дайвинг-центров как мягкая сила и продвижение российских технологий. Вырастает из воркстрима №4.</p>
         <div class="meta">
           <div class="row"><span class="k">Куратор</span><span class="v">А. Спелов (Федерация) <small>Владелец флагмана</small></span></div>
           <div class="row"><span class="k">Команды</span><span class="v">Экономика, 3 к. + возм. СПбГМТУ</span></div>
         </div>
-        <span class="status idea"><span class="dot"></span>Идея · G0–G2</span>
+        <span class="status idea"><span class="dot"></span>Идея</span>
         <div class="join">
           <span class="contact">Из №4: рынок → сеть</span>
           <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Войти →</a>
@@ -424,15 +394,12 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <div class="ws flag rv">
         <div class="ws-top"><span class="ws-num">11</span><span class="tag b">B · зонтик</span></div>
         <h3>Новый интеллектуальный центр</h3>
-        <div class="rail" aria-label="Флагман-зонтик, текущий гейт G0">
-          <span class="g now">G0</span><span class="g">G1</span><span class="g">G2</span><span class="g">G3</span><span class="g">G4</span><span class="g">G5</span>
-        </div>
-        <p class="super">Консалтинг + think tank постинформационного уклада — институциональный зонтик над аналитикой мастерской.</p>
+                <p class="super">Консалтинг + think tank постинформационного уклада — институциональный зонтик над аналитикой мастерской.</p>
         <div class="meta">
           <div class="row"><span class="k">Куратор</span><span class="v">Хан <small>Владелец флагмана</small></span></div>
           <div class="row"><span class="k">Команды</span><span class="v">Мастерская в целом</span></div>
         </div>
-        <span class="status idea"><span class="dot"></span>Идея · G0</span>
+        <span class="status idea"><span class="dot"></span>Идея</span>
         <div class="join">
           <span class="contact">Определить рамку зонтика</span>
           <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Войти →</a>
@@ -443,10 +410,7 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <div class="ws flag rv">
         <div class="ws-top"><span class="ws-num">12</span><span class="tag talks">В переговорах</span></div>
         <h3>Аскона</h3>
-        <div class="rail" aria-label="В переговорах, гейт не начат">
-          <span class="g">G0</span><span class="g">G1</span><span class="g">G2</span><span class="g">G3</span><span class="g">G4</span><span class="g">G5</span>
-        </div>
-        <p class="super">Поток и суперзадача пока не определены. Тема без живой ставки на витрину для входа не выводится — идут переговоры.</p>
+                <p class="super">Поток и суперзадача пока не определены. Тема без живой ставки на витрину для входа не выводится — идут переговоры.</p>
         <div class="meta">
           <div class="row"><span class="k">Контакт</span><span class="v">АсконаLive — уточняется</span></div>
           <div class="row"><span class="k">Поток</span><span class="v">Мода / креативные — уточнить</span></div>
@@ -461,7 +425,7 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
     </div>
     <p class="src rv">Данные карточек перенесены из <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/README.md">карты воркстримов</a>
       и карточек воркстримов; статусы «уточнить / в переговорах / идея» сохранены как в источнике.
-      Проверяйте по первоисточнику и обновляйте по мере движения к гейтам.</p>
+      Проверяйте по первоисточнику и обновляйте по мере движения.</p>
   </div>
 </section>
 
@@ -471,7 +435,7 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
     <div class="eyebrow rv">Быстрый старт</div>
     <h2 class="rv">Как включиться в воркстрим</h2>
     <p class="lead rv">Два пути — выбирайте любой. Оба ведут к одному: роль в воркстриме, цифровой
-      след и движение к ближайшему гейту вместе с командой.</p>
+      след и первый вклад на стенде.</p>
 
     <div class="paths">
       <div class="path rv">
@@ -481,9 +445,9 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         <ol>
           <li>Выбрали воркстрим на витрине.</li>
           <li>Открыли его карточку, нашли контакт (шерпа / владелец).</li>
-          <li>Договорились о роли и вошли в ближайший гейт.</li>
+          <li>Договорились о роли и о барьере или узле стенда, с которого начинаете.</li>
         </ol>
-        <p style="margin-bottom:0">Хороший момент для входа — <b>открытые гейты G2 и G4</b>: на них можно прийти до всякого формального оформления.</p>
+        <p style="margin-bottom:0">Самый короткий вход — <b>механика стенда прямо на занятии</b>; открытые события (интенсивы, ревью, демо) — тоже.</p>
       </div>
       <div class="path rv">
         <div class="n">ПУТЬ 2</div>
@@ -501,7 +465,7 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
     <div class="quick">
       <div class="qstep rv"><div class="qn">1</div><b>Выбрать</b><span>воркстрим на витрине и прочитать его карточку в репозитории.</span></div>
       <div class="qstep rv"><div class="qn">2</div><b>Роль</b><span>выбрать роль по <a class="doc" href="https://github.com/SPBUEcon/econ-library/blob/main/roles/README.md">списку ролей</a>: капитан, архитектор, аналитик поля, интегратор технологий, связной.</span></div>
-      <div class="qstep rv"><div class="qn">3</div><b>Войти</b><span>контакт или Issue — и первый ход к ближайшему гейту вместе с командой.</span></div>
+      <div class="qstep rv"><div class="qn">3</div><b>Войти</b><span>контакт или Issue — и первый вклад на стенде.</span></div>
     </div>
   </div>
 </section>
@@ -514,10 +478,10 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
     <div class="foot-links rv">
       <a href="./landing_tech_econ.html">О мастерской (лендинг)</a>
       <a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/README.md">Карта воркстримов</a>
-      <a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/board.md">Доска «воркстрим × гейт»</a>
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/stands/README.md">Стенды</a>
       <a href="https://github.com/SPBUEcon/econ-library/blob/main/guides/how-to-join.md">Как включиться</a>
       <a href="https://github.com/SPBUEcon/econ-library/blob/main/roles/README.md">Роли</a>
-      <a href="https://github.com/SPBUEcon/econ-library/blob/main/program/gates.md">Гейты G0–G5</a>
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/program/architecture.md">Архитектура мастерской</a>
     </div>
     <p class="foot-note rv">Витрина воркстримов · Мастерская «Технологии в экономике» · ЭФ СПбГУ · Кафедра информационных систем в экономике · осень 2026</p>
     <p class="src rv">Витрину держит в актуальном состоянии воркстрим «Среда управления». Нашли расхождение со статусом воркстрима — поправьте через Pull request.</p>

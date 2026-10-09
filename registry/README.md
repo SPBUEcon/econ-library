@@ -1,6 +1,6 @@
 # Реестр: участники, команды, назначения
 
-> **Статус: проект структуры, согласуется.** Предложен 2026-09-20 к G1 (24.09.2026).
+> **Статус: проект структуры, согласуется.** Предложен 2026-09-20; поля гейтов убраны 2026-10-09 (гейты отменены).
 > Пока не согласован — файлы заполняются только примерами из этого README, реальные записи не
 > вносятся.
 >
@@ -12,7 +12,7 @@
 
 Один источник правды о том, **кто в каком воркстриме, в какой команде и в какой роли** в каждом
 семестре. Все остальные списки (таблица «Команда» в карточке воркстрима,
-[доска](../workstreams/board.md), выписка вклада для зачёта) — представления из реестра, а не
+[стенды](../stands/README.md), выписка вклада для зачёта) — представления из реестра, а не
 самостоятельные списки.
 
 ## Модель
@@ -105,7 +105,7 @@
 | `title` | Человеческое название команды, если есть | |
 | `captain_person_id` | Капитан | `p001` |
 | `sherpa_person_id` | Шерпа команды | `p007` |
-| `gate` | Текущий гейт | `G0`…`G5` |
+| `stand_id` | Стенд, на котором работает команда | `geo-sport-spb` |
 | `status` | | `forming`, `active`, `blocked`, `closed` |
 | `origin` | Откуда команда | `spbu`, `external-guest`, `mirror` |
 | `note` | | |
@@ -128,9 +128,9 @@
 | `role` | Что делает | см. словарь |
 | `profile` | Уточнение внутри роли | `gis`, `prototyping`, … |
 | `date_from`, `date_to` | Границы назначения; `date_to` пусто, пока действует | `2026-09-24` |
-| `exit_type` | Как вышел | `g5`, `planned`, `silent` |
+| `exit_type` | Как вышел | `handover`, `planned`, `silent` |
 | `sponsor_person_id` | Кто ведёт: шерпа, для внешних — обязателен | `p007` |
-| `gate_in` | На каком гейте вошёл | `G1`, `G2` |
+| `entry` | Через что вошёл | `class` (механика на занятии), `team-assembly`, `event`, `request` |
 | `note` | | |
 
 **Три уровня назначений** различаются тем, какие поля заполнены:
@@ -187,7 +187,7 @@
 | Значение | Что значит |
 |---|---|
 | `planned` | Ход завершён, вышел штатно |
-| `g5` | Вышел досрочно, но через мини-G5 — наследство передано |
+| `handover` | Вышел досрочно, но наследство передано |
 | `silent` | Тихое исчезновение. Единственное, что учитывается при входе в следующие семестры ([governance § 10](../program/governance.md)) |
 
 ## Правила записи
@@ -195,12 +195,12 @@
 | Событие | Кто вносит | Что вносит | Когда |
 |---|---|---|---|
 | Новый человек | Шерпа | Строка в `participants.csv`; `person_id` = следующий свободный | В день подтверждения роли |
-| Команда собрана (G1) | Шерпа | Строка в `teams.csv` + строки в `memberships.csv` на каждого | В день гейта |
+| Команда собрана | Шерпа | Строка в `teams.csv` + строки в `memberships.csv` на каждого | В день сборки |
 | Смена роли | Капитан → шерпа | Закрыть старую строку (`date_to`), завести новую | В течение недели |
 | Выход участника | Шерпа | `date_to` + `exit_type` | В течение недели |
-| Вход внешнего | Шерпа-спонсор | `participants.csv` + `memberships.csv` с обязательным `sponsor_person_id` и `gate_in` | После мини-G1 |
-| Закрытие хода (G5) | Шерпа | Проставить `date_to` и `exit_type` всем; `status` команды = `closed` | При закрытии хода |
-| Сверка | Мастер | Реестр ↔ доска ↔ карточки ↔ история репозитория | На каждом гейте |
+| Вход внешнего | Шерпа-спонсор | `participants.csv` + `memberships.csv` с обязательным `sponsor_person_id` и `entry` | После входной встречи |
+| Закрытие хода (передача наследства) | Шерпа | Проставить `date_to` и `exit_type` всем; `status` команды = `closed` | При закрытии хода |
+| Сверка | Мастер | Реестр ↔ стенды ↔ карточки ↔ история репозитория | На ревизии воркстрима (раз в месяц) |
 
 Порядок изменений — как для всего репозитория: ветка, Pull request, ревью шерпы
 ([`../rules/team-work.md`](../rules/team-work.md)). Правка реестра — такой же цифровой след, как
@@ -222,8 +222,8 @@
 | Представление | Где | Как получается |
 |---|---|---|
 | Состав команды | Таблица «Команда» в карточке воркстрима | Фильтр `memberships` по `workstream_id` + текущему `semester_id`, где `date_to` пусто |
-| Доска «воркстрим × гейт» | [`../workstreams/board.md`](../workstreams/board.md) | `teams` по текущему семестру |
-| Выписка вклада (для зачёта) | По запросу | Все `memberships` одного `person_id` + артефакты гейтов и коммиты |
+| Команды на стендах | Карточки стендов [`../stands/`](../stands/README.md) | `teams` по текущему семестру и `stand_id` |
+| Выписка вклада (для зачёта) | По запросу | Все `memberships` одного `person_id` + принятые результаты и коммиты |
 | Траектория человека | По запросу | `memberships` одного `person_id` по семестрам |
 
 Дублирование в карточках допустимо для читаемости, но при расхождении **прав реестр**.
@@ -255,18 +255,18 @@ p012,smirnov,smirnov,СПбГМТУ,"Кораблестроение, 4 к.",stud
 `teams.csv`
 
 ```csv
-team_id,workstream_id,semester_id,title,captain_person_id,sherpa_person_id,gate,status,origin,note
-sport-geo-2026-fall-01,sport-geo,2026-fall,ГИС-трек,p001,p007,G1,active,spbu,
+team_id,workstream_id,semester_id,title,captain_person_id,sherpa_person_id,stand_id,status,origin,note
+sport-geo-2026-fall-01,sport-geo,2026-fall,ГИС-трек,p001,p007,geo-sport-spb,active,spbu,
 ```
 
 `memberships.csv`
 
 ```csv
-membership_id,person_id,semester_id,workstream_id,team_id,role,profile,date_from,date_to,exit_type,sponsor_person_id,gate_in,note
-m0001,p001,2026-fall,sport-geo,sport-geo-2026-fall-01,captain,,2026-09-24,,,p007,G1,
-m0002,p001,2026-fall,sport-geo,sport-geo-2026-fall-01,field-analyst,data,2026-09-24,,,p007,G1,совмещает роли
-m0003,p007,2026-fall,sport-geo,,sherpa,,2026-09-24,,,,G1,"ведёт команду, в неё не входит"
-m0004,p012,2026-fall,sport-geo,sport-geo-2026-fall-01,tech-integrator,gis,2026-10-08,,,p007,G2,"внешний, вошёл на открытом гейте"
+membership_id,person_id,semester_id,workstream_id,team_id,role,profile,date_from,date_to,exit_type,sponsor_person_id,entry,note
+m0001,p001,2026-fall,sport-geo,sport-geo-2026-fall-01,captain,,2026-09-24,,,p007,team-assembly,
+m0002,p001,2026-fall,sport-geo,sport-geo-2026-fall-01,field-analyst,data,2026-09-24,,,p007,team-assembly,совмещает роли
+m0003,p007,2026-fall,sport-geo,,sherpa,,2026-09-24,,,,team-assembly,"ведёт команду, в неё не входит"
+m0004,p012,2026-fall,sport-geo,sport-geo-2026-fall-01,tech-integrator,gis,2026-10-08,,,p007,event,"внешний, вошёл на открытом событии"
 ```
 
 Строка `m0003` показывает роль уровня воркстрима: `team_id` пуст. Строки `m0001` и `m0002` —
@@ -288,5 +288,5 @@ m0004,p012,2026-fall,sport-geo,sport-geo-2026-fall-01,tech-integrator,gis,2026-1
 
 - Модель управления — [`../program/governance.md`](../program/governance.md) § 1, 7, 9, 10.
 - Участники, группы, роли и доступы — [`../program/participants-and-access.md`](../program/participants-and-access.md).
-- Роли — [`../roles/README.md`](../roles/README.md). Гейты — [`../program/gates.md`](../program/gates.md).
-- Доска «воркстрим × гейт» — [`../workstreams/board.md`](../workstreams/board.md).
+- Роли — [`../roles/README.md`](../roles/README.md). Архитектура — [`../program/architecture.md`](../program/architecture.md).
+- Стенды — [`../stands/README.md`](../stands/README.md).
