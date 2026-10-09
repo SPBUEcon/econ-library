@@ -112,7 +112,7 @@
 | 9 | Международный технологический центр | B · флагман | — | М. Мастин, И. Артемова | Идея | [`flagships.md`](workstreams/flagships.md) |
 | 10 | Сеть фиджитал дайвинг-центров | B · флагман | — | А. Спелов (Федерация) | Идея | [`flagships.md`](workstreams/flagships.md) |
 | 11 | Новый интеллектуальный центр | B · зонтик | — | Хан | Идея | [`flagships.md`](workstreams/flagships.md) |
-| 12 | Аскона (прото) | Прото | — | АсконаLive / Д. Хан | Прото · в переговорах | [`askona-live/`](workstreams/askona-live/) |
+| 12 | Аскона (прото) | Прото | — | АсконаLive / Д. Хан | Прото · 16 тем получены, встреча с кураторами | [`askona-live/`](workstreams/askona-live/) |
 
 > **Итого:** воркстримов — 12 (+ инфраструктурный №13); флагманов (B) — 4.
 > Стенды — [`stands/`](stands/README.md); модель — [архитектура](program/architecture.md).
@@ -128,15 +128,15 @@
 |---|---|---|---|
 | Ингосстрах | Владелец + Эксперт | [Страхование](workstreams/insurance/) | Г. Владельщикова |
 | Спорткомитет СПб | Владелец | [Геоаналитика](workstreams/sport-geo/), [Вовлечение](workstreams/sport-engagement/) | А. Шантырь, И. Сологуб |
-| Геоинтеллект | Шерпа-технолог · Эксперт | [Геоаналитика](workstreams/sport-geo/), [Биеннале карт](workstreams/cartography-biennale/) | Д. Структов |
+| Геоинтеллект | Шерпа-технолог · Эксперт · Кадровый потребитель (практикант) | [Геоаналитика](workstreams/sport-geo/), [Биеннале карт](workstreams/cartography-biennale/), [ИИ](workstreams/ai-environment/) · [папка](partners/geointellect/) | Д. Структов |
 | Федерация фиджитал-спорта СПб | Владелец + Эксперт | [Фиджитал-спорт](workstreams/phygital-sport/), флагман дайвинг-центров | А. Спелов |
 | ИИтех (veai) | Эксперт (среда) | [ИИ / цифровые двойники](workstreams/ai-environment/) | М. Костицин |
 | ИТМО Хайпарк | Эксперт + Владелец флагмана | [Венчур](workstreams/venture-tech/), флагманы | М. Мастин |
 | Ирен Артемова | Владелец флагмана | [Международный техноцентр](workstreams/flagships.md) | — |
-| АсконаLive | уточнить (в переговорах) | [Аскона (прото)](workstreams/askona-live/) | Н. Мандавиа, А. Ларионов |
+| АсконаLive | Кадровый потребитель + Шерпа (владелец — кандидат) | [Аскона (прото)](workstreams/askona-live/) | Н. Мандавиа, А. Ларионов |
 
 Папки партнёров с постоянным потоком работы: [`ingosstrakh/`](partners/ingosstrakh/),
-[`komsport-spb/`](partners/komsport-spb/).
+[`komsport-spb/`](partners/komsport-spb/), [`geointellect/`](partners/geointellect/).
 
 ---
 

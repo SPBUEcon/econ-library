@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<!--
+  Страница партнёра «Аскона» для участников мастерской «Технологии в экономике».
+  Публичный URL: https://spbuecon.github.io/econ-library/workstreams/askona-live/site/
+  Самодостаточная страница, работает по file:// без сервера.
+  ИСТОЧНИК ПРАВДЫ — workstreams/askona-live/README.md (карточка), topics.md (темы),
+  meetings/2026-10-09-letter.md (письмо партнёра). Держать в синхроне с ними.
+  Оригиналы партнёра (форма тем, слайды) в публичный репозиторий не кладутся: здесь только обобщение —
+  без описаний проблем, критериев готовности и ФИО кураторов. Незаполненное не выдумывается.
+  Обновлено: 2026-10-09.
+-->
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Аскона × Мастерская «Технологии в экономике» — темы и IT-стажировки</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --ink:#1B2038; --ink2:#272E52;
+  --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0;
+  --green:#2FA37A; --amber:#D9932B; --blue:#3E7BD6; --teal:#1E9AA8;
+  --disp:'Unbounded','Arial Black',sans-serif;
+  --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding:0 28px}
+a{color:inherit}
+.eyebrow{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:14px}
+h2{font-family:var(--disp);font-weight:700;font-size:clamp(22px,3vw,32px);line-height:1.15;margin-bottom:10px}
+h3{font-family:var(--disp);font-weight:500;font-size:18px;line-height:1.3}
+.lead{font-size:clamp(15px,1.7vw,18px);color:var(--grey);max-width:820px}
+section{padding:56px 0}
+section.alt{background:var(--panel)}
+
+/* -------- HERO -------- */
+.hero{background:var(--ink);color:#fff;padding:44px 0 50px}
+.crumbs{font-size:13px;color:var(--ice);margin-bottom:22px}
+.crumbs a{color:var(--ice)}
+.hero .eyebrow{color:var(--ice)}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,4vw,44px);line-height:1.12}
+.hero h1 .accent{color:var(--coral)}
+.hero .sub{margin-top:16px;font-size:clamp(15px,1.8vw,19px);color:var(--ice);max-width:800px}
+.pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(220,230,245,.35);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:500}
+.pill .dot{width:9px;height:9px;border-radius:50%}
+.pill.open .dot{background:var(--green)}
+.pill.wait .dot{background:var(--amber)}
+.pill a{color:#fff}
+
+/* -------- факты -------- */
+.facts{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.fact{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.fact .k{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);font-weight:600;margin-bottom:4px}
+.fact .v{font-size:15px}
+.fact .v b{font-weight:600}
+
+/* -------- два направления -------- */
+.duo{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 24px;box-shadow:0 10px 28px rgba(27,32,56,.06)}
+.card .tag{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--coral)}
+.card h3{margin:6px 0 8px}
+.card p,.card li{font-size:15px}
+.card ul{margin:8px 0 0 18px}
+.card li{margin-bottom:4px}
+.state{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;margin-top:12px}
+.state .dot{width:8px;height:8px;border-radius:50%}
+.state.open{color:var(--green)} .state.open .dot{background:var(--green)}
+.state.wait{color:var(--amber)} .state.wait .dot{background:var(--amber)}
+
+/* -------- фокусы и темы -------- */
+.focus{margin-top:22px;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.focus-h{display:grid;grid-template-columns:76px 1fr;align-items:stretch}
+.focus-n{background:var(--ink);color:#fff;font-family:var(--disp);font-weight:700;font-size:22px;display:flex;align-items:center;justify-content:center}
+.focus-t{padding:16px 20px;min-width:0}
+.focus-t h3{overflow-wrap:break-word;hyphens:auto}
+.focus-t p{font-size:14.5px;color:var(--grey);margin-top:4px}
+.topics{list-style:none;border-top:1px solid var(--line)}
+.topic{display:grid;grid-template-columns:52px 1fr;gap:4px 12px;padding:14px 20px;border-bottom:1px solid var(--line)}
+.topic:last-child{border-bottom:none}
+.topic .no{font-family:var(--disp);font-weight:500;font-size:15px;color:var(--coral);padding-top:1px}
+.topic .tt{font-weight:600;font-size:15.5px}
+.topic .res{font-size:14px;color:var(--grey);margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font-size:12px;border-radius:999px;padding:2px 10px;background:var(--panel);color:var(--ink2);font-weight:500}
+.chip.h3{background:var(--ink);color:#fff}
+.chip.od{background:rgba(47,163,122,.14);color:#1d7a59}
+.chip.tr{background:rgba(62,123,214,.12);color:#2a5ea8}
+.skills{padding:12px 20px;background:var(--panel);font-size:13.5px;color:var(--grey)}
+.skills b{color:var(--ink);font-weight:600}
+.legend{margin-top:18px;display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--grey)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+
+/* -------- пилот -------- */
+.pilot{margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.pilot .card{padding:18px 20px}
+.pilot .card h3{font-size:16px}
+.pilot .card p{font-size:14px;color:var(--grey)}
+
+/* -------- IT -------- */
+.terms{margin-top:26px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.term{background:var(--ink);color:#fff;border-radius:16px;padding:18px}
+.term .big{font-family:var(--disp);font-weight:700;font-size:22px;line-height:1.1}
+.term .sm{font-size:13.5px;color:var(--ice);margin-top:6px}
+.pos{margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.p{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.p .pt{font-weight:600;font-size:15px}
+.p .pf{font-size:12.5px;color:var(--grey);margin-top:2px}
+h3.sub{margin-top:36px;margin-bottom:6px}
+.path{margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.step{position:relative;background:#fff;border:1px solid var(--line);padding:14px 16px 14px 22px}
+.step:first-child{border-radius:14px 0 0 14px}
+.step:last-child{border-radius:0 14px 14px 0}
+.step .sn{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);font-weight:600}
+.step .st{font-weight:600;font-size:15px}
+.step .sd{font-size:13px;color:var(--grey)}
+.dirs{margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.dir{background:#fff;border:1px solid var(--line);border-top:4px solid var(--teal);border-radius:14px;padding:14px 16px}
+.dir .dn{font-family:var(--disp);font-weight:700;color:var(--teal);font-size:15px}
+.dir .dt{font-weight:600;font-size:15px;margin:2px 0 6px}
+.dir ul{margin-left:16px;font-size:13.5px;color:var(--grey)}
+.dir .x{margin-top:8px;font-size:12.5px;color:var(--ink2)}
+.clusters{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.clusters span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13.5px}
+.steps{margin-top:14px;counter-reset:s;list-style:none;display:flex;flex-direction:column;gap:8px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;align-items:start;font-size:15px}
+.steps li::before{content:counter(s);width:26px;height:26px;border-radius:50%;background:var(--coral);color:#fff;font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center}
+
+/* -------- правила -------- */
+.rules{margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.rules .card h3{font-size:16px}
+.rules .card p{font-size:14.5px;color:var(--grey)}
+.cp{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.cp span{font-size:12.5px;background:var(--panel);border-radius:8px;padding:3px 9px;font-weight:500}
+.cp i{font-style:normal;color:var(--grey);align-self:center}
+
+/* -------- хроника -------- */
+.tl{list-style:none;margin-top:24px;border-left:2px solid var(--line);margin-left:8px}
+.tl li{position:relative;padding:0 0 18px 24px}
+.tl li::before{content:'';position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--line);border:2px solid var(--paper)}
+.tl li.done::before{background:var(--green)}
+.tl li.next::before{background:var(--amber)}
+.tl .when{font-size:12.5px;font-weight:600;letter-spacing:.04em;color:var(--grey)}
+.tl .what{font-size:15px}
+
+.join{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.join .card a{color:var(--coral);font-weight:600}
+.note{margin-top:26px;font-size:14px;color:var(--grey);border-left:3px solid var(--line);padding-left:16px;max-width:860px}
+.note a{color:var(--coral);font-weight:600}
+footer{background:var(--ink);color:var(--ice);padding:30px 0;font-size:13.5px}
+footer a{color:#fff}
+
+@media (max-width:820px){
+  .duo,.join{grid-template-columns:1fr}
+  .terms,.dirs{grid-template-columns:1fr 1fr}
+  .path{grid-template-columns:1fr 1fr}
+  .step{border-radius:0!important}
+}
+@media (max-width:520px){
+  .terms,.dirs,.path{grid-template-columns:1fr}
+  .topic{grid-template-columns:40px 1fr;padding:12px 14px}
+  .focus-h{grid-template-columns:56px 1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="crumbs">
+      <a href="../../../index.html">Мастерская «Технологии в экономике»</a> ·
+      <a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams">Воркстримы</a> ·
+      Аскона
+    </div>
+    <div class="eyebrow">Партнёр мастерской · воркстрим-прото</div>
+    <h1>Аскона × <span class="accent">Технологии в экономике</span></h1>
+    <p class="sub">Финансовая функция холдинга как поле данных. 16 тем от шести подразделений
+      ГК «Аскона Лайф Групп»: автоматические отчёты, единые справочники и витрины, драйверные модели
+      бюджета, ИИ-агенты в учётной методологии. Отдельно — оплачиваемые IT-стажировки с переходом в штат.</p>
+    <div class="pills">
+      <span class="pill wait"><span class="dot"></span>Проектные темы: набор — после встречи с кураторами</span>
+      <span class="pill open"><span class="dot"></span><a href="#it">IT-стажировки: набор открыт</a></span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Кратко</div>
+    <h2>Кто партнёр и где мы сейчас</h2>
+    <div class="facts">
+      <div class="fact"><div class="k">Партнёр</div><div class="v"><b>АсконаLive</b> — молодёжное направление ГК «Аскона Лайф Групп»</div></div>
+      <div class="fact"><div class="k">Владелец направления</div><div class="v">А. Ларионов, директор по корпоративным финансам</div></div>
+      <div class="fact"><div class="k">Связной Асконы</div><div class="v">Н. Мандавиа, работа с молодёжью</div></div>
+      <div class="fact"><div class="k">Со стороны ЭФ</div><div class="v">Д. Хан — темы · Л. Гадасина — IT · В. В. Иванова — договор</div></div>
+      <div class="fact"><div class="k">Кураторы тем</div><div class="v">Шерпа от подразделения на каждую тему, 1–2 ч в неделю</div></div>
+      <div class="fact"><div class="k">Статус</div><div class="v"><b>Прото → активный.</b> Темы получены; ждём встречу с кураторами, договор и NDA</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Два направления</div>
+    <h2>Проекты в команде или стажировка в IT</h2>
+    <div class="duo">
+      <div class="card">
+        <div class="tag">Проектные темы · воркстрим</div>
+        <h3>Командный проект с куратором из компании</h3>
+        <ul>
+          <li>Реальная задача подразделения и измеримый результат, который будут использовать в работе.</li>
+          <li>Куратор-шерпа от Асконы, рабочие данные — по NDA.</li>
+          <li>Зачёт — в своём треке (<code>bi-4</code>, <code>econ-3</code>); длинные темы переходят к следующей команде.</li>
+        </ul>
+        <div class="state wait"><span class="dot"></span>Набор после встречи с кураторами</div>
+      </div>
+      <div class="card">
+        <div class="tag">IT-стажировка · кадровый трек</div>
+        <h3>Оплачиваемая работа в IT-трансформации</h3>
+        <ul>
+          <li>11 позиций: разработка, DevOps, системный анализ, БД, тестирование, данные, LLM, поддержка.</li>
+          <li>20 часов в неделю, срочный трудовой договор, удалённо.</li>
+          <li>При взаимном интересе — переход в штат.</li>
+        </ul>
+        <div class="state open"><span class="dot"></span>Набор открыт — <a href="#it">подробнее</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="topics">
+  <div class="wrap">
+    <div class="eyebrow">Темы</div>
+    <h2>16 тем в четырёх фокусах</h2>
+    <p class="lead">Номера — как в форме Асконы. Здесь только обобщение: подробные постановки, данные и
+      критерии приёмки команда получает от куратора после отбора и NDA. Отбор тем на ход — решение
+      мастера вместе с партнёром.</p>
+    <div class="legend">
+      <span><span class="chip">1 сем · Н2</span> горизонт Асконы · наш горизонт</span>
+      <span><span class="chip h3">Н3</span> длинная тема — ядро воркстрима</span>
+      <span><span class="chip od">открытый старт</span> можно начать до NDA</span>
+      <span><span class="chip tr">bi-4</span> вероятный трек</span>
+    </div>
+
+    <!-- Ф1 -->
+    <div class="focus">
+      <div class="focus-h">
+        <div class="focus-n">Ф1</div>
+        <div class="focus-t"><h3>Казначейство и платежи</h3>
+          <p>Автоматические отчёты и инструменты казначейства. Короткие темы с ясным результатом — лучший вход для первого хода.</p></div>
+      </div>
+      <ul class="topics">
+        <li class="topic"><div class="no">2</div><div><div class="tt">Ежедневный отчёт по поступлениям и остаткам: автоматизация и масштабирование</div>
+          <div class="res">Автоматический отчёт по всем компаниям группы</div>
+          <div class="chips"><span class="chip">Автоматизация отчётности</span><span class="chip">1 сем · Н2</span><span class="chip">слой Ф</span><span class="chip tr">bi-4</span></div></div></li>
+        <li class="topic"><div class="no">2.1</div><div><div class="tt">План/факт оплат СНГ (5 стран)</div>
+          <div class="res">Сверка реестра платежей с фактом в банках, лист расхождений</div>
+          <div class="chips"><span class="chip">Автоматизация отчётности</span><span class="chip">1 сем · Н2</span><span class="chip">слой Ф</span><span class="chip tr">bi-4</span></div></div></li>
+        <li class="topic"><div class="no">3</div><div><div class="tt">Аудит процесса автоматических оплат (система на блокчейне)</div>
+          <div class="res">Порядок работы с проблемными платежами, статистика причин неоплаты — на базе имеющегося ИИ-продукта</div>
+          <div class="chips"><span class="chip">Процессная аналитика</span><span class="chip">1–2 сем · Н2+</span><span class="chip">слой И · Ф</span><span class="chip tr">bi-4 / econ-3</span></div></div></li>
+        <li class="topic"><div class="no">7</div><div><div class="tt">Валютный калькулятор</div>
+          <div class="res">Курсы ЦБ и биржевые, справочник банков и агентов, полная стоимость платежа</div>
+          <div class="chips"><span class="chip">Разработка приложений</span><span class="chip">1 сем · Н2</span><span class="chip">слой Ф</span><span class="chip od">открытый старт</span><span class="chip tr">bi-4</span></div></div></li>
+        <li class="topic"><div class="no">8</div><div><div class="tt">Трекер платежей: дашборд-вкладка</div>
+          <div class="res">Аналитика валютных оплат с фильтрами по юрлицам, банкам, агентам</div>
+          <div class="chips"><span class="chip">Организация данных</span><span class="chip">1 сем · Н2</span><span class="chip">слой И</span><span class="chip tr">bi-4 / econ-3</span></div></div></li>
+      </ul>
+      <div class="skills"><b>Навыки:</b> Excel (Power Query), Python, SQL, визуализация, основы казначейских операций.</div>
+    </div>
+
+    <!-- Ф2 -->
+    <div class="focus">
+      <div class="focus-h">
+        <div class="focus-n">Ф2</div>
+        <div class="focus-t"><h3>Данные холдинга — справочники, витрины, контроль</h3>
+          <p>Единый слой данных группы. Здесь длинные темы, из которых растёт ядро воркстрима.</p></div>
+      </div>
+      <ul class="topics">
+        <li class="topic"><div class="no">1</div><div><div class="tt">Новая форма отчётности холдинга — показатели риск-аппетита</div>
+          <div class="res">Описание процесса, база показателей, доработка прототипа дашборда</div>
+          <div class="chips"><span class="chip">Автоматизация отчётности</span><span class="chip">1 сем · Н2</span><span class="chip">слой Ф · И</span><span class="chip tr">bi-4</span></div></div></li>
+        <li class="topic"><div class="no">4</div><div><div class="tt">Единая система справочников в компаниях группы</div>
+          <div class="res">Единая модель справочников: статьи затрат, доходы и расходы, номенклатурные группы, резервы</div>
+          <div class="chips"><span class="chip">Организация данных</span><span class="chip">1 сем · Н2</span><span class="chip">слой Ф · И</span><span class="chip tr">bi-4</span></div></div></li>
+        <li class="topic"><div class="no">5</div><div><div class="tt">Унификация и чистка справочника контрагентов</div>
+          <div class="res">Очищенный справочник и правила дедупликации</div>
+          <div class="chips"><span class="chip">Организация данных</span><span class="chip">1–2 сем · Н2+</span><span class="chip">слой Ф · И</span><span class="chip tr">bi-4</span></div></div></li>
+        <li class="topic"><div class="no">6</div><div><div class="tt">Выверка взаиморасчётов с контрагентами</div>
+          <div class="res">Процедура и инструмент выверки</div>
+          <div class="chips"><span class="chip">Организация данных</span><span class="chip">1–2 сем · Н2+</span><span class="chip">слой И</span><span class="chip tr">bi-4 / econ-3</span></div></div></li>
+        <li class="topic"><div class="no">13</div><div><div class="tt">Скоринг и проверка данных регулярного отчёта к совету директоров</div>
+          <div class="res">Сквозная сверка отчётных форм, детекция аномалий, интерактивная BI-презентация</div>
+          <div class="chips"><span class="chip">Автоматизация отчётности</span><span class="chip">2–3 сем</span><span class="chip h3">Н3</span><span class="chip">слой Ф · И</span><span class="chip tr">bi-4 + магистратура</span></div></div></li>
+        <li class="topic"><div class="no">14</div><div><div class="tt">Верификация KPI с контролем версий (audit trail)</div>
+          <div class="res">База версионного учёта KPI, журнал изменений, сверка с учётными системами</div>
+          <div class="chips"><span class="chip">Автоматизация отчётности</span><span class="chip">2–3 сем</span><span class="chip h3">Н3</span><span class="chip">слой Ф</span><span class="chip tr">bi-4</span></div></div></li>
+        <li class="topic"><div class="no">16</div><div><div class="tt">Сквозной слой витрин Cash Flow по дивизионам</div>
+          <div class="res">Витрины движения денежных средств в хранилище данных, регулярный пакет для руководства</div>
+          <div class="chips"><span class="chip">Автоматизация отчётности</span><span class="chip">длительный</span><span class="chip h3">Н3 · ядро</span><span class="chip">слой Ф</span><span class="chip tr">bi-4</span></div></div></li>
+      </ul>
+      <div class="skills"><b>Навыки:</b> SQL (PostgreSQL / ClickHouse), моделирование данных и DWH, Python, BI, основы МСФО и движения денежных средств.</div>
+    </div>
+
+    <!-- Ф3 -->
+    <div class="focus">
+      <div class="focus-h">
+        <div class="focus-n">Ф3</div>
+        <div class="focus-t"><h3>Драйверные и сценарные модели (FP&amp;A)</h3>
+          <p>Бюджет от драйверов, а не индексацией прошлого года. Экономические модели — место для эконометрики.</p></div>
+      </div>
+      <ul class="topics">
+        <li class="topic"><div class="no">11</div><div><div class="tt">Драйверная модель бюджета логистических расходов</div>
+          <div class="res">Бюджет логистики от плана отгрузок, с проверкой на факте</div>
+          <div class="chips"><span class="chip">Бизнес-модели</span><span class="chip">1–2 сем · Н2+</span><span class="chip">слой И</span><span class="chip tr">econ-3</span></div></div></li>
+        <li class="topic"><div class="no">12</div><div><div class="tt">Драйверная модель бюджета производственных затрат</div>
+          <div class="res">Затраты от плана продаж через нормы расхода и загрузку мощностей</div>
+          <div class="chips"><span class="chip">Бизнес-модели</span><span class="chip">1–2 сем · Н2+</span><span class="chip">слой И</span><span class="chip tr">econ-3</span></div></div></li>
+        <li class="topic"><div class="no">15</div><div><div class="tt">Влияние валютных курсов и инфляции на маржинальность и OPEX</div>
+          <div class="res">Сценарный модуль и веб-симулятор влияния на EBITDA</div>
+          <div class="chips"><span class="chip">Бизнес-модели</span><span class="chip">1–2 сем · Н2+</span><span class="chip">слой И</span><span class="chip od">открытый старт</span><span class="chip tr">econ-3 / магистратура</span></div></div></li>
+      </ul>
+      <div class="skills"><b>Навыки:</b> управленческий учёт и бюджетирование, Excel (сводные таблицы, Power Query), регрессия и корреляция, временные ряды, Python.</div>
+    </div>
+
+    <!-- Ф4 -->
+    <div class="focus">
+      <div class="focus-h">
+        <div class="focus-n">Ф4</div>
+        <div class="focus-t"><h3>ИИ-агенты в учётной методологии</h3>
+          <p>Агент — участник процесса: изменения закона доходят до документов компании, люди согласуют. Связь с воркстримом «ИИ, цифровые двойники и симуляции».</p></div>
+      </div>
+      <ul class="topics">
+        <li class="topic"><div class="no">9</div><div><div class="tt">Обновление учётных политик по изменениям законодательства</div>
+          <div class="res">RPA-робот или ИИ-агент: изменения закона → нужные правки → новые редакции учётных политик</div>
+          <div class="chips"><span class="chip">Автоматизация отчётности</span><span class="chip">1–2 сем · Н2+</span><span class="chip">слой П · Ф</span><span class="chip od">открытый старт</span><span class="chip tr">bi-4</span></div></div></li>
+        <li class="topic"><div class="no">10</div><div><div class="tt">Обновление ЛНА и поиск противоречий с законодательством</div>
+          <div class="res">ИИ-агент: изменения закона → расхождения с ЛНА → новая редакция после согласования</div>
+          <div class="chips"><span class="chip">Организация данных</span><span class="chip">1–2 сем · Н2+</span><span class="chip">слой П · Ф</span><span class="chip od">открытый старт</span><span class="chip tr">bi-4</span></div></div></li>
+      </ul>
+      <div class="skills"><b>Навыки:</b> LLM и ИИ-агенты, RPA, работа с нормативными текстами, основы бухгалтерского и налогового учёта.</div>
+    </div>
+
+    <p class="note">Строка 2.2 формы совпадает с 2.1 — одна тема или две команды, уточняется на встрече.
+      Полный разбор с треками и открытым стартом — <a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/askona-live/topics.md">topics.md</a>.</p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Первый ход · предложение</div>
+    <h2>Осенью — пилот на 3–4 темы, весной — основная волна</h2>
+    <p class="lead">Критерии пилота: тема на один семестр или с законченным первым шагом, старт на открытых
+      данных до NDA, ясный приёмщик. Это предложение к встрече с кураторами, не решение.</p>
+    <div class="pilot">
+      <div class="card"><div class="tag">bi-4 · Ф1</div><h3>7 · Валютный калькулятор</h3><p>Старт на открытых курсах ЦБ; условия банков — синтетика до NDA.</p></div>
+      <div class="card"><div class="tag">bi-4 · Ф4</div><h3>9 · ИИ-агент для учётных политик</h3><p>Старт на открытом законодательстве; переопыление с ИИ-воркстримом.</p></div>
+      <div class="card"><div class="tag">econ-3 · Ф3</div><h3>15 · Курсы и инфляция → маржа</h3><p>Открытые макроданные; модель слоя И.</p></div>
+      <div class="card"><div class="tag">bi-4 · Ф1</div><h3>2.1 или 8 · План/факт СНГ или дашборд</h3><p>Короткая автоматизация на рабочих данных — после NDA.</p></div>
+    </div>
+    <p class="note">Весна 2027: ядро Ф2 — витрины Cash Flow (16) как сквозная задача, с ней проверка данных к СД (13) и KPI (14);
+      драйверные модели (11, 12); продолжения пилотов.</p>
+  </div>
+</section>
+
+<section id="it">
+  <div class="wrap">
+    <div class="eyebrow">IT-стажировки · набор открыт</div>
+    <h2>Кадровый резерв технологического контура Асконы</h2>
+    <p class="lead">Аскона растит специалистов для IT-трансформации группы: закрывает текущие потребности
+      и собирает кадровый резерв на 2–3 года вперёд.</p>
+    <div class="terms">
+      <div class="term"><div class="big">20 ч</div><div class="sm">в неделю — совмещается с учёбой</div></div>
+      <div class="term"><div class="big">Оплачи&shy;ваемая</div><div class="sm">стажировка</div></div>
+      <div class="term"><div class="big">Срочный ТД</div><div class="sm">→ штат при взаимном интересе</div></div>
+      <div class="term"><div class="big">Удалённо</div><div class="sm">тестировщики — без привязки к локации</div></div>
+    </div>
+
+    <h3 class="sub">11 позиций</h3>
+    <div class="pos">
+      <div class="p"><div class="pt">Младший инженер-разработчик</div><div class="pf">удалённо</div></div>
+      <div class="p"><div class="pt">Младший разработчик</div><div class="pf">удалённо</div></div>
+      <div class="p"><div class="pt">Младший специалист DevOps</div><div class="pf">удалённо</div></div>
+      <div class="p"><div class="pt">Младший системный аналитик</div><div class="pf">удалённо</div></div>
+      <div class="p"><div class="pt">Младший специалист по базам данных (DBA)</div><div class="pf">удалённо</div></div>
+      <div class="p"><div class="pt">Тестировщик ПО (стажёр) × 2</div><div class="pf">без привязки к локации</div></div>
+      <div class="p"><div class="pt">Data analytics</div><div class="pf">удалённо</div></div>
+      <div class="p"><div class="pt">Data Scientist</div><div class="pf">удалённо</div></div>
+      <div class="p"><div class="pt">Разработчик LLM</div><div class="pf">удалённо</div></div>
+      <div class="p"><div class="pt">Младший специалист 2-й линии поддержки</div><div class="pf">удалённо</div></div>
+    </div>
+
+    <h3 class="sub">Путь роста студента</h3>
+    <div class="path">
+      <div class="step"><div class="sn">1</div><div class="st">L1 Support</div><div class="sd">базовые знания, процессы, инструменты</div></div>
+      <div class="step"><div class="sn">2</div><div class="st">L2 / специализация</div><div class="sd">углубление в выбранном направлении</div></div>
+      <div class="step"><div class="sn">3</div><div class="st">Engineer / Analyst</div><div class="sd">самостоятельные задачи, ответственность за результат</div></div>
+      <div class="step"><div class="sn">4</div><div class="st">Middle Specialist</div><div class="sd">владелец задач, менторство новых участников</div></div>
+    </div>
+
+    <h3 class="sub">Четыре приоритетных направления</h3>
+    <div class="dirs">
+      <div class="dir"><div class="dn">01</div><div class="dt">Поддержка продуктовых команд (L1/L2)</div>
+        <ul><li>L2 Data &amp; AI: загрузки данных, DWH, SQL, ML-сервисы</li><li>L2 Omni: сайт, приложения, корзина, оплаты</li></ul>
+        <div class="x">↔ Ф2 · данные холдинга</div></div>
+      <div class="dir"><div class="dn">02</div><div class="dt">Мониторинг и реагирование</div>
+        <ul><li>Дежурная смена Askona Control Room</li><li>Тех- и бизнес-метрики, алерты, runbook, эскалация</li></ul></div>
+      <div class="dir"><div class="dn">03</div><div class="dt">Data &amp; AI Operations</div>
+        <ul><li>Мониторинг data pipelines, качество данных</li><li>BI-отчётность, мониторинг моделей</li></ul>
+        <div class="x">↔ Ф2 · витрины и контроль данных</div></div>
+      <div class="dir"><div class="dn">04</div><div class="dt">Process Mining и Simplification Squad</div>
+        <ul><li>Анализ цифровых следов процессов</li><li>Узкие места, гипотезы упрощения, эффекты</li></ul>
+        <div class="x">↔ Ф1 · тема 3</div></div>
+    </div>
+
+    <h3 class="sub">Восемь технологических кластеров</h3>
+    <div class="clusters">
+      <span>Product Engineering</span><span>QA Engineering</span><span>DevOps &amp; Platform</span><span>Architecture</span>
+      <span>Data &amp; AI</span><span>Infrastructure &amp; Networks</span><span>Business &amp; Process Analysis</span><span>IT Operations &amp; Monitoring</span>
+    </div>
+
+    <h3 class="sub">Как попасть</h3>
+    <ol class="steps">
+      <li>Сообщить о своём интересе на кафедру ИСвЭ — Л. Гадасиной или Д. Хану: позиция и короткое резюме.</li>
+      <li>Встреча с лидером IT-проекта Асконы: рассказ о проекте и формате.</li>
+      <li>Выбор направления и интервью с его лидером.</li>
+      <li>Стажировка по срочному трудовому договору; дальше — штат, если обе стороны «за».</li>
+    </ol>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Как устроена работа</div>
+    <h2>Правила для участников</h2>
+    <div class="rules">
+      <div class="card"><h3>Куратор от компании</h3><p>У каждой темы есть шерпа из подразделения: 1–2 часа в неделю, постановка, доступы,
+        приёмка. Тема без куратора не берётся.</p></div>
+      <div class="card"><h3>Данные и NDA</h3><p>Рабочие данные Асконы — только после NDA и только в закрытом контуре. В публичный
+        репозиторий они не попадают. До NDA работаем на открытых данных и синтетике.</p></div>
+      <div class="card"><h3>Контрольные точки задачи</h3><p>Гейтов G0–G5 больше нет. У задач семестра (Н2) четыре точки:</p>
+        <div class="cp"><span>заявка</span><i>→</i><span>промежуточный показ</span><i>→</i><span>сдача</span><i>→</i><span>передача</span></div></div>
+      <div class="card"><h3>Наследство</h3><p>Длинные темы не дробятся под семестр: команда в конце хода передаёт следующей открытые
+        узлы — что сделано, что не вышло и почему, что дальше.</p></div>
+      <div class="card"><h3>Измеримый результат</h3><p>Результат должен работать в компании, а не остаться презентацией. Критерии приёмки
+        команда получает от куратора.</p></div>
+      <div class="card"><h3>Цифровой след</h3><p>Задачи — в Issues, изменения — через Pull request, итоги встреч — в протоколах.
+        Это основа оценки в своём треке.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Хроника и ближайшие шаги</div>
+    <h2>Что уже завязано и что дальше</h2>
+    <ul class="tl">
+      <li class="done"><div class="when">21.09.2026</div><div class="what">Первая встреча Аскона × ЭФ: договорились о соглашении о сотрудничестве; форматы — проектные темы, практика и ВКР, IT.</div></li>
+      <li class="done"><div class="when">09.10.2026</div><div class="what">Аскона прислала 16 тем от 6 подразделений с кураторами — раньше срока — и описала IT-позиции и условия стажировки.</div></li>
+      <li class="next"><div class="when">в ближайшие 2 недели</div><div class="what">Встреча расширенным составом с кураторами всех тем: отбор пилотных тем, согласование графиков команд.</div></li>
+      <li class="next"><div class="when">дата не определена</div><div class="what">Соглашение о сотрудничестве (шаблон — от ЭФ) и форма NDA для студентов.</div></li>
+      <li><div class="when">после встречи</div><div class="what">Открытие набора команд на пилотные темы; старт работ.</div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Как включиться</div>
+    <h2>Два входа</h2>
+    <div class="join">
+      <div class="card"><div class="tag">Проектная тема</div><h3>Заявить интерес заранее</h3>
+        <p>Набор откроется после встречи с кураторами. Чтобы попасть в пилот, напишите Д. Хану, какой фокус
+          интересен, или оставьте <a href="https://github.com/SPBUEcon/econ-library/blob/main/.github/ISSUE_TEMPLATE/join-workstream.md">заявку на вход</a>
+          в Issues. Общий порядок — <a href="https://github.com/SPBUEcon/econ-library/blob/main/guides/how-to-join.md">гайд</a>.</p></div>
+      <div class="card"><div class="tag">IT-стажировка</div><h3>Откликнуться сейчас</h3>
+        <p>Позиция и короткое резюме — Л. Гадасиной или Д. Хану (кафедра ИСвЭ). Кафедра передаст кандидатов Асконе
+          и договорится о встрече с лидером IT-проекта.</p></div>
+    </div>
+    <p class="note">Карточка воркстрима — <a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/askona-live">workstreams/askona-live</a>.
+      Источник — письмо и форма тем Асконы от 09.10.2026 (оригиналы у связного, в репозиторий не выкладываются),
+      встреча 21.09.2026. Формулировки тем обобщены; подробности — у кураторов после отбора.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Мастерская «Технологии в экономике» · ЭФ СПбГУ · осень 2026 ·
+    <a href="https://github.com/SPBUEcon/econ-library">econ-library</a> · обновлено 09.10.2026</div>
+</footer>
+
+</body>
+</html>

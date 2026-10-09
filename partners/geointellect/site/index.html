@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<!--
+  Страница партнёра «Геоинтеллект» (ООО «ЦПИ») для участников мастерской «Технологии в экономике».
+  Публичный URL: https://spbuecon.github.io/econ-library/partners/geointellect/site/
+  Самодостаточная страница, работает по file:// без сервера. Вёрстка — общая со страницей Асконы
+  (workstreams/askona-live/site/index.html).
+  ИСТОЧНИК ПРАВДЫ — partners/geointellect/README.md, stands/geo-ai-agent/, stands/geo-sport-spb/.
+  Внутренние материалы партнёра не публикуются. Условия практики не выдумываются — «уточняется».
+  Обновлено: 2026-10-09.
+-->
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Геоинтеллект × Мастерская «Технологии в экономике» — тематики и практика</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --ink:#1B2038; --ink2:#272E52;
+  --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0;
+  --green:#2FA37A; --amber:#D9932B; --blue:#3E7BD6; --teal:#1E9AA8;
+  --disp:'Unbounded','Arial Black',sans-serif;
+  --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding:0 28px}
+a{color:inherit}
+.eyebrow{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:14px}
+h2{font-family:var(--disp);font-weight:700;font-size:clamp(22px,3vw,32px);line-height:1.15;margin-bottom:10px}
+h3{font-family:var(--disp);font-weight:500;font-size:18px;line-height:1.3}
+.lead{font-size:clamp(15px,1.7vw,18px);color:var(--grey);max-width:820px}
+section{padding:56px 0}
+section.alt{background:var(--panel)}
+
+/* -------- HERO -------- */
+.hero{background:var(--ink);color:#fff;padding:44px 0 50px}
+.crumbs{font-size:13px;color:var(--ice);margin-bottom:22px}
+.crumbs a{color:var(--ice)}
+.hero .eyebrow{color:var(--ice)}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,4vw,44px);line-height:1.12}
+.hero h1 .accent{color:var(--coral)}
+.hero .sub{margin-top:16px;font-size:clamp(15px,1.8vw,19px);color:var(--ice);max-width:800px}
+.pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(220,230,245,.35);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:500}
+.pill .dot{width:9px;height:9px;border-radius:50%}
+.pill.open .dot{background:var(--green)}
+.pill.wait .dot{background:var(--amber)}
+.pill a{color:#fff}
+
+/* -------- факты -------- */
+.facts{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.fact{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.fact .k{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);font-weight:600;margin-bottom:4px}
+.fact .v{font-size:15px}
+.fact .v b{font-weight:600}
+
+/* -------- два направления -------- */
+.duo{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 24px;box-shadow:0 10px 28px rgba(27,32,56,.06)}
+.card .tag{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--coral)}
+.card h3{margin:6px 0 8px}
+.card p,.card li{font-size:15px}
+.card ul{margin:8px 0 0 18px}
+.card li{margin-bottom:4px}
+.state{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;margin-top:12px}
+.state .dot{width:8px;height:8px;border-radius:50%}
+.state.open{color:var(--green)} .state.open .dot{background:var(--green)}
+.state.wait{color:var(--amber)} .state.wait .dot{background:var(--amber)}
+
+/* -------- фокусы и темы -------- */
+.focus{margin-top:22px;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.focus-h{display:grid;grid-template-columns:76px 1fr;align-items:stretch}
+.focus-n{background:var(--ink);color:#fff;font-family:var(--disp);font-weight:700;font-size:22px;display:flex;align-items:center;justify-content:center}
+.focus-t{padding:16px 20px;min-width:0}
+.focus-t h3{overflow-wrap:break-word;hyphens:auto}
+.focus-t p{font-size:14.5px;color:var(--grey);margin-top:4px}
+.topics{list-style:none;border-top:1px solid var(--line)}
+.topic{display:grid;grid-template-columns:52px 1fr;gap:4px 12px;padding:14px 20px;border-bottom:1px solid var(--line)}
+.topic:last-child{border-bottom:none}
+.topic .no{font-family:var(--disp);font-weight:500;font-size:15px;color:var(--coral);padding-top:1px}
+.topic .tt{font-weight:600;font-size:15.5px}
+.topic .res{font-size:14px;color:var(--grey);margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font-size:12px;border-radius:999px;padding:2px 10px;background:var(--panel);color:var(--ink2);font-weight:500}
+.chip.h3{background:var(--ink);color:#fff}
+.chip.od{background:rgba(47,163,122,.14);color:#1d7a59}
+.chip.tr{background:rgba(62,123,214,.12);color:#2a5ea8}
+.skills{padding:12px 20px;background:var(--panel);font-size:13.5px;color:var(--grey)}
+.skills b{color:var(--ink);font-weight:600}
+.legend{margin-top:18px;display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--grey)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+
+/* -------- пилот -------- */
+.pilot{margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.pilot .card{padding:18px 20px}
+.pilot .card h3{font-size:16px}
+.pilot .card p{font-size:14px;color:var(--grey)}
+
+/* -------- IT -------- */
+.terms{margin-top:26px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.term{background:var(--ink);color:#fff;border-radius:16px;padding:18px}
+.term .big{font-family:var(--disp);font-weight:700;font-size:22px;line-height:1.1}
+.term .sm{font-size:13.5px;color:var(--ice);margin-top:6px}
+.pos{margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.p{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.p .pt{font-weight:600;font-size:15px}
+.p .pf{font-size:12.5px;color:var(--grey);margin-top:2px}
+h3.sub{margin-top:36px;margin-bottom:6px}
+.path{margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.step{position:relative;background:#fff;border:1px solid var(--line);padding:14px 16px 14px 22px}
+.step:first-child{border-radius:14px 0 0 14px}
+.step:last-child{border-radius:0 14px 14px 0}
+.step .sn{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);font-weight:600}
+.step .st{font-weight:600;font-size:15px}
+.step .sd{font-size:13px;color:var(--grey)}
+.dirs{margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.dir{background:#fff;border:1px solid var(--line);border-top:4px solid var(--teal);border-radius:14px;padding:14px 16px}
+.dir .dn{font-family:var(--disp);font-weight:700;color:var(--teal);font-size:15px}
+.dir .dt{font-weight:600;font-size:15px;margin:2px 0 6px}
+.dir ul{margin-left:16px;font-size:13.5px;color:var(--grey)}
+.dir .x{margin-top:8px;font-size:12.5px;color:var(--ink2)}
+.clusters{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.clusters span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13.5px}
+.steps{margin-top:14px;counter-reset:s;list-style:none;display:flex;flex-direction:column;gap:8px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;align-items:start;font-size:15px}
+.steps li::before{content:counter(s);width:26px;height:26px;border-radius:50%;background:var(--coral);color:#fff;font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center}
+
+/* -------- правила -------- */
+.rules{margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.rules .card h3{font-size:16px}
+.rules .card p{font-size:14.5px;color:var(--grey)}
+.cp{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.cp span{font-size:12.5px;background:var(--panel);border-radius:8px;padding:3px 9px;font-weight:500}
+.cp i{font-style:normal;color:var(--grey);align-self:center}
+
+/* -------- хроника -------- */
+.tl{list-style:none;margin-top:24px;border-left:2px solid var(--line);margin-left:8px}
+.tl li{position:relative;padding:0 0 18px 24px}
+.tl li::before{content:'';position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--line);border:2px solid var(--paper)}
+.tl li.done::before{background:var(--green)}
+.tl li.next::before{background:var(--amber)}
+.tl .when{font-size:12.5px;font-weight:600;letter-spacing:.04em;color:var(--grey)}
+.tl .what{font-size:15px}
+
+.join{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.join .card a{color:var(--coral);font-weight:600}
+.note{margin-top:26px;font-size:14px;color:var(--grey);border-left:3px solid var(--line);padding-left:16px;max-width:860px}
+.note a{color:var(--coral);font-weight:600}
+footer{background:var(--ink);color:var(--ice);padding:30px 0;font-size:13.5px}
+footer a{color:#fff}
+
+@media (max-width:820px){
+  .duo,.join{grid-template-columns:1fr}
+  .terms,.dirs{grid-template-columns:1fr 1fr}
+  .path{grid-template-columns:1fr 1fr}
+  .step{border-radius:0!important}
+}
+@media (max-width:520px){
+  .terms,.dirs,.path{grid-template-columns:1fr}
+  .topic{grid-template-columns:40px 1fr;padding:12px 14px}
+  .focus-h{grid-template-columns:56px 1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="crumbs">
+      <a href="../../../index.html">Мастерская «Технологии в экономике»</a> ·
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/partners/README.md">Партнёры</a> ·
+      Геоинтеллект
+    </div>
+    <div class="eyebrow">Партнёр мастерской · технолог</div>
+    <h1>Геоинтеллект × <span class="accent">Технологии в экономике</span></h1>
+    <p class="sub">Геоаналитика как общий инструмент мастерской. ООО «Центр пространственных исследований»
+      приносит платформу, экспертизу и реальные задачи: ИИ-слой геоплатформы, доступность спортивной
+      инфраструктуры Петербурга, Биеннале карт. И ищет практиканта — студента, который войдёт в тематику
+      и продолжит работать с компанией.</p>
+    <div class="pills">
+      <span class="pill open"><span class="dot"></span><a href="#practice">Практика: партнёр ищет практиканта</a></span>
+      <span class="pill wait"><span class="dot"></span>ИИ-слой геоплатформы: в согласовании</span>
+      <span class="pill open"><span class="dot"></span>Геоаналитика спорта: идёт</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Кратко</div>
+    <h2>Кто партнёр и где он в мастерской</h2>
+    <div class="facts">
+      <div class="fact"><div class="k">Партнёр</div><div class="v"><b>Геоинтеллект</b> — ООО «ЦПИ», продукт «Геоинтеллект.Платформа»</div></div>
+      <div class="fact"><div class="k">Контакт</div><div class="v">Д. Структов, генеральный директор, основатель</div></div>
+      <div class="fact"><div class="k">Со стороны ЭФ</div><div class="v">Д. Хан — связной</div></div>
+      <div class="fact"><div class="k">Роли</div><div class="v">Технолог · эксперт и куратор события · носитель задачи стенда · <b>ищет практиканта</b></div></div>
+      <div class="fact"><div class="k">Где участвует</div><div class="v">3 воркстрима и 2 стенда — <code>geo-sport-spb</code>, <code>geo-ai-agent</code></div></div>
+      <div class="fact"><div class="k">Треки</div><div class="v"><code>bi-4</code> (ИСЭ, 4 к.) · <code>econ-3</code> (Экономика, 3 к.) · курсовые 3–4 к.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="topics">
+  <div class="wrap">
+    <div class="eyebrow">Направления</div>
+    <h2>Три тематики — и практика через них</h2>
+    <p class="lead">Направления связаны: методики доступности из геоаналитики спорта идут в библиотеку ИИ-консультанта,
+      шаблоны геоотчётов — обратно, публичная часть обоих — на Биеннале карт.</p>
+
+    <div class="focus">
+      <div class="focus-h">
+        <div class="focus-n">Г1</div>
+        <div class="focus-t"><h3>ИИ-слой геоплатформы</h3>
+          <p>Сколько стоят ответ, консультация и геоотчёт, подготовленные с ИИ, и как снизить эту стоимость без потери качества и без утечки чувствительных данных.</p></div>
+      </div>
+      <ul class="topics">
+        <li class="topic"><div class="no">→</div><div><div class="tt">Справочный чат → чат-консультант → геоотчёт по запросу</div>
+          <div class="res">Лестница сценариев: каждый следующий опирается на средства предыдущего — базу знаний, библиотеку методик, шаблоны отчётов</div>
+          <div class="chips"><span class="chip">слой Ф · И · П</span><span class="chip h3">стенд geo-ai-agent</span><span class="chip">в согласовании</span></div></div></li>
+        <li class="topic"><div class="no">ga-01</div><div><div class="tt">Курсовая: маршрутизация ИИ-моделей — прототип и экономическая модель</div>
+          <div class="res">Маршрутизатор задач между моделями разной стоимости, эталонный набор с машинной проверкой, сравнение стратегий</div>
+          <div class="chips"><span class="chip">1 семестр · Н2</span><span class="chip">1–2 исполнителя</span><span class="chip od">старт на синтетике и OSM</span><span class="chip tr">bi-4 + econ-3</span></div></div></li>
+      </ul>
+      <div class="skills"><b>Навыки:</b> Python, LLM и поиск с генерацией (RAG), PostGIS, экономическое моделирование. Воркстрим — «ИИ, цифровые двойники и симуляции».</div>
+    </div>
+
+    <div class="focus">
+      <div class="focus-h">
+        <div class="focus-n">Г2</div>
+        <div class="focus-t"><h3>Геоаналитика спортинфраструктуры Петербурга</h3>
+          <p>Где не хватает спортивных объектов и кому: доступность, изохроны, обеспеченность районов. Геоинтеллект — технолог, Спорткомитет СПб — владелец задачи.</p></div>
+      </div>
+      <ul class="topics">
+        <li class="topic"><div class="no">→</div><div><div class="tt">Методология и пилот по районам на открытых данных</div>
+          <div class="res">Ответы на вопросы Спорткомитета; КП «Цифровой спортивный двойник СПб» — референс промышленного решения, а не закупка</div>
+          <div class="chips"><span class="chip">слой Ф · И</span><span class="chip h3">стенд geo-sport-spb</span><span class="chip od">открытые данные</span><span class="chip tr">bi-4</span></div></div></li>
+        <li class="topic"><div class="no">→</div><div><div class="tt">Интенсив Спорткомитета с экспертами</div>
+          <div class="res">Мост стенда в реальность; цель — демо-доступ к платформе Геоинтеллекта для команд</div>
+          <div class="chips"><span class="chip">событие</span><span class="chip">21.10.2026</span></div></div></li>
+      </ul>
+      <div class="skills"><b>Навыки:</b> ГИС и пространственный анализ, Python, SQL (PostGIS), открытые данные, визуализация.</div>
+    </div>
+
+    <div class="focus">
+      <div class="focus-h">
+        <div class="focus-n">Г3</div>
+        <div class="focus-t"><h3>Биеннале карт</h3>
+          <p>Всероссийский конкурс по картографии и геоаналитике с выставкой: без победителей и призов, бесплатно, работы отбираются на выставку.</p></div>
+      </div>
+      <ul class="topics">
+        <li class="topic"><div class="no">→</div><div><div class="tt">Работы студентов на выставку</div>
+          <div class="res">Публичная часть стендов — карты, синтетические наборы, результаты экспериментов — и самостоятельные работы</div>
+          <div class="chips"><span class="chip">событие</span><span class="chip">даты уточняются</span><span class="chip tr">оба курса + внешние вузы</span></div></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <div class="wrap">
+    <div class="eyebrow">Практика · партнёр ищет практиканта</div>
+    <h2>Войти в тематику — и остаться</h2>
+    <p class="lead">Геоинтеллект ищет практиканта. Формат — включение студента в тематику компании с дальнейшим
+      продолжением сотрудничества. Подробные условия согласуются с партнёром; ниже — что известно и что уточняем.</p>
+
+    <div class="duo">
+      <div class="card">
+        <div class="tag">Известно</div>
+        <h3>Что предлагает партнёр</h3>
+        <ul>
+          <li>Практика с погружением в реальную тематику компании.</li>
+          <li>Продолжение сотрудничества после практики.</li>
+          <li>Тематики на выбор: ИИ-слой геоплатформы, геоаналитика, картография.</li>
+        </ul>
+        <div class="state open"><span class="dot"></span>Интерес принимаем сейчас</div>
+      </div>
+      <div class="card">
+        <div class="tag">Уточняется</div>
+        <h3>Что согласуем с партнёром</h3>
+        <ul>
+          <li>Число мест, вид практики и сроки по графику учебного процесса.</li>
+          <li>Оплата и оформление, часы и формат — удалённо или офис.</li>
+          <li>Куратор от компании и требования к навыкам.</li>
+          <li>Что значит «продолжение»: курсовая, ВКР, стажировка, работа.</li>
+        </ul>
+        <div class="state wait"><span class="dot"></span>Условия — после разговора с партнёром</div>
+      </div>
+    </div>
+
+    <h3 class="sub">Путь практиканта — черновик к разговору с партнёром</h3>
+    <div class="path">
+      <div class="step"><div class="sn">1 · Н0–Н1</div><div class="st">Вход в тематику</div><div class="sd">задание на стенде: разметка обращений, эталонные задачи, расчёт доступности</div></div>
+      <div class="step"><div class="sn">2 · Н2</div><div class="st">Своя задача</div><div class="sd">курсовая или командная задача с куратором от партнёра</div></div>
+      <div class="step"><div class="sn">3 · практика</div><div class="st">Работа в компании</div><div class="sd">на платформе, в контуре партнёра, по соглашению о конфиденциальности</div></div>
+      <div class="step"><div class="sn">4 · Н3</div><div class="st">Продолжение</div><div class="sd">ВКР, держатель узлов стенда, наставник новой команды, работа</div></div>
+    </div>
+
+    <h3 class="sub">Кому подходит</h3>
+    <div class="clusters">
+      <span>ГИС и пространственный анализ</span><span>Python</span><span>SQL / PostGIS</span>
+      <span>LLM и ИИ-сервисы</span><span>Экономическое моделирование</span><span>Картография и визуализация</span>
+    </div>
+    <p class="note">Точный профиль кандидата уточняется с партнёром. Список выше — по тематикам, в которые входит практикант.</p>
+
+    <h3 class="sub">Как попасть</h3>
+    <ol class="steps">
+      <li>Сообщить Д. Хану о своём интересе: курс, трек, какая тематика интересна — ИИ-слой, геоаналитика или картография.</li>
+      <li>Начать с задания на стенде — так видно, как вы работаете в теме, и это уже цифровой след.</li>
+      <li>Кафедра передаёт кандидатов Геоинтеллекту; дальше — разговор с куратором от компании.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Как устроена работа</div>
+    <h2>Правила для участников</h2>
+    <div class="rules">
+      <div class="card"><h3>Данные</h3><p>В открытой части репозитория — только открытые данные (OpenStreetMap и др.) и синтетика.
+        Данные партнёра — по соглашению о конфиденциальности, в его контуре. Ключи доступа к моделям в репозиторий не кладутся.</p></div>
+      <div class="card"><h3>КП — референс, не статистика</h3><p>Коммерческое предложение Геоинтеллекта показывает, как задачу решает промышленная
+        платформа. Его цены и сроки — предмет разговора, а не данные для отчёта.</p></div>
+      <div class="card"><h3>Контрольные точки задачи</h3><p>Гейтов нет. У курсовой ga-01:</p>
+        <div class="cp"><span>заявка</span><i>→</i><span>архитектура</span><i>→</i><span>прототип</span><i>→</i><span>сдача</span></div></div>
+      <div class="card"><h3>Наследство</h3><p>Эталонный набор, методики и шаблоны переходят к следующей команде и на соседний стенд.
+        Команда передаёт открытые узлы, а не отчёт.</p></div>
+      <div class="card"><h3>Цифровой след</h3><p>Задачи — в Issues, изменения — через Pull request, итоги встреч — в протоколах.
+        На нём держится и оценка, и рекомендация партнёру.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Хроника и ближайшие шаги</div>
+    <h2>Что уже завязано и что дальше</h2>
+    <ul class="tl">
+      <li class="done"><div class="when">18.09.2026</div><div class="what">Геоинтеллект — технолог потока «Экономика и технологии в спорте» и куратор Биеннале карт; КП «Цифровой спортивный двойник СПб» — референс стенда.</div></li>
+      <li class="done"><div class="when">09.10.2026</div><div class="what">Заведены стенд «ИИ-слой геоплатформы» и курсовая ga-01 по проекту задания партнёра — в согласовании.</div></li>
+      <li class="done"><div class="when">09.10.2026</div><div class="what">Геоинтеллект ищет практиканта: включение в тематику с продолжением сотрудничества.</div></li>
+      <li class="next"><div class="when">21.10.2026</div><div class="what">Интенсив Спорткомитета с экспертами; цель — демо-доступ к платформе для команд.</div></li>
+      <li class="next"><div class="when">дата не определена</div><div class="what">Условия практики и куратор от партнёра; согласование стенда, курсовой и соглашения о конфиденциальности.</div></li>
+      <li><div class="when">даты уточняются</div><div class="what">Лекция Д. Структова; Биеннале карт.</div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Как включиться</div>
+    <h2>Два входа</h2>
+    <div class="join">
+      <div class="card"><div class="tag">Практика</div><h3>Заявить интерес сейчас</h3>
+        <p>Напишите Д. Хану: курс, трек, интересная тематика. Кандидатов кафедра передаёт Геоинтеллекту.</p></div>
+      <div class="card"><div class="tag">Задания на стендах</div><h3>Войти через трек</h3>
+        <p>Задания стендов <a href="https://github.com/SPBUEcon/econ-library/blob/main/stands/geo-sport-spb/README.md">geo-sport-spb</a> и
+          <a href="https://github.com/SPBUEcon/econ-library/blob/main/stands/geo-ai-agent/README.md">geo-ai-agent</a> выдаются в треках
+          <code>bi-4</code> и <code>econ-3</code>. Или <a href="https://github.com/SPBUEcon/econ-library/blob/main/.github/ISSUE_TEMPLATE/join-workstream.md">заявка на вход</a>
+          в Issues — <a href="https://github.com/SPBUEcon/econ-library/blob/main/guides/how-to-join.md">гайд</a>.</p></div>
+    </div>
+    <p class="note">Карточка партнёра — <a href="https://github.com/SPBUEcon/econ-library/blob/main/partners/geointellect/README.md">partners/geointellect</a>.
+      Внутренние материалы партнёра не публикуются; формулировки обобщены. Условия практики не выдумываются — появятся после согласования.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Мастерская «Технологии в экономике» · ЭФ СПбГУ · осень 2026 ·
+    <a href="https://github.com/SPBUEcon/econ-library">econ-library</a> · обновлено 09.10.2026</div>
+</footer>
+
+</body>
+</html>

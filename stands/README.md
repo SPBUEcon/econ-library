@@ -91,6 +91,7 @@ CI/CD, управление проектами, инфраструктура) с
 |---|---|---|---|---|---|
 | [`geo-sport-spb/`](geo-sport-spb/README.md) | Пространственное планирование спортинфраструктуры СПб | песочница → полигон | [`sport-geo`](../workstreams/sport-geo/), [`sport-engagement`](../workstreams/sport-engagement/), [`cartography-biennale`](../workstreams/cartography-biennale/) | Спорткомитет СПб, Геоинтеллект | черновик · пилот |
 | [`insurance/`](insurance/README.md) | Корпоративное страхование: встроенное, цифровая дистрибуция, кибер | песочница → симуляция | [`insurance`](../workstreams/insurance/) | Ингосстрах | черновик · пилот |
+| [`geo-ai-agent/`](geo-ai-agent/README.md) | ИИ-слой геоплатформы: стоимость и маршрутизация ИИ в клиентских сервисах | песочница → полигон | [`ai-environment`](../workstreams/ai-environment/), [`sport-geo`](../workstreams/sport-geo/) (переопыление) | Геоинтеллект | в согласовании |
 
 ## Новый стенд
 
