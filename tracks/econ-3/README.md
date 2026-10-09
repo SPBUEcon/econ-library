@@ -9,7 +9,7 @@
 | Поле | Значение |
 |---|---|
 | Поток | Экономика, 3 курс (несколько групп) |
-| Учебные группы | *заполнить* |
+| Учебные группы | 24.Б07-э – 24.Б14-э (8 групп; на занятиях по четыре: Б07–Б10 и Б11–Б14) — [`../catalog/groups.csv`](../catalog/groups.csv) |
 | Дисциплина | [Технологии (ИСЭиФ)](../../disciplines/technologies-econ-fin/README.md) |
 | Ведёт | Д. Хан |
 | Питает воркстримы | [`insurance`](../../workstreams/insurance/), [`phygital-sport`](../../workstreams/phygital-sport/) |

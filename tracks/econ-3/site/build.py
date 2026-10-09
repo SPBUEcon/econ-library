@@ -1,21 +1,31 @@
-"""Вставляет полные тексты семестровых заданий в страницу трека econ-3.
+"""Собирает генерируемые блоки страницы трека econ-3.
 
-Источник — карточки заданий assignments/templates/*.md. В index.html текст карточки стоит между
-маркерами <!-- task:<id> --> и <!-- /task:<id> -->; всё между ними перезаписывается, руками не правится.
-Из карточки берутся только разделы для студента (TASKS ниже). Ссылки переводятся так же, как в
-тезисах: md тезисов, сборок и кейсов → их html, прочие .md и .csv → GitHub.
+1. Слоты занятий — время · группы · курс и специальность (из groups.csv) · место — из расписания tracks/catalog/schedule-2026-fall.csv (строки
+   предметов трека). В index.html слоты даты стоят между маркерами <!-- slots:ГГГГ-ММ-ДД --> и
+   <!-- /slots:ГГГГ-ММ-ДД -->. Если у даты из расписания нет карточки — сборка останавливается.
+2. Полные тексты семестровых заданий из карточек assignments/templates/*.md — между маркерами
+   <!-- task:<id> --> и <!-- /task:<id> -->. Из карточки берутся только разделы для студента (TASKS ниже).
+   Ссылки переводятся так же, как в тезисах: md тезисов, сборок и кейсов → их html, прочие .md и .csv → GitHub.
+
+Всё между маркерами перезаписывается, руками не правится.
 
 Запуск: python tracks/econ-3/site/build.py
 """
 
+import csv
+import html
 import importlib.util
 import re
+from collections import defaultdict
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
 PAGE = HERE / "index.html"
 TEMPLATES = REPO / "assignments" / "templates"
+CATALOG = REPO / "tracks" / "catalog"
+TRACK = "econ-3"
+SCHEDULE = CATALOG / "schedule-2026-fall.csv"
 
 # id задания → (файл карточки, уровень md-заголовка, который становится <h4>,
 #               разделы для студента: с заголовка start до заголовка stop, не включая)
@@ -144,8 +154,64 @@ def convert(md, ctx, top):
     return "\n".join(out)
 
 
+def read_csv(path):
+    with open(path, encoding="utf-8", newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def cohort(group_ids, groups):
+    """Курс и специальность групп занятия из groups.csv: «3 курс · Экономика»."""
+    out = []
+    for g in group_ids:
+        info = groups.get(g)
+        label = (f'{info["course"]} курс · {info["specialty"] or "специальность уточнить"}'
+                 if info else "группа не в каталоге")
+        if label not in out:
+            out.append(label)
+    return "; ".join(out)
+
+
+def slot_html(r, groups):
+    """Одна строка расписания → «время · группы · курс и специальность · место»."""
+    ids = r["group_ids"].split(";")
+    chips = "".join(f'<span class="g">{html.escape(g)}</span>' for g in ids)
+    groups_html = f'{chips}<span class="sp">{html.escape(cohort(ids, groups))}</span>'
+    if r["address"]:
+        street = r["address"].split(",")[0].replace(" улица", "")
+        house = r["address"].split(", д. ")[1].split(",")[0] if ", д. " in r["address"] else ""
+        place = f'{street}, {house}, ауд. {r["room"]}' if house else f'{street}, ауд. {r["room"]}'
+    else:
+        place = r["format"]
+    return (f'<li class="slot"><span class="tm">{r["time_start"]}–{r["time_end"]}</span>'
+            f'<span class="gr">{groups_html}</span><span class="pl">{html.escape(place)}</span></li>')
+
+
+def fill_slots(page):
+    subjects = {s["subject_id"] for s in read_csv(CATALOG / "subjects.csv") if s["track_id"] == TRACK}
+    groups = {g["group_id"]: g for g in read_csv(CATALOG / "groups.csv")}
+    by_date = defaultdict(list)
+    for r in read_csv(SCHEDULE):
+        if r["subject_id"] in subjects:
+            by_date[r["date"]].append(r)
+    missing = [d for d in sorted(by_date) if f"<!-- slots:{d} -->" not in page]
+    if missing:
+        raise SystemExit("в index.html нет карточек для дат расписания: " + ", ".join(missing))
+    for d, rows in by_date.items():
+        rows.sort(key=lambda r: r["time_start"])
+        block = (f"<!-- slots:{d} -->\n"
+                 f'          <ul class="slots">{"".join(slot_html(r, groups) for r in rows)}</ul>\n'
+                 f"<!-- /slots:{d} -->")
+        page = re.sub(rf"<!-- slots:{d} -->.*?<!-- /slots:{d} -->", lambda _: block, page, flags=re.S)
+    extra = sorted(set(re.findall(r"<!-- slots:(\d{4}-\d\d-\d\d) -->", page)) - set(by_date))
+    if extra:
+        print("внимание: карточки без занятий в расписании:", ", ".join(extra))
+    return page, len(by_date)
+
+
 def main():
     page = PAGE.read_text(encoding="utf-8")
+    page, n_dates = fill_slots(page)
+    print("slots:", n_dates, "dates")
     ctx = tb.Ctx(TEMPLATES, HERE, theses=html_targets())
     for tid, (fname, top, parts) in TASKS.items():
         md = (TEMPLATES / fname).read_text(encoding="utf-8")

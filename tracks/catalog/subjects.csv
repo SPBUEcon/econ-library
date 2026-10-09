@@ -1,0 +1,4 @@
+subject_id,title,discipline_id,track_id,teacher,source,note
+pitef,Применение информационных технологий в экономике и финансах,technologies-econ-fin,econ-3,Д. Хан,timetable-2026-fall,название предмета — как в расписании; база знаний — дисциплина technologies-econ-fin
+vbi,Введение в бизнес-информатику,,,Д. Хан,timetable-2026-fall,трек и база знаний не заведены
+bi4,,technologies-econ-fin,bi-4,Д. Хан,owner-2026-10-09,название предмета и группы уточнить; занятия 18.09 и 25.09 — со слов владельца; в снимке расписания от 09.10 их нет (прошли)

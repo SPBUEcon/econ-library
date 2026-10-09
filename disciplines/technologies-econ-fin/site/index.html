@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<!--
+  Страница дисциплины «Технологии (ИС в экономике и финансах)» — учебные материалы.
+  Сюда перенесён блок «Дисциплины и учебные материалы» с главной (index.html), 2026-10-09.
+  Самодостаточная страница, работает по file:// без сервера. Источник правды — README.md дисциплины
+  и catalog/*.csv; числа строк держать в синхроне с catalog/README.md.
+  Не путать с site/course.html — это редирект на витрину «Тезисы и сборки» (2026-10-08).
+-->
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Технологии (ИС в экономике и финансах) — учебные материалы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --ink:#1B2038; --ink2:#272E52; --card:#2E3660;
+  --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0;
+  --disp:'Unbounded','Arial Black',sans-serif;
+  --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+section{padding:56px 0}
+a{color:inherit}
+.eyebrow{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:16px}
+h2{font-family:var(--disp);font-weight:700;font-size:clamp(22px,3vw,32px);line-height:1.15;margin-bottom:12px}
+.lead{font-size:clamp(15px,1.7vw,18px);color:var(--grey);max-width:820px}
+.lead a{color:var(--coral);font-weight:600}
+
+.hero{background:var(--ink);color:#fff;padding:56px 0 60px}
+.hero .back{display:inline-block;color:var(--ice);text-decoration:none;font-size:14px;margin-bottom:22px}
+.hero .back:hover{color:#fff}
+.hero .eyebrow{color:var(--ice)}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,3.8vw,42px);line-height:1.12;max-width:960px}
+.hero .sub{margin-top:16px;font-size:clamp(15px,1.7vw,18px);color:var(--ice);max-width:820px}
+.alt{background:var(--panel)}
+
+.tbl{margin-top:30px;overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:#fff}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);font-weight:600;background:var(--panel)}
+tr:last-child td{border-bottom:none}
+td a{color:var(--coral);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(240,97,79,.35)}
+td a:hover{border-bottom-color:var(--coral)}
+td code{font-size:12.5px;color:var(--grey)}
+
+.res{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:30px}
+.res a{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:20px 22px;text-decoration:none;color:inherit;transition:transform .15s ease, box-shadow .15s ease}
+.res a:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(27,32,56,.09)}
+.res .rk{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);font-weight:600}
+.res .rt{font-family:var(--disp);font-weight:500;font-size:17px}
+.res .rd{font-size:13.5px;color:var(--grey)}
+
+.foot{background:var(--ink);color:var(--ice);padding:36px 0;font-size:14px}
+.foot a{color:#fff;text-decoration:none;font-weight:600}
+.foot a:hover{text-decoration:underline}
+
+@media (max-width:900px){ .res{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <a class="back" href="../../../index.html">← Дашборд мастерской</a>
+    <div class="eyebrow">Дисциплина · учебные материалы</div>
+    <h1>Технологии (ИС в экономике и финансах)</h1>
+    <p class="sub">Ведёт Д. Хан. База знаний предмета «Применение информационных технологий в экономике и финансах» (группы 24.Б07-э – 24.Б14-э, 3 курс, Экономика).
+      Четыре блока: постинформационный переход · технологический ландшафт · ИИ и модели бизнеса · модели управления.</p>
+  </div>
+</header>
+
+<!-- ===================== МАТЕРИАЛЫ ===================== -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">01 · Страницы и материалы</div>
+    <h2>Что открыть</h2>
+    <div class="res">
+      <a href="../../../theses/site/index.html"><span class="rk">Приложение</span><span class="rt">Тезисы и лекции</span>
+        <span class="rd">Сборки (лекции, серии, кейсы), тезисы и кандидаты из каталога с фильтром по блокам; банк вопросов и источники</span></a>
+      <a href="../../../assignments/site/index.html"><span class="rk">Приложение</span><span class="rt">Архив заданий</span>
+        <span class="rd">Задания для групп: конкретные, параметрические, эстафетные</span></a>
+      <a href="../cases/red-bull/index.html"><span class="rk">Кейс</span><span class="rt">Red Bull — от напитка к индустрии экстрима</span>
+        <span class="rd">Разбор кейса для лекции и семинара: формула, цифры, вопросы, задания, слайды</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== БЛОКИ И ОПОРНЫЕ ЗАМЕТКИ ===================== -->
+<section class="alt">
+  <div class="wrap">
+    <div class="eyebrow">02 · Блоки дисциплины</div>
+    <h2>Четыре блока и опорные заметки</h2>
+    <p class="lead">Опорная заметка — развёрнутый текст по флагманской теме блока для подготовки к лекциям и
+      семинарам. Каждая ссылается на строки каталога (темы, концепты, методологии, кейсы) и на презентации-первоисточники.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Блок</th><th>О чём</th><th>Опорная заметка</th></tr></thead>
+        <tbody>
+          <tr><td>Постинформационный переход <code>transition</code></td><td>Смена укладов; воронка · лейка · хлопушка; три уклада; матрица отраслей</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/notes/postinformational-transition.md">Методология постинформационного перехода</a></td></tr>
+          <tr><td>Технологический ландшафт <code>landscape</code></td><td>Стек инфраструктуры; фронтирные технологии; кванты, DLT; оператор инфраструктуры</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/notes/quantum-communications-case.md">Кейс: инфраструктура квантовых коммуникаций</a></td></tr>
+          <tr><td>ИИ и модели бизнеса <code>ai-business</code></td><td>ИИ и трансформация рынков; AI-native; кейсы компаний; стратегии генерации ДС</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/notes/ai-native-and-markets.md">ИИ и трансформация рынков · AI-native</a></td></tr>
+          <tr><td>Модели управления <code>management</code></td><td>Главный архитектор; суперзадачи / суперкоманды; ролевая модель; powermap</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/notes/value-and-management-models.md">Модели создания ценности и управления</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== КАТАЛОГ ===================== -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">03 · Каталог дисциплины</div>
+    <h2>Исходные данные (CSV)</h2>
+    <p class="lead">«Источник правды» контента: из каталога собираются лекции, семинары и задания. Описание полей —
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/README.md">catalog/README.md</a>.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Что</th><th>Строк</th><th>Файл</th></tr></thead>
+        <tbody>
+          <tr><td>Темы / лекционные блоки</td><td>28</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/topics.csv">topics.csv</a></td></tr>
+          <tr><td><b>Банк вопросов (вопросы / билеты)</b></td><td>24</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/questions.csv">questions.csv</a></td></tr>
+          <tr><td>Концепты и модели-фреймворки</td><td>34</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/concepts.csv">concepts.csv</a></td></tr>
+          <tr><td>Методологии</td><td>13</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/methodologies.csv">methodologies.csv</a></td></tr>
+          <tr><td>Модели бизнеса (кейсы компаний)</td><td>13</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/business-models.csv">business-models.csv</a></td></tr>
+          <tr><td>Прикладные и инфраструктурные кейсы</td><td>10</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/cases.csv">cases.csv</a></td></tr>
+          <tr><td>Технологии</td><td>10</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/technologies.csv">technologies.csv</a></td></tr>
+          <tr><td>Матрица укладов по отраслям</td><td>15</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/industries.csv">industries.csv</a></td></tr>
+          <tr><td>Источники (презентации)</td><td>14</td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/catalog/sources.csv">sources.csv</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    Дисциплина «Технологии (ИС в экономике и финансах)» · Мастерская «Технологии в экономике» · ЭФ СПбГУ · обновлено 2026-10-09.
+    Описание — <a href="https://github.com/SPBUEcon/econ-library/blob/main/disciplines/technologies-econ-fin/README.md">README дисциплины</a> ·
+    <a href="../../../index.html">дашборд</a>.
+  </div>
+</footer>
+
+</body>
+</html>

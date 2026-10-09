@@ -3,12 +3,13 @@
   Страница трека econ-3 (Экономика, 3 курс) — расписание занятий прогона «осень 2026».
   Публичный URL: https://spbuecon.github.io/econ-library/tracks/econ-3/site/
   Самодостаточная страница, работает по file:// без сервера.
-  ИСТОЧНИК ПРАВДЫ — tracks/econ-3/2026-fall/sessions.md (расписание) и раздел «Семестровые задания»
+  ИСТОЧНИК ПРАВДЫ — tracks/catalog/schedule-2026-fall.csv (дата, время, группы, место — блоки «slots:дата»
+  собирает build.py), tracks/econ-3/2026-fall/sessions.md (содержание занятий) и раздел «Семестровые задания»
   в tracks/econ-3/2026-fall/README.md (блок #tasks). Держать в синхроне с ними.
   Полные тексты заданий между маркерами «task:id» и «/task:id» вставляет python tracks/econ-3/site/build.py
   из assignments/templates/*.md — руками не править, править карточку и пересобрать.
   Незаполненное помечается как «не внесено» — не выдумывается.
-  Обновлено: 2026-10-08.
+  Обновлено: 2026-10-09.
 -->
 <html lang="ru">
 <head>
@@ -66,6 +67,14 @@ section{padding:56px 0}
 .status.plan{color:var(--grey)} .status.plan .dot{background:var(--line)}
 .body h3{font-family:var(--disp);font-weight:500;font-size:18px;line-height:1.3}
 .struct{margin:10px 0 0 20px;font-size:15px}
+/* слоты занятия: время · группы · место — собирает build.py из tracks/catalog/schedule-2026-fall.csv */
+.slots{list-style:none;margin:10px 0 2px;display:flex;flex-direction:column;gap:6px}
+.slot{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:13.5px;color:var(--grey)}
+.slot .tm{font-weight:600;color:var(--ink);min-width:92px}
+.slot .gr{display:inline-flex;flex-wrap:wrap;gap:4px}
+.slot .g{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:1px 9px;font-size:12.5px;color:var(--ink)}
+.slot .sp{font-size:12.5px;color:var(--grey);padding-left:4px}
+.slot .pl{font-size:13px}
 .struct li{margin-bottom:3px}
 
 details{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
@@ -145,8 +154,9 @@ summary:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-r
     <div class="crumbs"><a href="../../../index.html#tracks">Дашборд</a> · Треки · econ-3</div>
     <div class="eyebrow">Трек econ-3 · осень 2026</div>
     <h1>Экономика, 3 курс <span class="accent">(неск. групп)</span></h1>
-    <p class="sub">Дисциплина «Технологии (информационные системы в экономике и финансах)». Ведёт Д. Хан.
-      Занятия — по четвергам.</p>
+    <p class="sub">Предмет «Применение информационных технологий в экономике и финансах» — база знаний
+      дисциплины «Технологии (ИС в экономике и финансах)». Ведёт Д. Хан. Группы 24.Б07-э – 24.Б14-э (3 курс,
+      Экономика) — на занятиях по четыре: Б07–Б10 и Б11–Б14.</p>
   </div>
 </header>
 
@@ -155,34 +165,44 @@ summary:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-r
   <div class="wrap">
     <div class="eyebrow">01 · Расписание занятий</div>
     <h2>Занятия по датам</h2>
-    <p class="lead">Только формальная информация (дата, время, номер) и фактическое содержание занятия:
-      ключевая тема или структура и материалы. Контент вносится после занятия; где его ещё нет — так и помечено.</p>
+    <p class="lead">Практические занятия — по четвергам 17.09–22.10 и в две субботы; с 26.10 — самостоятельная
+      работа в присутствии преподавателя онлайн (Б07–Б10 по понедельникам, Б11–Б14 по пятницам). На каждой карточке —
+      время, группы и место по расписанию вуза; содержание вносится после занятия, где его ещё нет — так и помечено.</p>
 
     <ol class="sched">
 
       <li class="ses">
-        <div class="date"><span class="d">17</span><span class="m">сентября</span></div>
+        <div class="date"><span class="d">17</span><span class="m">сентября</span><span class="t">четверг</span></div>
         <div class="body">
-          <div class="meta"><span class="num">Занятие 1</span><span class="status empty"><span class="dot"></span>контент не внесён</span></div>
+          <div class="meta"><span class="num">Занятие 1 · практическое</span><span class="status empty"><span class="dot"></span>контент не внесён</span></div>
           <h3>Тема не внесена</h3>
+<!-- slots:2026-09-17 -->
+          <ul class="slots"><li class="slot"><span class="tm">09:00–10:30</span><span class="gr"><span class="g">24.Б07-э</span><span class="g">24.Б08-э</span><span class="g">24.Б09-э</span><span class="g">24.Б10-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 93</span></li><li class="slot"><span class="tm">10:45–12:15</span><span class="gr"><span class="g">24.Б11-э</span><span class="g">24.Б12-э</span><span class="g">24.Б13-э</span><span class="g">24.Б14-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 93</span></li></ul>
+<!-- /slots:2026-09-17 -->
           <p class="nocontent">Материалы занятия пока не добавлены.</p>
         </div>
       </li>
 
       <li class="ses">
-        <div class="date"><span class="d">24</span><span class="m">сентября</span></div>
+        <div class="date"><span class="d">24</span><span class="m">сентября</span><span class="t">четверг</span></div>
         <div class="body">
-          <div class="meta"><span class="num">Занятие 2</span><span class="status empty"><span class="dot"></span>контент не внесён</span></div>
+          <div class="meta"><span class="num">Занятие 2 · практическое</span><span class="status empty"><span class="dot"></span>контент не внесён</span></div>
           <h3>Тема не внесена</h3>
+<!-- slots:2026-09-24 -->
+          <ul class="slots"><li class="slot"><span class="tm">09:00–10:30</span><span class="gr"><span class="g">24.Б07-э</span><span class="g">24.Б08-э</span><span class="g">24.Б09-э</span><span class="g">24.Б10-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 93</span></li><li class="slot"><span class="tm">10:45–12:15</span><span class="gr"><span class="g">24.Б11-э</span><span class="g">24.Б12-э</span><span class="g">24.Б13-э</span><span class="g">24.Б14-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 93</span></li></ul>
+<!-- /slots:2026-09-24 -->
           <p class="nocontent">Материалы занятия пока не добавлены.</p>
         </div>
       </li>
 
       <li class="ses done">
-        <div class="date"><span class="d">01</span><span class="m">октября</span><span class="t">9:00–12:15</span></div>
+        <div class="date"><span class="d">01</span><span class="m">октября</span><span class="t">четверг</span></div>
         <div class="body">
-          <div class="meta"><span class="num">Занятие 3</span><span class="status done"><span class="dot"></span>проведено</span></div>
+          <div class="meta"><span class="num">Занятие 3 · практическое</span><span class="status done"><span class="dot"></span>проведено</span></div>
           <h3>Рынок информационных систем в России</h3>
+<!-- slots:2026-10-01 -->
+          <ul class="slots"><li class="slot"><span class="tm">09:00–10:30</span><span class="gr"><span class="g">24.Б07-э</span><span class="g">24.Б08-э</span><span class="g">24.Б09-э</span><span class="g">24.Б10-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 93</span></li><li class="slot"><span class="tm">10:45–12:15</span><span class="gr"><span class="g">24.Б11-э</span><span class="g">24.Б12-э</span><span class="g">24.Б13-э</span><span class="g">24.Б14-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 93</span></li></ul>
+<!-- /slots:2026-10-01 -->
           <ul class="struct">
             <li>Объём рынка и его масштаб на фоне компаний и отраслей</li>
             <li>Ключевые игроки, реестры и отраслевые ассоциации</li>
@@ -202,10 +222,13 @@ summary:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-r
       </li>
 
       <li class="ses done">
-        <div class="date"><span class="d">08</span><span class="m">октября</span><span class="t">9:00–12:15</span></div>
+        <div class="date"><span class="d">08</span><span class="m">октября</span><span class="t">четверг</span></div>
         <div class="body">
-          <div class="meta"><span class="num">Занятие 4</span><span class="status done"><span class="dot"></span>проведено</span></div>
+          <div class="meta"><span class="num">Занятие 4 · практическое</span><span class="status done"><span class="dot"></span>проведено</span></div>
           <h3>Модели постинформационного бизнеса, мировые кейсы</h3>
+<!-- slots:2026-10-08 -->
+          <ul class="slots"><li class="slot"><span class="tm">09:00–10:30</span><span class="gr"><span class="g">24.Б07-э</span><span class="g">24.Б08-э</span><span class="g">24.Б09-э</span><span class="g">24.Б10-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 93</span></li><li class="slot"><span class="tm">10:45–12:15</span><span class="gr"><span class="g">24.Б11-э</span><span class="g">24.Б12-э</span><span class="g">24.Б13-э</span><span class="g">24.Б14-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 93</span></li></ul>
+<!-- /slots:2026-10-08 -->
           <ul class="struct">
             <li>Логика постинформационного создания стоимости</li>
             <li>Конкуренция через создание рынков</li>
@@ -224,28 +247,154 @@ summary:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-r
       </li>
 
       <li class="ses">
-        <div class="date"><span class="d">15</span><span class="m">октября</span></div>
+        <div class="date"><span class="d">15</span><span class="m">октября</span><span class="t">четверг</span></div>
         <div class="body">
-          <div class="meta"><span class="num">Занятие 5</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <div class="meta"><span class="num">Занятие 5 · практическое</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
           <h3>Тема не внесена</h3>
+<!-- slots:2026-10-15 -->
+          <ul class="slots"><li class="slot"><span class="tm">09:00–10:30</span><span class="gr"><span class="g">24.Б07-э</span><span class="g">24.Б08-э</span><span class="g">24.Б09-э</span><span class="g">24.Б10-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 93</span></li><li class="slot"><span class="tm">10:45–12:15</span><span class="gr"><span class="g">24.Б11-э</span><span class="g">24.Б12-э</span><span class="g">24.Б13-э</span><span class="g">24.Б14-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 93</span></li></ul>
+<!-- /slots:2026-10-15 -->
           <p class="nocontent">Материалы появятся после занятия.</p>
         </div>
       </li>
 
       <li class="ses">
-        <div class="date"><span class="d">22</span><span class="m">октября</span></div>
+        <div class="date"><span class="d">17</span><span class="m">октября</span><span class="t">суббота</span></div>
         <div class="body">
-          <div class="meta"><span class="num">Занятие 6</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <div class="meta"><span class="num">Практическое · две пары</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
           <h3>Тема не внесена</h3>
+<!-- slots:2026-10-17 -->
+          <ul class="slots"><li class="slot"><span class="tm">09:00–10:30</span><span class="gr"><span class="g">24.Б07-э</span><span class="g">24.Б08-э</span><span class="g">24.Б09-э</span><span class="g">24.Б10-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 94</span></li><li class="slot"><span class="tm">10:45–12:15</span><span class="gr"><span class="g">24.Б07-э</span><span class="g">24.Б08-э</span><span class="g">24.Б09-э</span><span class="g">24.Б10-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 94</span></li></ul>
+<!-- /slots:2026-10-17 -->
           <p class="nocontent">Материалы появятся после занятия.</p>
+        </div>
+      </li>
+
+      <li class="ses">
+        <div class="date"><span class="d">22</span><span class="m">октября</span><span class="t">четверг</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Занятие 6 · практическое</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Тема не внесена</h3>
+<!-- slots:2026-10-22 -->
+          <ul class="slots"><li class="slot"><span class="tm">09:00–10:30</span><span class="gr"><span class="g">24.Б07-э</span><span class="g">24.Б08-э</span><span class="g">24.Б09-э</span><span class="g">24.Б10-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 93</span></li><li class="slot"><span class="tm">10:45–12:15</span><span class="gr"><span class="g">24.Б11-э</span><span class="g">24.Б12-э</span><span class="g">24.Б13-э</span><span class="g">24.Б14-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 93</span></li></ul>
+<!-- /slots:2026-10-22 -->
+          <p class="nocontent">Материалы появятся после занятия.</p>
+        </div>
+      </li>
+
+      <li class="ses">
+        <div class="date"><span class="d">24</span><span class="m">октября</span><span class="t">суббота</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Практическое · две пары</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Тема не внесена</h3>
+<!-- slots:2026-10-24 -->
+          <ul class="slots"><li class="slot"><span class="tm">09:00–10:30</span><span class="gr"><span class="g">24.Б11-э</span><span class="g">24.Б12-э</span><span class="g">24.Б13-э</span><span class="g">24.Б14-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 94</span></li><li class="slot"><span class="tm">10:45–12:15</span><span class="gr"><span class="g">24.Б11-э</span><span class="g">24.Б12-э</span><span class="g">24.Б13-э</span><span class="g">24.Б14-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">Таврическая, 21-23-25, ауд. 94</span></li></ul>
+<!-- /slots:2026-10-24 -->
+          <p class="nocontent">Материалы появятся после занятия.</p>
+        </div>
+      </li>
+
+      <li class="ses">
+        <div class="date"><span class="d">26</span><span class="m">октября</span><span class="t">понедельник</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Самостоятельная работа · онлайн</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Самостоятельная работа в присутствии преподавателя</h3>
+<!-- slots:2026-10-26 -->
+          <ul class="slots"><li class="slot"><span class="tm">19:00–20:30</span><span class="gr"><span class="g">24.Б07-э</span><span class="g">24.Б08-э</span><span class="g">24.Б09-э</span><span class="g">24.Б10-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">онлайн (ИКТ)</span></li></ul>
+<!-- /slots:2026-10-26 -->
+          <p class="nocontent">Тема появится после занятия.</p>
+        </div>
+      </li>
+
+      <li class="ses">
+        <div class="date"><span class="d">30</span><span class="m">октября</span><span class="t">пятница</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Самостоятельная работа · онлайн</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Самостоятельная работа в присутствии преподавателя</h3>
+<!-- slots:2026-10-30 -->
+          <ul class="slots"><li class="slot"><span class="tm">19:00–20:30</span><span class="gr"><span class="g">24.Б11-э</span><span class="g">24.Б12-э</span><span class="g">24.Б13-э</span><span class="g">24.Б14-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">онлайн (ИКТ)</span></li></ul>
+<!-- /slots:2026-10-30 -->
+          <p class="nocontent">Тема появится после занятия.</p>
+        </div>
+      </li>
+
+      <li class="ses">
+        <div class="date"><span class="d">09</span><span class="m">ноября</span><span class="t">понедельник</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Самостоятельная работа · онлайн</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Самостоятельная работа в присутствии преподавателя</h3>
+<!-- slots:2026-11-09 -->
+          <ul class="slots"><li class="slot"><span class="tm">19:00–20:30</span><span class="gr"><span class="g">24.Б07-э</span><span class="g">24.Б08-э</span><span class="g">24.Б09-э</span><span class="g">24.Б10-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">онлайн (ИКТ)</span></li></ul>
+<!-- /slots:2026-11-09 -->
+          <p class="nocontent">Тема появится после занятия.</p>
+        </div>
+      </li>
+
+      <li class="ses">
+        <div class="date"><span class="d">13</span><span class="m">ноября</span><span class="t">пятница</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Самостоятельная работа · онлайн</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Самостоятельная работа в присутствии преподавателя</h3>
+<!-- slots:2026-11-13 -->
+          <ul class="slots"><li class="slot"><span class="tm">19:00–20:30</span><span class="gr"><span class="g">24.Б11-э</span><span class="g">24.Б12-э</span><span class="g">24.Б13-э</span><span class="g">24.Б14-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">онлайн (ИКТ)</span></li></ul>
+<!-- /slots:2026-11-13 -->
+          <p class="nocontent">Тема появится после занятия.</p>
+        </div>
+      </li>
+
+      <li class="ses">
+        <div class="date"><span class="d">23</span><span class="m">ноября</span><span class="t">понедельник</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Самостоятельная работа · онлайн</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Самостоятельная работа в присутствии преподавателя</h3>
+<!-- slots:2026-11-23 -->
+          <ul class="slots"><li class="slot"><span class="tm">19:00–20:30</span><span class="gr"><span class="g">24.Б07-э</span><span class="g">24.Б08-э</span><span class="g">24.Б09-э</span><span class="g">24.Б10-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">онлайн (ИКТ)</span></li></ul>
+<!-- /slots:2026-11-23 -->
+          <p class="nocontent">Тема появится после занятия.</p>
+        </div>
+      </li>
+
+      <li class="ses">
+        <div class="date"><span class="d">27</span><span class="m">ноября</span><span class="t">пятница</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Самостоятельная работа · онлайн</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Самостоятельная работа в присутствии преподавателя</h3>
+<!-- slots:2026-11-27 -->
+          <ul class="slots"><li class="slot"><span class="tm">19:00–20:30</span><span class="gr"><span class="g">24.Б11-э</span><span class="g">24.Б12-э</span><span class="g">24.Б13-э</span><span class="g">24.Б14-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">онлайн (ИКТ)</span></li></ul>
+<!-- /slots:2026-11-27 -->
+          <p class="nocontent">Тема появится после занятия.</p>
+        </div>
+      </li>
+
+      <li class="ses">
+        <div class="date"><span class="d">07</span><span class="m">декабря</span><span class="t">понедельник</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Самостоятельная работа · онлайн</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Самостоятельная работа в присутствии преподавателя</h3>
+<!-- slots:2026-12-07 -->
+          <ul class="slots"><li class="slot"><span class="tm">19:00–20:30</span><span class="gr"><span class="g">24.Б07-э</span><span class="g">24.Б08-э</span><span class="g">24.Б09-э</span><span class="g">24.Б10-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">онлайн (ИКТ)</span></li></ul>
+<!-- /slots:2026-12-07 -->
+          <p class="nocontent">Тема появится после занятия.</p>
+        </div>
+      </li>
+
+      <li class="ses">
+        <div class="date"><span class="d">11</span><span class="m">декабря</span><span class="t">пятница</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Самостоятельная работа · онлайн</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Самостоятельная работа в присутствии преподавателя</h3>
+<!-- slots:2026-12-11 -->
+          <ul class="slots"><li class="slot"><span class="tm">19:00–20:30</span><span class="gr"><span class="g">24.Б11-э</span><span class="g">24.Б12-э</span><span class="g">24.Б13-э</span><span class="g">24.Б14-э</span><span class="sp">3 курс · Экономика</span></span><span class="pl">онлайн (ИКТ)</span></li></ul>
+<!-- /slots:2026-12-11 -->
+          <p class="nocontent">Тема появится после занятия.</p>
         </div>
       </li>
 
     </ol>
 
-    <p class="note">Источник расписания —
-      <a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/econ-3/2026-fall/sessions.md">sessions.md</a>.
-      Время занятий указано там, где оно подтверждено. Пофамильная посещаемость и оценки — в вузовской
+    <p class="note">Время, группы и место — из расписания СПбГУ (снимок 09.10.2026),
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/catalog/schedule-2026-fall.csv">schedule-2026-fall.csv</a>;
+      содержание занятий — <a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/econ-3/2026-fall/sessions.md">sessions.md</a>. Пофамильная посещаемость и оценки — в вузовской
       ведомости, не здесь.</p>
   </div>
 </section>

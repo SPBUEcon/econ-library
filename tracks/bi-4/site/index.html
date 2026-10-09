@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<!--
+  Страница трека bi-4 (Бизнес-информатика, ИСЭ, 4 курс) — расписание занятий прогона «осень 2026».
+  Публичный URL: https://spbuecon.github.io/econ-library/tracks/bi-4/site/
+  Самодостаточная страница, работает по file:// без сервера. Сделана по образцу tracks/econ-3/site/.
+  ИСТОЧНИК ПРАВДЫ — tracks/bi-4/2026-fall/sessions.md (расписание) и «План хода» в
+  tracks/bi-4/2026-fall/README.md (события). Держать в синхроне с ними.
+  Семестровых заданий у потока пока нет; когда появятся — блок по образцу econ-3 (маркеры task:id и свой
+  build.py). Таблица заданий стенда — карточки assignments/templates/sp-*.md, где указан трек bi-4.
+  Незаполненное помечается как «не внесено» — не выдумывается.
+  Обновлено: 2026-10-09 (занятия 18.09 и 25.09).
+-->
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bi-4 · Бизнес-информатика (ИСЭ), 4 курс — расписание занятий</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --ink:#1B2038; --ink2:#272E52;
+  --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0;
+  --green:#2FA37A; --amber:#D9932B; --blue:#3E7BD6;
+  --disp:'Unbounded','Arial Black',sans-serif;
+  --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding:0 28px}
+a{color:inherit}
+.eyebrow{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:14px}
+h2{font-family:var(--disp);font-weight:700;font-size:clamp(22px,3vw,32px);line-height:1.15;margin-bottom:10px}
+.lead{font-size:clamp(15px,1.7vw,18px);color:var(--grey);max-width:820px}
+
+/* -------- HERO -------- */
+.hero{background:var(--ink);color:#fff;padding:44px 0 50px}
+.crumbs{font-size:13px;color:var(--ice);margin-bottom:22px}
+.crumbs a{color:var(--ice)}
+.hero .eyebrow{color:var(--ice)}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,4vw,44px);line-height:1.12}
+.hero h1 .accent{color:var(--coral)}
+.hero .sub{margin-top:16px;font-size:clamp(15px,1.8vw,19px);color:var(--ice);max-width:780px}
+
+/* -------- расписание -------- */
+section{padding:56px 0}
+.sched{list-style:none;margin-top:30px;display:flex;flex-direction:column;gap:14px}
+.ses{display:grid;grid-template-columns:118px 1fr;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.ses.done{border-color:rgba(47,163,122,.45);box-shadow:0 10px 28px rgba(27,32,56,.07)}
+.date{background:var(--panel);padding:18px 14px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.ses.done .date{background:var(--ink);color:#fff}
+.date .d{font-family:var(--disp);font-weight:700;font-size:26px;line-height:1}
+.date .m{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
+.ses.done .date .m{color:var(--ice)}
+.date .t{font-size:12.5px;margin-top:8px;color:var(--grey)}
+.ses.done .date .t{color:var(--ice)}
+.body{padding:18px 22px}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;color:var(--grey);margin-bottom:6px}
+.num{font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.status{display:inline-flex;align-items:center;gap:6px;font-weight:600}
+.status .dot{width:8px;height:8px;border-radius:50%}
+.status.done{color:var(--green)} .status.done .dot{background:var(--green)}
+.status.empty{color:var(--amber)} .status.empty .dot{background:var(--amber)}
+.status.plan{color:var(--grey)} .status.plan .dot{background:var(--line)}
+.body h3{font-family:var(--disp);font-weight:500;font-size:18px;line-height:1.3}
+.struct{margin:10px 0 0 20px;font-size:15px}
+.struct li{margin-bottom:3px}
+
+details{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--coral);list-style:none;display:inline-flex;align-items:center;gap:8px}
+summary::-webkit-details-marker{display:none}
+summary::before{content:'▸';transition:transform .15s ease}
+details[open] summary::before{transform:rotate(90deg)}
+summary:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px}
+.content{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.mat{display:flex;flex-direction:column;gap:3px;background:var(--panel);border-radius:12px;padding:14px 16px;text-decoration:none;
+  transition:transform .15s ease, box-shadow .15s ease}
+.mat:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(27,32,56,.09)}
+.mat .rk{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);font-weight:600}
+.mat .rt{font-weight:600;font-size:15.5px}
+.mat .rd{font-size:13.5px;color:var(--grey)}
+.nocontent{margin-top:12px;font-size:13.5px;color:var(--grey)}
+
+.note{margin-top:26px;font-size:14px;color:var(--grey);border-left:3px solid var(--line);padding-left:16px}
+.note a{color:var(--coral);font-weight:600}
+
+/* -------- задания, доступные потоку -------- */
+#tasks{background:var(--panel)}
+.tbl{margin-top:26px;overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:#fff}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);font-weight:600;background:var(--panel)}
+tr:last-child td{border-bottom:none}
+td a{color:var(--coral);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(240,97,79,.35)}
+td code{font-size:12.5px;color:var(--grey)}
+.lead a{color:var(--coral);font-weight:600}
+.cta{margin-top:22px}
+.cta a{display:inline-block;background:var(--coral);color:#fff;text-decoration:none;font-weight:600;font-size:15px;padding:11px 22px;border-radius:12px}
+.cta a:hover{box-shadow:0 10px 26px rgba(240,97,79,.32)}
+
+.foot{background:var(--ink);color:var(--ice);padding:34px 0;font-size:14px}
+.foot a{color:#fff;font-weight:600;text-decoration:none}
+.foot a:hover{text-decoration:underline}
+
+@media (max-width:640px){
+  .ses{grid-template-columns:1fr}
+  .date{flex-direction:row;align-items:baseline;justify-content:flex-start;gap:10px;text-align:left;padding:12px 18px}
+  .date .t{margin-top:0}
+}
+@media (prefers-reduced-motion: reduce){.mat,summary::before{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="crumbs"><a href="../../../index.html#tracks">Дашборд</a> · Треки · bi-4</div>
+    <div class="eyebrow">Трек bi-4 · осень 2026</div>
+    <h1>Бизнес-информатика (ИСЭ), 4 курс <span class="accent">(2 группы)</span></h1>
+    <p class="sub">Дисциплина «Технологии (информационные системы в экономике и финансах)». Ведёт Д. Хан.
+      Занятия прошли 18 и 25 сентября (пятницы); других занятий потока в расписании нет. Общие события хода — ниже.</p>
+  </div>
+</header>
+
+<!-- ===================== РАСПИСАНИЕ ===================== -->
+<section id="schedule">
+  <div class="wrap">
+    <div class="eyebrow">01 · Расписание занятий</div>
+    <h2>Занятия по датам</h2>
+    <p class="lead">Только формальная информация (дата, время, номер) и фактическое содержание занятия:
+      ключевая тема или структура и материалы. Контент вносится после занятия; где его ещё нет — так и помечено.</p>
+
+    <ol class="sched">
+
+      <li class="ses done">
+        <div class="date"><span class="d">18</span><span class="m">сентября</span><span class="t">пятница</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Занятие 1</span><span class="status done"><span class="dot"></span>проведено</span><span class="status empty"><span class="dot"></span>контент не внесён</span></div>
+          <h3>Тема не внесена</h3>
+          <p class="nocontent">Время, группы, аудитория и материалы занятия пока не внесены.</p>
+        </div>
+      </li>
+
+      <li class="ses done">
+        <div class="date"><span class="d">25</span><span class="m">сентября</span><span class="t">пятница</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Занятие 2</span><span class="status done"><span class="dot"></span>проведено</span><span class="status empty"><span class="dot"></span>контент не внесён</span></div>
+          <h3>Тема не внесена</h3>
+          <p class="nocontent">Время, группы, аудитория и материалы занятия пока не внесены.</p>
+        </div>
+      </li>
+
+    </ol>
+
+    <p class="note">Источник расписания —
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/bi-4/2026-fall/sessions.md">sessions.md</a>.
+      Даты — со слов преподавателя (09.10.2026): в снимке расписания СПбГУ от 09.10.2026 прошедших занятий потока нет,
+      поэтому время, группы и аудитория не внесены. Пофамильная посещаемость и оценки — в вузовской
+      ведомости, не здесь.</p>
+  </div>
+</section>
+
+<!-- ===================== СОБЫТИЯ ХОДА ===================== -->
+<section id="events" style="padding-top:0">
+  <div class="wrap">
+    <div class="eyebrow">02 · События хода</div>
+    <h2>Общие события с датами</h2>
+    <p class="lead">Команды потока работают в воркстримах
+      <a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-geo">«Геоаналитика спортинфраструктуры»</a> и
+      <a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-engagement">«Вовлечение в спорте»</a>
+      на стенде ГИС · спорт и держат его слой Ф (фундамент ИС).</p>
+
+    <ol class="sched">
+
+      <li class="ses">
+        <div class="date"><span class="d">21</span><span class="m">октября</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Событие</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Интенсив Спорткомитета</h3>
+          <p class="nocontent">Мост стенда ГИС · спорт.</p>
+        </div>
+      </li>
+      <li class="ses">
+        <div class="date"><span class="d">29</span><span class="m">октября</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Событие</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Открытая встреча в Музее спорта</h3>
+        </div>
+      </li>
+      <li class="ses">
+        <div class="date"><span class="d">16</span><span class="m">декабря</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Событие</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Демо-день</h3>
+          <p class="nocontent">Городская спортивная площадка.</p>
+        </div>
+      </li>
+
+    </ol>
+
+    <p class="note">Источник — «План хода» в
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/bi-4/2026-fall/README.md">README прогона</a>.
+      Даты занятий «вход в ландшафт» и «формирование команд» там пока не уточнены.</p>
+  </div>
+</section>
+
+<!-- ===================== ЗАДАНИЯ ===================== -->
+<section id="tasks">
+  <div class="wrap">
+    <div class="eyebrow">03 · Задания</div>
+    <h2>Задания стенда ГИС · спорт</h2>
+    <p class="lead">Семестровые задания для потока пока не назначены. Ниже — задания стенда, в карточках которых
+      указан трек bi-4: из них команды выбирают работу на семестр.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>id</th><th>Задание</th><th>Тип</th></tr></thead>
+        <tbody>
+          <tr><td><code>sp-01</code></td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/sp-01-channels-spb-msk-analog.md">Каналы коммуникации спорта: СПб × Москва × город-аналог</a></td><td>параметрическое</td></tr>
+          <tr><td><code>sp-02</code></td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/sp-02-media-field.md">Медиаполе спорта СПб за полгода</a></td><td>конкретное</td></tr>
+          <tr><td><code>sp-03</code></td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/sp-03-mass-event.md">Массовое событие под микроскопом: 3 события СПб × аналог в Москве</a></td><td>параметрическое</td></tr>
+          <tr><td><code>sp-04</code></td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/sp-04-mystery-shopper.md">Путь жителя к занятию: «тайный покупатель» в СПб и Москве</a></td><td>конкретное</td></tr>
+          <tr><td><code>sp-05</code></td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/sp-05-engagement-metrics.md">Как города измеряют вовлечённость: СПб × Москва × Англия</a></td><td>конкретное</td></tr>
+          <tr><td><code>sp-06</code></td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/sp-06-district-atlas.md">Атлас доступности одного района</a></td><td>параметрическое</td></tr>
+          <tr><td><code>sp-07</code></td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/sp-07-open-grounds-field.md">Дворовые и открытые площадки: полевая инвентаризация</a></td><td>параметрическое</td></tr>
+          <tr><td><code>sp-08</code></td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/sp-08-paid-sport-market.md">Рынок платного спорта района</a></td><td>эстафетное</td></tr>
+          <tr><td><code>sp-09</code></td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/sp-09-site-investment.md">«Что построить на этом участке»: три участка</a></td><td>эстафетное</td></tr>
+          <tr><td><code>sp-10</code></td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/sp-10-sport-maps.md">Городские спортивные карты: Москва × регионы × зарубежье → прототип для СПб</a></td><td>эстафетное</td></tr>
+          <tr><td><code>sp-11</code></td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/sp-11-ai-helper.md">ИИ-помощник по вопросам жителей о спорте</a></td><td>конкретное</td></tr>
+          <tr><td><code>sp-12</code></td><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/sp-12-platform-session.md">Первая сессия городской спортивной интеллектуальной площадки</a></td><td>конкретное</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cta"><a href="../../../assignments/site/index.html#dossier=sport-spb">Все задания по спорту в архиве заданий →</a></div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <a href="../../../index.html">← Дашборд мастерской</a> ·
+    <a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/bi-4/README.md">Трек bi-4 на GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>
