@@ -5,7 +5,7 @@
 
 > **Пилот осени 2026 (заведён 2026-10-08).** Модель стендов — [`../README.md`](../README.md),
 > архитектура — [`../../program/architecture.md`](../../program/architecture.md). Основа —
-> три темы Ингосстраха ([`tasks/`](../../partners/ingosstrakh/tasks/README.md)) и воркстрим
+> три темы Ингосстраха ([карточка партнёра](../../partners/ingosstrakh/README.md)) и воркстрим
 > [`insurance`](../../workstreams/insurance/README.md). Данных партнёра на стенде нет: всё — открытые
 > источники. Студенческий проект, не официальная позиция компании.
 
