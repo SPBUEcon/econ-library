@@ -36,6 +36,12 @@ TASKS = {
     "tpl18": ("tpl18-essay-company-or-technology.md", 2,
               [("## Что предлагается сделать", "## Синопсис"),
                ("## Вопросы", "## Что дальше")]),
+    "tpl20": ("tpl20-toffler-reading-talk.md", 2,
+              [("## Что предлагается сделать", "## Синопсис"),
+               ("## Логика выполнения", None)]),
+    "tpl21": ("tpl21-kondratiev-reading-talk.md", 2,
+              [("## Что предлагается сделать", "## Синопсис"),
+               ("## Логика выполнения", None)]),
 }
 
 # md → html и перевод ссылок — из сборщика тезисов, чтобы ссылки вели туда же, что и в тезисах
@@ -226,7 +232,7 @@ def main():
         if not pat.search(page):
             raise SystemExit(f"в index.html нет маркеров <!-- task:{tid} --> … <!-- /task:{tid} -->")
         page = pat.sub(lambda _: block, page)
-    PAGE.write_text(page, encoding="utf-8")
+    PAGE.write_text(page, encoding="utf-8", newline="\n")
     print("written", PAGE, "tasks:", ", ".join(TASKS))
 
 
