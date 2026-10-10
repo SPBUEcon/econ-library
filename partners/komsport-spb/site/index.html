@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<!--
+  Страница партнёра «Спорткомитет СПб» для участников мастерской «Технологии в экономике».
+  Публичный URL: https://spbuecon.github.io/econ-library/partners/komsport-spb/site/
+  Самодостаточная страница, работает по file:// без сервера. Вёрстка — общая со страницей Геоинтеллекта
+  (partners/geointellect/site/index.html).
+  ИСТОЧНИК ПРАВДЫ — partners/komsport-spb/README.md и tasks/, workstreams/sport-spb/ (дорожная карта),
+  workstreams/sport-geo/, workstreams/sport-engagement/, stands/geo-sport-spb/ (барьеры, nodes.csv).
+  Студенческий проект: не официальная позиция Комитета. Цены и сроки из КП Геоинтеллекта не публикуются.
+  Дорожная карта — черновик к согласованию с Комитетом; даты — ориентиры.
+  Обновлено: 2026-10-10.
+-->
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Спорткомитет СПб × Мастерская «Технологии в экономике» — задачи и темы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --ink:#1B2038; --ink2:#272E52;
+  --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0;
+  --green:#2FA37A; --amber:#D9932B; --blue:#3E7BD6; --teal:#1E9AA8;
+  --disp:'Unbounded','Arial Black',sans-serif;
+  --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding:0 28px}
+a{color:inherit}
+.eyebrow{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:14px}
+h2{font-family:var(--disp);font-weight:700;font-size:clamp(22px,3vw,32px);line-height:1.15;margin-bottom:10px}
+h3{font-family:var(--disp);font-weight:500;font-size:18px;line-height:1.3}
+.lead{font-size:clamp(15px,1.7vw,18px);color:var(--grey);max-width:820px}
+section{padding:56px 0}
+section.alt{background:var(--panel)}
+
+/* -------- HERO -------- */
+.hero{background:var(--ink);color:#fff;padding:44px 0 50px}
+.crumbs{font-size:13px;color:var(--ice);margin-bottom:22px}
+.crumbs a{color:var(--ice)}
+.hero .eyebrow{color:var(--ice)}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,4vw,44px);line-height:1.12}
+.hero h1 .accent{color:var(--coral)}
+.hero .sub{margin-top:16px;font-size:clamp(15px,1.8vw,19px);color:var(--ice);max-width:800px}
+.pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(220,230,245,.35);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:500}
+.pill .dot{width:9px;height:9px;border-radius:50%}
+.pill.open .dot{background:var(--green)}
+.pill.wait .dot{background:var(--amber)}
+.pill a{color:#fff}
+
+/* -------- факты -------- */
+.facts{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.fact{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.fact .k{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);font-weight:600;margin-bottom:4px}
+.fact .v{font-size:15px}
+.fact .v b{font-weight:600}
+
+/* -------- два направления -------- */
+.duo{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 24px;box-shadow:0 10px 28px rgba(27,32,56,.06)}
+.card .tag{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--coral)}
+.card h3{margin:6px 0 8px}
+.card p,.card li{font-size:15px}
+.card ul{margin:8px 0 0 18px}
+.card li{margin-bottom:4px}
+.state{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;margin-top:12px}
+.state .dot{width:8px;height:8px;border-radius:50%}
+.state.open{color:var(--green)} .state.open .dot{background:var(--green)}
+.state.wait{color:var(--amber)} .state.wait .dot{background:var(--amber)}
+
+/* -------- фокусы и темы -------- */
+.focus{margin-top:22px;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.focus-h{display:grid;grid-template-columns:76px 1fr;align-items:stretch}
+.focus-n{background:var(--ink);color:#fff;font-family:var(--disp);font-weight:700;font-size:22px;display:flex;align-items:center;justify-content:center}
+.focus-t{padding:16px 20px;min-width:0}
+.focus-t h3{overflow-wrap:break-word;hyphens:auto}
+.focus-t p{font-size:14.5px;color:var(--grey);margin-top:4px}
+.topics{list-style:none;border-top:1px solid var(--line)}
+.topic{display:grid;grid-template-columns:52px 1fr;gap:4px 12px;padding:14px 20px;border-bottom:1px solid var(--line)}
+.topic:last-child{border-bottom:none}
+.topic .no{font-family:var(--disp);font-weight:500;font-size:15px;color:var(--coral);padding-top:1px}
+.topic .tt{font-weight:600;font-size:15.5px}
+.topic .res{font-size:14px;color:var(--grey);margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font-size:12px;border-radius:999px;padding:2px 10px;background:var(--panel);color:var(--ink2);font-weight:500}
+.chip.h3{background:var(--ink);color:#fff}
+.chip.od{background:rgba(47,163,122,.14);color:#1d7a59}
+.chip.tr{background:rgba(62,123,214,.12);color:#2a5ea8}
+.skills{padding:12px 20px;background:var(--panel);font-size:13.5px;color:var(--grey)}
+.skills b{color:var(--ink);font-weight:600}
+.legend{margin-top:18px;display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--grey)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+
+/* -------- пилот -------- */
+.pilot{margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.pilot .card{padding:18px 20px}
+.pilot .card h3{font-size:16px}
+.pilot .card p{font-size:14px;color:var(--grey)}
+
+/* -------- IT -------- */
+.terms{margin-top:26px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.term{background:var(--ink);color:#fff;border-radius:16px;padding:18px}
+.term .big{font-family:var(--disp);font-weight:700;font-size:22px;line-height:1.1}
+.term .sm{font-size:13.5px;color:var(--ice);margin-top:6px}
+.pos{margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.p{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.p .pt{font-weight:600;font-size:15px}
+.p .pf{font-size:12.5px;color:var(--grey);margin-top:2px}
+h3.sub{margin-top:36px;margin-bottom:6px}
+.path{margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.step{position:relative;background:#fff;border:1px solid var(--line);padding:14px 16px 14px 22px}
+.step:first-child{border-radius:14px 0 0 14px}
+.step:last-child{border-radius:0 14px 14px 0}
+.step .sn{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);font-weight:600}
+.step .st{font-weight:600;font-size:15px}
+.step .sd{font-size:13px;color:var(--grey)}
+.dirs{margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.dir{background:#fff;border:1px solid var(--line);border-top:4px solid var(--teal);border-radius:14px;padding:14px 16px}
+.dir .dn{font-family:var(--disp);font-weight:700;color:var(--teal);font-size:15px}
+.dir .dt{font-weight:600;font-size:15px;margin:2px 0 6px}
+.dir ul{margin-left:16px;font-size:13.5px;color:var(--grey)}
+.dir .x{margin-top:8px;font-size:12.5px;color:var(--ink2)}
+.clusters{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.clusters span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13.5px}
+.steps{margin-top:14px;counter-reset:s;list-style:none;display:flex;flex-direction:column;gap:8px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;align-items:start;font-size:15px}
+.steps li::before{content:counter(s);width:26px;height:26px;border-radius:50%;background:var(--coral);color:#fff;font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center}
+
+/* -------- правила -------- */
+.rules{margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.rules .card h3{font-size:16px}
+.rules .card p{font-size:14.5px;color:var(--grey)}
+.cp{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.cp span{font-size:12.5px;background:var(--panel);border-radius:8px;padding:3px 9px;font-weight:500}
+.cp i{font-style:normal;color:var(--grey);align-self:center}
+
+/* -------- хроника -------- */
+.tl{list-style:none;margin-top:24px;border-left:2px solid var(--line);margin-left:8px}
+.tl li{position:relative;padding:0 0 18px 24px}
+.tl li::before{content:'';position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--line);border:2px solid var(--paper)}
+.tl li.done::before{background:var(--green)}
+.tl li.next::before{background:var(--amber)}
+.tl .when{font-size:12.5px;font-weight:600;letter-spacing:.04em;color:var(--grey)}
+.tl .what{font-size:15px}
+
+.join{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.join .card a{color:var(--coral);font-weight:600}
+.note{margin-top:26px;font-size:14px;color:var(--grey);border-left:3px solid var(--line);padding-left:16px;max-width:860px}
+.note a{color:var(--coral);font-weight:600}
+footer{background:var(--ink);color:var(--ice);padding:30px 0;font-size:13.5px}
+footer a{color:#fff}
+
+@media (max-width:820px){
+  .duo,.join{grid-template-columns:1fr}
+  .terms,.dirs{grid-template-columns:1fr 1fr}
+  .path{grid-template-columns:1fr 1fr}
+  .step{border-radius:0!important}
+}
+@media (max-width:520px){
+  .terms,.dirs,.path{grid-template-columns:1fr}
+  .topic{grid-template-columns:40px 1fr;padding:12px 14px}
+  .focus-h{grid-template-columns:56px 1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="crumbs">
+      <a href="../../../index.html">Мастерская «Технологии в экономике»</a> ·
+      <a href="../../../index.html#partners">Партнёры</a> ·
+      Спорткомитет СПб
+    </div>
+    <div class="eyebrow">Партнёр мастерской · владелец задач</div>
+    <h1>Спорткомитет СПб × <span class="accent">Технологии в экономике</span></h1>
+    <p class="sub">Комитет по физической культуре и спорту Санкт-Петербурга принёс в мастерскую две задачи
+      города: где строить спортивную инфраструктуру и как довести её до жителя. Обе работают на один
+      показатель — долю жителей, которые систематически занимаются спортом.</p>
+    <div class="pills">
+      <span class="pill open"><span class="dot"></span><a href="#tasks">Две задачи: идут</a></span>
+      <span class="pill open"><span class="dot"></span><a href="#topics">12 тем для команд</a></span>
+      <span class="pill wait"><span class="dot"></span>Дорожная карта: черновик к согласованию</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Кратко</div>
+    <h2>Кто партнёр и где он в мастерской</h2>
+    <div class="facts">
+      <div class="fact"><div class="k">Партнёр</div><div class="v"><b>Комитет по физической культуре и спорту</b> Правительства Санкт-Петербурга</div></div>
+      <div class="fact"><div class="k">Контакты</div><div class="v">А. Шантырь — глава Комитета · И. Сологуб — советник</div></div>
+      <div class="fact"><div class="k">Роль</div><div class="v"><b>Владелец</b> воркстримов: ставит задачи и принимает результат</div></div>
+      <div class="fact"><div class="k">Технолог</div><div class="v"><a href="../../geointellect/site/index.html">Геоинтеллект</a> — платформа, экспертиза, референс решения</div></div>
+      <div class="fact"><div class="k">Где участвует</div><div class="v">2 воркстрима — геоаналитика и вовлечение · стенд <code>geo-sport-spb</code></div></div>
+      <div class="fact"><div class="k">Треки</div><div class="v"><a href="../../../tracks/bi-4/site/index.html"><code>bi-4</code></a> (ИСЭ, 4 к.) · <a href="../../../tracks/econ-3/site/index.html"><code>econ-3</code></a> (Экономика, 3 к.)</div></div>
+    </div>
+    <p class="note">Студенческий проект: данные собираются командами из открытых источников и не являются
+      официальной позицией Комитета.</p>
+  </div>
+</section>
+
+<section class="alt" id="tasks">
+  <div class="wrap">
+    <div class="eyebrow">Задачи партнёра</div>
+    <h2>Две задачи — один показатель</h2>
+    <p class="lead">Головной ориентир — доля граждан, систематически занимающихся физкультурой и спортом
+      (национальная цель — около 70% к 2030 г.; госпрограмма СПб № 498). Задача 1 правильно размещает
+      предложение, задача 2 доводит его до жителя и возвращает обратную связь.</p>
+
+    <div class="focus">
+      <div class="focus-h">
+        <div class="focus-n">1</div>
+        <div class="focus-t"><h3>Развитие инфраструктуры спорта</h3>
+          <p>Спортобъекты распределены по городу неравномерно: житель едет через весь город, в районах без
+            инфраструктуры нет спортсменов, а рядом может быть школа, о которой он не знает.</p></div>
+      </div>
+      <ul class="topics">
+        <li class="topic"><div class="no">?</div><div><div class="tt">Три вопроса Комитета</div>
+          <div class="res">Что построить на свободном месте · чего не хватает в районе и городе · где строить, если есть потребность</div></div></li>
+        <li class="topic"><div class="no">→</div><div><div class="tt">Первый шаг: геоаналитика доступности и дефицита + пилот по 1–2 районам</div>
+          <div class="res">Реестр спортобъектов с координатами, изохроны 5/10/15 минут, «тёмные пятна» по видам спорта и категориям населения, ответ на три вопроса</div>
+          <div class="chips"><span class="chip">слой Ф · И · П</span><span class="chip h3">стенд geo-sport-spb</span><span class="chip od">открытые данные</span><span class="chip tr">bi-4 + econ-3</span></div></div></li>
+        <li class="topic"><div class="no">∞</div><div><div class="tt">Вызов: доказательное и долгосрочное планирование</div>
+          <div class="res">Размещение объектов — по плотности и составу населения, доступности и потребности; инвестиции в спорт становятся прозрачными</div></div></li>
+      </ul>
+      <div class="skills"><b>Навыки:</b> ГИС и пространственный анализ, Python, SQL (PostGIS), открытые данные, экономика участка. Воркстрим — «Геоаналитика спортинфраструктуры».</div>
+    </div>
+
+    <div class="focus">
+      <div class="focus-h">
+        <div class="focus-n">2</div>
+        <div class="focus-t"><h3>Вовлечение населения в спорт</h3>
+          <p>Жители плохо знают о событиях и объектах рядом, стратегии коммуникации нет, обратная связь —
+            медиасрез, настроения, запросы — не анализируется. Вложения слабо доходят до аудитории.</p></div>
+      </div>
+      <ul class="topics">
+        <li class="topic"><div class="no">→</div><div><div class="tt">Первый шаг: аудит каналов, медиасрез и прототип сквозной системы показателей</div>
+          <div class="res">Инвентаризация каналов, карта разрывов «актив/событие → канал → житель → обратная связь», показатели от верхних до локальных, черновик стратегии коммуникаций</div>
+          <div class="chips"><span class="chip">слой И · П</span><span class="chip h3">стенд geo-sport-spb</span><span class="chip od">без персональных данных</span><span class="chip tr">bi-4 + econ-3</span></div></div></li>
+        <li class="topic"><div class="no">∞</div><div><div class="tt">Вызов: сквозная система управления вовлечением</div>
+          <div class="res">Город управляет каналами, смыслами и обратной связью так же осознанно, как капитальными объектами</div></div></li>
+      </ul>
+      <div class="skills"><b>Навыки:</b> анализ медиа и соцсетей, ИИ-кластеризация откликов, системы показателей, маркетинг и коммуникации. Воркстрим — «Вовлечение в спорте».</div>
+    </div>
+  </div>
+</section>
+
+<section id="barriers">
+  <div class="wrap">
+    <div class="eyebrow">Стенд geo-sport-spb · барьеры</div>
+    <h2>Что нужно развязать</h2>
+    <p class="lead">Прогресс стенда — узлы. Барьеры ниже открыты; каждое задание снимает один или несколько из них.</p>
+    <div class="pilot">
+      <div class="card"><div class="tag">b1 · Ф · И</div><h3>Нет единого реестра</h3><p>Спортобъекты с координатами и категориями — собрать и геокодировать, пересборка скриптом.</p></div>
+      <div class="card"><div class="tag">b2 · И</div><h3>Нет модели доступности</h3><p>Изохроны и доля населения в зонах для 1–2 районов, повторимые второй командой.</p></div>
+      <div class="card"><div class="tag">b3 · И</div><h3>Нет данных о населении по домам</h3><p>Найти открытый прокси с оценкой ошибки — или честно показать, где искали.</p></div>
+      <div class="card"><div class="tag">b4 · П</div><h3>Три вопроса без ответа</h3><p>Пилотный ответ по району принят Комитетом: «беру / беру с условиями».</p></div>
+      <div class="card"><div class="tag">b5 · Ф · П</div><h3>Житель не видит предложение рядом</h3><p>Прототип публичной карты или ИИ-помощника, проверенный на жителях.</p></div>
+      <div class="card"><div class="tag">b6 · П</div><h3>Нет площадки для решений</h3><p>Первая сессия городской спортивной площадки — Комитет, районы, клубы, вузы.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="topics">
+  <div class="wrap">
+    <div class="eyebrow">Темы для команд · осень 2026</div>
+    <h2>12 тем и 4 мини-трека</h2>
+    <p class="lead">Темы привязаны к пулу задач Комитета. Очередь 1 — набор команд на открытой встрече 29.10;
+      очередь 2 — следом. Задания — в архиве, досье <code>sport-spb</code>.</p>
+
+    <div class="dirs">
+      <div class="dir"><div class="dn">Вовлечение</div><div class="dt">Коммуникации и медиа</div>
+        <ul><li>Т1 Каналы коммуникации: СПб × Москва × город-аналог</li><li>Т2 Медиаполе спорта СПб за полгода</li><li>Т3 Массовое событие под микроскопом</li><li>Т4 Путь жителя к занятию — «тайный покупатель»</li><li>Т5 Как города измеряют вовлечённость <i>(очередь 2)</i></li></ul></div>
+      <div class="dir"><div class="dn">Инфраструктура</div><div class="dt">Геоаналитика</div>
+        <ul><li>Т6 Атлас доступности одного района</li><li>Т7 Дворовые площадки: полевая инвентаризация</li><li>Т8 Рынок платного спорта района <i>(2)</i></li><li>Т9 «Что построить на этом участке» <i>(2)</i></li><li>Т10 Городские спортивные карты → прототип для СПб <i>(2)</i></li></ul></div>
+      <div class="dir"><div class="dn">ИИ</div><div class="dt">ИИ и городская площадка</div>
+        <ul><li>Т11 ИИ-помощник по вопросам жителей о спорте</li><li>Т12 Первая сессия городской спортивной площадки</li></ul></div>
+      <div class="dir"><div class="dn">Мини-треки</div><div class="dt">Индивидуально</div>
+        <ul><li>М1 Сверка показателей ГП-498</li><li>М2 Дизайн-код спортивных событий</li><li>М3 Карта любительских сообществ района</li><li>М4 Каталог открытых данных о спорте</li></ul></div>
+    </div>
+    <p class="note">Все задания темы — в <a href="../../../assignments/site/index.html#dossier=sport-spb">архиве заданий</a>
+      (досье «Спорт СПб», задания <code>sp-01…sp-16</code>).</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Как устроена работа</div>
+    <h2>Правила для участников</h2>
+    <div class="rules">
+      <div class="card"><h3>Только открытые данные</h3><p>Портал Спорткомитета, OpenStreetMap, открытые данные СПб, Росстат.
+        Без персональных данных: в медиасрезе — обобщённые отклики, на фото площадок — без людей. У каждой цифры — источник и дата.</p></div>
+      <div class="card"><h3>КП — референс, не статистика</h3><p>Предложение Геоинтеллекта «Цифровой спортивный двойник СПб» показывает,
+        как задачу решает промышленная платформа. Команда строит методологию и пилот на открытых данных.</p></div>
+      <div class="card"><h3>Приёмка</h3><p>Результат принимают Комитет, технолог и мастер. Вердикт:</p>
+        <div class="cp"><span>беру</span><i>·</i><span>беру с условиями</span><i>·</i><span>не беру</span></div></div>
+      <div class="card"><h3>Наследство</h3><p>Реестр, метод и код модели доступности переходят к следующей команде и к Комитету.
+        Команда передаёт открытые узлы, а не отчёт.</p></div>
+      <div class="card"><h3>Цифровой след</h3><p>Задачи — в Issues, изменения — через Pull request, итоги встреч — в протоколах.
+        На нём держится и оценка, и разговор с партнёром.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Хроника и дорожная карта</div>
+    <h2>Что уже завязано и что дальше</h2>
+    <ul class="tl">
+      <li class="done"><div class="when">18.09.2026</div><div class="what">Коммерческое предложение Геоинтеллекта «Цифровой спортивный двойник СПб» — референс решения задачи 1.</div></li>
+      <li class="done"><div class="when">23.09.2026</div><div class="what">Комитет сформулировал две задачи для мастерской; передана госпрограмма СПб № 498.</div></li>
+      <li class="done"><div class="when">08–09.10.2026</div><div class="what">Заведён стенд «ГИС · спорт СПб»: барьеры b1–b6, задания по слоям, сеть узлов.</div></li>
+      <li class="next"><div class="when">октябрь 2026</div><div class="what">Утверждение дорожной карты с Комитетом; запрос данных — объекты, охват, медиаметрики. Факт утверждения пока не зафиксирован.</div></li>
+      <li class="next"><div class="when">21.10.2026</div><div class="what">Интенсив с экспертами — первый мост стенда: реестр, архитектура, первые изохроны.</div></li>
+      <li class="next"><div class="when">29.10.2026</div><div class="what">Открытая встреча в Музее спорта: задачи Комитета публично, запись в команды на темы очереди 1.</div></li>
+      <li class="next"><div class="when">18.11.2026</div><div class="what">Промежуточное ревью прототипов.</div></li>
+      <li><div class="when">16.12.2026</div><div class="what">Демо-день — первая сессия городской спортивной площадки; вердикт Комитета по трём вопросам.</div></li>
+    </ul>
+    <p class="note">Даты после 10.10 — ориентиры черновика дорожной карты, до согласования с Комитетом.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Как включиться</div>
+    <h2>Два входа</h2>
+    <div class="join">
+      <div class="card"><div class="tag">На занятии</div><h3>Войти через трек</h3>
+        <p>Задания стенда выдаются в треках <a href="../../../tracks/bi-4/site/index.html"><code>bi-4</code></a> и
+          <a href="../../../tracks/econ-3/site/index.html"><code>econ-3</code></a>: ставка дня, охота на пометки, сборка за пару, разметка площадок своего двора.</p></div>
+      <div class="card"><div class="tag">В команде</div><h3>Взять тему</h3>
+        <p>Выбрать тему из Т1–Т12 и записаться — на открытой встрече 29.10 или через Д. Хана. Задания тем — в
+          <a href="../../../assignments/site/index.html#dossier=sport-spb">архиве заданий</a>.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Мастерская «Технологии в экономике» · ЭФ СПбГУ · осень 2026 ·
+    <a href="https://github.com/SPBUEcon/econ-library">econ-library</a> · обновлено 10.10.2026</div>
+</footer>
+
+</body>
+</html>
