@@ -3,10 +3,14 @@
   Дашборд Мастерской «Технологии в экономике» — КОРНЕВАЯ витрина-навигатор (index.html).
   Публичный URL: https://spbuecon.github.io/econ-library/
   Самодостаточная страница, работает по file:// без сервера.
-  Короткий навигатор: группы и дисциплины · партнёры · содержательные страницы. Полная сводка
-  (обзор, ресурсы, воркстримы) — DASHBOARD.md. Партнёры — в синхроне с partners/README.md.
-  Учебные материалы дисциплины — disciplines/technologies-econ-fin/site/index.html.
-  Обновлено: 2026-10-09.
+
+  Блоки между маркерами «gen:ИМЯ» и «/gen:ИМЯ» (HTML-комментарии) собираются из каталогов скриптом
+      python program/site/build_home.py
+  и руками не правятся: группы и расписание — tracks/catalog/, партнёры — partners/README.md,
+  счётчики — theses/catalog/ и assignments/catalog/. Остальное (шапка, тексты, стили, поиск) —
+  оболочка страницы, её можно править здесь.
+  Поиск подгружает индекс program/site/search-index.js (тоже собирается скриптом) при первом запросе.
+  Полная сводка (обзор, ресурсы, воркстримы) — DASHBOARD.md.
 -->
 <html lang="ru">
 <head>
@@ -41,7 +45,7 @@ h2{font-family:var(--disp);font-weight:700;font-size:clamp(24px,3.2vw,36px);line
 .hero{background:var(--ink);color:#fff;padding:70px 0 74px}
 .hero .eyebrow{color:var(--ice)}
 .hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(28px,4.2vw,48px);line-height:1.12;max-width:960px}
-.pills{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap}
+.pills{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap}
 a.pill{display:inline-flex;align-items:center;gap:8px;background:var(--ink2);color:#fff;text-decoration:none;
   font-weight:600;font-size:15px;padding:11px 22px;border-radius:999px;border:1px solid rgba(220,230,245,.25);
   transition:transform .15s ease, border-color .15s ease, background .15s ease}
@@ -49,12 +53,58 @@ a.pill:hover{transform:translateY(-2px);border-color:var(--coral);background:var
 a.pill .arr{color:var(--coral)}
 a.pill:focus-visible{outline:3px solid #fff;outline-offset:3px}
 
+/* -------- поиск -------- */
+.search{margin-top:32px;max-width:860px}
+.search-box{display:flex;align-items:center;gap:10px;background:#fff;border-radius:16px;padding:6px 6px 6px 18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.search-box svg{flex:none;color:var(--grey)}
+.search-box input{flex:1;min-width:0;border:0;outline:0;font:inherit;font-size:17px;color:var(--ink);padding:10px 0;background:transparent}
+.search-box input::placeholder{color:#8A90A3}
+.search-box input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+.search-box kbd{flex:none;font:600 12px var(--body);color:var(--grey);border:1px solid var(--line);border-radius:6px;padding:2px 7px;margin-right:8px}
+.search-box button{flex:none;border:0;background:var(--panel);color:var(--ink);font:600 14px var(--body);border-radius:10px;padding:9px 12px;cursor:pointer}
+.search-box button[hidden]{display:none}
+.search-box:focus-within{box-shadow:0 0 0 3px var(--coral),0 10px 30px rgba(0,0,0,.18)}
+.search-hint{margin-top:10px;font-size:13.5px;color:var(--ice);opacity:.85}
+/* во время поиска шапка сжимается, чтобы результаты были видны сразу */
+body.searching .search-hint, body.searching .pills{display:none}
+body.searching .hero{padding-bottom:36px}
+
+#results{padding:36px 0 48px;background:#fff;border-bottom:1px solid var(--line)}
+#results[hidden]{display:none}
+.r-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 18px;margin-bottom:14px}
+.r-head h2{font-size:22px;margin:0}
+.r-stat{color:var(--grey);font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{border:1px solid var(--line);background:var(--paper);color:var(--ink);font:500 13.5px var(--body);border-radius:999px;padding:5px 12px;cursor:pointer}
+.chip b{font-weight:600;color:var(--grey);margin-left:4px}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip.on b{color:var(--ice)}
+.hits{list-style:none;display:grid;gap:10px}
+.hit{border:1px solid var(--line);border-radius:14px;padding:14px 18px;background:var(--paper)}
+.hit.first{border-color:var(--coral)}
+.hit-top{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12.5px;color:var(--grey);margin-bottom:4px}
+.ty{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--coral)}
+.hit-top code{font-size:12px;background:var(--panel);border-radius:6px;padding:1px 6px}
+.hit-t{font-weight:600;font-size:16.5px;color:var(--ink);text-decoration:none}
+.hit-t:hover{text-decoration:underline;text-decoration-color:var(--coral)}
+.hit-d{font-size:14px;color:var(--grey);margin-top:3px}
+.hit-a{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin-top:8px;font-size:13.5px}
+.hit-a a{color:var(--coral);font-weight:600;text-decoration:none}
+.hit-a a:hover{text-decoration:underline}
+.hit-a .path{color:#8A90A3;font-size:12.5px;overflow-wrap:anywhere}
+mark{background:#FFE3DE;color:inherit;border-radius:3px;padding:0 1px}
+.more{margin-top:14px;border:1px solid var(--line);background:#fff;font:600 14px var(--body);border-radius:10px;padding:9px 16px;cursor:pointer}
+.empty{color:var(--grey);padding:12px 0}
+
 .alt{background:var(--panel)}
 
 /* -------- бейджи / статусы -------- */
 .status{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600}
 .status .dot{width:9px;height:9px;border-radius:50%}
 .status.active .dot{background:var(--green)} .status.active{color:var(--green)}
+.status.soon .dot{background:var(--amber)} .status.soon{color:var(--amber)}
+.status.done .dot{background:#A5ABBA} .status.done{color:var(--grey)}
 
 /* -------- таблицы -------- */
 .tbl{margin-top:34px;overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:#fff}
@@ -65,28 +115,47 @@ tr:last-child td{border-bottom:none}
 td a{color:var(--coral);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(240,97,79,.35)}
 td a:hover{border-bottom-color:var(--coral)}
 td .sub{display:block;margin-top:4px;font-size:12.5px;color:var(--grey);font-weight:400}
+td .sub:empty{display:none}
 .gset{display:inline-flex;flex-wrap:wrap;gap:4px;border:1px solid var(--line);border-radius:12px;padding:4px;margin:0 6px 6px 0}
 .gset .g{background:var(--panel);border-radius:999px;padding:1px 9px;font-size:12.5px;white-space:nowrap}
 .muted{color:var(--grey)}
 .note{margin-top:18px;font-size:14px;color:var(--grey);border-left:3px solid var(--line);padding-left:14px}
 .note a{color:var(--coral);font-weight:600}
+.src{margin-top:12px;font-size:13px;color:var(--grey)}
+.src .edit-row{display:inline-block;margin-left:12px}
+.src a{color:var(--grey);font-weight:600}
+.src a:hover{color:var(--coral)}
+.edit-row a{color:var(--coral)}
 
 /* -------- содержательные страницы: плитки -------- */
 .res{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:34px}
-.res a{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--line);border-radius:18px;
-  padding:24px 24px;text-decoration:none;color:inherit;transition:transform .15s ease, box-shadow .15s ease}
-.res a:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(27,32,56,.09)}
-.res .rt{font-family:var(--disp);font-weight:500;font-size:19px}
-.res .rd{font-size:14px;color:var(--grey)}
-.res .go{margin-top:auto;padding-top:6px;font-size:14px;font-weight:600;color:var(--coral)}
+.tile{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;
+  transition:transform .15s ease, box-shadow .15s ease}
+.tile:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(27,32,56,.09)}
+.tile-main{display:flex;flex-direction:column;gap:8px;padding:24px 24px 18px;text-decoration:none;color:inherit;flex:1}
+.tile .rt{font-family:var(--disp);font-weight:500;font-size:19px}
+.tile .rd{font-size:14px;color:var(--grey)}
+.tile .go{margin-top:auto;padding-top:6px;font-size:14px;font-weight:600;color:var(--coral)}
+.tile-edit{border-top:1px solid var(--line);padding:10px 24px;font-size:13px;color:var(--grey);background:var(--paper)}
+.tile-edit a{color:var(--coral);font-weight:600;text-decoration:none}
+.tile-edit a:hover{text-decoration:underline}
 
 /* -------- footer -------- */
 .foot{background:var(--ink);color:var(--ice);padding:40px 0;font-size:14px}
 .foot a{color:#fff;text-decoration:none;font-weight:600}
 .foot a:hover{text-decoration:underline}
+.foot code{color:#fff}
 
 @media (max-width:900px){
   .res{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .wrap{padding:0 16px}
+  section{padding:44px 0}
+  .hero{padding:48px 0 52px}
+  .search-box{padding-left:14px}
+  .search-box kbd{display:none}
+  .search-box input{font-size:16px}
 }
 </style>
 </head>
@@ -97,37 +166,50 @@ td .sub{display:block;margin-top:4px;font-size:12.5px;color:var(--grey);font-wei
   <div class="wrap">
     <div class="eyebrow">ЭФ СПбГУ · осень 2026 · дашборд</div>
     <h1>Технологии в экономике и финансах</h1>
+    <form class="search" role="search" onsubmit="return false">
+      <label class="search-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" autocomplete="off" spellcheck="false"
+               placeholder="Поиск: тезис, задание, группа, партнёр, документ…" aria-label="Поиск по репозиторию">
+        <kbd title="Нажмите /, чтобы перейти к поиску">/</kbd>
+        <button type="button" id="q-clear" hidden>Сбросить</button>
+      </label>
+      <p class="search-hint">Тезисы и лекции, задания, группы, партнёры, воркстримы, стенды и все документы репозитория. «✎ Править» открывает исходный файл в редакторе GitHub.</p>
+    </form>
     <nav class="pills" aria-label="О мастерской">
       <a class="pill" href="program/site/landing_tech_econ.html">Лендинг мастерской <span class="arr">→</span></a>
       <a class="pill" href="https://github.com/SPBUEcon/econ-library/blob/main/program/architecture.md">Архитектура мастерской <span class="arr">→</span></a>
+      <a class="pill" href="https://github.com/SPBUEcon/econ-library/blob/main/CONTRIBUTING.md">Как внести правку <span class="arr">→</span></a>
     </nav>
   </div>
 </header>
+
+<!-- ===================== РЕЗУЛЬТАТЫ ПОИСКА ===================== -->
+<section id="results" hidden aria-live="polite">
+  <div class="wrap">
+    <div class="r-head"><h2>Результаты поиска</h2><span class="r-stat" id="r-stat"></span></div>
+    <div class="chips" id="r-chips"></div>
+    <ol class="hits" id="r-list"></ol>
+    <button class="more" id="r-more" type="button" hidden>Показать ещё</button>
+  </div>
+</section>
 
 <!-- ===================== 1. ГРУППЫ И ДИСЦИПЛИНЫ ===================== -->
 <section id="tracks">
   <div class="wrap">
     <div class="eyebrow">01 · Группы и предметы</div>
     <h2>Где и кому читается</h2>
-    <div class="tbl">
-      <table>
-        <thead><tr><th>Курс · специальность</th><th>Группы</th><th>Предмет</th><th>Занятия · осень 2026</th></tr></thead>
-        <tbody>
-          <tr><td>3 · Экономика</td>
-            <td><span class="gset"><span class="g">24.Б07-э</span><span class="g">24.Б08-э</span><span class="g">24.Б09-э</span><span class="g">24.Б10-э</span></span><span class="gset"><span class="g">24.Б11-э</span><span class="g">24.Б12-э</span><span class="g">24.Б13-э</span><span class="g">24.Б14-э</span></span></td>
-            <td><a href="tracks/econ-3/site/index.html" title="Расписание занятий и материалы"><b>Применение информационных технологий в экономике и финансах</b></a><span class="sub"><span class="status active"><span class="dot"></span>идёт</span></span></td>
-            <td>Практические: чт 17.09–22.10, сб 17.10 и 24.10<br>Сам. работа онлайн: пн / пт 26.10–11.12</td></tr>
-          <tr><td>4 · Бизнес-информатика (ИСЭ)</td>
-            <td><span class="muted">2 группы, номера уточнить</span></td>
-            <td><a href="tracks/bi-4/site/index.html" title="Расписание занятий и материалы"><i>уточнить</i></a><span class="sub">занятия прошли</span></td>
-            <td>Пт 18.09 и 25.09 — проведены; других занятий нет</td></tr>
-          <tr><td>1 · <i>уточнить</i></td>
-            <td><span class="gset"><span class="g">26.Б01-э</span></span><span class="gset"><span class="g">26.Б02-э</span></span><span class="gset"><span class="g">26.Б03-э</span></span><span class="gset"><span class="g">26.Б04-э</span></span></td>
-            <td><b>Введение в бизнес-информатику</b><span class="sub">трек не заведён</span></td>
-            <td>Практические: пт 23.10 и 30.10 (Б02, Б04), ср 28.10–25.11 (Б01, Б03)</td></tr>
-        </tbody>
-      </table>
-    </div>
+<!-- gen:tracks -->
+<div class="tbl"><table>
+<thead><tr><th>Курс · специальность</th><th>Группы</th><th>Предмет</th><th>Занятия</th></tr></thead>
+<tbody>
+<tr><td>3 · Экономика</td><td><span class="gset"><span class="g">24.Б07-э</span><span class="g">24.Б08-э</span><span class="g">24.Б09-э</span><span class="g">24.Б10-э</span></span><span class="gset"><span class="g">24.Б11-э</span><span class="g">24.Б12-э</span><span class="g">24.Б13-э</span><span class="g">24.Б14-э</span></span></td><td><a href="tracks/econ-3/site/index.html" title="Расписание занятий и материалы"><b>Применение информационных технологий в экономике и финансах</b></a><span class="sub" data-status="pitef"></span></td><td>Практические: чт 17.09–22.10, сб 17.10 и 24.10<br>Сам. работа онлайн: пн 26.10–07.12, пт 30.10–11.12<span class="sub" data-next="pitef"></span></td></tr>
+<tr><td>Бизнес-информатика (ИСЭ), 4 курс (2 группы)</td><td><span class="muted">номера уточнить</span></td><td><a href="tracks/bi-4/site/index.html" title="Расписание занятий и материалы"><i>уточнить</i></a><span class="sub" data-status="bi4"></span></td><td>Занятия: пт 18.09 и 25.09<span class="sub" data-next="bi4"></span></td></tr>
+<tr><td>1 · <i>уточнить</i></td><td><span class="gset"><span class="g">26.Б01-э</span></span><span class="gset"><span class="g">26.Б02-э</span></span><span class="gset"><span class="g">26.Б03-э</span></span><span class="gset"><span class="g">26.Б04-э</span></span></td><td><b>Введение в бизнес-информатику</b><span class="sub" data-status="vbi"></span><span class="sub">трек не заведён</span></td><td>Практические: пт 23.10 и 30.10, ср 28.10–25.11<span class="sub" data-next="vbi"></span></td></tr>
+</tbody></table></div>
+<p class="src">Собрано из каталога <a href="https://github.com/SPBUEcon/econ-library/tree/main/tracks/catalog">tracks/catalog</a>. <span class="edit-row">✎ Править: <a href="https://github.com/SPBUEcon/econ-library/edit/main/tracks/catalog/groups.csv">groups.csv</a> · <a href="https://github.com/SPBUEcon/econ-library/edit/main/tracks/catalog/subjects.csv">subjects.csv</a> · <a href="https://github.com/SPBUEcon/econ-library/edit/main/tracks/catalog/schedule-2026-fall.csv">schedule-2026-fall.csv</a></span></p>
+<script>window.HOME_SCHEDULE = {"pitef": [["2026-09-17", "09:00", "93", "очно"], ["2026-09-17", "10:45", "93", "очно"], ["2026-09-24", "09:00", "93", "очно"], ["2026-09-24", "10:45", "93", "очно"], ["2026-10-01", "09:00", "93", "очно"], ["2026-10-01", "10:45", "93", "очно"], ["2026-10-08", "09:00", "93", "очно"], ["2026-10-08", "10:45", "93", "очно"], ["2026-10-15", "09:00", "93", "очно"], ["2026-10-15", "10:45", "93", "очно"], ["2026-10-17", "09:00", "94", "очно"], ["2026-10-17", "10:45", "94", "очно"], ["2026-10-22", "09:00", "93", "очно"], ["2026-10-22", "10:45", "93", "очно"], ["2026-10-24", "09:00", "94", "очно"], ["2026-10-24", "10:45", "94", "очно"], ["2026-10-26", "19:00", "", "онлайн (ИКТ)"], ["2026-10-30", "19:00", "", "онлайн (ИКТ)"], ["2026-11-09", "19:00", "", "онлайн (ИКТ)"], ["2026-11-13", "19:00", "", "онлайн (ИКТ)"], ["2026-11-23", "19:00", "", "онлайн (ИКТ)"], ["2026-11-27", "19:00", "", "онлайн (ИКТ)"], ["2026-12-07", "19:00", "", "онлайн (ИКТ)"], ["2026-12-11", "19:00", "", "онлайн (ИКТ)"]], "bi4": [["2026-09-18", "", "", ""], ["2026-09-25", "", "", ""]], "vbi": [["2026-10-23", "13:15", "315", "очно"], ["2026-10-23", "15:00", "315", "очно"], ["2026-10-28", "15:15", "36", "очно"], ["2026-10-30", "13:15", "315", "очно"], ["2026-10-30", "15:00", "315", "очно"], ["2026-11-11", "15:15", "36", "очно"], ["2026-11-18", "15:15", "36", "очно"], ["2026-11-25", "15:15", "36", "очно"]]};</script>
+<!-- /gen:tracks -->
   </div>
 </section>
 
@@ -137,21 +219,21 @@ td .sub{display:block;margin-top:4px;font-size:12.5px;color:var(--grey);font-wei
     <div class="eyebrow">02 · Партнёры</div>
     <h2>Носители суперзадач</h2>
     <p class="lead">Ссылка в имени — страница партнёра.</p>
-    <div class="tbl">
-      <table>
-        <thead><tr><th>Партнёр</th><th>Роль</th><th>Воркстрим(ы)</th><th>Связной</th></tr></thead>
-        <tbody>
-          <tr><td><a href="partners/komsport-spb/site/index.html">Спорткомитет СПб</a></td><td>Владелец</td><td>Геоаналитика, Вовлечение</td><td>А. Шантырь, И. Сологуб</td></tr>
-          <tr><td><a href="partners/geointellect/site/index.html">Геоинтеллект</a></td><td>Шерпа-технолог · Эксперт · Кадровый потребитель (практикант)</td><td>Геоаналитика, Биеннале карт, ИИ</td><td>Д. Структов</td></tr>
-          <tr><td><a href="workstreams/askona-live/site/index.html">АсконаLive</a></td><td>Кадровый потребитель + Шерпа (владелец — кандидат)</td><td>Аскона (прото)</td><td>Н. Мандавиа, А. Ларионов</td></tr>
-          <tr><td>Ингосстрах</td><td>Владелец + Эксперт</td><td>Страхование</td><td>Г. Владельщикова</td></tr>
-          <tr><td>Федерация фиджитал-спорта СПб</td><td>Владелец + Эксперт</td><td>Фиджитал-спорт</td><td>А. Спелов</td></tr>
-          <tr><td>ИИтех (veai)</td><td>Эксперт (среда)</td><td>ИИ / цифровые двойники</td><td>М. Костицин</td></tr>
-          <tr><td>ИТМО Хайпарк</td><td>Эксперт + Владелец флагмана</td><td>Венчур, флагманы</td><td>М. Мастин</td></tr>
-          <tr><td>Ирен Артемова</td><td>Владелец флагмана</td><td>Международный техноцентр</td><td>—</td></tr>
-        </tbody>
-      </table>
-    </div>
+<!-- gen:partners -->
+<div class="tbl"><table>
+<thead><tr><th>Партнёр</th><th>Роль</th><th>Воркстрим(ы)</th><th>Связной</th></tr></thead>
+<tbody>
+<tr><td><a href="https://github.com/SPBUEcon/econ-library/blob/main/partners/ingosstrakh/README.md">Ингосстрах</a></td><td>Владелец + Эксперт</td><td>Страхование</td><td>Г. Владельщикова</td></tr>
+<tr><td><a href="partners/komsport-spb/site/index.html">Спорткомитет СПб</a></td><td>Владелец</td><td>Геоаналитика спортинфраструктуры, Вовлечение в спорт</td><td>А. Шантырь, И. Сологуб</td></tr>
+<tr><td><a href="partners/geointellect/site/index.html">Геоинтеллект</a></td><td>Шерпа-технолог · Эксперт + событие · носитель задачи стенда (в согласовании) · Кадровый потребитель — ищет практиканта</td><td>Геоаналитика спортинфраструктуры, Биеннале карт, ИИ / цифровые двойники</td><td>Д. Структов</td></tr>
+<tr><td>Федерация фиджитал-спорта СПб</td><td>Владелец + Эксперт</td><td>Фиджитал-спорт</td><td>А. Спелов</td></tr>
+<tr><td>ИИтех (veai)</td><td>Эксперт (среда)</td><td>ИИ / цифровые двойники</td><td>М. Костицин</td></tr>
+<tr><td>ИТМО Хайпарк</td><td>Эксперт + Владелец флагмана</td><td>Технологии и венчур</td><td>М. Мастин</td></tr>
+<tr><td>Ирен Артемова</td><td>Владелец флагмана</td><td>«Международный технологический центр»</td><td>—</td></tr>
+<tr><td><a href="workstreams/askona-live/site/index.html">АсконаLive</a></td><td>Кадровый потребитель (IT-стажировки) + Шерпа (кураторы тем); Владелец — кандидат</td><td>Аскона (прото)</td><td>Н. Мандавиа, А. Ларионов; кураторы-шерпы тем от 6 подразделений</td></tr>
+</tbody></table></div>
+<p class="src">Собрано из <a href="https://github.com/SPBUEcon/econ-library/blob/main/partners/README.md">partners/README.md</a> («Реестр партнёров»). <span class="edit-row">✎ <a href="https://github.com/SPBUEcon/econ-library/edit/main/partners/README.md">Править реестр</a></span></p>
+<!-- /gen:partners -->
   </div>
 </section>
 
@@ -160,24 +242,196 @@ td .sub{display:block;margin-top:4px;font-size:12.5px;color:var(--grey);font-wei
   <div class="wrap">
     <div class="eyebrow">03 · Содержательные страницы</div>
     <h2>Контент и задания</h2>
-    <div class="res">
-      <a href="theses/site/index.html"><span class="rt">Тезисы и лекции</span>
-        <span class="rd">Сборки (лекции, серии, кейсы) карточками; тезисы и кандидаты из каталога дисциплины — таблицей с фильтрами; банк вопросов и источники</span>
-        <span class="go">Открыть →</span></a>
-      <a href="assignments/site/index.html"><span class="rt">Архив заданий</span>
-        <span class="rd">Все задания для групп: конкретные, параметрические, эстафетные; фильтры по навыку, типу, досье</span>
-        <span class="go">Открыть →</span></a>
-    </div>
+<!-- gen:content -->
+<div class="res">
+<div class="tile"><a class="tile-main" href="theses/site/index.html"><span class="rt">Тезисы и лекции</span><span class="rd">16 тезисов · 4 сборки (лекции, серии, кейсы) · 130 единиц каталога дисциплины, из них 113 — кандидаты в тезисы</span><span class="go">Открыть →</span></a><div class="tile-edit">✎ Править: <a href="https://github.com/SPBUEcon/econ-library/tree/main/theses/catalog">каталог тезисов</a></div></div>
+<div class="tile"><a class="tile-main" href="assignments/site/index.html"><span class="rt">Архив заданий</span><span class="rd">45 заданий: конкретные, параметрические, эстафетные · досье: 2; фильтры по навыку, типу, досье</span><span class="go">Открыть →</span></a><div class="tile-edit">✎ Править: <a href="https://github.com/SPBUEcon/econ-library/edit/main/assignments/catalog/templates.csv">templates.csv</a></div></div>
+<div class="tile"><a class="tile-main" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/README.md"><span class="rt">Воркстримы</span><span class="rd">10 папок воркстримов: формула, инверт, узлы, участники, хроника. Карта — на GitHub</span><span class="go">Открыть на GitHub →</span></a><div class="tile-edit">✎ Править: <a href="https://github.com/SPBUEcon/econ-library/edit/main/workstreams/README.md">карту</a></div></div>
+<div class="tile"><a class="tile-main" href="https://github.com/SPBUEcon/econ-library/blob/main/stands/README.md"><span class="rt">Стенды</span><span class="rd">3 стенда, 39 узлов прогресса — где выполняются задания и проверяется результат</span><span class="go">Открыть на GitHub →</span></a><div class="tile-edit">✎ Править: <a href="https://github.com/SPBUEcon/econ-library/edit/main/stands/README.md">README</a></div></div>
+</div>
+<!-- /gen:content -->
   </div>
 </section>
 
 <!-- ===================== FOOTER ===================== -->
 <footer class="foot">
   <div class="wrap">
-    Дашборд Мастерской «Технологии в экономике» · ЭФ СПбГУ · осень 2026 · обновлено 2026-10-09.
-    Полная сводка — <a href="https://github.com/SPBUEcon/econ-library/blob/main/DASHBOARD.md">DASHBOARD.md</a>. Правки — через Pull request.
+    Дашборд Мастерской «Технологии в экономике» · ЭФ СПбГУ · осень 2026.
+    Полная сводка — <a href="https://github.com/SPBUEcon/econ-library/blob/main/DASHBOARD.md">DASHBOARD.md</a>.
+    Блоки страницы собираются из каталогов: <code>python program/site/build_home.py</code>.
+    Правки — кнопками «✎ Править» (редактор GitHub) или через Pull request.
   </div>
 </footer>
+
+<script>
+/* ---------- статус треков: считается в браузере по расписанию, без пересборки ---------- */
+(function () {
+  var S = window.HOME_SCHEDULE || {};
+  var WD = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"];
+  var now = new Date();
+  var today = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0") + "-" + String(now.getDate()).padStart(2, "0");
+  function fmt(iso) { var d = new Date(iso + "T12:00:00"); return WD[d.getDay()] + " " + iso.slice(8, 10) + "." + iso.slice(5, 7); }
+  function badge(cls, text) {
+    var s = document.createElement("span"); s.className = "status " + cls;
+    var dot = document.createElement("span"); dot.className = "dot"; s.appendChild(dot);
+    s.appendChild(document.createTextNode(text)); return s;
+  }
+  Object.keys(S).forEach(function (sid) {
+    var ls = S[sid], past = ls.filter(function (l) { return l[0] < today; }), next = ls.filter(function (l) { return l[0] >= today; });
+    var st = document.querySelector('[data-status="' + sid + '"]'), nx = document.querySelector('[data-next="' + sid + '"]');
+    if (!ls.length) return;
+    if (st) st.appendChild(next.length ? (past.length ? badge("active", "идёт") : badge("soon", "начнётся " + fmt(next[0][0]).slice(3)))
+                                       : badge("done", "занятия прошли"));
+    if (nx && next.length) {
+      var l = next[0], when = l[0] === today ? "сегодня" : fmt(l[0]);
+      var where = (l[3] || "").indexOf("онлайн") === 0 ? "онлайн" : (l[2] ? "ауд. " + l[2] : "");
+      nx.textContent = "Ближайшее: " + when + (l[1] ? ", " + l[1] : "") + (where ? " · " + where : "");
+    }
+  });
+})();
+
+/* ---------- поиск по репозиторию ---------- */
+(function () {
+  var input = document.getElementById("q"), clear = document.getElementById("q-clear"),
+      box = document.getElementById("results"), list = document.getElementById("r-list"),
+      chips = document.getElementById("r-chips"), stat = document.getElementById("r-stat"),
+      more = document.getElementById("r-more");
+  var IDX = null, loading = false, filter = "", shown = 30, hits = [], toks = [], timer = null;
+  var STEP = 30;
+
+  function norm(s) { return String(s || "").toLowerCase().replace(/ё/g, "е"); }
+  function esc(s) { return String(s || "").replace(/[&<>"']/g, function (c) { return {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]; }); }
+
+  function load(cb) {
+    if (IDX) return cb();
+    if (loading) return;
+    loading = true; stat.textContent = "Загружаю индекс…"; box.hidden = false;
+    var s = document.createElement("script");
+    s.src = "program/site/search-index.js";
+    s.onload = function () {
+      IDX = window.HOME_INDEX;
+      IDX.order = {}; Object.keys(IDX.types).forEach(function (k, i) { IDX.order[k] = i; });
+      IDX.items.forEach(function (it) {
+        it.x = (it.x || "").replace(" ¶ ", " · ");
+        it.dd = it.d || (it.x.length > 240 ? it.x.slice(0, 240).replace(/\s\S*$/, "") + " …" : it.x);
+        it._n = norm(it.n); it._k = norm(it.k); it._d = norm(it.dd);
+        it._all = norm([it.n, it.k, it.d, it.x, it.s, IDX.types[it.t]].join(" "));
+      });
+      loading = false; cb();
+    };
+    s.onerror = function () { loading = false; stat.textContent = "Не удалось загрузить индекс поиска."; };
+    document.head.appendChild(s);
+  }
+
+  function score(it) {
+    var sc = 0;
+    for (var i = 0; i < toks.length; i++) {
+      var t = toks[i];
+      if (it._all.indexOf(t) < 0) return -1;
+      if (it._k === t) sc += 40;
+      var p = it._n.indexOf(t);
+      if (p === 0) sc += 16;
+      else if (p > 0) sc += /[\s«"(—\-·.,:]/.test(it._n.charAt(p - 1)) ? 11 : 6;
+      else if (it._d.indexOf(t) >= 0) sc += 3;
+      else sc += 1;
+    }
+    return sc;
+  }
+
+  function mark(text) {
+    text = String(text || "");
+    var n = norm(text), r = [];
+    toks.forEach(function (t) { var i = n.indexOf(t); while (i >= 0) { r.push([i, i + t.length]); i = n.indexOf(t, i + t.length); } });
+    if (!r.length) return esc(text);
+    r.sort(function (a, b) { return a[0] - b[0]; });
+    var m = [r[0].slice()];
+    r.slice(1).forEach(function (x) { var last = m[m.length - 1]; if (x[0] <= last[1]) last[1] = Math.max(last[1], x[1]); else m.push(x.slice()); });
+    var out = "", at = 0;
+    m.forEach(function (x) { out += esc(text.slice(at, x[0])) + "<mark>" + esc(text.slice(x[0], x[1])) + "</mark>"; at = x[1]; });
+    return out + esc(text.slice(at));
+  }
+
+  function snippet(it) {
+    var d = it.dd || "";
+    var hasD = toks.some(function (t) { return it._d.indexOf(t) >= 0; });
+    if (!hasD && it.x) {
+      var nx = norm(it.x), pos = -1;
+      toks.some(function (t) { pos = nx.indexOf(t); return pos >= 0; });
+      if (pos >= 0) {
+        var a = Math.max(0, pos - 70), b = Math.min(it.x.length, pos + 170);
+        return (a > 0 ? "… " : "") + mark(it.x.slice(a, b)) + (b < it.x.length ? " …" : "");
+      }
+    }
+    return mark(d.length > 260 ? d.slice(0, 260) + " …" : d);
+  }
+
+  function ext(u) { return /^https?:/.test(u); }
+  function link(u, text, cls) {
+    return '<a' + (cls ? ' class="' + cls + '"' : "") + ' href="' + esc(u) + '"' + (ext(u) ? ' target="_blank" rel="noopener"' : "") + ">" + text + "</a>";
+  }
+
+  function render() {
+    var q = input.value.trim();
+    clear.hidden = !q;
+    document.body.classList.toggle("searching", !!q);
+    if (!q) { box.hidden = true; history.replaceState(null, "", location.pathname + location.search); return; }
+    box.hidden = false;
+    history.replaceState(null, "", "#q=" + encodeURIComponent(q));
+    if (!IDX) return load(render);
+    toks = norm(q).split(/\s+/).filter(Boolean);
+    hits = [];
+    IDX.items.forEach(function (it) { var s = score(it); if (s >= 0) hits.push([s, it]); });
+    hits.sort(function (a, b) { return b[0] - a[0] || IDX.order[a[1].t] - IDX.order[b[1].t] || a[1].n.localeCompare(b[1].n, "ru"); });
+    var counts = {};
+    hits.forEach(function (h) { counts[h[1].t] = (counts[h[1].t] || 0) + 1; });
+    if (filter && !counts[filter]) filter = "";
+    var html = '<button type="button" class="chip' + (filter ? "" : " on") + '" data-t="">Все<b>' + hits.length + "</b></button>";
+    Object.keys(IDX.types).forEach(function (k) {
+      if (counts[k]) html += '<button type="button" class="chip' + (filter === k ? " on" : "") + '" data-t="' + k + '">' + esc(IDX.types[k]) + "<b>" + counts[k] + "</b></button>";
+    });
+    chips.innerHTML = hits.length ? html : "";
+    var view = filter ? hits.filter(function (h) { return h[1].t === filter; }) : hits;
+    stat.textContent = hits.length ? "найдено: " + hits.length : "";
+    if (!view.length) {
+      list.innerHTML = '<li class="empty">Ничего не нашлось. Попробуйте другое слово или откройте разделы ниже.</li>';
+      more.hidden = true; return;
+    }
+    list.innerHTML = view.slice(0, shown).map(function (h, i) {
+      var it = h[1];
+      return '<li class="hit' + (i === 0 ? " first" : "") + '">'
+        + '<div class="hit-top"><span class="ty">' + esc(IDX.types[it.t]) + "</span>" + (it.k ? "<code>" + mark(it.k) + "</code>" : "") + "</div>"
+        + link(it.u, mark(it.n), "hit-t")
+        + (it.d || it.x ? '<div class="hit-d">' + snippet(it) + "</div>" : "")
+        + '<div class="hit-a">' + link(it.u, ext(it.u) ? "Открыть на GitHub" : "Открыть")
+        + (it.e ? link(it.e, "✎ Править") : "")
+        + (it.s ? '<span class="path">' + esc(it.s) + "</span>" : "") + "</div></li>";
+    }).join("");
+    more.hidden = view.length <= shown;
+    more.textContent = "Показать ещё (" + (view.length - shown) + ")";
+  }
+
+  function onInput() { shown = STEP; clearTimeout(timer); timer = setTimeout(render, 120); }
+  input.addEventListener("input", onInput);
+  input.addEventListener("focus", function () { load(function () {}); }, {once: true});
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { input.value = ""; filter = ""; render(); }
+    if (e.key === "Enter") { var a = list.querySelector(".hit-t"); if (a) a.click(); }
+  });
+  clear.addEventListener("click", function () { input.value = ""; filter = ""; render(); input.focus(); });
+  chips.addEventListener("click", function (e) {
+    var b = e.target.closest(".chip"); if (!b) return;
+    filter = b.dataset.t; shown = STEP; render();
+  });
+  more.addEventListener("click", function () { shown += STEP; render(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "/" && document.activeElement !== input && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) {
+      e.preventDefault(); input.focus();
+    }
+  });
+  var m = location.hash.match(/^#q=(.+)$/);
+  if (m) { input.value = decodeURIComponent(m[1]); render(); }
+})();
+</script>
 
 </body>
 </html>
