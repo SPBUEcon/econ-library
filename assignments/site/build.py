@@ -369,6 +369,8 @@ function card(t){
   if (d) links.push(`<a href="${d.url}">Досье</a>`);
   if (t.issued) links.push(`<span class="muted">выдано: ${t.issued}</span>`);
   if (!t.card_url) links.push(`<span class="muted">описание — в этой строке архива</span>`);
+  links.push(`<a href="${(t.card_url || "__GH__catalog/templates.csv").replace("/blob/main/", "/edit/main/")}"`
+    + ` title="Открыть в редакторе GitHub; после правки пересобрать: python assignments/site/build.py">✎ Править</a>`);
   const text = [t.template_id, t.title, t.brief, t.deliverable, t.acceptance, t.parameters, mech,
     TY[t.type_id] ? TY[t.type_id].title : "", t.skill_ids.map(s => SK[s] ? SK[s].title : "").join(" ")].join(" ").toLowerCase();
   return `<article class="card" id="t-${esc(t.template_id)}" data-kind="${esc(t.kind)}" data-text="${esc(text)}">

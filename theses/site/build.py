@@ -520,7 +520,10 @@ def tools(deck, base, src):
     href = rel(deck, base)
     return (f'<div class="tools"><a class="btn" href="{href}">▶ Слайды</a>'
             f'<a class="btn ghost" href="{href}?print">⎙ PDF</a>'
-            f'<a class="btn ghost" href="{GH}blob/main/{src.relative_to(REPO).as_posix()}">md-источник</a></div>')
+            f'<a class="btn ghost" href="{GH}blob/main/{src.relative_to(REPO).as_posix()}">md-источник</a>'
+            f'<a class="btn ghost" href="{GH}edit/main/{src.relative_to(REPO).as_posix()}"'
+            f' title="Открыть md-источник в редакторе GitHub; после правки пересобрать: python theses/site/build.py">'
+            f'✎ Править</a></div>')
 
 
 def s_top(label, link, ctx, updated):
@@ -1010,7 +1013,7 @@ def index_page(theses, assemblies, rows, links):
 def write_csv(name, header, rows):
     (ROOT / "catalog").mkdir(exist_ok=True)
     with open(ROOT / "catalog" / name, "w", encoding="utf-8", newline="") as fh:
-        w = csv.writer(fh)
+        w = csv.writer(fh, lineterminator="\n")   # LF на любой ОС: пересборка не меняет переводы строк
         w.writerow(header)
         w.writerows(rows)
 

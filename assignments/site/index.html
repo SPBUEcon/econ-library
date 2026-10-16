@@ -2,7 +2,7 @@
 <!--
   Архив заданий Мастерской «Технологии в экономике».
   СГЕНЕРИРОВАНО скриптом assignments/site/build.py из assignments/catalog/*.csv — не править руками.
-  Собрано: 2026-10-09.
+  Собрано: 2026-10-17.
 -->
 <html lang="ru">
 <head>
@@ -210,7 +210,7 @@ footer p{margin-bottom:8px;max-width:920px}
     <p><b>Как пополнить архив.</b> Добавьте строку в <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/catalog/templates.csv">templates.csv</a>, при необходимости карточку по
       <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/_card-template.md">шаблону</a>, и пересоберите страницу:
       <code>python assignments/site/build.py</code>. Изменения — через Pull request.</p>
-    <p>Выдачи — по никам и <code>team_id</code>, без ФИО; оценки здесь не хранятся. Собрано: 2026-10-09.</p>
+    <p>Выдачи — по никам и <code>team_id</code>, без ФИО; оценки здесь не хранятся. Собрано: 2026-10-17.</p>
     <p><a href="../../index.html">← Дашборд мастерской</a> · <a href="../../theses/site/index.html">Тезисы и сборки</a></p>
   </div>
 </footer>
@@ -268,6 +268,8 @@ function card(t){
   if (d) links.push(`<a href="${d.url}">Досье</a>`);
   if (t.issued) links.push(`<span class="muted">выдано: ${t.issued}</span>`);
   if (!t.card_url) links.push(`<span class="muted">описание — в этой строке архива</span>`);
+  links.push(`<a href="${(t.card_url || "https://github.com/SPBUEcon/econ-library/blob/main/assignments/catalog/templates.csv").replace("/blob/main/", "/edit/main/")}"`
+    + ` title="Открыть в редакторе GitHub; после правки пересобрать: python assignments/site/build.py">✎ Править</a>`);
   const text = [t.template_id, t.title, t.brief, t.deliverable, t.acceptance, t.parameters, mech,
     TY[t.type_id] ? TY[t.type_id].title : "", t.skill_ids.map(s => SK[s] ? SK[s].title : "").join(" ")].join(" ").toLowerCase();
   return `<article class="card" id="t-${esc(t.template_id)}" data-kind="${esc(t.kind)}" data-text="${esc(text)}">
