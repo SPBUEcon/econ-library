@@ -139,7 +139,8 @@ Wildberries — экосистемы: хаб, сервисы вокруг про
 - **Примеры в базе:** Сбер [`th04`](../th04-sber-model/README.md), Wildberries [`th05`](../th05-wildberries-model/README.md),
   Loro Piana [`th06`](../th06-loro-piana-model/README.md), Como 1907 [`th02`](../th02-como-1907-model/README.md).
 - **Дальше:** классы систем по годам — [`th16`](../th16-is-classes-evolution/README.md).
-- **Входит в сборки:** пока ни в одну; кандидат — лекция «Постинформационный переход».
+- **Входит в сборки:** лекция [«Три волны информационных систем и цифровые деньги»](../assemblies/lec-is-waves-digital-money.md)
+  (econ-3, 15.10.2026).
 
 ## Источники
 
