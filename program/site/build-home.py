@@ -16,7 +16,7 @@
 
 Сборка детерминированная: без даты сборки, повторный запуск без изменений данных не меняет файлы.
 
-    python program/site/build_home.py
+    python program/site/build-home.py
 """
 import csv
 import html
@@ -506,7 +506,7 @@ def main():
     PAGE.write_text(page, encoding="utf-8", newline="\n")
 
     payload = {"types": TYPES, "items": items}
-    js = ("// СГЕНЕРИРОВАНО скриптом program/site/build_home.py — не править руками.\n"
+    js = ("// СГЕНЕРИРОВАНО скриптом program/site/build-home.py — не править руками.\n"
           "window.HOME_INDEX = " + json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
           + ";\n")
     INDEX.write_text(js, encoding="utf-8", newline="\n")
