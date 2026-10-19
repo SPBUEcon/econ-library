@@ -1,0 +1,70 @@
+name: Карта воркстримов
+
+# Карта workstreams/README.md собирается из паспортов workstream.yml в папках воркстримов
+# (скрипт program/site/build-workstreams.py).
+# - Pull request: проверяет паспорта; ошибка — красная галочка с перечнем, что поправить.
+# - После слияния в main: пересобирает карту и коммитит её от имени github-actions — это
+#   единственное исключение из правила «в main только через PR»: бот меняет только
+#   блоки gen:* в workstreams/README.md.
+
+on:
+  pull_request:
+    paths:
+      - "workstreams/**"
+      - "stands/**"
+      - "program/site/build-workstreams.py"
+      - ".github/workflows/workstreams-map.yml"
+  push:
+    branches: [main]
+    paths:
+      - "workstreams/**"
+      - "stands/**"
+      - "program/site/build-workstreams.py"
+      - ".github/workflows/workstreams-map.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: workstreams-map-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml==6.0.2
+      - name: Проверить паспорта workstream.yml
+        run: python program/site/build-workstreams.py --check
+
+  build:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # живость считается по истории коммитов
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml==6.0.2
+      - name: Пересобрать карту
+        run: python program/site/build-workstreams.py
+      - name: Закоммитить, если карта изменилась
+        run: |
+          if git diff --quiet -- workstreams/README.md; then
+            echo "Карта не изменилась."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add workstreams/README.md
+          git commit -m "chore(workstreams): автообновление карты из workstream.yml"
+          git push

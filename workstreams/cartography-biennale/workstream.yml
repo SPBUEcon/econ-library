@@ -1,0 +1,18 @@
+# Паспорт воркстрима — машиночитаемая строка карты. Из этих файлов собираются таблицы в
+# workstreams/README.md (python program/site/build-workstreams.py; на GitHub — автоматически после
+# слияния в main). Поля — workstreams/_template/workstream.yml. Ссылки в значениях — от этой папки.
+id: cartography-biennale
+n: 7
+title: Экология / данные — Биеннале карт
+section: map
+kind: событие
+stream: Экология
+level: Событие
+partner: Геоинтеллект — Д. Структов
+partner_role: Эксперт + событие
+supertask: Всероссийский конкурс по картографии / геоаналитике + выставка (без победителей/призов, бесплатно, отбор на выставку)
+team_sources: Оба курса + внешние вузы
+stands: []
+status: событие — даты уточняются
+next_action: Даты и роль студентов — определить совместно с партнёрами и участниками
+next_action_status: Идея
