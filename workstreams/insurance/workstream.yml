@@ -1,0 +1,18 @@
+# Паспорт воркстрима — машиночитаемая строка карты. Из этих файлов собираются таблицы в
+# workstreams/README.md (python program/site/build-workstreams.py; на GitHub — автоматически после
+# слияния в main). Поля — workstreams/_template/workstream.yml. Ссылки в значениях — от этой папки.
+id: insurance
+n: 1
+title: Страхование
+section: map
+kind: оперативный
+stream: Страхование
+level: A · семестр
+partner: Ингосстрах — Г. Владельщикова (вице-президент, зам. дир. по корп. бизнесу)
+partner_role: Владелец + Эксперт (утв.)
+supertask: Новые ниши / embedded-insurance; онлайн vs агентский канал; продвижение киберстрахования (выбрать 1–2 на первый ход)
+team_sources: Эк, 3 к. + доп. группы ЭФ
+stands: [insurance]
+status: живой — аналитический вход
+next_action: Согласовать 1–2 суперзадачи, куратора и данные; договориться о лекции
+next_action_status: Рамка собирается

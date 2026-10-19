@@ -1,0 +1,19 @@
+# Паспорт воркстрима — машиночитаемая строка карты. Из этих файлов собираются таблицы в
+# workstreams/README.md (python program/site/build-workstreams.py; на GitHub — автоматически после
+# слияния в main). Поля — workstreams/_template/workstream.yml. Ссылки в значениях — от этой папки.
+id: ai-environment
+n: 5
+title: ИИ, цифровые двойники и симуляции
+section: map
+kind: сквозной
+stream: ИИ / цифровые двойники
+level: Сквозной
+partner: ИИтех (veai) — М. Костицин
+partner_role: Эксперт (среда / лаборатория)
+supertask: "Сквозная AI-линия: агенты, AI-native, ИИ-инструменты в работе всех команд"
+team_sources: Оба курса + все команды
+stands: [geo-ai-agent]
+stand_note: в согласовании
+status: сквозной
+next_action: Согласовать 2 лекции (ранний слот); AI-инструментарий для команд
+next_action_status: Рамка собирается
