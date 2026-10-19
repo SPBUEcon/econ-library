@@ -16,7 +16,7 @@
 - **Через контакт** — написать шерпе / капитану / владельцу воркстрима (контакт — в карточке
   воркстрима и на [витрине](program/site/workstreams_board.html)).
 - **Через репозиторий** — открыть Issue по шаблону
-  [«Заявка на вход в воркстрим»](.github/ISSUE_TEMPLATE/join-workstream.md) (это и есть «форма:
+  [«Заявка на вход в воркстрим»](https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml) (это и есть «форма:
   воркстрим + роль + навыки») и заполнить [соглашение о входе](workstreams/_template/onboarding.md).
 
 Состояние воркстримов и стендов — в их карточках и журналах ([`stands/`](stands/README.md)).

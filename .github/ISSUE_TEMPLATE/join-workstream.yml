@@ -1,0 +1,125 @@
+# Заявка на вход в воркстрим — «форма: воркстрим + роль + навыки» (guides/how-to-join.md).
+#
+# Список воркстримов собирается из паспортов workstreams/*/workstream.yml и workstreams/flagships.yml
+# скриптом program/site/build-workstreams.py (блок между маркерами gen:join-options; руками не
+# правится). Подписи вариантов начинаются с id воркстрима — по нему скрипт регистрации
+# (registry/register-participant.py) находит воркстрим; роль — по коду в скобках.
+#
+# Контактов в форме нет намеренно: репозиторий публичный, а ФИО, email, телефон и Telegram по
+# registry/README.md хранятся только в закрытой таблице.
+name: "Заявка на вход в воркстрим"
+description: "Хочу включиться в воркстрим мастерской: воркстрим + роль + навыки"
+title: "[Вход] "
+labels: ["join"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Сначала посмотрите [витрину](https://spbuecon.github.io/econ-library/program/site/workstreams_board.html),
+        [карту воркстримов](https://github.com/SPBUEcon/econ-library/blob/main/workstreams/README.md) и
+        [роли](https://github.com/SPBUEcon/econ-library/blob/main/roles/README.md).
+        Гайд — [как включиться](https://github.com/SPBUEcon/econ-library/blob/main/guides/how-to-join.md).
+
+        > **Не пишите сюда ФИО, телефон, email и Telegram** — репозиторий публичный, заявку видят все.
+        > Контакты шерпа возьмёт у вас лично и внесёт в закрытую таблицу.
+
+        После заявки шерпа или мастер свяжется с вами и, подтвердив роль, поставит метку `approved` —
+        бот откроет Pull request с вашей записью в [реестре](https://github.com/SPBUEcon/econ-library/blob/main/registry/README.md).
+  - type: dropdown
+    id: workstream
+    attributes:
+      label: Воркстрим
+      description: "Карта — workstreams/README.md. Флагманы — темы уровня B без своей команды; на них тоже можно заявиться."
+      options:
+        # <gen:join-options>
+        - "insurance — №1 Страхование"
+        - "sport-geo — №2 Геоаналитика спортинфраструктуры"
+        - "sport-engagement — №3 Вовлечение и коммуникация в спорте"
+        - "phygital-sport — №4 Фиджитал-спорт"
+        - "ai-environment — №5 ИИ, цифровые двойники и симуляции"
+        - "venture-tech — №6 Технологии и производство / венчур"
+        - "cartography-biennale — №7 Экология / данные — Биеннале карт"
+        - "cyber-phygital-arena — №8 Кибер-фиджитал арена (флагман)"
+        - "intl-tech-center — №9 Международный технологический центр (флагман)"
+        - "phygital-diving-network — №10 Сеть фиджитал дайвинг-центров (флагман)"
+        - "intellectual-center — №11 Новый интеллектуальный центр (флагман)"
+        - "askona-live — №12 Аскона (прото)"
+        - "management-environment — №13 Среда управления"
+        - "sport-spb — Экономика и технологии в спорте (поток-хаб)"
+        # </gen:join-options>
+    validations:
+      required: true
+  - type: dropdown
+    id: role
+    attributes:
+      label: Желаемая роль
+      description: "Роли команды — roles/README.md. Можно выбрать несколько: роли совмещаются."
+      multiple: true
+      options:
+        - "Капитан (captain)"
+        - "Архитектор модели (model-architect)"
+        - "Аналитик поля (field-analyst)"
+        - "Интегратор технологий (tech-integrator)"
+        - "Связной с партнёром (partner-liaison)"
+        - "Пока не уверен(а) — обсудим с шерпой"
+    validations:
+      required: true
+  - type: input
+    id: github
+    attributes:
+      label: GitHub-ник участника
+      description: "Оставьте пустым, если заявку подаёте за себя: возьмём ник автора заявки. Заполните, если подаёте за другого (например, шерпа за студента)."
+      placeholder: "ivanov"
+  - type: dropdown
+    id: type
+    attributes:
+      label: Кто вы
+      options:
+        - "Студент СПбГУ (student-spbu)"
+        - "Студент другого вуза (student-external)"
+        - "Преподаватель (teacher)"
+        - "Представитель партнёра (partner)"
+        - "Сотрудник факультета (staff)"
+    validations:
+      required: true
+  - type: input
+    id: org
+    attributes:
+      label: Вуз или организация
+      placeholder: "СПбГУ"
+    validations:
+      required: true
+  - type: input
+    id: unit
+    attributes:
+      label: Направление, курс, группа
+      placeholder: "Экономика, 3 к."
+    validations:
+      required: true
+  - type: textarea
+    id: skills
+    attributes:
+      label: Уже умею
+      description: "Навыки и инструменты."
+    validations:
+      required: true
+  - type: textarea
+    id: grow
+    attributes:
+      label: Хочу прокачать
+  - type: textarea
+    id: why
+    attributes:
+      label: Почему этот воркстрим
+      description: "2–3 предложения: что цепляет в теме, что хочется сделать за ход."
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Согласие
+      options:
+        - label: "Прочитал(а) [правила проекта](https://github.com/SPBUEcon/econ-library/tree/main/rules) — данные, источники, командная работа, ИИ"
+          required: true
+        - label: "Понимаю, что вклад виден через цифровой след (коммиты, принятые результаты, записи в журналах стендов)"
+          required: true
+        - label: "Согласен(на), что мой GitHub-ник, вуз, курс и роль будут записаны в открытый реестр registry/ этого репозитория"
+          required: true

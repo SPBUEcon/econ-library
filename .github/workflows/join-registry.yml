@@ -1,0 +1,95 @@
+name: Регистрация участника
+
+# Заявка на вход (форма .github/ISSUE_TEMPLATE/join-workstream.yml, метка join) → реестр.
+# Когда шерпа или мастер ставит на заявку метку approved, скрипт registry/register-participant.py
+# дописывает строки в registry/participants.csv и registry/memberships.csv, а workflow открывает
+# Pull request со ссылкой на заявку. В main запись попадает только после ревью и слияния PR.
+#
+# - Кто вправе одобрять, проверяет скрипт по реестру: мастер или шерпа/владелец этого воркстрима
+#   (пока реестр пуст — владелец репозитория с правом admin). Иначе — комментарий с причиной.
+# - Пока реестр не согласован (registry/README.md, «проект структуры»), workflow ничего не пишет:
+#   включается переменной репозитория REGISTRY_LIVE = true
+#   (Settings → Secrets and variables → Actions → Variables).
+# - Нужна галочка Settings → Actions → General → «Allow GitHub Actions to create and approve pull
+#   requests», иначе бот не сможет открыть PR.
+# - Повторная метка approved пересобирает ветку registry/join-<номер> от свежего main
+#   (так снимаются конфликты между несколькими регистрационными PR).
+
+on:
+  issues:
+    types: [labeled]
+
+concurrency:
+  group: join-registry        # по одной заявке за раз: номера p/m не должны совпасть
+  cancel-in-progress: false
+
+jobs:
+  register:
+    if: github.event.label.name == 'approved' && contains(github.event.issue.labels.*.name, 'join')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      ISSUE: ${{ github.event.issue.number }}
+      AUTHOR: ${{ github.event.issue.user.login }}
+      APPROVER: ${{ github.event.sender.login }}
+      BODY: ${{ github.event.issue.body }}
+      LIVE: ${{ vars.REGISTRY_LIVE }}
+    steps:
+      - name: Реестр ещё не согласован
+        if: env.LIVE != 'true'
+        run: |
+          gh issue comment "$ISSUE" --repo "$REPO" --body "🤖 Заявка одобрена. Автоматическая запись в реестр пока выключена: структура реестра согласуется (registry/README.md). Шерпа внесёт запись после согласования."
+
+      - uses: actions/checkout@v4
+        if: env.LIVE == 'true'
+
+      - uses: actions/setup-python@v5
+        if: env.LIVE == 'true'
+        with:
+          python-version: "3.12"
+
+      - name: Записать в реестр
+        if: env.LIVE == 'true'
+        id: reg
+        run: |
+          pip install --quiet pyyaml==6.0.2
+          perm=$(gh api "repos/$REPO/collaborators/$APPROVER/permission" --jq .permission 2>/dev/null || echo none)
+          printf '%s' "$BODY" > "$RUNNER_TEMP/body.md"
+          set +e
+          python registry/register-participant.py --body "$RUNNER_TEMP/body.md" --author "$AUTHOR" \
+            --issue "$ISSUE" --approver "$APPROVER" --approver-permission "$perm" \
+            --pr-body-file "$RUNNER_TEMP/pr.md" --comment-file "$RUNNER_TEMP/comment.md"
+          code=$?
+          set -e
+          if [ "$code" = 2 ]; then
+            gh issue comment "$ISSUE" --repo "$REPO" --body-file "$RUNNER_TEMP/comment.md"
+            gh issue edit "$ISSUE" --repo "$REPO" --remove-label approved
+            echo "done=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          [ "$code" = 0 ] || exit "$code"
+          echo "done=true" >> "$GITHUB_OUTPUT"
+
+      - name: Открыть Pull request
+        if: env.LIVE == 'true' && steps.reg.outputs.done == 'true'
+        run: |
+          branch="registry/join-$ISSUE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add registry/participants.csv registry/memberships.csv
+          git commit -m "registry: вход по заявке #$ISSUE (одобрил @$APPROVER)"
+          git push --force origin "$branch"
+          pr=$(gh pr list --repo "$REPO" --head "$branch" --state open --json url --jq '.[0].url')
+          if [ -n "$pr" ]; then
+            gh pr edit "$pr" --repo "$REPO" --body-file "$RUNNER_TEMP/pr.md"
+          else
+            pr=$(gh pr create --repo "$REPO" --base "${{ github.event.repository.default_branch }}" \
+              --head "$branch" --title "Реестр: вход по заявке #$ISSUE" --body-file "$RUNNER_TEMP/pr.md")
+          fi
+          gh issue comment "$ISSUE" --repo "$REPO" --body "🤖 Запись в реестр подготовлена: $pr — после ревью и слияния заявка закроется."

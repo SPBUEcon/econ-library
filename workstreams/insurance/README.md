@@ -78,7 +78,7 @@
 - **Через контакт** — напишите шерпе воркстрима (*уточнить*) или свяжитесь через владельца —
   Ингосстрах.
 - **Через репозиторий** — заявка в Issues по шаблону
-  [«Заявка на вход»](../../.github/ISSUE_TEMPLATE/join-workstream.md) →
+  [«Заявка на вход»](https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml) →
   [соглашение о входе](../_template/onboarding.md) → роль ([роли](../../roles/README.md)).
 
 Самый короткий вход — механики стенда прямо на занятии ([механики вовлечения](../../stands/engagement.md)).

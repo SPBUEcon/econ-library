@@ -21,7 +21,7 @@
 
 1. Посмотри [витрину воркстримов](program/site/workstreams_board.html) и [стенды](stands/README.md): что происходит и где нужна помощь.
 2. Выбери воркстрим из [карты воркстримов](workstreams/README.md).
-3. Заполни форму — [«Заявка на вход в воркстрим»](.github/ISSUE_TEMPLATE/join-workstream.md): воркстрим + роль + навыки. Или напиши контакт из карточки воркстрима.
+3. Заполни форму — [«Заявка на вход в воркстрим»](https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml): воркстрим + роль + навыки. Или напиши контакт из карточки воркстрима.
 4. Самый короткий вход — механики стенда прямо на занятии ([механики вовлечения](stands/engagement.md)).
 
 Подробно — гайд [«Как включиться в воркстрим»](guides/how-to-join.md). Роли — [`roles/README.md`](roles/README.md). Правила — [`rules/`](rules/).

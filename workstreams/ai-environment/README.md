@@ -59,7 +59,7 @@
 - **Через контакт** — напишите шерпе воркстрима (*уточнить*) или куратору — ИИтех (veai),
   М. Костицин.
 - **Через репозиторий** — заявка в Issues по шаблону
-  [«Заявка на вход»](../../.github/ISSUE_TEMPLATE/join-workstream.md) →
+  [«Заявка на вход»](https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml) →
   [соглашение о входе](../_template/onboarding.md) → роль ([роли](../../roles/README.md)).
 
 Витрина — [`../../program/site/workstreams_board.html`](../../program/site/workstreams_board.html).

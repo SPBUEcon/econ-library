@@ -124,7 +124,7 @@ LLM-сервисам, экономическому моделированию �
   картография). Кандидатов передаём партнёру.
 - **Задания на стендах** — через треки `bi-4` и `econ-3`; механики на занятии —
   [вовлечение](../../stands/engagement.md).
-- **Через репозиторий** — [«Заявка на вход»](../../.github/ISSUE_TEMPLATE/join-workstream.md) →
+- **Через репозиторий** — [«Заявка на вход»](https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml) →
   [соглашение о входе](../../workstreams/_template/onboarding.md). Подробно — [гайд](../../guides/how-to-join.md).
 
 ## Разделы папки

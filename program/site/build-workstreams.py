@@ -10,6 +10,9 @@
 <!-- gen:ИМЯ --> … <!-- /gen:ИМЯ --> (map, infra, actions, activity). Остальной текст карты
 правится руками. Если маркера нет, сборка остановится.
 
+Тем же запуском обновляется список воркстримов в форме «Заявка на вход»
+(.github/ISSUE_TEMPLATE/join-workstream.yml, блок # <gen:join-options> … # </gen:join-options>).
+
 Живость считается по цифровому следу: коммиты в папке за 4 недели до последнего коммита
 репозитория (а не до «сегодня»), поэтому повторный запуск без новых коммитов не меняет файл.
 
@@ -30,6 +33,7 @@ REPO = HERE.parents[1]
 WS = REPO / "workstreams"
 PAGE = WS / "README.md"
 FLAGSHIPS = WS / "flagships.yml"
+JOIN_FORM = REPO / ".github" / "ISSUE_TEMPLATE" / "join-workstream.yml"
 
 SECTIONS = {"map", "infra", "hub"}
 KINDS = {"оперативный", "сквозной", "событие", "флагман", "прото", "инфраструктурный", "хаб"}
@@ -175,6 +179,32 @@ def build_actions(entries):
     return table(["#", "Ближайшее действие", "Статус"], rows)
 
 
+def join_options(entries):
+    """Варианты выпадающего списка формы «Заявка на вход»: «id — №n Название».
+
+    Порядок — как в карте (map и infra по номеру), затем потоки-хабы. Подпись начинается с id:
+    по нему registry/register-participant.py находит воркстрим.
+    """
+    hubs = sorted((e for e in entries if e.get("section") == "hub"), key=lambda e: e["id"])
+    out = []
+    for e in sorted(by_n(entries, "map") + by_n(entries, "infra"), key=lambda e: e["n"]) + hubs:
+        num = f"№{e['n']} " if isinstance(e.get("n"), int) else ""
+        tail = " (флагман)" if e.get("kind") == "флагман" else ""
+        label = f"{e['id']} — {num}{e['title']}{tail}".replace('"', "'")
+        out.append(f'        - "{label}"')
+    return "\n".join(out)
+
+
+def put_join_options(form, block):
+    a, b = "        # <gen:join-options>", "        # </gen:join-options>"
+    if a not in form or b not in form:
+        raise SystemExit(f"{JOIN_FORM.relative_to(REPO).as_posix()}: нет маркеров # <gen:join-options> … "
+                         "# </gen:join-options>")
+    head, rest = form.split(a, 1)
+    _, tail = rest.split(b, 1)
+    return head + a + "\n" + block + "\n" + b + tail
+
+
 # ---------------------------------------------------------------- живость
 
 
@@ -257,6 +287,12 @@ def main():
         print(f"written workstreams/README.md: {len(entries)} паспортов")
     else:
         print(f"workstreams/README.md без изменений: {len(entries)} паспортов")
+    if JOIN_FORM.exists():
+        form = JOIN_FORM.read_text(encoding="utf-8")
+        new_form = put_join_options(form, join_options(entries))
+        if new_form != form:
+            JOIN_FORM.write_text(new_form, encoding="utf-8", newline="\n")
+            print("written .github/ISSUE_TEMPLATE/join-workstream.yml: список воркстримов")
 
 
 if __name__ == "__main__":
