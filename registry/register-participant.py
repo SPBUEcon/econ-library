@@ -15,7 +15,7 @@
 воркстрима в текущем семестре ровно одна команда в статусе forming/active.
 
 Локальная проверка на примере (файлы реестра не трогаются):
-    python registry/register-participant.py --body registry/examples/join-issue-body.md \\
+    python registry/register-participant.py --body registry/examples/join-issue-body.txt \\
         --author ivanov --issue 1 --approver SPBUEcon --approver-permission admin --dry-run
 
 Коды выхода: 0 — записано (или --dry-run); 2 — заявка не принята, причина в --comment-file.

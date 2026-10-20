@@ -247,7 +247,7 @@
 Проверить скрипт локально, ничего не записывая (пример тела заявки — вымышленный):
 
 ```
-python registry/register-participant.py --body registry/examples/join-issue-body.md --author ivanov --issue 1 --approver SPBUEcon --approver-permission admin --dry-run
+python registry/register-participant.py --body registry/examples/join-issue-body.txt --author ivanov --issue 1 --approver SPBUEcon --approver-permission admin --dry-run
 ```
 
 ### Правила целостности

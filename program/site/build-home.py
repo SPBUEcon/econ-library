@@ -5,7 +5,8 @@
 - группы, предметы, расписание — tracks/catalog/*.csv, паспорта треков tracks/<трек>/README.md;
 - партнёры — таблицы «Реестр партнёров» и «Папки партнёров» в partners/README.md;
 - тезисы и сборки — theses/catalog/*.csv; задания — assignments/catalog/templates.csv;
-- воркстримы, стенды, документы — их README.md и прочие .md; страницы — .html репозитория.
+- воркстримы, стенды, документы — их README.md и прочие .md; страницы — .html репозитория;
+  формы Issues — .github/ISSUE_TEMPLATE/*.yml (ссылка ведёт на новую заявку по форме).
 
 В index.html перезаписываются только блоки между маркерами
 <!-- gen:ИМЯ --> … <!-- /gen:ИМЯ --> (tracks, partners, content). Всё остальное —
@@ -107,6 +108,22 @@ def md_parts(path):
         text = text[:m.start()] + text[m.end():]
     heads = [md_plain(h) for h in re.findall(r"^#{2,3}\s+(.+)$", text, flags=re.M)]
     return h1, heads, about + md_plain(text)
+
+
+def form_parts(path):
+    """Название, подписи полей и текст формы Issues (.yml). Построчно, без pyyaml: сборке не нужны
+    зависимости. Не форма (нет body:, например config.yml) — пустое название."""
+    text = path.read_text(encoding="utf-8", errors="ignore")
+    if not re.search(r"^body:", text, flags=re.M):
+        return "", [], ""
+    name = re.search(r'^name:\s*"?(.*?)"?\s*$', text, flags=re.M)
+    about = re.search(r'^description:\s*"?(.*?)"?\s*$', text, flags=re.M)
+    heads = re.findall(r'^[ \t]+label:\s*"?(.*?)"?\s*$', text, flags=re.M)          # поля, не варианты «- label:»
+    intro = ["\n".join(line.strip() for line in b.splitlines())                     # markdown-блоки формы
+             for _, b in re.findall(r"^([ \t]+)value:\s*\|[ \t]*\n((?:\1[ \t]+.*\n|[ \t]*\n)*)", text, flags=re.M)]
+    hints = re.findall(r'^[ \t]+description:\s*"?(.*?)"?\s*$', text, flags=re.M)   # подсказки к полям
+    return (name.group(1) if name else "", heads,
+            " ".join([about.group(1) if about else "", md_plain("\n".join(intro))] + hints))
 
 
 def html_parts(path):
@@ -461,12 +478,15 @@ def build_index(theses, assemblies, units, templates, subjects, groups, partners
         else:
             e = edit(r)
         items.append(rec("page", title, "", r, e, "", body(text, []), r))
-    # документы (.md, не вошедшие выше)
+    # документы (.md, не вошедшие выше) и формы Issues (.yml)
     for p in files:
         r = rel(p)
-        if p.suffix != ".md" or r in covered or "/_template/" in r or r.startswith("_template"):
+        form = r.startswith(".github/ISSUE_TEMPLATE/") and p.suffix in (".yml", ".yaml")
+        if not (p.suffix == ".md" or form) or r in covered or "/_template/" in r or r.startswith("_template"):
             continue
-        h1, heads, text = md_parts(p)
+        h1, heads, text = form_parts(p) if form else md_parts(p)
+        if form and not h1:
+            continue
         url = blob(r)
         if r.startswith(".github/ISSUE_TEMPLATE/"):
             url = GH + "issues/new?template=" + p.name
