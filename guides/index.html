@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!--
+  Гайд для студента — сайт. Адрес: https://spbuecon.github.io/econ-library/guides/
+  Порядок: понятия → что такое воркстрим → какие воркстримы есть → как присоединиться.
+  Карточки воркстримов (блок gen:guide-workstreams) собирает program/site/build-workstreams.py из
+  паспортов workstream.yml; остальной текст правится руками.
+-->
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Гайд для студента — Мастерская «Технологии в экономике»</title>
+<meta name="description" content="Понятия, что такое воркстрим, какие воркстримы есть и как присоединиться — для студентов Мастерской «Технологии в экономике» (ЭФ СПбГУ).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1B2038; --ink2:#272E52; --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0; --green:#2FA37A; --amber:#D9932B; --violet:#6B5FD3;
+  --disp:'Unbounded','Arial Black',sans-serif; --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.6;font-size:17px}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+h2{font-family:var(--disp);font-weight:700;font-size:clamp(24px,3.2vw,36px);line-height:1.15;margin-bottom:12px}
+h3{font-family:var(--disp);font-weight:500;font-size:18px;line-height:1.3;margin-bottom:8px}
+.lead{font-size:19px;color:var(--grey);max-width:760px}
+section{padding:64px 0;border-bottom:1px solid var(--line)}
+.kicker{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);margin-bottom:10px}
+
+/* шапка */
+.hero{background:var(--ink);color:#fff;padding:56px 0 48px}
+.hero .kicker{color:#FF8E7F}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(30px,4.6vw,52px);line-height:1.1;max-width:880px;margin-bottom:16px}
+.hero .lead{color:#C9D3EA}
+.toc{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;list-style:none;counter-reset:t}
+.toc a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--ink2);border:1px solid #3A4372;
+  color:#fff;border-radius:999px;padding:9px 16px;font-weight:500;font-size:15px}
+.toc a:hover{border-color:#FF8E7F}
+.toc b{font-family:var(--disp);color:#FF8E7F;font-size:13px}
+
+/* понятия */
+.groups{display:grid;gap:32px;margin-top:28px}
+.group h3{font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);font-family:var(--body);font-weight:600}
+.terms{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:8px}
+.term{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}
+.term dt{font-family:var(--disp);font-weight:500;font-size:17px;margin-bottom:6px}
+.term dd{color:#333B57;font-size:15.5px}
+
+/* воркстрим */
+.def{background:var(--ink);color:#fff;border-radius:18px;padding:28px;margin:24px 0 36px;font-size:20px;line-height:1.5}
+.def b{color:#FF8E7F;font-family:var(--disp);font-weight:500}
+.steps{list-style:none;display:grid;gap:14px;counter-reset:s}
+.steps li{counter-increment:s;position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px 18px 72px}
+.steps li::before{content:counter(s);position:absolute;left:18px;top:16px;width:38px;height:38px;border-radius:50%;
+  background:var(--panel);color:var(--coral);font-family:var(--disp);font-weight:700;display:grid;place-items:center}
+.steps li b{display:block;font-size:17px;margin-bottom:2px}
+.steps li span{color:#333B57;font-size:15.5px}
+.note{margin-top:18px;color:var(--grey);font-size:15px}
+
+/* воркстримы */
+.ws-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:28px}
+.ws{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.ws-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.ws-n{font-family:var(--disp);font-weight:700;font-size:28px;color:var(--ice);line-height:1}
+.badge{font-size:12.5px;font-weight:600;border-radius:999px;padding:4px 10px;white-space:nowrap;background:var(--panel);color:var(--ink2)}
+.badge.k-oper{background:#E3F4EC;color:#1E6E52}
+.badge.k-cross{background:#ECEAFB;color:#4A3FA8}
+.badge.k-event{background:#FFF1DE;color:#8A5410}
+.badge.k-flag{background:#FDE7E3;color:#A33A2C}
+.badge.k-proto,.badge.k-infra{background:var(--panel);color:var(--grey)}
+.ws h3{margin:0}
+.ws .partner{font-size:14.5px;color:var(--grey)}
+.ws .task{font-size:15px;color:#333B57;flex:1}
+.ws .status{font-size:14px;color:var(--grey)}
+.ws .status b{color:var(--ink);font-weight:600}
+.ws-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.ws-links a{font-size:14px;font-weight:600;text-decoration:none;border-radius:10px;padding:8px 12px;border:1px solid var(--line)}
+.ws-links a.join{background:var(--coral);border-color:var(--coral);color:#fff}
+.ws-links a:hover{border-color:var(--ink)}
+
+/* как присоединиться */
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.btn{display:inline-block;text-decoration:none;font-weight:600;border-radius:12px;padding:14px 22px;font-size:16px;border:2px solid var(--ink)}
+.btn.main{background:var(--coral);border-color:var(--coral);color:#fff}
+.btn:hover{transform:translateY(-1px)}
+.more{margin-top:22px;color:var(--grey);font-size:15px}
+.more a{font-weight:600}
+footer{padding:36px 0 48px;color:var(--grey);font-size:14px}
+footer a{font-weight:600}
+@media (max-width:600px){
+  body{font-size:16px} section{padding:44px 0} .def{font-size:18px;padding:22px}
+  .steps li{padding:16px 16px 16px 64px}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Мастерская «Технологии в экономике» · ЭФ СПбГУ</p>
+    <h1>Гайд для студента: как устроена мастерская и как в неё войти</h1>
+    <p class="lead">Минут за десять: какие слова здесь используются, что такое воркстрим, какие
+      воркстримы есть сейчас — и как присоединиться к одному из них.</p>
+    <ol class="toc">
+      <li><a href="#terms"><b>1</b> Понятия</a></li>
+      <li><a href="#workstream"><b>2</b> Что такое воркстрим</a></li>
+      <li><a href="#list"><b>3</b> Какие воркстримы есть</a></li>
+      <li><a href="#join"><b>4</b> Как присоединиться</a></li>
+    </ol>
+  </div>
+</header>
+
+<main>
+
+<section id="terms">
+  <div class="wrap">
+    <p class="kicker">Шаг 1</p>
+    <h2>Понятия</h2>
+    <p class="lead">В мастерской есть свои слова. Вот главные — коротко и простым языком.</p>
+
+    <div class="groups">
+      <div class="group">
+        <h3>Основное</h3>
+        <dl class="terms">
+          <div class="term"><dt>Мастерская</dt><dd>Учебная мастерская Экономического факультета СПбГУ: студенты вместе с преподавателями и партнёрами работают над реальными задачами.</dd></div>
+          <div class="term"><dt>Воркстрим</dt><dd>Тематическое направление, в котором команды решают реальную задачу и идут к конкретному результату. Подробнее — в шаге 2.</dd></div>
+          <div class="term"><dt>Партнёр</dt><dd>Организация, которая приносит в воркстрим реальную задачу: даёт данные и доступ к «полю», приходит на разборы и показы результатов.</dd></div>
+          <div class="term"><dt>Ход</dt><dd>Один семестр работы команды в воркстриме. В конце хода команда показывает результат и передаёт дела следующей.</dd></div>
+        </dl>
+      </div>
+
+      <div class="group">
+        <h3>Люди</h3>
+        <dl class="terms">
+          <div class="term"><dt>Мастер</dt><dd>Руководитель мастерской: ведёт общие события и ревизии, принимает крупные решения, проводит офис-часы.</dd></div>
+          <div class="term"><dt>Владелец воркстрима</dt><dd>Следит, чтобы тема продолжалась из семестра в семестр. Это может быть партнёр, преподаватель или студент.</dd></div>
+          <div class="term"><dt>Шерпа</dt><dd>Проводник команды: раз в неделю сверяется с ней, помогает готовиться к событиям и снимает блокировки. Ведёт по маршруту, но не проходит его за команду.</dd></div>
+          <div class="term"><dt>Капитан</dt><dd>Ведёт ритм своей команды, держит связь с шерпой и раз в две недели пишет партнёру короткий отчёт.</dd></div>
+          <div class="term"><dt>Команда</dt><dd>3–5 студентов в одном воркстриме на семестр, бакалавры и магистры вместе. Роли: капитан, архитектор модели, аналитик поля, интегратор технологий, связной с партнёром. Роли можно совмещать.</dd></div>
+        </dl>
+      </div>
+
+      <div class="group">
+        <h3>Как идёт работа</h3>
+        <dl class="terms">
+          <div class="term"><dt>Стенд</dt><dd>Рабочее место воркстрима: задачи, данные, люди и события вокруг одной темы. Здесь выполняются задания и видно, где нужна помощь прямо сейчас.</dd></div>
+          <div class="term"><dt>Узел</dt><dd>Шаг прогресса: договорённость, решение, задача, набор данных или связь с нужным человеком. Узлы «завязывают» — добиваются их, а барьеры «развязывают» — снимают.</dd></div>
+          <div class="term"><dt>Барьер</dt><dd>То, что мешает получить результат: нет данных, нет доступа, непонятно, как решать. Снять барьер — один из главных видов прогресса.</dd></div>
+          <div class="term"><dt>Ставка</dt><dd>Чем участник рискует, обещая результат к дате проверки: оценкой, репутацией или профессиональным именем. Например, публичный прогноз, который потом сверят с фактом.</dd></div>
+          <div class="term"><dt>Наследство</dt><dd>Что команда оставляет следующей в конце семестра: что сделано, что не получилось и почему, какие задачи открыты и кто за них отвечает.</dd></div>
+          <div class="term"><dt>Цифровой след</dt><dd>Всё, что видно в репозитории: правки, принятые результаты, записи в журналах стендов. По нему видят ваш вклад — это основа оценки.</dd></div>
+        </dl>
+      </div>
+
+      <div class="group">
+        <h3>Инструменты</h3>
+        <dl class="terms">
+          <div class="term"><dt>Репозиторий</dt><dd>Общая папка мастерской на GitHub: карточки воркстримов, стенды, данные и результаты, плюс история всех изменений.</dd></div>
+          <div class="term"><dt>Заявка на вход</dt><dd>Форма на GitHub: выбираете воркстрим и роль, пишете, что умеете. Шерпа отвечает комментарием в заявке.</dd></div>
+          <div class="term"><dt>Pull request</dt><dd>Способ внести изменения: делаете правку в своей ветке и открываете запрос, капитан или шерпа проверяет и принимает.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="workstream">
+  <div class="wrap">
+    <p class="kicker">Шаг 2</p>
+    <h2>Что такое воркстрим и как он работает</h2>
+    <div class="def"><b>Воркстрим</b> — тематическое направление, в котором команды решают реальную
+      задачу и идут к конкретному результату. Тема живёт дольше семестра: команды сменяются, работа
+      продолжается.</div>
+
+    <ol class="steps">
+      <li><b>Есть тема и большая задача</b><span>У воркстрима есть партнёр или владелец и суперзадача —
+        например, понять, где в Петербурге не хватает спортивных объектов и где их лучше строить.</span></li>
+      <li><b>Задача разбита на задания разного размера</b><span>Задания бывают на одно занятие, до
+        следующего занятия и на весь семестр. Они собраны на стенде воркстрима.</span></li>
+      <li><b>Команда работает один семестр</b><span>Капитан ведёт ритм, шерпа помогает и снимает
+        блокировки, партнёр смотрит промежуточные результаты и даёт обратную связь.</span></li>
+      <li><b>Прогресс видно по узлам</b><span>Договорились с партнёром, получили данные, сняли барьер —
+        это и есть движение. Раз в месяц воркстрим проходит ревизию: что движется, а что застряло.</span></li>
+      <li><b>В конце семестра — наследство</b><span>Команда передаёт следующей, что сделано и что
+        осталось. Тема продолжается, даже когда состав меняется.</span></li>
+    </ol>
+    <p class="note">Воркстрим считается живым, если за последние четыре недели в нём что-то происходило:
+      появились правки, результаты, записи. На витрину выходят только живые воркстримы.</p>
+  </div>
+</section>
+
+<section id="list">
+  <div class="wrap">
+    <p class="kicker">Шаг 3</p>
+    <h2>Какие воркстримы есть</h2>
+    <p class="lead">«Семестр» — работа идёт сейчас; «флагман» — большая тема на год и дольше, в неё
+      входят отдельными задачами; «сквозной» — идёт через все команды; «событие» — конкурс или форум;
+      «прото» — тема ищет партнёра.</p>
+<!-- gen:guide-workstreams -->
+<div class="ws-grid">
+<article class="ws">
+  <div class="ws-top"><span class="ws-n">1</span><span class="badge k-oper">A · семестр</span></div>
+  <h3>Страхование</h3>
+  <p class="partner">Ингосстрах — Г. Владельщикова (вице-президент, зам. дир. по корп. бизнесу)</p>
+  <p class="task">Новые ниши / embedded-insurance; онлайн vs агентский канал; продвижение киберстрахования (выбрать 1–2 на первый ход)</p>
+  <p class="status">Статус: <b>живой — аналитический вход</b></p>
+  <div class="ws-links"><a class="join" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&amp;title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%A1%D1%82%D1%80%D0%B0%D1%85%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%20%E2%80%94%20">Подать заявку</a><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/insurance">Карточка на GitHub</a></div>
+</article>
+<article class="ws">
+  <div class="ws-top"><span class="ws-n">2</span><span class="badge k-oper">A · семестр</span></div>
+  <h3>Геоаналитика спортинфраструктуры</h3>
+  <p class="partner">Спорткомитет СПб — А. Шантырь (глава), И. Сологуб (советник); шерпа-технолог — Геоинтеллект (Д. Структов, утв.)</p>
+  <p class="task">ГИС-анализ и доказательное планирование размещения спортобъектов (что/где/чего не хватает)</p>
+  <p class="status">Статус: <b>живой</b></p>
+  <div class="ws-links"><a class="join" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&amp;title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%93%D0%B5%D0%BE%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D1%82%D0%B8%D0%BA%D0%B0%20%D1%81%D0%BF%D0%BE%D1%80%D1%82%D0%B8%D0%BD%D1%84%D1%80%D0%B0%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D1%8B%20%E2%80%94%20">Подать заявку</a><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-geo">Карточка на GitHub</a></div>
+</article>
+<article class="ws">
+  <div class="ws-top"><span class="ws-n">3</span><span class="badge k-oper">A · семестр</span></div>
+  <h3>Вовлечение и коммуникация в спорте</h3>
+  <p class="partner">Спорткомитет СПб — А. Шантырь (глава), И. Сологуб (советник)</p>
+  <p class="task">Сквозная система «инфраструктура/событие → канал → житель → обратная связь»; стратегия коммуникаций</p>
+  <p class="status">Статус: <b>живой</b></p>
+  <div class="ws-links"><a class="join" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&amp;title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%92%D0%BE%D0%B2%D0%BB%D0%B5%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%B8%20%D0%BA%D0%BE%D0%BC%D0%BC%D1%83%D0%BD%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F%20%D0%B2%20%D1%81%D0%BF%D0%BE%D1%80%D1%82%D0%B5%20%E2%80%94%20">Подать заявку</a><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-engagement">Карточка на GitHub</a></div>
+</article>
+<article class="ws">
+  <div class="ws-top"><span class="ws-n">4</span><span class="badge k-oper">A · семестр</span></div>
+  <h3>Фиджитал-спорт</h3>
+  <p class="partner">Федерация фиджитал-спорта СПб — А. Спелов (президент)</p>
+  <p class="task">Оценка международного рынка фиджитал-дайвинга (объём, сегменты, каналы, зарубежное продвижение)</p>
+  <p class="status">Статус: <b>рамка собирается</b></p>
+  <div class="ws-links"><a class="join" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&amp;title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%A4%D0%B8%D0%B4%D0%B6%D0%B8%D1%82%D0%B0%D0%BB-%D1%81%D0%BF%D0%BE%D1%80%D1%82%20%E2%80%94%20">Подать заявку</a><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/phygital-sport">Карточка на GitHub</a></div>
+</article>
+<article class="ws">
+  <div class="ws-top"><span class="ws-n">5</span><span class="badge k-cross">Сквозной</span></div>
+  <h3>ИИ, цифровые двойники и симуляции</h3>
+  <p class="partner">ИИтех (veai) — М. Костицин</p>
+  <p class="task">Сквозная AI-линия: агенты, AI-native, ИИ-инструменты в работе всех команд</p>
+  <p class="status">Статус: <b>сквозной</b></p>
+  <div class="ws-links"><a class="join" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&amp;title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%98%D0%98%2C%20%D1%86%D0%B8%D1%84%D1%80%D0%BE%D0%B2%D1%8B%D0%B5%20%D0%B4%D0%B2%D0%BE%D0%B9%D0%BD%D0%B8%D0%BA%D0%B8%20%D0%B8%20%D1%81%D0%B8%D0%BC%D1%83%D0%BB%D1%8F%D1%86%D0%B8%D0%B8%20%E2%80%94%20">Подать заявку</a><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/ai-environment">Карточка на GitHub</a></div>
+</article>
+<article class="ws">
+  <div class="ws-top"><span class="ws-n">6</span><span class="badge k-oper">A/B · семестр→год</span></div>
+  <h3>Технологии и производство / венчур</h3>
+  <p class="partner">ИТМО Хайпарк — М. Мастин (советник по инвесторам и резидентам)</p>
+  <p class="task">Венчурный / технологический рынок; вовлечение студентов в Хайпарк.Форум (12–13.11.2026)</p>
+  <p class="status">Статус: <b>рамка собирается; событие — Хайпарк.Форум 12–13.11</b></p>
+  <div class="ws-links"><a class="join" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&amp;title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%A2%D0%B5%D1%85%D0%BD%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D0%B8%20%D0%B8%20%D0%BF%D1%80%D0%BE%D0%B8%D0%B7%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE%20/%20%D0%B2%D0%B5%D0%BD%D1%87%D1%83%D1%80%20%E2%80%94%20">Подать заявку</a><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/venture-tech">Карточка на GitHub</a></div>
+</article>
+<article class="ws">
+  <div class="ws-top"><span class="ws-n">7</span><span class="badge k-event">Событие</span></div>
+  <h3>Экология / данные — Биеннале карт</h3>
+  <p class="partner">Геоинтеллект — Д. Структов</p>
+  <p class="task">Всероссийский конкурс по картографии / геоаналитике + выставка (без победителей/призов, бесплатно, отбор на выставку)</p>
+  <p class="status">Статус: <b>событие — даты уточняются</b></p>
+  <div class="ws-links"><a class="join" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&amp;title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%AD%D0%BA%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F%20/%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5%20%E2%80%94%20%D0%91%D0%B8%D0%B5%D0%BD%D0%BD%D0%B0%D0%BB%D0%B5%20%D0%BA%D0%B0%D1%80%D1%82%20%E2%80%94%20">Подать заявку</a><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/cartography-biennale">Карточка на GitHub</a></div>
+</article>
+<article class="ws">
+  <div class="ws-top"><span class="ws-n">8</span><span class="badge k-flag">B · флагман (год+)</span></div>
+  <h3>Кибер-фиджитал арена</h3>
+  <p class="partner">Куратор — М. Мастин (Хайпарк)</p>
+  <p class="task">Международная кибер-фиджитал арена в Петербурге (спорт × фиджитал × инфраструктура)</p>
+  <p class="status">Статус: <b>Идея</b></p>
+  <div class="ws-links"><a class="join" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&amp;title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%9A%D0%B8%D0%B1%D0%B5%D1%80-%D1%84%D0%B8%D0%B4%D0%B6%D0%B8%D1%82%D0%B0%D0%BB%20%D0%B0%D1%80%D0%B5%D0%BD%D0%B0%20%E2%80%94%20">Подать заявку</a><a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Карточка на GitHub</a></div>
+</article>
+<article class="ws">
+  <div class="ws-top"><span class="ws-n">9</span><span class="badge k-flag">B · флагман (год+)</span></div>
+  <h3>Международный технологический центр</h3>
+  <p class="partner">Владельцы — М. Мастин, Ирен Артемова</p>
+  <p class="task">«Новый международный ВДНХ» для стран-партнёров техлидеров (Китай, Индия, ЮВА и др.)</p>
+  <p class="status">Статус: <b>Идея</b></p>
+  <div class="ws-links"><a class="join" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&amp;title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%9C%D0%B5%D0%B6%D0%B4%D1%83%D0%BD%D0%B0%D1%80%D0%BE%D0%B4%D0%BD%D1%8B%D0%B9%20%D1%82%D0%B5%D1%85%D0%BD%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D1%86%D0%B5%D0%BD%D1%82%D1%80%20%E2%80%94%20">Подать заявку</a><a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Карточка на GitHub</a></div>
+</article>
+<article class="ws">
+  <div class="ws-top"><span class="ws-n">10</span><span class="badge k-flag">B · флагман (год+)</span></div>
+  <h3>Сеть фиджитал дайвинг-центров</h3>
+  <p class="partner">Куратор — А. Спелов (Федерация)</p>
+  <p class="task">Сеть фиджитал дайвинг-центров как мягкая сила и продвижение российских технологий</p>
+  <p class="status">Статус: <b>Идея</b></p>
+  <div class="ws-links"><a class="join" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&amp;title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%A1%D0%B5%D1%82%D1%8C%20%D1%84%D0%B8%D0%B4%D0%B6%D0%B8%D1%82%D0%B0%D0%BB%20%D0%B4%D0%B0%D0%B9%D0%B2%D0%B8%D0%BD%D0%B3-%D1%86%D0%B5%D0%BD%D1%82%D1%80%D0%BE%D0%B2%20%E2%80%94%20">Подать заявку</a><a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Карточка на GitHub</a></div>
+</article>
+<article class="ws">
+  <div class="ws-top"><span class="ws-n">11</span><span class="badge k-flag">B · зонтик (год+)</span></div>
+  <h3>Новый интеллектуальный центр</h3>
+  <p class="partner">Куратор — Хан</p>
+  <p class="task">Консалтинг + think tank постинформационного уклада (институциональный зонтик мастерской)</p>
+  <p class="status">Статус: <b>Идея</b></p>
+  <div class="ws-links"><a class="join" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&amp;title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%9D%D0%BE%D0%B2%D1%8B%D0%B9%20%D0%B8%D0%BD%D1%82%D0%B5%D0%BB%D0%BB%D0%B5%D0%BA%D1%82%D1%83%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9%20%D1%86%D0%B5%D0%BD%D1%82%D1%80%20%E2%80%94%20">Подать заявку</a><a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Карточка на GitHub</a></div>
+</article>
+<article class="ws">
+  <div class="ws-top"><span class="ws-n">12</span><span class="badge k-proto">Прото</span></div>
+  <h3>Аскона (прото)</h3>
+  <p class="partner">АсконаLive (ГК «Аскона Лайф Групп») — Н. Мандавиа (работа с молодёжью), А. Ларионов (директор по корп. финансам)</p>
+  <p class="task">Финансовая функция холдинга как поле данных: 16 тем в 4 фокусах — казначейство, данные холдинга, драйверные модели, ИИ-агенты в методологии (разбор); IT-стажировки</p>
+  <p class="status">Статус: <b>прото → активный: темы получены 09.10.2026; встреча с кураторами, договор, NDA</b></p>
+  <div class="ws-links"><a class="join" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&amp;title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%90%D1%81%D0%BA%D0%BE%D0%BD%D0%B0%20%28%D0%BF%D1%80%D0%BE%D1%82%D0%BE%29%20%E2%80%94%20">Подать заявку</a><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/askona-live">Карточка на GitHub</a></div>
+</article>
+<article class="ws">
+  <div class="ws-top"><span class="ws-n">13</span><span class="badge k-infra">Сквозной · зонтик</span></div>
+  <h3>Среда управления</h3>
+  <p class="partner">Мастерская (Хан) / носитель ставки — В. В. Иванова (зав. кафедрой ИСвЭ)</p>
+  <p class="task">Единая вузонезависимая среда управления: репозиторий, стенды, шаблоны, автоматизация, навигатор, витрина</p>
+  <p class="status">Статус: <b>Живой</b></p>
+  <div class="ws-links"><a class="join" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&amp;title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%A1%D1%80%D0%B5%D0%B4%D0%B0%20%D1%83%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F%20%E2%80%94%20">Подать заявку</a><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/management-environment">Карточка на GitHub</a></div>
+</article>
+</div>
+<!-- /gen:guide-workstreams -->
+  </div>
+</section>
+
+<section id="join">
+  <div class="wrap">
+    <p class="kicker">Шаг 4</p>
+    <h2>Как присоединиться</h2>
+    <ol class="steps">
+      <li><b>Изучите воркстримы на витрине</b><span>Витрина — главный дашборд для студентов: кто
+        партнёр, какая задача, что происходит прямо сейчас и где нужна помощь.</span></li>
+      <li><b>Выберите воркстрим и роль</b><span>Не уверены в роли — так и напишите, шерпа поможет
+        выбрать.</span></li>
+      <li><b>Подайте заявку на GitHub</b><span>Нужен аккаунт GitHub, он бесплатный. В форме выберите
+        воркстрим в списке — по умолчанию там стоит первый. Не пишите в заявку телефон и email: её видят
+        все.</span></li>
+      <li><b>Ждите ответа в заявке</b><span>Шерпа ответит комментарием, GitHub пришлёт вам письмо.
+        Договоритесь о роли и первом задании.</span></li>
+      <li><b>Сделайте первый вклад</b><span>Самый быстрый вход — задание на стенде прямо на занятии,
+        минут на пятнадцать: проверить цифру, сделать прогноз, разметить площадку.</span></li>
+    </ol>
+    <div class="cta">
+      <a class="btn main" href="../program/site/workstreams_board.html">Открыть витрину воркстримов →</a>
+      <a class="btn" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml">Подать заявку →</a>
+    </div>
+    <p class="more">Подробнее:
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/guides/how-to-join.md">как включиться (текст)</a> ·
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/roles/README.md">роли</a> ·
+      <a href="https://github.com/SPBUEcon/econ-library/tree/main/rules">правила</a> ·
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/README.md">карта воркстримов</a></p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Мастерская «Технологии в экономике» · Экономический факультет СПбГУ ·
+    <a href="../index.html">главная</a> ·
+    <a href="https://github.com/SPBUEcon/econ-library">репозиторий на GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>

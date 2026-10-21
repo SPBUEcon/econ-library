@@ -6,8 +6,8 @@ name: Карта воркстримов
 # - Pull request: проверяет паспорта; ошибка — красная галочка с перечнем, что поправить.
 # - После слияния в main: пересобирает карту и коммитит её от имени github-actions — это
 #   единственное исключение из правила «в main только через PR»: бот меняет только
-#   блоки gen:* в workstreams/README.md и workstreams/curators.md и список gen:join-options в форме
-#   заявки.
+#   блоки gen:* в workstreams/README.md, workstreams/curators.md и guides/index.html (карточки
+#   воркстримов на сайте-гайде) и список gen:join-options в форме заявки.
 
 on:
   pull_request:
@@ -63,12 +63,12 @@ jobs:
         run: python program/site/build-workstreams.py
       - name: Закоммитить, если карта или форма изменились
         run: |
-          if git diff --quiet -- workstreams/README.md workstreams/curators.md .github/ISSUE_TEMPLATE/join-workstream.yml; then
+          if git diff --quiet -- workstreams/README.md workstreams/curators.md guides/index.html .github/ISSUE_TEMPLATE/join-workstream.yml; then
             echo "Карта не изменилась."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add workstreams/README.md workstreams/curators.md .github/ISSUE_TEMPLATE/join-workstream.yml
+          git add workstreams/README.md workstreams/curators.md guides/index.html .github/ISSUE_TEMPLATE/join-workstream.yml
           git commit -m "chore(workstreams): автообновление карты и формы заявки из workstream.yml"
           git push

@@ -5,7 +5,7 @@
 
 **[Витрина воркстримов →](https://spbuecon.github.io/econ-library/program/site/workstreams_board.html)** ·
 **[Подать заявку →](https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml)** ·
-[Как включиться](../guides/how-to-join.md)
+[Гайд для студента](https://spbuecon.github.io/econ-library/guides/)
 
 ## Воркстримы
 
