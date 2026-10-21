@@ -1,7 +1,7 @@
 # Паспорт воркстрима — машиночитаемая строка карты. Из этих файлов собираются таблицы в
 # workstreams/README.md (python program/site/build-workstreams.py; на GitHub — автоматически после
 # слияния в main). Поля — workstreams/_template/workstream.yml. Ссылки в значениях — от этой папки.
-# section: infra — строка таблицы «Инфраструктурный воркстрим»; partner — владелец / носитель ставки.
+# section: infra — строка таблицы «Среда управления»; partner — владелец / носитель ставки.
 id: management-environment
 n: 13
 title: Среда управления

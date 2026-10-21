@@ -6,9 +6,10 @@
 - workstreams/flagships.yml — флагманы, у которых пока нет своих папок;
 - история git и файлы в папках (meetings/, deliverables/, data/) — для таблицы живости.
 
-В workstreams/README.md перезаписываются только блоки между маркерами
-<!-- gen:ИМЯ --> … <!-- /gen:ИМЯ --> (map, infra, actions, activity). Остальной текст карты
-правится руками. Если маркера нет, сборка остановится.
+Перезаписываются только блоки между маркерами <!-- gen:ИМЯ --> … <!-- /gen:ИМЯ -->:
+в workstreams/README.md (карта для всех) — map, infra, actions; в workstreams/curators.md
+(страница для кураторов) — activity. Остальной текст правится руками. Если маркера нет, сборка
+остановится.
 
 Тем же запуском обновляется список воркстримов в форме «Заявка на вход»
 (.github/ISSUE_TEMPLATE/join-workstream.yml, блок # <gen:join-options> … # </gen:join-options>).
@@ -32,6 +33,7 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 WS = REPO / "workstreams"
 PAGE = WS / "README.md"
+CURATORS = WS / "curators.md"
 FLAGSHIPS = WS / "flagships.yml"
 JOIN_FORM = REPO / ".github" / "ISSUE_TEMPLATE" / "join-workstream.yml"
 
@@ -132,16 +134,9 @@ def cell(e, key, default="—"):
     return v
 
 
-def folder_link(e):
-    return f"[`{e['_dir']}/`]({e['_dir']}/)" if e.get("_dir") else "[`flagships.md`](flagships.md)"
-
-
-def stand_cell(e):
-    links = [f"[`{s}`](../stands/{s}/README.md)" for s in e.get("stands") or []]
-    if not links:
-        return "—"
-    note = f" *({e['stand_note']})*" if e.get("stand_note") else ""
-    return ", ".join(links) + note
+def title_link(e):
+    """Название — ссылка на папку воркстрима (у флагманов без папки — на flagships.md)."""
+    return f"[{cell(e, 'title')}]({e['_dir']}/)" if e.get("_dir") else f"[{cell(e, 'title')}](flagships.md)"
 
 
 def table(head, rows):
@@ -155,28 +150,26 @@ def by_n(entries, section):
 
 
 def build_map(entries):
-    rows = [[str(e["n"]), cell(e, "title"), cell(e, "stream"), cell(e, "level"), cell(e, "partner"),
-             cell(e, "partner_role"), cell(e, "supertask"), cell(e, "team_sources"), stand_cell(e),
-             cell(e, "status"), folder_link(e)] for e in by_n(entries, "map")]
+    """Карта для всех: короткие колонки. Поток, роль партнёра, источники команд и стенды — в
+    карточке воркстрима (папка) и на витрине."""
+    rows = [[str(e["n"]), title_link(e), cell(e, "partner"), cell(e, "supertask"), cell(e, "level"),
+             cell(e, "status")] for e in by_n(entries, "map")]
     total = len(rows)
     flag = sum(1 for e in entries if e.get("section") == "map" and e.get("kind") == "флагман")
-    return (table(["#", "Воркстрим", "Поток (лендинг)", "Уровень", "Партнёр / куратор", "Роль партнёра",
-                   "Суперзадача", "Источники команд", "Стенд", "Статус", "Папка"], rows)
-            + f"\n\n**Итого в карте:** воркстримов — **{total}**; флагманов (B) — **{flag}**. "
-              "*(Считается по паспортам `workstream.yml` автоматически.)*")
+    return (table(["№", "Воркстрим", "Партнёр", "Суперзадача", "Уровень", "Статус"], rows)
+            + f"\n\nВсего в карте — **{total}**, из них флагманов — **{flag}**.")
 
 
 def build_infra(entries):
-    rows = [[str(e["n"]), cell(e, "title"), cell(e, "level"), cell(e, "partner"), cell(e, "supertask"),
-             cell(e, "status"), folder_link(e)] for e in by_n(entries, "infra")]
-    return table(["#", "Воркстрим", "Уровень", "Владелец / носитель ставки", "Суперзадача", "Состояние",
-                  "Папка"], rows)
+    rows = [[str(e["n"]), title_link(e), cell(e, "partner"), cell(e, "supertask"), cell(e, "status")]
+            for e in by_n(entries, "infra")]
+    return table(["№", "Воркстрим", "Владелец", "Суперзадача", "Статус"], rows)
 
 
 def build_actions(entries):
-    rows = [[str(e["n"]), cell(e, "next_action"), cell(e, "next_action_status")]
+    rows = [[str(e["n"]), title_link(e), cell(e, "next_action"), cell(e, "next_action_status")]
             for e in by_n(entries, "map") + by_n(entries, "infra") if e.get("next_action")]
-    return table(["#", "Ближайшее действие", "Статус"], rows)
+    return table(["№", "Воркстрим", "Ближайшее действие", "Статус"], rows)
 
 
 def join_options(entries):
@@ -257,13 +250,27 @@ def build_activity(entries):
 # ---------------------------------------------------------------- запись
 
 
-def put(page, name, block):
+def put(page, name, block, where="workstreams/README.md"):
     a, b = f"<!-- gen:{name} -->", f"<!-- /gen:{name} -->"
     if a not in page or b not in page:
-        raise SystemExit(f"workstreams/README.md: нет маркеров {a} … {b}")
+        raise SystemExit(f"{where}: нет маркеров {a} … {b}")
     head, rest = page.split(a, 1)
     _, tail = rest.split(b, 1)
     return head + a + "\n" + block + "\n" + b + tail
+
+
+def write_blocks(path, builders, entries):
+    """Пересобрать блоки gen:* в одном файле; записать, только если что-то изменилось."""
+    where = path.relative_to(REPO).as_posix()
+    page = path.read_text(encoding="utf-8")
+    new = page
+    for name, fn in builders:
+        new = put(new, name, fn(entries), where)
+    if new != page:
+        path.write_text(new, encoding="utf-8", newline="\n")
+        print(f"written {where}: {len(entries)} паспортов")
+    else:
+        print(f"{where} без изменений: {len(entries)} паспортов")
 
 
 def main():
@@ -277,16 +284,8 @@ def main():
     if "--check" in sys.argv:
         print(f"ok: {len(entries)} паспортов без ошибок")
         return
-    page = PAGE.read_text(encoding="utf-8")
-    new = page
-    for name, fn in (("map", build_map), ("infra", build_infra), ("actions", build_actions),
-                     ("activity", build_activity)):
-        new = put(new, name, fn(entries))
-    if new != page:
-        PAGE.write_text(new, encoding="utf-8", newline="\n")
-        print(f"written workstreams/README.md: {len(entries)} паспортов")
-    else:
-        print(f"workstreams/README.md без изменений: {len(entries)} паспортов")
+    write_blocks(PAGE, (("map", build_map), ("infra", build_infra), ("actions", build_actions)), entries)
+    write_blocks(CURATORS, (("activity", build_activity),), entries)
     if JOIN_FORM.exists():
         form = JOIN_FORM.read_text(encoding="utf-8")
         new_form = put_join_options(form, join_options(entries))

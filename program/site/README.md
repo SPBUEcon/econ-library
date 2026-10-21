@@ -8,7 +8,7 @@ HTML-страницы мастерской «Технологии в эконо�
 | [`workstreams_board.html`](workstreams_board.html) | **Витрина воркстримов** — дашборд для студентов: все воркстримы, стенды, статусы, «как включиться» |
 | [`landing_tech_econ.html`](landing_tech_econ.html) | Лендинг курса — о мастерской, формате, воркстримах, партнёрстве |
 | [`participants-and-access-onepager.html`](participants-and-access-onepager.html) | Одностраничник для встречи: участники, группы, роли и доступы (печать — A4 альбомная); полный текст — [`../participants-and-access.md`](../participants-and-access.md) |
-| [`build-workstreams.py`](build-workstreams.py) | Сборка таблиц [карты воркстримов](../../workstreams/README.md) из паспортов `workstream.yml`; на GitHub запускается сама (workflow «Карта воркстримов»), `--check` — только проверка паспортов |
+| [`build-workstreams.py`](build-workstreams.py) | Сборка таблиц [карты воркстримов](../../workstreams/README.md) и живости на [странице для кураторов](../../workstreams/curators.md) из паспортов `workstream.yml`; на GitHub запускается сама (workflow «Карта воркстримов»), `--check` — только проверка паспортов |
 
 ## Как открыть витрину (дашборд)
 
