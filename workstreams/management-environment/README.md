@@ -46,7 +46,7 @@ IT-отделом; вклад каждого виден сам собой в и�
 | Поиск по репозиторию | Поле на главной: тезисы, задания, воркстримы, партнёры, страницы, все `.md` и формы Issues; кнопки «✎ Править» | `program/site/search-index.js` — тем же скриптом | Скриптом, вручную |
 | Витрины разделов | Тезисы, архив заданий, трек econ-3 | `theses/site/`, `assignments/site/`, `tracks/econ-3/site/` | Своими скриптами `build.py`, вручную |
 | Публикация | Весь репозиторий — сайт на GitHub Pages | `.github/workflows/pages.yml` | Сама после слияния в `main` |
-| Карта воркстримов | Таблицы карты и живость по папкам — из паспортов `workstream.yml`; тем же скриптом — список воркстримов в форме заявки | [`../README.md`](../README.md), сборка — [`build-workstreams.py`](../../program/site/build-workstreams.py) | Сама после слияния в `main` (workflow «Карта воркстримов») |
+| Карта воркстримов | Таблицы карты — из паспортов `workstream.yml`; живость по папкам — на [странице для кураторов](../curators.md); тем же скриптом — список воркстримов в форме заявки | [`../README.md`](../README.md), сборка — [`build-workstreams.py`](../../program/site/build-workstreams.py) | Сама после слияния в `main` (workflow «Карта воркстримов») |
 | Витрина воркстримов | Карточки воркстримов для студентов | [`workstreams_board.html`](../../program/site/workstreams_board.html) | Руками |
 | Дашборд-дайджест | Сводка сущностей и статусов | [`DASHBOARD.md`](../../DASHBOARD.md) | Руками |
 | Заявка на вход | Форма Issues: воркстрим, роль, вуз, курс, навыки; без контактов | [`join-workstream.yml`](../../.github/ISSUE_TEMPLATE/join-workstream.yml) | Список воркстримов — сам после слияния в `main` (workflow «Карта воркстримов») |
