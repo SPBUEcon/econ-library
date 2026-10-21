@@ -91,7 +91,7 @@
 
 | Колонка | Что |
 |---|---|
-| `semester_id` | `2026-fall`, `2027-spring` (как в именовании кейсов, [`../CONTRIBUTING.md`](../CONTRIBUTING.md)) |
+| `semester_id` | `2026-fall`, `2027-spring` (как в [`../CONTRIBUTING.md`](../CONTRIBUTING.md), «Как называть файлы») |
 | `title` | «Осень 2026» |
 | `date_start`, `date_end` | `ГГГГ-ММ-ДД` |
 | `note` | Ссылка на календарь, особенности хода |
