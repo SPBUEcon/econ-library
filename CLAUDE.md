@@ -49,5 +49,6 @@
 - `data-researcher` — поиск и сбор открытых данных.
 - `data-cleaner` — подготовка данных из `data/raw/` в `data/processed/`.
 - `report-reviewer` — проверка отчётов перед сдачей.
-- `course-librarian` — раскладка материалов по `courses/` и навигация.
+- `course-librarian` — раскладка учебных материалов (`theses/`, `assignments/`, `disciplines/`,
+  `tracks/`) и навигация.
 - `insurance-analyst` — отраслевой контекст для проекта с Ингосстрахом.
