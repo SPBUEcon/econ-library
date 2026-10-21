@@ -60,7 +60,8 @@ econ-library/
 
 ## С чего начать
 
-1. Прочитай [концепт мастерской](program/concept.md) и [карту воркстримов](workstreams/README.md).
+1. Студенту — начни с [гайда для студента](https://spbuecon.github.io/econ-library/guides/): понятия, воркстримы, как присоединиться.
+   Дальше — [концепт мастерской](program/concept.md) и [карта воркстримов](workstreams/README.md).
 2. Посмотри [правила проекта](rules/) и [как участвовать](CONTRIBUTING.md).
 3. Новый воркстрим — с копии [шаблона](workstreams/_template/); новый кейс — с копии
    [шаблона кейса](cases/_template/).

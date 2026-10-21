@@ -8,8 +8,9 @@
 
 Перезаписываются только блоки между маркерами <!-- gen:ИМЯ --> … <!-- /gen:ИМЯ -->:
 в workstreams/README.md (карта для всех) — map, infra, actions; в workstreams/curators.md
-(страница для кураторов) — activity. Остальной текст правится руками. Если маркера нет, сборка
-остановится.
+(страница для кураторов) — activity; в guides/index.html (гайд для студента, сайт) —
+guide-workstreams (карточки воркстримов). Остальной текст правится руками. Если маркера нет,
+сборка остановится.
 
 Тем же запуском обновляется список воркстримов в форме «Заявка на вход»
 (.github/ISSUE_TEMPLATE/join-workstream.yml, блок # <gen:join-options> … # </gen:join-options>).
@@ -20,12 +21,14 @@
     python program/site/build-workstreams.py           # пересобрать карту
     python program/site/build-workstreams.py --check   # только проверить паспорта (для PR)
 """
+import html
 import posixpath
 import re
 import subprocess
 import sys
 from datetime import date, timedelta
 from pathlib import Path
+from urllib.parse import quote
 
 import yaml
 
@@ -36,12 +39,18 @@ PAGE = WS / "README.md"
 CURATORS = WS / "curators.md"
 FLAGSHIPS = WS / "flagships.yml"
 JOIN_FORM = REPO / ".github" / "ISSUE_TEMPLATE" / "join-workstream.yml"
+GUIDE = REPO / "guides" / "index.html"
+GH = "https://github.com/SPBUEcon/econ-library/"
 
 SECTIONS = {"map", "infra", "hub"}
 KINDS = {"оперативный", "сквозной", "событие", "флагман", "прото", "инфраструктурный", "хаб"}
 ALIVE_DAYS = 28
 MD_LINK = re.compile(r"(\]\()([^)\s]+)(\))")
+MD_LINK_FULL = re.compile(r"\[([^\]]*)\]\([^)\s]+\)")
 SKIP_FILES = {"README.md", ".gitkeep"}
+# Цвет плашки уровня на сайте-гайде (классы — в guides/index.html).
+KIND_CLASS = {"оперативный": "k-oper", "сквозной": "k-cross", "событие": "k-event", "флагман": "k-flag",
+              "прото": "k-proto", "инфраструктурный": "k-infra", "хаб": "k-infra"}
 
 # ---------------------------------------------------------------- паспорта
 
@@ -198,6 +207,45 @@ def put_join_options(form, block):
     return head + a + "\n" + block + "\n" + b + tail
 
 
+# ---------------------------------------------------------------- сайт-гайд для студента
+
+
+def plain(v):
+    """Значение паспорта → простой текст для сайта: без markdown-ссылок и разметки."""
+    v = re.sub(r"\s+", " ", str(v or "")).strip()
+    return re.sub(r"[*`]", "", MD_LINK_FULL.sub(r"\1", v))
+
+
+def build_guide(entries):
+    """Карточки воркстримов для guides/index.html: как в карте (map и infra по номеру).
+
+    «Подать заявку» открывает форму с названием воркстрима в заголовке: GitHub подставляет из
+    ссылки только заголовок, сам воркстрим студент выбирает в списке формы.
+    """
+    esc = lambda s: html.escape(s, quote=True)
+    cards = []
+    for e in sorted(by_n(entries, "map") + by_n(entries, "infra"), key=lambda e: e["n"]):
+        title = plain(e.get("title"))
+        card = (GH + f"tree/main/workstreams/{e['_dir']}") if e.get("_dir") else \
+            GH + "blob/main/workstreams/flagships.md"
+        join = GH + "issues/new?template=join-workstream.yml&title=" + quote(f"[Вход] {title} — ")
+        out = ['<article class="ws">',
+               f'  <div class="ws-top"><span class="ws-n">{e["n"]}</span>'
+               f'<span class="badge {KIND_CLASS.get(e.get("kind"), "")}">{esc(plain(e.get("level") or e.get("kind")))}</span></div>',
+               f"  <h3>{esc(title)}</h3>"]
+        if e.get("partner"):
+            out.append(f'  <p class="partner">{esc(plain(e["partner"]))}</p>')
+        if e.get("supertask"):
+            out.append(f'  <p class="task">{esc(plain(e["supertask"]))}</p>')
+        if e.get("status"):
+            out.append(f'  <p class="status">Статус: <b>{esc(plain(e["status"]))}</b></p>')
+        out.append(f'  <div class="ws-links"><a class="join" href="{esc(join)}">Подать заявку</a>'
+                   f'<a href="{esc(card)}">Карточка на GitHub</a></div>')
+        out.append("</article>")
+        cards.append("\n".join(out))
+    return '<div class="ws-grid">\n' + "\n".join(cards) + "\n</div>"
+
+
 # ---------------------------------------------------------------- живость
 
 
@@ -286,6 +334,8 @@ def main():
         return
     write_blocks(PAGE, (("map", build_map), ("infra", build_infra), ("actions", build_actions)), entries)
     write_blocks(CURATORS, (("activity", build_activity),), entries)
+    if GUIDE.exists():
+        write_blocks(GUIDE, (("guide-workstreams", build_guide),), entries)
     if JOIN_FORM.exists():
         form = JOIN_FORM.read_text(encoding="utf-8")
         new_form = put_join_options(form, join_options(entries))
