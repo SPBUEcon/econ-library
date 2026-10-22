@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Регистрация участника по одобренной заявке на вход (Issue Form join-workstream.yml).
+"""Регистрация участника по одобренной заявке на вход.
+
+Заявка приходит одним из двух путей, тело у них одинаковое (разделы «### Поле»): форма записи на
+витрине воркстримов (program/site/workstreams_board.html, раздел «Записаться») или Issue Form
+join-workstream.yml на GitHub.
 
 Запускается workflow .github/workflows/join-registry.yml, когда шерпа или мастер ставит на заявку
 метку approved. Скрипт:
@@ -11,8 +15,13 @@
 4. пишет текст Pull request и комментарий к заявке.
 
 Строки только дописываются, существующие не меняются. Если человек уже есть в реестре (по нику),
-новая строка в participants.csv не заводится. Команда (team_id) подставляется, только если у
-воркстрима в текущем семестре ровно одна команда в статусе forming/active.
+новая строка в participants.csv не заводится.
+
+Формат участия — по лестнице участия (stands/engagement.md) плюс стажировка и наставничество:
+one-off, mini-track, team, internship, mentor. Роль обязательна только для team; для остальных
+форматов пишется одна строка с пустой ролью (или по строке на роль, если роли выбраны). Команда
+(team_id) подставляется только для team и только если у воркстрима в текущем семестре ровно одна
+команда в статусе forming/active. В заявках без поля «Формат участия» (старая форма) формат — team.
 
 Локальная проверка на примере (файлы реестра не трогаются):
     python registry/register-participant.py --body registry/examples/join-issue-body.txt \\
@@ -36,8 +45,12 @@ WS = REPO / "workstreams"
 
 PARTICIPANT_COLS = ["person_id", "github", "display_name", "org", "unit", "type", "status",
                     "first_semester", "note"]
-MEMBERSHIP_COLS = ["membership_id", "person_id", "semester_id", "workstream_id", "team_id", "role",
+MEMBERSHIP_COLS = ["membership_id", "person_id", "semester_id", "workstream_id", "team_id", "format", "role",
                    "profile", "date_from", "date_to", "exit_type", "sponsor_person_id", "entry", "note"]
+# Формат участия: код → как называется в форме (лестница участия — stands/engagement.md).
+FORMATS = {"one-off": "разовое задание на занятии", "mini-track": "мини-трек на 1–3 занятия",
+           "team": "роль в команде на семестр", "internship": "стажировка у партнёра",
+           "mentor": "наставник или эксперт"}
 TEAM_ROLES = {"captain", "model-architect", "field-analyst", "tech-integrator", "partner-liaison"}
 TYPES = {"student-spbu", "student-external", "teacher", "partner", "staff"}
 APPROVER_ROLES_WS = {"sherpa", "workstream-owner"}
@@ -48,6 +61,7 @@ NO_RESPONSE = {"", "_no response_", "none"}
 # Заголовки разделов формы (label в join-workstream.yml) → ключ.
 FIELDS = {
     "Воркстрим": "workstream",
+    "Формат участия": "format",
     "Желаемая роль": "role",
     "GitHub-ник участника": "github",
     "Кто вы": "type",
@@ -167,8 +181,15 @@ def register(body, author, issue, approver, permission, today):
     if ws not in workstream_ids():
         raise Refused(f"Не нашёл воркстрим «{fields.get('workstream', '')}» среди паспортов workstream.yml.")
 
+    if "format" in fields:
+        formats = [c for c in code_in_parens(fields["format"]) if c in FORMATS]
+        if len(formats) != 1:
+            raise Refused(f"Не распознал поле «Формат участия»: «{fields['format']}».")
+        fmt = formats[0]
+    else:
+        fmt = "team"                                   # заявка по старой форме, без формата
     roles = [c for c in code_in_parens(fields.get("role", "")) if c in TEAM_ROLES]
-    if not roles:
+    if fmt == "team" and not roles:
         raise Refused("Роль не выбрана («пока не уверен(а)»). Договоритесь с участником о роли, "
                       "отредактируйте поле «Желаемая роль» в заявке и снова поставьте метку `approved`.")
 
@@ -212,36 +233,37 @@ def register(body, author, issue, approver, permission, today):
 
     live_teams = [t for t in teams if t["workstream_id"] == ws and t["semester_id"] == semester
                   and t["status"] in ("forming", "active")]
-    team_id = live_teams[0]["team_id"] if len(live_teams) == 1 else ""
-    if not team_id:
+    team_id = live_teams[0]["team_id"] if fmt == "team" and len(live_teams) == 1 else ""
+    if fmt == "team" and not team_id:
         warnings.append(f"Команда не назначена: у `{ws}` в `{semester}` "
                         f"{'нет команды' if not live_teams else 'несколько команд'} в статусе forming/active. "
                         "Перед слиянием впишите `team_id` (роли команды без `team_id` читаются как роли "
                         "уровня воркстрима) или заведите команду в teams.csv.")
 
     new_members, mid_rows = [], list(members)
-    for role in roles:
+    for role in roles or [""]:
         dup = [m for m in members if m["person_id"] == pid and m["semester_id"] == semester
-               and m["workstream_id"] == ws and m["role"] == role and not m["date_to"]]
+               and m["workstream_id"] == ws and m["format"] == fmt and m["role"] == role and not m["date_to"]]
         if dup:
-            warnings.append(f"Роль `{role}` уже действует ({dup[0]['membership_id']}) — пропущена.")
+            warnings.append(f"Участие `{fmt}`{f' в роли `{role}`' if role else ''} уже действует "
+                            f"({dup[0]['membership_id']}) — пропущено.")
             continue
         row = {c: "" for c in MEMBERSHIP_COLS}
         row.update(membership_id=next_id(mid_rows, "membership_id", "m", 4), person_id=pid, semester_id=semester,
-                   workstream_id=ws, team_id=team_id, role=role, date_from=today.isoformat(),
+                   workstream_id=ws, team_id=team_id, format=fmt, role=role, date_from=today.isoformat(),
                    sponsor_person_id=sponsor, entry="request", note=f"заявка #{issue}")
         new_members.append(row)
         mid_rows.append(row)
     if not new_members:
-        raise Refused(f"`{login}` уже записан(а) в `{ws}` на `{semester}` во всех выбранных ролях — "
-                      "добавлять нечего.")
+        raise Refused(f"`{login}` уже записан(а) в `{ws}` на `{semester}` в этом формате участия и во всех "
+                      "выбранных ролях — добавлять нечего.")
     if ptype == "student-external" and not sponsor:
         warnings.append("Внешний участник без `sponsor_person_id`: одобривший не найден в participants.csv. "
                         "По правилам целостности спонсор-шерпа обязателен — впишите его перед слиянием.")
     if not sponsor and ptype != "student-external":
         warnings.append("`sponsor_person_id` пуст: одобривший не найден в participants.csv.")
 
-    return {"login": login, "pid": pid, "ws": ws, "semester": semester, "approver_as": approver_as,
+    return {"login": login, "pid": pid, "ws": ws, "fmt": fmt, "semester": semester, "approver_as": approver_as,
             "people": new_people, "members": new_members, "warnings": warnings}
 
 
@@ -252,7 +274,8 @@ def csv_block(cols, rows):
 
 
 def pr_body(r, issue, approver):
-    lines = [f"Регистрация по заявке #{issue}: `{r['login']}` → `{r['ws']}`, {r['semester']}.", "",
+    lines = [f"Регистрация по заявке #{issue}: `{r['login']}` → `{r['ws']}`, {r['semester']}, формат участия — "
+             f"{FORMATS[r['fmt']]} (`{r['fmt']}`).", "",
              f"Одобрил(а): @{approver} — {r['approver_as']}.", ""]
     if r["people"]:
         lines += ["**registry/participants.csv**", "", "```csv", csv_block(PARTICIPANT_COLS, r["people"]).rstrip(),
@@ -262,8 +285,8 @@ def pr_body(r, issue, approver):
     if r["warnings"]:
         lines += ["### Проверить перед слиянием", ""] + [f"- ⚠️ {w}" for w in r["warnings"]] + [""]
     lines += ["### Чек-лист шерпы", "",
-              "- [ ] Роль и воркстрим согласованы с участником",
-              "- [ ] `team_id` и `profile` — по сборке команды",
+              "- [ ] Воркстрим, формат участия и роль согласованы с участником",
+              "- [ ] Для команды — `team_id` и `profile` по сборке команды",
               "- [ ] Контакты и ФИО внесены в закрытую таблицу (ключ — `person_id`), **не сюда**",
               "- [ ] Участник приглашён в репозиторий воркстрима",
               "",
@@ -312,7 +335,7 @@ def main():
     if r["people"]:
         append_csv("participants.csv", PARTICIPANT_COLS, r["people"])
     append_csv("memberships.csv", MEMBERSHIP_COLS, r["members"])
-    print(f"записано: {r['pid']} ({r['login']}) → {r['ws']}, ролей: {len(r['members'])}")
+    print(f"записано: {r['pid']} ({r['login']}) → {r['ws']}, формат {r['fmt']}, строк в memberships: {len(r['members'])}")
 
 
 if __name__ == "__main__":

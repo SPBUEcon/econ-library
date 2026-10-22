@@ -103,10 +103,11 @@
 
 - **Проектные темы** — набор откроется после встречи с кураторами и отбора тем. Заявить интерес можно
   заранее: через связного ЭФ — Д. Хана — или
-  [заявкой на GitHub](https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%90%D1%81%D0%BA%D0%BE%D0%BD%D0%B0%20%28%D0%BF%D1%80%D0%BE%D1%82%D0%BE%29%20%E2%80%94%20)
-  (выберите в списке «askona-live — №12 Аскона (прото)»; ответ придёт комментарием в заявке). Когда роль
+  [формой записи на витрине](https://spbuecon.github.io/econ-library/program/site/workstreams_board.html?ws=askona-live#apply) (воркстрим уже выбран; ответ придёт
+  комментарием в заявке на GitHub). Когда роль
   подтвердят, заполните [соглашение о входе](onboarding.md).
-- **IT-стажировки** — набор открыт: через Л. Гадасину или Д. Хана (кафедра ИСвЭ). Позиции и условия —
+- **IT-стажировки** — набор открыт: через Л. Гадасину или Д. Хана (кафедра ИСвЭ) или
+  [формой записи](https://spbuecon.github.io/econ-library/program/site/workstreams_board.html?ws=askona-live#apply) с форматом «Стажировка у партнёра». Позиции и условия —
   на [странице для участников](https://spbuecon.github.io/econ-library/workstreams/askona-live/site/index.html#it).
 
 Как всё устроено — в [гайде для студента](https://spbuecon.github.io/econ-library/guides/).

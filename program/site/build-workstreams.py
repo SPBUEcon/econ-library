@@ -9,7 +9,8 @@
 Перезаписываются только блоки между маркерами <!-- gen:ИМЯ --> … <!-- /gen:ИМЯ -->:
 в workstreams/README.md (карта для всех) — map, infra, actions; в workstreams/curators.md
 (страница для кураторов) — activity; в guides/index.html (гайд для студента, сайт) —
-guide-workstreams (карточки воркстримов). Остальной текст правится руками. Если маркера нет,
+guide-workstreams (карточки воркстримов); в program/site/workstreams_board.html (витрина) —
+apply-options (список воркстримов в форме записи). Остальной текст правится руками. Если маркера нет,
 сборка остановится.
 
 Тем же запуском обновляется список воркстримов в форме «Заявка на вход»
@@ -40,6 +41,7 @@ CURATORS = WS / "curators.md"
 FLAGSHIPS = WS / "flagships.yml"
 JOIN_FORM = REPO / ".github" / "ISSUE_TEMPLATE" / "join-workstream.yml"
 GUIDE = REPO / "guides" / "index.html"
+BOARD = REPO / "program" / "site" / "workstreams_board.html"
 GH = "https://github.com/SPBUEcon/econ-library/"
 
 SECTIONS = {"map", "infra", "hub"}
@@ -181,19 +183,35 @@ def build_actions(entries):
     return table(["№", "Воркстрим", "Ближайшее действие", "Статус"], rows)
 
 
-def join_options(entries):
-    """Варианты выпадающего списка формы «Заявка на вход»: «id — №n Название».
-
-    Порядок — как в карте (map и infra по номеру), затем потоки-хабы. Подпись начинается с id:
-    по нему registry/register-participant.py находит воркстрим.
-    """
+def join_entries(entries):
+    """Воркстримы в формах записи: как в карте (map и infra по номеру), затем потоки-хабы."""
     hubs = sorted((e for e in entries if e.get("section") == "hub"), key=lambda e: e["id"])
+    return sorted(by_n(entries, "map") + by_n(entries, "infra"), key=lambda e: e["n"]) + hubs
+
+
+def join_label(e):
+    """Подпись варианта «id — №n Название». По id в начале registry/register-participant.py находит
+    воркстрим. Подпись одна и та же в форме GitHub и в форме записи на витрине."""
+    num = f"№{e['n']} " if isinstance(e.get("n"), int) else ""
+    tail = " (флагман)" if e.get("kind") == "флагман" else ""
+    return f"{e['id']} — {num}{e['title']}{tail}".replace('"', "'")
+
+
+def join_options(entries):
+    """Варианты выпадающего списка формы «Заявка на вход» на GitHub."""
+    return "\n".join(f'        - "{join_label(e)}"' for e in join_entries(entries))
+
+
+def apply_options(entries):
+    """Список «Воркстрим» в форме записи на витрине (program/site/workstreams_board.html)."""
+    esc = lambda v: html.escape(v, quote=True)
     out = []
-    for e in sorted(by_n(entries, "map") + by_n(entries, "infra"), key=lambda e: e["n"]) + hubs:
+    for e in join_entries(entries):
         num = f"№{e['n']} " if isinstance(e.get("n"), int) else ""
         tail = " (флагман)" if e.get("kind") == "флагман" else ""
-        label = f"{e['id']} — {num}{e['title']}{tail}".replace('"', "'")
-        out.append(f'        - "{label}"')
+        title = plain(e.get("title"))
+        out.append(f'          <option value="{esc(join_label(e))}" data-id="{esc(e["id"])}" '
+                   f'data-title="{esc(title)}">{esc(num + title + tail)}</option>')
     return "\n".join(out)
 
 
@@ -219,8 +237,7 @@ def plain(v):
 def build_guide(entries):
     """Карточки воркстримов для guides/index.html: как в карте (map и infra по номеру).
 
-    «Подать заявку» открывает форму с названием воркстрима в заголовке: GitHub подставляет из
-    ссылки только заголовок, сам воркстрим студент выбирает в списке формы.
+    «Записаться» ведёт в форму записи на витрине, где этот воркстрим уже выбран (?ws=<id>).
     """
     esc = lambda s: html.escape(s, quote=True)
     cards = []
@@ -228,7 +245,7 @@ def build_guide(entries):
         title = plain(e.get("title"))
         card = (GH + f"tree/main/workstreams/{e['_dir']}") if e.get("_dir") else \
             GH + "blob/main/workstreams/flagships.md"
-        join = GH + "issues/new?template=join-workstream.yml&title=" + quote(f"[Вход] {title} — ")
+        join = f"../program/site/workstreams_board.html?ws={quote(e['id'])}#apply"
         out = ['<article class="ws">',
                f'  <div class="ws-top"><span class="ws-n">{e["n"]}</span>'
                f'<span class="badge {KIND_CLASS.get(e.get("kind"), "")}">{esc(plain(e.get("level") or e.get("kind")))}</span></div>',
@@ -239,7 +256,7 @@ def build_guide(entries):
             out.append(f'  <p class="task">{esc(plain(e["supertask"]))}</p>')
         if e.get("status"):
             out.append(f'  <p class="status">Статус: <b>{esc(plain(e["status"]))}</b></p>')
-        out.append(f'  <div class="ws-links"><a class="join" href="{esc(join)}">Подать заявку</a>'
+        out.append(f'  <div class="ws-links"><a class="join" href="{esc(join)}">Записаться</a>'
                    f'<a href="{esc(card)}">Карточка на GitHub</a></div>')
         out.append("</article>")
         cards.append("\n".join(out))
@@ -336,6 +353,8 @@ def main():
     write_blocks(CURATORS, (("activity", build_activity),), entries)
     if GUIDE.exists():
         write_blocks(GUIDE, (("guide-workstreams", build_guide),), entries)
+    if BOARD.exists():
+        write_blocks(BOARD, (("apply-options", apply_options),), entries)
     if JOIN_FORM.exists():
         form = JOIN_FORM.read_text(encoding="utf-8")
         new_form = put_join_options(form, join_options(entries))

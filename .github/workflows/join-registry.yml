@@ -1,6 +1,9 @@
 name: Регистрация участника
 
-# Заявка на вход (форма .github/ISSUE_TEMPLATE/join-workstream.yml, метка join) → реестр.
+# Заявка на вход → реестр. Заявка приходит двумя путями с одинаковым телом («### Поле»): форма
+# записи на витрине (program/site/workstreams_board.html#apply — открывает на GitHub обычный issue
+# без меток) и форма .github/ISSUE_TEMPLATE/join-workstream.yml (ставит метку join сама).
+# Заявке с витрины метку join ставит задание label ниже: посторонний не может ставить метки сам.
 # Когда шерпа или мастер ставит на заявку метку approved, скрипт registry/register-participant.py
 # дописывает строки в registry/participants.csv и registry/memberships.csv, а workflow открывает
 # Pull request со ссылкой на заявку. В main запись попадает только после ревью и слияния PR.
@@ -17,15 +20,32 @@ name: Регистрация участника
 
 on:
   issues:
-    types: [labeled]
+    types: [opened, labeled]
 
 concurrency:
   group: join-registry        # по одной заявке за раз: номера p/m не должны совпасть
   cancel-in-progress: false
 
 jobs:
+  label:
+    if: >-
+      github.event.action == 'opened' && startsWith(github.event.issue.title, '[Вход]') &&
+      contains(github.event.issue.body, '### Воркстрим') && !contains(github.event.issue.labels.*.name, 'join')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      ISSUE: ${{ github.event.issue.number }}
+    steps:
+      - name: Поставить метку join на заявку с витрины
+        run: gh issue edit "$ISSUE" --repo "$REPO" --add-label join
+
   register:
-    if: github.event.label.name == 'approved' && contains(github.event.issue.labels.*.name, 'join')
+    if: >-
+      github.event.action == 'labeled' && github.event.label.name == 'approved' &&
+      contains(github.event.issue.labels.*.name, 'join')
     runs-on: ubuntu-latest
     permissions:
       contents: write
