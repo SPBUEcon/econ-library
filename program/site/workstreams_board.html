@@ -602,12 +602,12 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         </div>
         <div class="field">
           <label for="f-org">Вуз или организация <span class="req">*</span></label>
-          <input type="text" id="f-org" maxlength="100" placeholder="СПбГУ">
+          <input type="text" id="f-org" maxlength="60" placeholder="СПбГУ">
           <p class="err" data-for="f-org"></p>
         </div>
         <div class="field">
           <label for="f-unit">Направление, курс, группа <span class="req">*</span></label>
-          <input type="text" id="f-unit" maxlength="100" placeholder="Экономика, 3 курс">
+          <input type="text" id="f-unit" maxlength="60" placeholder="Экономика, 3 курс">
           <p class="err" data-for="f-unit"></p>
         </div>
         <div class="field">
@@ -620,17 +620,17 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
 
       <div class="field">
         <label for="f-skills">Уже умею <span class="req">*</span></label>
-        <textarea id="f-skills" maxlength="300" rows="3" placeholder="Навыки и инструменты"></textarea>
+        <textarea id="f-skills" maxlength="150" rows="3" placeholder="Навыки и инструменты — коротко"></textarea>
         <p class="err" data-for="f-skills"></p>
       </div>
       <div class="field">
         <label for="f-grow">Хочу прокачать</label>
-        <textarea id="f-grow" maxlength="300" rows="2"></textarea>
+        <textarea id="f-grow" maxlength="100" rows="2"></textarea>
         <p class="err" data-for="f-grow"></p>
       </div>
       <div class="field">
         <label for="f-why">Почему этот воркстрим</label>
-        <textarea id="f-why" maxlength="300" rows="2" placeholder="2–3 предложения: что цепляет, что хочется сделать"></textarea>
+        <textarea id="f-why" maxlength="100" rows="2" placeholder="Одно-два предложения"></textarea>
         <p class="err" data-for="f-why"></p>
       </div>
 
@@ -643,6 +643,8 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       </fieldset>
 
       <button type="submit" class="submit">Отправить заявку через GitHub →</button>
+      <p class="hint">Удобнее, если вы уже вошли в GitHub в этом браузере.</p>
+      <p class="err" data-for="submit"></p>
       <p class="after" id="apply-after" hidden>Открылась вкладка GitHub с готовой заявкой — проверьте её и
         нажмите «Create». Если вкладка не открылась, <a id="apply-link" href="#">откройте заявку по ссылке</a>.</p>
     </form>
@@ -686,6 +688,9 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
   var form = document.getElementById('apply-form');
   if (!form) return;
   var REPO = 'https://github.com/SPBUEcon/econ-library/issues/new';
+  /* GitHub не принимает слишком длинные ссылки, а тому, кто не вошёл в GitHub, ссылка удлиняется
+     ещё в ~1,7 раза при переходе на страницу входа. 4500 знаков — с запасом для обоих случаев. */
+  var MAX_URL = 4500;
   var CONTACT = /@|https?:\/\/|t\.me\/|\+?\d[\d\s()-]{6,}\d/;
   var LOGIN = /^[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}$/;
   var ws = document.getElementById('f-ws');
@@ -719,6 +724,7 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
+    all('.err').forEach(function(el){ el.textContent = ''; });
     var ok = true;
     function need(cond, key, msg){ if (!cond) { setErr(key, msg); ok = false; } }
     var code = fmtCode();
@@ -757,11 +763,14 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       sec('Уже умею', val('f-skills')),
       sec('Хочу прокачать', val('f-grow')),
       sec('Почему этот воркстрим', val('f-why')),
-      '### Согласие\n\n' + consents.map(function(c){ return '- [X] ' + c.value; }).join('\n') + '\n',
-      '<sub>Заявка собрана формой записи на витрине воркстримов.</sub>\n'
+      '### Согласие\n\n- [X] Прочитал(а) правила проекта, понимаю про цифровой след, согласен(на) на запись в открытый реестр\n'
     ].join('\n');
     var title = '[Вход] ' + ws.options[ws.selectedIndex].getAttribute('data-title') + ' — ' + fmt().getAttribute('data-short');
     var url = REPO + '?title=' + encodeURIComponent(title) + '&body=' + encodeURIComponent(body);
+    if (url.length > MAX_URL) {
+      setErr('submit', 'Заявка вышла слишком длинной для GitHub — сократите текст в полях «Уже умею», «Хочу прокачать» или «Почему этот воркстрим».');
+      return;
+    }
     document.getElementById('apply-link').href = url;
     document.getElementById('apply-after').hidden = false;
     window.open(url, '_blank', 'noopener');
