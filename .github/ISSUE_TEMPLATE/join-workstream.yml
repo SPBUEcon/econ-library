@@ -23,6 +23,8 @@ body:
         > **Не пишите сюда ФИО, телефон, email и Telegram** — репозиторий публичный, заявку видят все.
         > Контакты шерпа возьмёт у вас лично и внесёт в закрытую таблицу.
 
+        Удобнее заполнить [форму записи на витрине](https://spbuecon.github.io/econ-library/program/site/workstreams_board.html#apply) — она соберёт эту же заявку.
+
         После заявки шерпа или мастер свяжется с вами и, подтвердив роль, поставит метку `approved` —
         бот откроет Pull request с вашей записью в [реестре](https://github.com/SPBUEcon/econ-library/blob/main/registry/README.md).
   - type: dropdown
@@ -50,10 +52,23 @@ body:
     validations:
       required: true
   - type: dropdown
+    id: format
+    attributes:
+      label: Формат участия
+      description: "Лестница участия — stands/engagement.md: можно начать с малого и подняться выше."
+      options:
+        - "Попробовать: разовое задание на занятии (one-off)"
+        - "Мини-трек: задание на 1–3 занятия (mini-track)"
+        - "Роль в команде на семестр (team)"
+        - "Стажировка у партнёра (internship)"
+        - "Наставник или эксперт (mentor)"
+    validations:
+      required: true
+  - type: dropdown
     id: role
     attributes:
       label: Желаемая роль
-      description: "Роли команды — roles/README.md. Можно выбрать несколько: роли совмещаются."
+      description: "Для формата «Роль в команде» — обязательно, для мини-трека — по желанию. Роли — roles/README.md; можно выбрать несколько."
       multiple: true
       options:
         - "Капитан (captain)"
@@ -62,8 +77,6 @@ body:
         - "Интегратор технологий (tech-integrator)"
         - "Связной с партнёром (partner-liaison)"
         - "Пока не уверен(а) — обсудим с шерпой"
-    validations:
-      required: true
   - type: input
     id: github
     attributes:
@@ -121,5 +134,5 @@ body:
           required: true
         - label: "Понимаю, что вклад виден через цифровой след (коммиты, принятые результаты, записи в журналах стендов)"
           required: true
-        - label: "Согласен(на), что мой GitHub-ник, вуз, курс и роль будут записаны в открытый реестр registry/ этого репозитория"
+        - label: "Согласен(на), что мой GitHub-ник, вуз, курс, формат участия и роль будут записаны в открытый реестр registry/ этого репозитория"
           required: true

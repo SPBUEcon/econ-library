@@ -129,6 +129,48 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
 .qstep b{display:block;font-size:16px;margin-bottom:6px}
 .qstep span{font-size:14px;color:var(--ice)}
 
+/* -------- ЗАПИСАТЬСЯ (форма) -------- */
+.ws h3 a{color:inherit;text-decoration:none}
+.ws h3 a:hover{color:var(--coral)}
+.apply-sec{background:var(--paper)}
+.apply{background:#fff;border:1px solid var(--line);border-radius:20px;padding:32px;margin-top:36px;max-width:860px}
+.apply .warn{background:#FFF1EE;border:1px solid #F7C9C1;color:#8C2E22;border-radius:12px;padding:12px 16px;font-size:14.5px;margin-bottom:24px}
+.apply .field{border:0;margin:0 0 22px;padding:0;min-width:0}
+.apply label,.apply legend{display:block;font-weight:600;font-size:15px;margin-bottom:8px;color:var(--ink)}
+.apply .req{color:var(--coral)}
+.apply select,.apply input[type=text],.apply textarea{width:100%;font:inherit;font-size:15px;color:var(--ink);background:#fff;
+  border:1.5px solid var(--line);border-radius:10px;padding:11px 13px}
+.apply select:focus,.apply input[type=text]:focus,.apply textarea:focus{outline:none;border-color:var(--ink)}
+.apply textarea{resize:vertical}
+.apply .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.formats{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.apply label.fmt{position:relative;display:block;font-weight:400;border:1.5px solid var(--line);border-radius:12px;
+  padding:14px 14px 14px 42px;cursor:pointer;margin:0}
+.apply label.fmt input{position:absolute;left:14px;top:16px;accent-color:var(--coral)}
+.apply label.fmt b{display:block;font-size:15px}
+.apply label.fmt span{display:block;font-size:13.5px;color:var(--grey);margin-top:2px}
+.apply label.fmt:has(input:checked){border-color:var(--coral);background:#FFF6F4}
+.roles{display:flex;flex-wrap:wrap;gap:8px 18px}
+.apply .roles label,.apply label.chk{display:flex;gap:8px;align-items:flex-start;font-weight:400;font-size:15px;margin:0}
+.apply label.chk{margin-bottom:8px}
+.apply input[type=checkbox],.apply input[type=radio]{accent-color:var(--coral);margin-top:4px}
+.apply .hint{font-size:13.5px;color:var(--grey);margin-top:6px}
+.apply .err{font-size:13.5px;color:#C0392B;margin-top:6px}
+.apply .err:empty{display:none}
+.apply button.submit{font:inherit;font-weight:600;font-size:16px;background:var(--coral);color:#fff;border:0;border-radius:12px;
+  padding:15px 26px;cursor:pointer}
+.apply button.submit:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(240,97,79,.3)}
+.apply button.submit:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.apply .after{margin-top:16px;font-size:15px;background:var(--panel);border-radius:12px;padding:14px 16px}
+.apply a{color:var(--ink);font-weight:600}
+.apply-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px;max-width:860px}
+.apply-steps div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:14.5px;color:var(--grey)}
+.apply-steps b{display:block;color:var(--ink);font-size:15px;margin-bottom:4px}
+@media (max-width:680px){
+  .apply{padding:22px 18px}
+  .apply .grid2,.apply-steps{grid-template-columns:1fr}
+}
+
 /* -------- FOOTER -------- */
 .foot-sec{background:var(--panel)}
 .foot-links{display:flex;flex-wrap:wrap;gap:14px;margin-top:24px}
@@ -168,7 +210,8 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <div class="stat"><b>15 мин</b><span>первый шаг на занятии</span></div>
     </div>
     <div class="cta-row">
-      <a class="btn" href="#join">Как включиться</a>
+      <a class="btn" href="#apply">Записаться</a>
+      <a class="btn ghost" href="#join">Как включиться</a>
       <a class="btn ghost" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/README.md">К карте в репозитории</a>
     </div>
   </div>
@@ -211,7 +254,7 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       <!-- 1 Страхование -->
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">01</span><span class="tag a">A · семестр</span></div>
-        <h3>Страхование</h3>
+        <h3><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/insurance">Страхование</a></h3>
         <div class="rail" aria-label="Стенд"><a class="g now" href="https://github.com/SPBUEcon/econ-library/blob/main/stands/insurance/README.md">стенд insurance</a></div>
         <p class="super">Новые ниши и embedded-insurance · онлайн vs агентский канал · продвижение киберстрахования. На первый ход — 1–2 фокуса.</p>
         <div class="meta">
@@ -221,14 +264,14 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         <span class="status frame"><span class="dot"></span>рамка собирается</span>
         <div class="join">
           <span class="contact">Контакт: <b>шерпа — уточнить</b></span>
-          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/insurance">Войти →</a>
+          <a class="enter" href="?ws=insurance#apply">Записаться →</a>
         </div>
       </div>
 
       <!-- 2 Геоаналитика спортинфраструктуры (поток «Экономика и технологии в спорте») -->
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">02</span><span class="tag a">A · семестр</span></div>
-        <h3>Геоаналитика спортинфраструктуры</h3>
+        <h3><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-geo">Геоаналитика спортинфраструктуры</a></h3>
         <div class="rail" aria-label="Стенд"><a class="g now" href="https://github.com/SPBUEcon/econ-library/blob/main/stands/geo-sport-spb/README.md">стенд geo-sport-spb</a></div>
         <p class="super">ГИС-анализ и доказательное планирование размещения спортобъектов: что построить · чего не хватает · где строить. Поток «Экономика и технологии в спорте», задача 1 Спорткомитета.</p>
         <div class="meta">
@@ -239,14 +282,14 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         <span class="status frame"><span class="dot"></span>живой · стенд</span>
         <div class="join">
           <span class="contact">Контакт: <b>Геоинтеллект (ГИС)</b></span>
-          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-geo">Войти →</a>
+          <a class="enter" href="?ws=sport-geo#apply">Записаться →</a>
         </div>
       </div>
 
       <!-- 3 Вовлечение и коммуникация в спорте (поток «Экономика и технологии в спорте») -->
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">03</span><span class="tag a">A · семестр</span></div>
-        <h3>Вовлечение и коммуникация в спорте</h3>
+        <h3><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-engagement">Вовлечение и коммуникация в спорте</a></h3>
         <div class="rail" aria-label="Стенд"><a class="g now" href="https://github.com/SPBUEcon/econ-library/blob/main/stands/geo-sport-spb/README.md">стенд geo-sport-spb</a></div>
         <p class="super">Сквозная система «инфраструктура/событие → канал → житель → обратная связь»: аудит каналов, медиасрез, показатели и стратегия коммуникаций. Поток «Экономика и технологии в спорте», задача 2 Спорткомитета.</p>
         <div class="meta">
@@ -257,14 +300,14 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         <span class="status frame"><span class="dot"></span>живой · стенд</span>
         <div class="join">
           <span class="contact">Контакт: <b>Спорткомитет СПб</b></span>
-          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/sport-engagement">Войти →</a>
+          <a class="enter" href="?ws=sport-engagement#apply">Записаться →</a>
         </div>
       </div>
 
       <!-- 4 Фиджитал-спорт -->
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">04</span><span class="tag a">A · семестр</span></div>
-        <h3>Фиджитал-спорт</h3>
+        <h3><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/phygital-sport">Фиджитал-спорт</a></h3>
                 <p class="super">Оценка международного рынка фиджитал-дайвинга: объём, сегменты, каналы, зарубежное продвижение.</p>
         <div class="meta">
           <div class="row"><span class="k">Партнёр</span><span class="v">Федерация фиджитал-спорта СПб — А. Спелов <small>Владелец + Эксперт</small></span></div>
@@ -273,14 +316,14 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         <span class="status frame"><span class="dot"></span>рамка собирается</span>
         <div class="join">
           <span class="contact">Контакт: <b>шерпа — уточнить</b></span>
-          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/phygital-sport">Войти →</a>
+          <a class="enter" href="?ws=phygital-sport#apply">Записаться →</a>
         </div>
       </div>
 
       <!-- 13 Среда управления -->
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">13</span><span class="tag cross">Сквозной · зонтик</span></div>
-        <h3>Среда управления</h3>
+        <h3><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/management-environment">Среда управления</a></h3>
                 <p class="super">Единая вузонезависимая среда: репозиторий воркстримов, стенды, шаблоны, автоматизация, эта витрина.</p>
         <div class="meta">
           <div class="row"><span class="k">Владелец</span><span class="v">Мастерская (Хан)</span></div>
@@ -290,14 +333,14 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         <span class="status active"><span class="dot"></span>Активный</span>
         <div class="join">
           <span class="contact">Вход через <b>git / PR</b></span>
-          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/management-environment">Войти →</a>
+          <a class="enter" href="?ws=management-environment#apply">Записаться →</a>
         </div>
       </div>
 
       <!-- 5 ИИ / цифровые двойники -->
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">05</span><span class="tag cross">Сквозной</span></div>
-        <h3>ИИ, цифровые двойники и симуляции</h3>
+        <h3><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/ai-environment">ИИ, цифровые двойники и симуляции</a></h3>
                 <p class="super">Сквозная AI-линия: ИИ-агенты, AI-native подход, ИИ-инструменты в ежедневной работе всех команд.</p>
         <div class="meta">
           <div class="row"><span class="k">Партнёр</span><span class="v">ИИтех (veai) — М. Костицин <small>Эксперт · среда / лаборатория</small></span></div>
@@ -306,14 +349,14 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         <span class="status frame"><span class="dot"></span>сквозной</span>
         <div class="join">
           <span class="contact">Контакт: <b>шерпа — уточнить</b></span>
-          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/ai-environment">Войти →</a>
+          <a class="enter" href="?ws=ai-environment#apply">Записаться →</a>
         </div>
       </div>
 
       <!-- 6 Технологии и производство / венчур -->
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">06</span><span class="tag a">A/B · семестр→год</span></div>
-        <h3>Технологии и производство / венчур</h3>
+        <h3><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/venture-tech">Технологии и производство / венчур</a></h3>
                 <p class="super">Венчурный и технологический рынок. Отдельная возможность — оргкоманда Хайпарк.Форума (12–13.11.2026).</p>
         <div class="meta">
           <div class="row"><span class="k">Партнёр</span><span class="v">ИТМО Хайпарк — М. Мастин <small>Эксперт + Владелец флагмана</small></span></div>
@@ -322,14 +365,14 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         <span class="status frame"><span class="dot"></span>рамка собирается</span>
         <div class="join">
           <span class="contact">Контакт: <b>шерпа — уточнить</b></span>
-          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/venture-tech">Войти →</a>
+          <a class="enter" href="?ws=venture-tech#apply">Записаться →</a>
         </div>
       </div>
 
       <!-- 7 Экология / Биеннале карт -->
       <div class="ws rv">
         <div class="ws-top"><span class="ws-num">07</span><span class="tag event">Событие</span></div>
-        <h3>Экология / данные — Биеннале карт</h3>
+        <h3><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/cartography-biennale">Экология / данные — Биеннале карт</a></h3>
                 <p class="super">Всероссийский конкурс по картографии / геоаналитике + выставка: без победителей и призов, бесплатно, отбор на выставку.</p>
         <div class="meta">
           <div class="row"><span class="k">Партнёр</span><span class="v">Геоинтеллект — Д. Структов <small>Эксперт + событие</small></span></div>
@@ -338,14 +381,14 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         <span class="status frame"><span class="dot"></span>Событие · рамка</span>
         <div class="join">
           <span class="contact">Контакт: <b>Геоинтеллект</b></span>
-          <a class="enter" href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/cartography-biennale">Войти →</a>
+          <a class="enter" href="?ws=cartography-biennale#apply">Записаться →</a>
         </div>
       </div>
 
       <!-- 8 Кибер-фиджитал арена -->
       <div class="ws flag rv">
         <div class="ws-top"><span class="ws-num">08</span><span class="tag b">B · флагман</span></div>
-        <h3>Кибер-фиджитал арена</h3>
+        <h3><a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Кибер-фиджитал арена</a></h3>
                 <p class="super">Международная кибер-фиджитал арена в Петербурге (спорт × фиджитал × инфраструктура). Вход студентов — фрагментами.</p>
         <div class="meta">
           <div class="row"><span class="k">Куратор</span><span class="v">М. Мастин (Хайпарк) <small>Владелец флагмана</small></span></div>
@@ -354,14 +397,14 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         <span class="status idea"><span class="dot"></span>Идея</span>
         <div class="join">
           <span class="contact">Связать с №2, №3, №4</span>
-          <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Войти →</a>
+          <a class="enter" href="?ws=cyber-phygital-arena#apply">Записаться →</a>
         </div>
       </div>
 
       <!-- 9 Международный технологический центр -->
       <div class="ws flag rv">
         <div class="ws-top"><span class="ws-num">09</span><span class="tag b">B · флагман</span></div>
-        <h3>Международный технологический центр</h3>
+        <h3><a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Международный технологический центр</a></h3>
                 <p class="super">«Новый международный ВДНХ» для стран-партнёров техлидеров (Китай, Индия, ЮВА и др.). Студенческие фрагменты — бенчмарки, рынки.</p>
         <div class="meta">
           <div class="row"><span class="k">Владельцы</span><span class="v">М. Мастин, Ирен Артемова <small>Владелец флагмана</small></span></div>
@@ -370,14 +413,14 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         <span class="status idea"><span class="dot"></span>Идея</span>
         <div class="join">
           <span class="contact">Оформить рамку</span>
-          <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Войти →</a>
+          <a class="enter" href="?ws=intl-tech-center#apply">Записаться →</a>
         </div>
       </div>
 
       <!-- 10 Сеть фиджитал дайвинг-центров -->
       <div class="ws flag rv">
         <div class="ws-top"><span class="ws-num">10</span><span class="tag b">B · флагман</span></div>
-        <h3>Сеть фиджитал дайвинг-центров</h3>
+        <h3><a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Сеть фиджитал дайвинг-центров</a></h3>
                 <p class="super">Сеть фиджитал дайвинг-центров как мягкая сила и продвижение российских технологий. Вырастает из воркстрима №4.</p>
         <div class="meta">
           <div class="row"><span class="k">Куратор</span><span class="v">А. Спелов (Федерация) <small>Владелец флагмана</small></span></div>
@@ -386,14 +429,14 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         <span class="status idea"><span class="dot"></span>Идея</span>
         <div class="join">
           <span class="contact">Из №4: рынок → сеть</span>
-          <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Войти →</a>
+          <a class="enter" href="?ws=phygital-diving-network#apply">Записаться →</a>
         </div>
       </div>
 
       <!-- 11 Новый интеллектуальный центр -->
       <div class="ws flag rv">
         <div class="ws-top"><span class="ws-num">11</span><span class="tag b">B · зонтик</span></div>
-        <h3>Новый интеллектуальный центр</h3>
+        <h3><a href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Новый интеллектуальный центр</a></h3>
                 <p class="super">Консалтинг + think tank постинформационного уклада — институциональный зонтик над аналитикой мастерской.</p>
         <div class="meta">
           <div class="row"><span class="k">Куратор</span><span class="v">Хан <small>Владелец флагмана</small></span></div>
@@ -402,24 +445,25 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
         <span class="status idea"><span class="dot"></span>Идея</span>
         <div class="join">
           <span class="contact">Определить рамку зонтика</span>
-          <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Войти →</a>
+          <a class="enter" href="?ws=intellectual-center#apply">Записаться →</a>
         </div>
       </div>
 
-      <!-- 12 Аскона -->
+      <!-- 12 Аскона (прото) -->
       <div class="ws flag rv">
-        <div class="ws-top"><span class="ws-num">12</span><span class="tag talks">В переговорах</span></div>
-        <h3>Аскона</h3>
-                <p class="super">Поток и суперзадача пока не определены. Тема без живой ставки на витрину для входа не выводится — идут переговоры.</p>
+        <div class="ws-top"><span class="ws-num">12</span><span class="tag talks">Прото</span></div>
+        <h3><a href="https://github.com/SPBUEcon/econ-library/tree/main/workstreams/askona-live">Аскона</a></h3>
+        <p class="super">Финансовая функция холдинга как поле данных: 16 тем в 4 фокусах — казначейство, данные холдинга, драйверные модели, ИИ-агенты в методологии. Плюс IT-стажировки.</p>
         <div class="meta">
-          <div class="row"><span class="k">Контакт</span><span class="v">АсконаLive — уточняется</span></div>
-          <div class="row"><span class="k">Поток</span><span class="v">Мода / креативные — уточнить</span></div>
+          <div class="row"><span class="k">Партнёр</span><span class="v">АсконаLive — Н. Мандавиа <small>связной</small>, А. Ларионов <small>корп. финансы</small></span></div>
+          <div class="row"><span class="k">Команды</span><span class="v">bi-4, econ-3 (кандидаты)</span></div>
         </div>
-        <span class="status talks"><span class="dot"></span>В переговорах</span>
+        <span class="status talks"><span class="dot"></span>прото → активный: темы получены 09.10.2026</span>
         <div class="join">
-          <span class="contact">Ещё не открыт для входа</span>
-          <a class="enter" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/flagships.md">Подробнее →</a>
+          <span class="contact">Темы — после отбора; <b>стажировки — набор открыт</b></span>
+          <a class="enter" href="?ws=askona-live#apply">Записаться →</a>
         </div>
+      </div>
       </div>
 
     </div>
@@ -452,22 +496,158 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
       </div>
       <div class="path rv">
         <div class="n">ПУТЬ 2</div>
-        <h3>Через репозиторий</h3>
-        <p>Формально и с цифровым следом: заявка живёт в Issues, а вход фиксируется соглашением о входе — так вклад виден с первого дня.</p>
+        <h3>Через форму записи</h3>
+        <p>С цифровым следом: заявка попадает в репозиторий, а после подтверждения — в реестр участников.</p>
         <ol>
-          <li>Открыли Issue по шаблону <a class="doc" href="https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml">«Заявка на вход в воркстрим»</a>.</li>
-          <li>Заполнили: воркстрим, роль, курс/группа, навыки, путь входа.</li>
-          <li>Заполнили <a class="doc" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/_template/onboarding.md">соглашение о входе</a> и получили роль.</li>
+          <li>Заполнили <a class="doc" href="#apply">форму записи</a> ниже: воркстрим, формат участия, пара слов о себе.</li>
+          <li>На GitHub открылась готовая заявка — нажали «Create». Ответ шерпы придёт комментарием в заявке.</li>
+          <li>Договорились о роли и первом задании, заполнили <a class="doc" href="https://github.com/SPBUEcon/econ-library/blob/main/workstreams/_template/onboarding.md">соглашение о входе</a>.</li>
         </ol>
-        <p style="margin-bottom:0">Подробно — гайд <a class="doc" href="https://github.com/SPBUEcon/econ-library/blob/main/guides/how-to-join.md">«Как включиться в воркстрим»</a>.</p>
+        <p style="margin-bottom:0">Подробно — <a class="doc" href="../../guides/index.html">гайд для студента</a>.</p>
       </div>
     </div>
 
     <div class="quick">
       <div class="qstep rv"><div class="qn">1</div><b>Выбрать</b><span>воркстрим на витрине и прочитать его карточку в репозитории.</span></div>
       <div class="qstep rv"><div class="qn">2</div><b>Роль</b><span>выбрать роль по <a class="doc" href="https://github.com/SPBUEcon/econ-library/blob/main/roles/README.md">списку ролей</a>: капитан, архитектор, аналитик поля, интегратор технологий, связной.</span></div>
-      <div class="qstep rv"><div class="qn">3</div><b>Войти</b><span>контакт или Issue — и первый вклад на стенде.</span></div>
+      <div class="qstep rv"><div class="qn">3</div><b>Войти</b><span>контакт или <a class="doc" href="#apply">форма записи</a> — и первый вклад на стенде.</span></div>
     </div>
+  </div>
+</section>
+
+<!-- ЗАПИСАТЬСЯ: форма записи. Собирает заявку в том же виде, что форма join-workstream.yml на GitHub,
+     и открывает её на GitHub — человеку остаётся нажать «Create». Дальше — бот регистрации
+     (registry/register-participant.py). Список воркстримов (блок gen:apply-options) собирает
+     program/site/build-workstreams.py из паспортов workstream.yml. -->
+<section class="apply-sec" id="apply">
+  <div class="wrap">
+    <div class="eyebrow rv">Форма записи</div>
+    <h2 class="rv">Записаться в воркстрим</h2>
+    <p class="lead rv">Выберите воркстрим и формат участия, расскажите о себе. Форма соберёт заявку и
+      откроет её на GitHub — останется нажать «Create». Нужен бесплатный аккаунт GitHub.</p>
+    <div class="apply-steps rv">
+      <div><b>1. Заполнить</b>воркстрим, формат участия и пару слов о себе.</div>
+      <div><b>2. Отправить</b>на GitHub откроется готовая заявка — нажмите «Create».</div>
+      <div><b>3. Дождаться ответа</b>шерпа ответит комментарием в заявке, GitHub пришлёт письмо.</div>
+    </div>
+
+    <form id="apply-form" class="apply" novalidate>
+      <p class="warn">Не пишите в форму ФИО, телефон, email и Telegram: заявка публичная, её видят все.
+        Контакты шерпа возьмёт у вас лично.</p>
+
+      <div class="field">
+        <label for="f-ws">Воркстрим <span class="req">*</span></label>
+        <select id="f-ws">
+          <option value="">— выберите воркстрим —</option>
+<!-- gen:apply-options -->
+          <option value="insurance — №1 Страхование" data-id="insurance" data-title="Страхование">№1 Страхование</option>
+          <option value="sport-geo — №2 Геоаналитика спортинфраструктуры" data-id="sport-geo" data-title="Геоаналитика спортинфраструктуры">№2 Геоаналитика спортинфраструктуры</option>
+          <option value="sport-engagement — №3 Вовлечение и коммуникация в спорте" data-id="sport-engagement" data-title="Вовлечение и коммуникация в спорте">№3 Вовлечение и коммуникация в спорте</option>
+          <option value="phygital-sport — №4 Фиджитал-спорт" data-id="phygital-sport" data-title="Фиджитал-спорт">№4 Фиджитал-спорт</option>
+          <option value="ai-environment — №5 ИИ, цифровые двойники и симуляции" data-id="ai-environment" data-title="ИИ, цифровые двойники и симуляции">№5 ИИ, цифровые двойники и симуляции</option>
+          <option value="venture-tech — №6 Технологии и производство / венчур" data-id="venture-tech" data-title="Технологии и производство / венчур">№6 Технологии и производство / венчур</option>
+          <option value="cartography-biennale — №7 Экология / данные — Биеннале карт" data-id="cartography-biennale" data-title="Экология / данные — Биеннале карт">№7 Экология / данные — Биеннале карт</option>
+          <option value="cyber-phygital-arena — №8 Кибер-фиджитал арена (флагман)" data-id="cyber-phygital-arena" data-title="Кибер-фиджитал арена">№8 Кибер-фиджитал арена (флагман)</option>
+          <option value="intl-tech-center — №9 Международный технологический центр (флагман)" data-id="intl-tech-center" data-title="Международный технологический центр">№9 Международный технологический центр (флагман)</option>
+          <option value="phygital-diving-network — №10 Сеть фиджитал дайвинг-центров (флагман)" data-id="phygital-diving-network" data-title="Сеть фиджитал дайвинг-центров">№10 Сеть фиджитал дайвинг-центров (флагман)</option>
+          <option value="intellectual-center — №11 Новый интеллектуальный центр (флагман)" data-id="intellectual-center" data-title="Новый интеллектуальный центр">№11 Новый интеллектуальный центр (флагман)</option>
+          <option value="askona-live — №12 Аскона (прото)" data-id="askona-live" data-title="Аскона (прото)">№12 Аскона (прото)</option>
+          <option value="management-environment — №13 Среда управления" data-id="management-environment" data-title="Среда управления">№13 Среда управления</option>
+          <option value="sport-spb — Экономика и технологии в спорте (поток-хаб)" data-id="sport-spb" data-title="Экономика и технологии в спорте (поток-хаб)">Экономика и технологии в спорте (поток-хаб)</option>
+<!-- /gen:apply-options -->
+        </select>
+        <p class="err" data-for="f-ws"></p>
+      </div>
+
+      <fieldset class="field">
+        <legend>Как хотите участвовать <span class="req">*</span></legend>
+        <div class="formats">
+          <label class="fmt"><input type="radio" name="format" value="Попробовать: разовое задание на занятии (one-off)" data-short="попробовать"><b>Попробовать</b><span>Разовое задание прямо на занятии: проверить цифру, сделать прогноз, разметить площадку.</span></label>
+          <label class="fmt"><input type="radio" name="format" value="Мини-трек: задание на 1–3 занятия (mini-track)" data-short="мини-трек"><b>Мини-трек</b><span>Задание на 1–3 занятия: собрать данные, провести интервью, закрыть пробел.</span></label>
+          <label class="fmt"><input type="radio" name="format" value="Роль в команде на семестр (team)" data-short="роль в команде"><b>Роль в команде</b><span>Весь семестр в команде из 3–5 человек — капитан, аналитик, архитектор и другие роли.</span></label>
+          <label class="fmt"><input type="radio" name="format" value="Стажировка у партнёра (internship)" data-short="стажировка"><b>Стажировка у партнёра</b><span>Если партнёр её предлагает — например, IT-стажировки «Асконы».</span></label>
+          <label class="fmt"><input type="radio" name="format" value="Наставник или эксперт (mentor)" data-short="наставник или эксперт"><b>Наставник или эксперт</b><span>Для преподавателей, специалистов и партнёров: помогать командам, приходить на разборы.</span></label>
+        </div>
+        <p class="hint">Начать можно с малого: из разового задания вырастает мини-трек, из мини-трека — роль в команде.</p>
+        <p class="err" data-for="format"></p>
+      </fieldset>
+
+      <fieldset class="field" id="roles-box">
+        <legend>Роль в команде <span class="req" id="roles-req">*</span></legend>
+        <div class="roles">
+          <label><input type="checkbox" name="role" value="Капитан (captain)"> Капитан</label>
+          <label><input type="checkbox" name="role" value="Архитектор модели (model-architect)"> Архитектор модели</label>
+          <label><input type="checkbox" name="role" value="Аналитик поля (field-analyst)"> Аналитик поля</label>
+          <label><input type="checkbox" name="role" value="Интегратор технологий (tech-integrator)"> Интегратор технологий</label>
+          <label><input type="checkbox" name="role" value="Связной с партнёром (partner-liaison)"> Связной с партнёром</label>
+          <label><input type="checkbox" name="role" value="Пока не уверен(а) — обсудим с шерпой"> Пока не уверен(а)</label>
+        </div>
+        <p class="hint">Роли можно совмещать. Что делает каждая —
+          <a href="https://github.com/SPBUEcon/econ-library/blob/main/roles/README.md">роли</a>.</p>
+        <p class="err" data-for="role"></p>
+      </fieldset>
+
+      <div class="grid2">
+        <div class="field">
+          <label for="f-type">Кто вы <span class="req">*</span></label>
+          <select id="f-type">
+            <option value="">— выберите —</option>
+            <option value="Студент СПбГУ (student-spbu)">Студент СПбГУ</option>
+            <option value="Студент другого вуза (student-external)">Студент другого вуза</option>
+            <option value="Преподаватель (teacher)">Преподаватель</option>
+            <option value="Представитель партнёра (partner)">Представитель партнёра</option>
+            <option value="Сотрудник факультета (staff)">Сотрудник факультета</option>
+          </select>
+          <p class="err" data-for="f-type"></p>
+        </div>
+        <div class="field">
+          <label for="f-org">Вуз или организация <span class="req">*</span></label>
+          <input type="text" id="f-org" maxlength="60" placeholder="СПбГУ">
+          <p class="err" data-for="f-org"></p>
+        </div>
+        <div class="field">
+          <label for="f-unit">Направление, курс, группа <span class="req">*</span></label>
+          <input type="text" id="f-unit" maxlength="60" placeholder="Экономика, 3 курс">
+          <p class="err" data-for="f-unit"></p>
+        </div>
+        <div class="field">
+          <label for="f-gh">GitHub-ник</label>
+          <input type="text" id="f-gh" maxlength="40" placeholder="если подаёте заявку за другого">
+          <p class="hint">Оставьте пустым, если подаёте за себя: возьмём ник автора заявки.</p>
+          <p class="err" data-for="f-gh"></p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-skills">Уже умею <span class="req">*</span></label>
+        <textarea id="f-skills" maxlength="150" rows="3" placeholder="Навыки и инструменты — коротко"></textarea>
+        <p class="err" data-for="f-skills"></p>
+      </div>
+      <div class="field">
+        <label for="f-grow">Хочу прокачать</label>
+        <textarea id="f-grow" maxlength="100" rows="2"></textarea>
+        <p class="err" data-for="f-grow"></p>
+      </div>
+      <div class="field">
+        <label for="f-why">Почему этот воркстрим</label>
+        <textarea id="f-why" maxlength="100" rows="2" placeholder="Одно-два предложения"></textarea>
+        <p class="err" data-for="f-why"></p>
+      </div>
+
+      <fieldset class="field">
+        <legend>Согласие <span class="req">*</span></legend>
+        <label class="chk"><input type="checkbox" name="consent" value="Прочитал(а) [правила проекта](https://github.com/SPBUEcon/econ-library/tree/main/rules) — данные, источники, командная работа, ИИ"> <span>Прочитал(а) <a href="https://github.com/SPBUEcon/econ-library/tree/main/rules">правила проекта</a>: данные, источники, командная работа, ИИ</span></label>
+        <label class="chk"><input type="checkbox" name="consent" value="Понимаю, что вклад виден через цифровой след (коммиты, принятые результаты, записи в журналах стендов)"> <span>Понимаю, что вклад виден по цифровому следу: правки, принятые результаты, записи в журналах стендов</span></label>
+        <label class="chk"><input type="checkbox" name="consent" value="Согласен(на), что мой GitHub-ник, вуз, курс, формат участия и роль будут записаны в открытый реестр registry/ этого репозитория"> <span>Согласен(на), что мой GitHub-ник, вуз, курс, формат участия и роль будут записаны в открытый реестр участников</span></label>
+        <p class="err" data-for="consent"></p>
+      </fieldset>
+
+      <button type="submit" class="submit">Отправить заявку через GitHub →</button>
+      <p class="hint">Удобнее, если вы уже вошли в GitHub в этом браузере.</p>
+      <p class="err" data-for="submit"></p>
+      <p class="after" id="apply-after" hidden>Открылась вкладка GitHub с готовой заявкой — проверьте её и
+        нажмите «Create». Если вкладка не открылась, <a id="apply-link" href="#">откройте заявку по ссылке</a>.</p>
+    </form>
   </div>
 </section>
 
@@ -499,6 +679,102 @@ a.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
     entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
   }, {threshold: 0.12});
   document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+})();
+</script>
+<script>
+/* Форма записи: проверяет поля и открывает на GitHub готовую заявку. Тело заявки — в том же виде,
+   что у формы join-workstream.yml («### Поле»), чтобы бот регистрации читал оба пути одинаково. */
+(function(){
+  var form = document.getElementById('apply-form');
+  if (!form) return;
+  var REPO = 'https://github.com/SPBUEcon/econ-library/issues/new';
+  /* GitHub не принимает слишком длинные ссылки, а тому, кто не вошёл в GitHub, ссылка удлиняется
+     ещё в ~1,7 раза при переходе на страницу входа. 4500 знаков — с запасом для обоих случаев. */
+  var MAX_URL = 4500;
+  var CONTACT = /@|https?:\/\/|t\.me\/|\+?\d[\d\s()-]{6,}\d/;
+  var LOGIN = /^[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}$/;
+  var ws = document.getElementById('f-ws');
+  var rolesBox = document.getElementById('roles-box');
+  var rolesReq = document.getElementById('roles-req');
+  var val = function(id){ return document.getElementById(id).value.trim(); };
+  var all = function(sel){ return Array.prototype.slice.call(form.querySelectorAll(sel)); };
+
+  /* ?ws=<id> — воркстрим уже выбран (кнопки «Записаться» в карточках и в гайде). */
+  var pre = new URLSearchParams(location.search).get('ws');
+  if (pre) {
+    for (var i = 0; i < ws.options.length; i++) {
+      if (ws.options[i].getAttribute('data-id') === pre) { ws.selectedIndex = i; break; }
+    }
+  }
+
+  function fmt(){ var r = form.querySelector('input[name=format]:checked'); return r; }
+  function fmtCode(){ var r = fmt(); var m = r && r.value.match(/\(([a-z-]+)\)$/); return m ? m[1] : ''; }
+  function syncRoles(){
+    var c = fmtCode();
+    rolesBox.hidden = !(c === 'team' || c === 'mini-track');   /* роль: команда — обязательно, мини-трек — по желанию */
+    rolesReq.hidden = c !== 'team';
+  }
+  all('input[name=format]').forEach(function(r){ r.addEventListener('change', syncRoles); });
+  syncRoles();
+
+  function setErr(key, msg){ var el = form.querySelector('.err[data-for="' + key + '"]'); if (el) el.textContent = msg || ''; }
+  function clear(e){ setErr(e.target.id || e.target.name, ''); }
+  form.addEventListener('input', clear);
+  form.addEventListener('change', clear);
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    all('.err').forEach(function(el){ el.textContent = ''; });
+    var ok = true;
+    function need(cond, key, msg){ if (!cond) { setErr(key, msg); ok = false; } }
+    var code = fmtCode();
+    var roles = all('input[name=role]:checked').map(function(c){ return c.value; });
+    if (rolesBox.hidden) roles = [];
+    var gh = val('f-gh').replace(/^@/, '');
+    need(ws.value, 'f-ws', 'Выберите воркстрим.');
+    need(code, 'format', 'Выберите, как хотите участвовать.');
+    if (code === 'team') need(roles.length, 'role', 'Для команды выберите роль — или «Пока не уверен(а)».');
+    need(val('f-type'), 'f-type', 'Выберите, кто вы.');
+    need(val('f-org'), 'f-org', 'Укажите вуз или организацию.');
+    need(val('f-unit'), 'f-unit', 'Укажите направление, курс и группу.');
+    need(val('f-skills'), 'f-skills', 'Напишите, что уже умеете.');
+    need(!gh || LOGIN.test(gh), 'f-gh', 'Это не похоже на ник GitHub.');
+    ['f-org', 'f-unit', 'f-skills', 'f-grow', 'f-why'].forEach(function(id){
+      if (CONTACT.test(val(id))) { setErr(id, 'Похоже на контакт или ссылку — уберите: заявку видят все.'); ok = false; }
+    });
+    var consents = all('input[name=consent]');
+    need(consents.every(function(c){ return c.checked; }), 'consent', 'Отметьте все три пункта.');
+    if (!ok) {
+      var first = form.querySelector('.err:not(:empty)');
+      if (first) first.scrollIntoView({behavior: 'smooth', block: 'center'});
+      return;
+    }
+
+    var none = '_No response_';
+    var sec = function(t, v){ return '### ' + t + '\n\n' + (v || none) + '\n'; };
+    var body = [
+      sec('Воркстрим', ws.value),
+      sec('Формат участия', fmt().value),
+      sec('Желаемая роль', roles.join(', ')),
+      sec('GitHub-ник участника', gh),
+      sec('Кто вы', val('f-type')),
+      sec('Вуз или организация', val('f-org')),
+      sec('Направление, курс, группа', val('f-unit')),
+      sec('Уже умею', val('f-skills')),
+      sec('Хочу прокачать', val('f-grow')),
+      sec('Почему этот воркстрим', val('f-why')),
+      '### Согласие\n\n- [X] Прочитал(а) правила проекта, понимаю про цифровой след, согласен(на) на запись в открытый реестр\n'
+    ].join('\n');
+    var title = '[Вход] ' + ws.options[ws.selectedIndex].getAttribute('data-title') + ' — ' + fmt().getAttribute('data-short');
+    var url = REPO + '?title=' + encodeURIComponent(title) + '&body=' + encodeURIComponent(body);
+    if (url.length > MAX_URL) {
+      setErr('submit', 'Заявка вышла слишком длинной для GitHub — сократите текст в полях «Уже умею», «Хочу прокачать» или «Почему этот воркстрим».');
+      return;
+    }
+    document.getElementById('apply-link').href = url;
+    document.getElementById('apply-after').hidden = false;
+    window.open(url, '_blank', 'noopener');
+  });
 })();
 </script>
 </body>

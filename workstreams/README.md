@@ -4,7 +4,7 @@
 конкретному результату. Тема живёт дольше семестра: команды сменяются, работа продолжается.
 
 **[Витрина воркстримов →](https://spbuecon.github.io/econ-library/program/site/workstreams_board.html)** ·
-**[Подать заявку →](https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml)** ·
+**[Записаться →](https://spbuecon.github.io/econ-library/program/site/workstreams_board.html#apply)** ·
 [Гайд для студента](https://spbuecon.github.io/econ-library/guides/)
 
 ## Воркстримы

@@ -126,7 +126,8 @@
 | `semester_id` | Когда | `2026-fall` |
 | `workstream_id` | В какой теме; пусто для ролей уровня программы | `sport-geo` |
 | `team_id` | В какой команде; **пусто для ролей уровня воркстрима и программы** | `sport-geo-2026-fall-01` |
-| `role` | Что делает | см. словарь |
+| `format` | Формат участия — ступень [лестницы участия](../stands/engagement.md); пусто для ролей уровня воркстрима и программы | см. словарь |
+| `role` | Что делает; для форматов кроме `team` может быть пусто | см. словарь |
 | `profile` | Уточнение внутри роли | `gis`, `prototyping`, … |
 | `date_from`, `date_to` | Границы назначения; `date_to` пусто, пока действует | `2026-09-24` |
 | `exit_type` | Как вышел | `handover`, `planned`, `silent` |
@@ -183,6 +184,21 @@
 | `stake-holder` | Носитель ставки (партнёр) |
 | `sherpa` | Шерпа |
 
+### `format` — формат участия
+
+Как человек участвует: ступени [лестницы участия](../stands/engagement.md) плюс стажировка и
+наставничество. Начинать можно с малого — переход на ступень выше записывается новой строкой.
+
+| Значение | Формат | Роль |
+|---|---|---|
+| `one-off` | Разовое задание на занятии (ступень 1) | пусто |
+| `mini-track` | Мини-трек — задание на 1–3 занятия (ступень 2) | по желанию |
+| `team` | Роль в команде на семестр (ступень 3) | обязательна |
+| `internship` | Стажировка у партнёра | пусто |
+| `mentor` | Наставник или эксперт: преподаватели, специалисты, партнёры | пусто |
+
+Для ролей уровня воркстрима и программы (`sherpa`, `master` и т. п.) `format` пуст.
+
 ### `exit_type` — как человек вышел
 
 | Значение | Что значит |
@@ -209,12 +225,17 @@
 
 ### Вход по заявке — автоматически
 
-Строки «Новый человек» и «Вход внешнего» можно не набирать руками: их готовит бот по
-[заявке на вход](https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml)
-(форма [`../.github/ISSUE_TEMPLATE/join-workstream.yml`](../.github/ISSUE_TEMPLATE/join-workstream.yml)).
+Строки «Новый человек» и «Вход внешнего» можно не набирать руками: их готовит бот по заявке на
+вход. Заявка приходит двумя путями, тело у них одинаковое:
+
+- [форма записи на витрине](https://spbuecon.github.io/econ-library/program/site/workstreams_board.html#apply) — собирает заявку и открывает её на GitHub
+  готовой; метку `join` на такую заявку ставит workflow;
+- [форма на GitHub](https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml)
+  ([`../.github/ISSUE_TEMPLATE/join-workstream.yml`](../.github/ISSUE_TEMPLATE/join-workstream.yml)) — ставит
+  метку `join` сама.
 
 ```
-заявка (Issue, метка join) → шерпа подтверждает роль → метка approved
+заявка (Issue, метка join) → шерпа подтверждает формат участия и роль → метка approved
   → workflow join-registry.yml → registry/register-participant.py
   → PR «Реестр: вход по заявке #N» (ветка registry/join-N) → ревью шерпы → слияние → заявка закрыта
 ```
@@ -225,12 +246,13 @@
   снимается.
 - **Что пишется.** `participants.csv`: следующий `person_id`, ник (он же `display_name`), вуз, курс,
   `type`, `status = active`, `first_semester` = текущий семестр по `semesters.csv`, `note = заявка #N`.
-  `memberships.csv`: по строке на каждую выбранную роль команды — `date_from` = день одобрения,
-  `sponsor_person_id` = одобривший, `entry = request`. `team_id` подставляется, только если у
-  воркстрима в семестре ровно одна команда в статусе `forming`/`active`; иначе бот просит вписать
-  его в PR. `profile` и контакты — руками (контакты — только в закрытую таблицу).
+  `memberships.csv`: `format` из заявки и по строке на каждую выбранную роль (без роли — одна
+  строка с пустой ролью); `date_from` = день одобрения, `sponsor_person_id` = одобривший,
+  `entry = request`. `team_id` — только для `team` и только если у воркстрима в семестре ровно одна
+  команда в статусе `forming`/`active`; иначе бот просит вписать его в PR. Заявка по старой форме,
+  без поля «Формат участия», читается как `team`. `profile` и контакты — руками (контакты — только в закрытую таблицу).
 - **Чего бот не делает.** Не меняет и не удаляет существующие строки; не заводит человека дважды
-  (ищет по нику); не принимает заявку без роли («пока не уверен(а)»), с неизвестным воркстримом или
+  (ищет по нику); не принимает заявку формата `team` без роли («пока не уверен(а)»), с неизвестным воркстримом или
   с чем-то похожим на контакт в полях — отвечает в заявке, что поправить. После правки заявки
   метку `approved` ставят снова.
 - **Конфликты.** Регистрационные PR дописывают строки в конец одних и тех же файлов. Если PR
@@ -295,6 +317,7 @@ person_id,github,display_name,org,unit,type,status,first_semester,note
 p001,ivanov,ivanov,СПбГУ,"Экономика, 3 к.",student-spbu,active,2026-fall,
 p007,petrova,petrova,СПбГУ,"ИСвЭ, магистратура",student-spbu,active,2026-fall,шерпа-магистрант
 p012,smirnov,smirnov,СПбГМТУ,"Кораблестроение, 4 к.",student-external,active,2026-fall,гость
+p015,kozlova,kozlova,СПбГУ,"Экономика, 2 к.",student-spbu,active,2026-fall,
 ```
 
 `teams.csv`
@@ -307,14 +330,16 @@ sport-geo-2026-fall-01,sport-geo,2026-fall,ГИС-трек,p001,p007,geo-sport-s
 `memberships.csv`
 
 ```csv
-membership_id,person_id,semester_id,workstream_id,team_id,role,profile,date_from,date_to,exit_type,sponsor_person_id,entry,note
-m0001,p001,2026-fall,sport-geo,sport-geo-2026-fall-01,captain,,2026-09-24,,,p007,team-assembly,
-m0002,p001,2026-fall,sport-geo,sport-geo-2026-fall-01,field-analyst,data,2026-09-24,,,p007,team-assembly,совмещает роли
-m0003,p007,2026-fall,sport-geo,,sherpa,,2026-09-24,,,,team-assembly,"ведёт команду, в неё не входит"
-m0004,p012,2026-fall,sport-geo,sport-geo-2026-fall-01,tech-integrator,gis,2026-10-08,,,p007,event,"внешний, вошёл на открытом событии"
+membership_id,person_id,semester_id,workstream_id,team_id,format,role,profile,date_from,date_to,exit_type,sponsor_person_id,entry,note
+m0001,p001,2026-fall,sport-geo,sport-geo-2026-fall-01,team,captain,,2026-09-24,,,p007,team-assembly,
+m0002,p001,2026-fall,sport-geo,sport-geo-2026-fall-01,team,field-analyst,data,2026-09-24,,,p007,team-assembly,совмещает роли
+m0003,p007,2026-fall,sport-geo,,,sherpa,,2026-09-24,,,,team-assembly,"ведёт команду, в неё не входит"
+m0004,p012,2026-fall,sport-geo,sport-geo-2026-fall-01,team,tech-integrator,gis,2026-10-08,,,p007,event,"внешний, вошёл на открытом событии"
+m0005,p015,2026-fall,sport-geo,,one-off,,,2026-10-22,2026-10-22,planned,p007,class,"разметил площадки на занятии"
 ```
 
-Строка `m0003` показывает роль уровня воркстрима: `team_id` пуст. Строки `m0001` и `m0002` —
+Строка `m0003` показывает роль уровня воркстрима: `team_id` и `format` пусты. Строка `m0005` —
+разовый вклад на занятии: формат `one-off`, без роли и команды. Строки `m0001` и `m0002` —
 совмещение ролей одним человеком, что допускают [роли](../roles/README.md).
 
 ## Открытые вопросы к согласованию

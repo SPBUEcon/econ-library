@@ -2,7 +2,7 @@
 
 Как вносить изменения в репозиторий. Если вы ещё не в воркстриме, начните с
 [гайда для студента](https://spbuecon.github.io/econ-library/guides/) и
-[заявки на вход](https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml).
+[формы записи на витрине](https://spbuecon.github.io/econ-library/program/site/workstreams_board.html#apply).
 
 ## Как вносить изменения
 

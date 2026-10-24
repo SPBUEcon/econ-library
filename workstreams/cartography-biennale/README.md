@@ -48,9 +48,9 @@
 
 ## Как присоединиться
 
-- **Подать заявку** — [форма на GitHub](https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%AD%D0%BA%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F%20/%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5%20%E2%80%94%20%D0%91%D0%B8%D0%B5%D0%BD%D0%BD%D0%B0%D0%BB%D0%B5%20%D0%BA%D0%B0%D1%80%D1%82%20%E2%80%94%20):
-  выберите в списке «cartography-biennale — №7 Экология / данные — Биеннале карт» и роль. Ответ
-  придёт комментарием в заявке. Когда роль подтвердят, заполните
+- **Записаться** — [форма записи на витрине](https://spbuecon.github.io/econ-library/program/site/workstreams_board.html?ws=cartography-biennale#apply): воркстрим уже выбран,
+  остаётся выбрать формат участия и рассказать о себе. Форма откроет на GitHub готовую заявку,
+  ответ придёт комментарием в ней. Когда участие подтвердят, заполните
   [соглашение о входе](../_template/onboarding.md).
 - **Написать куратору события** — Геоинтеллект, Д. Структов.
 

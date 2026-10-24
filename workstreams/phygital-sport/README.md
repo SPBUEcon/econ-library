@@ -52,9 +52,10 @@
 
 ## Как присоединиться
 
-- **Подать заявку** — [форма на GitHub](https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml&title=%5B%D0%92%D1%85%D0%BE%D0%B4%5D%20%D0%A4%D0%B8%D0%B4%D0%B6%D0%B8%D1%82%D0%B0%D0%BB-%D1%81%D0%BF%D0%BE%D1%80%D1%82%20%E2%80%94%20):
-  выберите в списке «phygital-sport — №4 Фиджитал-спорт» и роль. Ответ придёт комментарием в
-  заявке. Когда роль подтвердят, заполните [соглашение о входе](../_template/onboarding.md).
+- **Записаться** — [форма записи на витрине](https://spbuecon.github.io/econ-library/program/site/workstreams_board.html?ws=phygital-sport#apply): воркстрим уже выбран,
+  остаётся выбрать формат участия и рассказать о себе. Форма откроет на GitHub готовую заявку,
+  ответ придёт комментарием в ней. Когда участие подтвердят, заполните
+  [соглашение о входе](../_template/onboarding.md).
 - **Написать** — шерпа уточняется; пока — через владельца, Федерацию фиджитал-спорта СПб.
 
 Как всё устроено — в [гайде для студента](https://spbuecon.github.io/econ-library/guides/).

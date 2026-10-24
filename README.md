@@ -12,8 +12,8 @@
   какие воркстримы есть и как присоединиться.
 - **Все воркстримы** — [витрина](https://spbuecon.github.io/econ-library/program/site/workstreams_board.html)
   на сайте или [карта воркстримов](workstreams/README.md) здесь, на GitHub.
-- **Подать заявку на вход** — [форма на GitHub](https://github.com/SPBUEcon/econ-library/issues/new?template=join-workstream.yml).
-  Ответ придёт комментарием в заявке.
+- **Записаться** — [форма записи на витрине](https://spbuecon.github.io/econ-library/program/site/workstreams_board.html#apply): воркстрим, формат
+  участия и пара слов о себе. Заявка уйдёт через GitHub, ответ придёт комментарием в ней.
 - **Сайт мастерской** — [spbuecon.github.io/econ-library](https://spbuecon.github.io/econ-library/):
   группы, партнёры, материалы и поиск по всему репозиторию.
 

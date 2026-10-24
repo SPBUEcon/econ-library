@@ -5,7 +5,7 @@ HTML-страницы мастерской «Технологии в эконо�
 
 | Файл | Что это |
 |---|---|
-| [`workstreams_board.html`](workstreams_board.html) | **Витрина воркстримов** — дашборд для студентов: все воркстримы, стенды, статусы, «как включиться» |
+| [`workstreams_board.html`](workstreams_board.html) | **Витрина воркстримов** — дашборд для студентов: все воркстримы, стенды, статусы, «как включиться»; **форма записи** (раздел «Записаться») — собирает заявку и открывает её на GitHub |
 | [`../../guides/index.html`](../../guides/index.html) | **Гайд для студента** — понятия, что такое воркстрим, какие воркстримы есть (карточки собирает `build-workstreams.py`), как присоединиться. Адрес: https://spbuecon.github.io/econ-library/guides/ |
 | [`landing_tech_econ.html`](landing_tech_econ.html) | Лендинг курса — о мастерской, формате, воркстримах, партнёрстве |
 | [`participants-and-access-onepager.html`](participants-and-access-onepager.html) | Одностраничник для встречи: участники, группы, роли и доступы (печать — A4 альбомная); полный текст — [`../participants-and-access.md`](../participants-and-access.md) |
