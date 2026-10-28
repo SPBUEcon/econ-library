@@ -182,6 +182,7 @@
 |---|---|---|---|---|
 | [`econ-3`](tracks/econ-3/README.md) | Экономика, 3 курс (неск. групп) | Технологии (ИСЭиФ) | [`insurance`](workstreams/insurance/), [`phygital-sport`](workstreams/phygital-sport/) | [осень 2026](tracks/econ-3/2026-fall/README.md) — идёт |
 | [`bi-4`](tracks/bi-4/README.md) | Бизнес-информатика (ИСЭ), 4 курс (2 группы) | Технологии (ИСЭиФ) | [`sport-geo`](workstreams/sport-geo/), [`sport-engagement`](workstreams/sport-engagement/) | [осень 2026](tracks/bi-4/2026-fall/README.md) — идёт |
+| [`ise-1`](tracks/ise-1/README.md) | Информационные системы в экономике, 1 курс (4 группы) | Введение в бизнес-информатику | *заполнить* | [осень 2026](tracks/ise-1/2026-fall/README.md) — идёт |
 
 В прогоне: план и контент проведённых занятий (`sessions.md`), темы докладов (`talks.md`),
 отчётность (`reports/`). Пофамильная посещаемость/оценки — в вузовской ведомости, не здесь

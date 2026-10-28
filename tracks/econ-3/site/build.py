@@ -147,6 +147,12 @@ def convert(md, ctx, top):
                        + "".join("<tr>" + "".join(f"<td>{tb.inline(c, ctx)}</td>" for c in r) + "</tr>"
                                  for r in body)
                        + "</tbody></table></div>")
+        elif ln.startswith(">"):
+            quote = []
+            while i < len(lines) and lines[i].startswith(">"):
+                quote.append(lines[i][1:].strip())
+                i += 1
+            out.append(f"<blockquote><p>{tb.inline(' '.join(quote), ctx)}</p></blockquote>")
         elif ITEM.match(ln):
             h, i = parse_list(lines, i, ctx)
             out.append(h)
@@ -192,8 +198,9 @@ def slot_html(r, groups):
             f'<span class="gr">{groups_html}</span><span class="pl">{html.escape(place)}</span></li>')
 
 
-def fill_slots(page):
-    subjects = {s["subject_id"] for s in read_csv(CATALOG / "subjects.csv") if s["track_id"] == TRACK}
+def fill_slots(page, track=TRACK):
+    """Слоты дат трека track. Другие треки (ise-1) вызывают её из своих build.py."""
+    subjects = {s["subject_id"] for s in read_csv(CATALOG / "subjects.csv") if s["track_id"] == track}
     groups = {g["group_id"]: g for g in read_csv(CATALOG / "groups.csv")}
     by_date = defaultdict(list)
     for r in read_csv(SCHEDULE):
