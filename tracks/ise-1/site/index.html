@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<!--
+  Страница трека ise-1 (Информационные системы в экономике, 1 курс) — расписание занятий прогона «осень 2026».
+  Публичный URL: https://spbuecon.github.io/econ-library/tracks/ise-1/site/
+  Самодостаточная страница, работает по file:// без сервера. Сделана по образцу tracks/econ-3/site/.
+  ИСТОЧНИК ПРАВДЫ — tracks/catalog/schedule-2026-fall.csv (дата, время, группы, место — блоки «slots:дата»
+  собирает python tracks/ise-1/site/build.py) и tracks/ise-1/2026-fall/sessions.md (содержание занятий).
+  Держать в синхроне с ними.
+  Блок #tasks — задания, выданные группам (tracks/ise-1/2026-fall/README.md). Полные тексты между маркерами
+  «task:id» и «/task:id» вставляет build.py из assignments/templates/*.md — руками не править.
+  Незаполненное помечается как «не внесено» — не выдумывается.
+  Обновлено: 2026-10-28.
+-->
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ise-1 · Информационные системы в экономике, 1 курс — расписание занятий</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --ink:#1B2038; --ink2:#272E52;
+  --paper:#FAFBFE; --panel:#EFF3FA; --ice:#DCE6F5;
+  --coral:#F0614F; --grey:#5A6072; --line:#D7E0F0;
+  --green:#2FA37A; --amber:#D9932B; --blue:#3E7BD6;
+  --disp:'Unbounded','Arial Black',sans-serif;
+  --body:'IBM Plex Sans',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding:0 28px}
+a{color:inherit}
+.eyebrow{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:14px}
+h2{font-family:var(--disp);font-weight:700;font-size:clamp(22px,3vw,32px);line-height:1.15;margin-bottom:10px}
+.lead{font-size:clamp(15px,1.7vw,18px);color:var(--grey);max-width:820px}
+
+/* -------- HERO -------- */
+.hero{background:var(--ink);color:#fff;padding:44px 0 50px}
+.crumbs{font-size:13px;color:var(--ice);margin-bottom:22px}
+.crumbs a{color:var(--ice)}
+.hero .eyebrow{color:var(--ice)}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,4vw,44px);line-height:1.12}
+.hero h1 .accent{color:var(--coral)}
+.hero .sub{margin-top:16px;font-size:clamp(15px,1.8vw,19px);color:var(--ice);max-width:780px}
+
+/* -------- расписание -------- */
+section{padding:56px 0}
+.sched{list-style:none;margin-top:30px;display:flex;flex-direction:column;gap:14px}
+.ses{display:grid;grid-template-columns:118px 1fr;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.ses.done{border-color:rgba(47,163,122,.45);box-shadow:0 10px 28px rgba(27,32,56,.07)}
+.date{background:var(--panel);padding:18px 14px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.ses.done .date{background:var(--ink);color:#fff}
+.date .d{font-family:var(--disp);font-weight:700;font-size:26px;line-height:1}
+.date .m{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
+.ses.done .date .m{color:var(--ice)}
+.date .t{font-size:12.5px;margin-top:8px;color:var(--grey)}
+.ses.done .date .t{color:var(--ice)}
+.body{padding:18px 22px}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;color:var(--grey);margin-bottom:6px}
+.num{font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.status{display:inline-flex;align-items:center;gap:6px;font-weight:600}
+.status .dot{width:8px;height:8px;border-radius:50%}
+.status.done{color:var(--green)} .status.done .dot{background:var(--green)}
+.status.empty{color:var(--amber)} .status.empty .dot{background:var(--amber)}
+.status.plan{color:var(--grey)} .status.plan .dot{background:var(--line)}
+.body h3{font-family:var(--disp);font-weight:500;font-size:18px;line-height:1.3}
+.struct{margin:10px 0 0 20px;font-size:15px}
+.struct li{margin-bottom:3px}
+/* слоты занятия: время · группы · место — собирает build.py из tracks/catalog/schedule-2026-fall.csv */
+.slots{list-style:none;margin:10px 0 2px;display:flex;flex-direction:column;gap:6px}
+.slot{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:13.5px;color:var(--grey)}
+.slot .tm{font-weight:600;color:var(--ink);min-width:92px}
+.slot .gr{display:inline-flex;flex-wrap:wrap;gap:4px}
+.slot .g{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:1px 9px;font-size:12.5px;color:var(--ink)}
+.slot .sp{font-size:12.5px;color:var(--grey);padding-left:4px}
+.slot .pl{font-size:13px}
+
+details{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--coral);list-style:none;display:inline-flex;align-items:center;gap:8px}
+summary::-webkit-details-marker{display:none}
+summary::before{content:'▸';transition:transform .15s ease}
+details[open] summary::before{transform:rotate(90deg)}
+summary:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px}
+.content{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.mat{display:flex;flex-direction:column;gap:3px;background:var(--panel);border-radius:12px;padding:14px 16px;text-decoration:none;
+  transition:transform .15s ease, box-shadow .15s ease}
+.mat:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(27,32,56,.09)}
+.mat .rk{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);font-weight:600}
+.mat .rt{font-weight:600;font-size:15.5px}
+.mat .rd{font-size:13.5px;color:var(--grey)}
+.nocontent{margin-top:12px;font-size:13.5px;color:var(--grey)}
+
+.note{margin-top:26px;font-size:14px;color:var(--grey);border-left:3px solid var(--line);padding-left:16px}
+.note a{color:var(--coral);font-weight:600}
+
+/* -------- семестровые задания -------- */
+#tasks{background:var(--panel)}
+.tasks{list-style:none;margin-top:30px;display:flex;flex-direction:column;gap:14px}
+.task{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 24px;box-shadow:0 10px 28px rgba(27,32,56,.07)}
+.task h3{font-family:var(--disp);font-weight:500;font-size:20px;line-height:1.3}
+.task .desc{margin-top:8px;font-size:15px;color:var(--grey);max-width:820px}
+.facts{margin-top:14px;display:grid;grid-template-columns:150px 1fr;gap:6px 16px;font-size:14.5px}
+.facts dt{font-weight:600;color:var(--grey)}
+.facts dd b{font-weight:600}
+.facts code,.struct code{font-size:.88em;background:var(--panel);border-radius:4px;padding:0 4px}
+
+/* полный текст карточки задания (вставляется build.py из assignments/templates/*.md) */
+.doc{margin-top:14px;font-size:15px;max-width:860px}
+.doc h4{font-family:var(--disp);font-weight:500;font-size:17px;line-height:1.3;margin:26px 0 8px}
+.doc h4:first-child{margin-top:4px}
+.doc h5{font-size:15.5px;font-weight:600;margin:18px 0 6px}
+.doc h6{font-size:14px;font-weight:600;color:var(--grey);margin:14px 0 4px}
+.doc p{margin:8px 0}
+.doc ol,.doc ul{margin:6px 0 10px 22px}
+.doc li{margin-bottom:5px}
+.doc li p{margin:4px 0}
+.doc li ul{margin:4px 0 4px 18px}
+.doc a{color:var(--coral);font-weight:500}
+.doc code{font-size:.88em;background:var(--panel);border-radius:4px;padding:0 4px}
+.doc em{color:var(--grey)}
+.doc blockquote{margin:10px 0;border-left:3px solid var(--coral);background:var(--panel);border-radius:0 10px 10px 0;padding:6px 14px}
+.doc .tbl{overflow-x:auto;margin:10px 0}
+.doc table{border-collapse:collapse;font-size:14px;width:100%}
+.doc th{text-align:left;font-weight:600;color:var(--grey);font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--ink);padding:6px 10px 6px 0}
+.doc td{border-bottom:1px solid var(--line);padding:7px 10px 7px 0;vertical-align:top}
+.doc .src{margin-top:18px;font-size:13px;color:var(--grey)}
+
+.foot{background:var(--ink);color:var(--ice);padding:34px 0;font-size:14px}
+.foot a{color:#fff;font-weight:600;text-decoration:none}
+.foot a:hover{text-decoration:underline}
+
+@media (max-width:640px){
+  .ses{grid-template-columns:1fr}
+  .date{flex-direction:row;align-items:baseline;justify-content:flex-start;gap:10px;text-align:left;padding:12px 18px}
+  .date .t{margin-top:0}
+  .facts{grid-template-columns:1fr;gap:2px}
+  .facts dd{margin-bottom:8px}
+}
+@media (prefers-reduced-motion: reduce){.mat,summary::before{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="crumbs"><a href="../../../index.html#tracks">Дашборд</a> · Треки · ise-1</div>
+    <div class="eyebrow">Трек ise-1 · осень 2026</div>
+    <h1>Информационные системы в экономике, 1 курс <span class="accent">(4 группы)</span></h1>
+    <p class="sub">Предмет «Введение в бизнес-информатику». Ведёт Д. Хан. Группы 26.Б01-э – 26.Б04-э (1 курс,
+      Информационные системы в экономике) — каждая группа занимается отдельно.</p>
+  </div>
+</header>
+
+<!-- ===================== РАСПИСАНИЕ ===================== -->
+<section id="schedule">
+  <div class="wrap">
+    <div class="eyebrow">01 · Расписание занятий</div>
+    <h2>Занятия по датам</h2>
+    <p class="lead">Практические занятия: по пятницам 23.10 и 30.10 — Б04 и Б02 (Чайковского, 62), по средам
+      28.10–25.11 — Б03 и Б01 (Таврическая, 21-23-25). На каждой карточке — время, группы и место по расписанию
+      вуза; содержание вносится после занятия, где его ещё нет — так и помечено.</p>
+
+    <ol class="sched">
+
+      <li class="ses">
+        <div class="date"><span class="d">23</span><span class="m">октября</span><span class="t">пятница</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Практическое · Б04, Б02</span><span class="status empty"><span class="dot"></span>контент не внесён</span></div>
+          <h3>Тема не внесена</h3>
+<!-- slots:2026-10-23 -->
+          <ul class="slots"><li class="slot"><span class="tm">13:15–14:45</span><span class="gr"><span class="g">26.Б04-э</span><span class="sp">1 курс · Информационные системы в экономике</span></span><span class="pl">Чайковского, 62, ауд. 315</span></li><li class="slot"><span class="tm">15:00–16:30</span><span class="gr"><span class="g">26.Б02-э</span><span class="sp">1 курс · Информационные системы в экономике</span></span><span class="pl">Чайковского, 62, ауд. 315</span></li></ul>
+<!-- /slots:2026-10-23 -->
+          <p class="nocontent">Материалы занятия пока не добавлены.</p>
+        </div>
+      </li>
+
+      <li class="ses done">
+        <div class="date"><span class="d">28</span><span class="m">октября</span><span class="t">среда</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Практическое · Б03</span><span class="status done"><span class="dot"></span>задание выдано</span></div>
+          <h3>Первый прогноз: карточка в собственном репозитории</h3>
+<!-- slots:2026-10-28 -->
+          <ul class="slots"><li class="slot"><span class="tm">15:15–16:45</span><span class="gr"><span class="g">26.Б03-э</span><span class="sp">1 курс · Информационные системы в экономике</span></span><span class="pl">Таврическая, 21-23-25, ауд. 36</span></li></ul>
+<!-- /slots:2026-10-28 -->
+          <ul class="struct">
+            <li>Выдано задание <code>tpl22</code> «Первый прогноз» — прогноз по экономической теме</li>
+            <li>Горизонт прогноза — до следующего занятия группы, 18.11.2026</li>
+            <li>К концу занятия — публичный репозиторий на GitHub с первым коммитом карточки</li>
+          </ul>
+          <details open>
+            <summary>Задание занятия</summary>
+            <div class="content">
+              <a class="mat" href="#tpl22">
+                <span class="rk">Задание · tpl22</span>
+                <span class="rt">Первый прогноз: карточка в собственном репозитории</span>
+                <span class="rd">Экономическое событие с датой не позже 18.11, вероятность, обоснование источниками, база ИИ и предсказанный осколок. Полный текст — в блоке «Задания» ниже.</span>
+              </a>
+              <a class="mat" href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/forecast-cards/template.md">
+                <span class="rk">Шаблон</span>
+                <span class="rt">Шаблон карточки прогноза</span>
+                <span class="rd">Копируется в README.md своего репозитория.</span>
+              </a>
+            </div>
+          </details>
+        </div>
+      </li>
+
+      <li class="ses">
+        <div class="date"><span class="d">30</span><span class="m">октября</span><span class="t">пятница</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Практическое · Б04, Б02</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Тема не внесена</h3>
+<!-- slots:2026-10-30 -->
+          <ul class="slots"><li class="slot"><span class="tm">13:15–14:45</span><span class="gr"><span class="g">26.Б04-э</span><span class="sp">1 курс · Информационные системы в экономике</span></span><span class="pl">Чайковского, 62, ауд. 315</span></li><li class="slot"><span class="tm">15:00–16:30</span><span class="gr"><span class="g">26.Б02-э</span><span class="sp">1 курс · Информационные системы в экономике</span></span><span class="pl">Чайковского, 62, ауд. 315</span></li></ul>
+<!-- /slots:2026-10-30 -->
+          <p class="nocontent">Материалы появятся после занятия.</p>
+        </div>
+      </li>
+
+      <li class="ses">
+        <div class="date"><span class="d">11</span><span class="m">ноября</span><span class="t">среда</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Практическое · Б01</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Тема не внесена</h3>
+<!-- slots:2026-11-11 -->
+          <ul class="slots"><li class="slot"><span class="tm">15:15–16:45</span><span class="gr"><span class="g">26.Б01-э</span><span class="sp">1 курс · Информационные системы в экономике</span></span><span class="pl">Таврическая, 21-23-25, ауд. 36</span></li></ul>
+<!-- /slots:2026-11-11 -->
+          <p class="nocontent">Материалы появятся после занятия.</p>
+        </div>
+      </li>
+
+      <li class="ses">
+        <div class="date"><span class="d">18</span><span class="m">ноября</span><span class="t">среда</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Практическое · Б03</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Разрешение и разбор прогнозов (tpl22)</h3>
+<!-- slots:2026-11-18 -->
+          <ul class="slots"><li class="slot"><span class="tm">15:15–16:45</span><span class="gr"><span class="g">26.Б03-э</span><span class="sp">1 курс · Информационные системы в экономике</span></span><span class="pl">Таврическая, 21-23-25, ауд. 36</span></li></ul>
+<!-- /slots:2026-11-18 -->
+          <p class="nocontent">По плану задания <a href="#tpl22" style="color:var(--coral);font-weight:600">tpl22</a>: срок прогнозов
+            наступил — исход, балл Брайера свой и ИИ, взаимная проверка в парах, разбор карточек группой.</p>
+        </div>
+      </li>
+
+      <li class="ses">
+        <div class="date"><span class="d">25</span><span class="m">ноября</span><span class="t">среда</span></div>
+        <div class="body">
+          <div class="meta"><span class="num">Практическое · Б01</span><span class="status plan"><span class="dot"></span>запланировано</span></div>
+          <h3>Тема не внесена</h3>
+<!-- slots:2026-11-25 -->
+          <ul class="slots"><li class="slot"><span class="tm">15:15–16:45</span><span class="gr"><span class="g">26.Б01-э</span><span class="sp">1 курс · Информационные системы в экономике</span></span><span class="pl">Таврическая, 21-23-25, ауд. 36</span></li></ul>
+<!-- /slots:2026-11-25 -->
+          <p class="nocontent">Материалы появятся после занятия.</p>
+        </div>
+      </li>
+
+    </ol>
+
+    <p class="note">Время, группы и место — из расписания СПбГУ (снимок 09.10.2026),
+      <a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/catalog/schedule-2026-fall.csv">schedule-2026-fall.csv</a>;
+      содержание занятий — <a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/ise-1/2026-fall/sessions.md">sessions.md</a>.
+      Специальность групп — со слов преподавателя (28.10.2026), в расписании её нет. Пофамильная посещаемость и
+      оценки — в вузовской ведомости, не здесь.</p>
+  </div>
+</section>
+
+<!-- ===================== СЕМЕСТРОВЫЕ ЗАДАНИЯ ===================== -->
+<section id="tasks">
+  <div class="wrap">
+    <div class="eyebrow">02 · Семестровые задания</div>
+    <h2>Задания</h2>
+    <p class="lead">Задания, выданные группам потока. Выполняются параллельно с занятиями; срок и горизонт —
+      у каждой выдачи свои.</p>
+
+    <ol class="tasks">
+
+      <li class="task" id="tpl22">
+        <div class="meta"><span class="num">Задание 1 · индивидуально · 26.Б03-э</span><span class="status done"><span class="dot"></span>выдано 28.10</span></div>
+        <h3>Первый прогноз: карточка в собственном репозитории</h3>
+        <p class="desc">Выберите будущее экономическое событие, исход которого можно однозначно проверить. Дайте
+          вероятность, обоснуйте её источниками, запишите базу ИИ и предсказанный осколок — и оформите карточку
+          прогноза в своём публичном репозитории на GitHub.</p>
+
+        <dl class="facts">
+          <dt>Тема</dt>
+          <dd><b>Только экономическая:</b> ставки, инфляция, курсы, статистика, рынки, компании, цены, регулирование</dd>
+          <dt>Горизонт</dt>
+          <dd><b>До следующего занятия — 18.11.2026.</b> Событие должно разрешиться не позже этой даты</dd>
+          <dt>Как сдать</dt>
+          <dd>Ссылку на публичный репозиторий — преподавателю; темы репозитория <code>econ-forecast</code> и <code>vbi-2026</code></dd>
+          <dt>Разбор</dt>
+          <dd>18.11, 15:15–16:45, Таврическая, 21-23-25, ауд. 36: исход, балл Брайера, взаимная проверка</dd>
+        </dl>
+
+        <details>
+          <summary>Полный текст задания</summary>
+<!-- task:tpl22 -->
+<!-- Сгенерировано из assignments/templates/tpl22-first-forecast.md (tracks/ise-1/site/build.py). -->
+<div class="doc">
+<h4>Что предлагается сделать</h4>
+<p>Выберите будущее <strong>экономическое</strong> событие, исход которого можно будет однозначно проверить. Сформулируйте вопрос, дайте вероятность, обоснуйте её источниками и запишите карточку прогноза в собственный публичный репозиторий на GitHub. До даты разрешения обновляйте прогноз, если появятся новые факты.</p>
+<h4>Логика задачи</h4>
+<ul><li><strong>Тема — только экономическая.</strong> Прогноз — об экономике: ставки, инфляция, курсы валют, статистика, финансовые рынки, компании и отрасли, цены, регулирование. Спорт, кино, погода и другие темы не принимаются; можно взять их экономическую сторону (цены, выручка, сделки).</li><li><strong>Проверяемость обязательна.</strong> Вопрос должен разрешаться однозначно: в дату X любой посторонний человек по открытому источнику скажет «да» или «нет».</li><li><strong>Вероятность, а не угадывание.</strong> Оценивается не то, сбылось ли, а качество рассуждения и калибровка: сбываются ли ваши «70 %» примерно в 70 % случаев. Это видно только на серии прогнозов, поэтому первый прогноз — начало журнала, а не лотерея.</li><li><strong>ИИ — база, а не автор.</strong> ИИ даёт прогноз за секунды, поэтому его вероятность записывается рядом с вашей. Засчитывается то, в чём вы точнее ИИ. Скопировали ИИ — получили ноль.</li><li><strong>Предсказанный осколок.</strong> Если рассуждение верно, до главной даты должно появиться что-то промежуточное. Его вы записываете заранее, и оно проверяется ещё в этом семестре. Так выдуманное объяснение отличается от рабочего: выдуманное не находит своих подтверждений.</li><li><strong>Дата — из git.</strong> Прогноз сделан тогда, когда сделан коммит. Обновления — новыми коммитами, старые не переписываются.</li></ul>
+<h4>Требования к вопросу</h4>
+<ol><li><strong>Событие с датой.</strong> Дату задаёт кто-то внешний: регулятор, компания, биржа, календарь. Пример: заседание ЦБ, публикация статистики Росстата, отчётность компании.</li><li><strong>Однозначный признак и открытый источник.</strong> Не «экономика ухудшится», а «Росстат опубликует годовую инфляцию за ноябрь выше 6,0 %».</li><li><strong>Дата разрешения — не позже горизонта из выдачи</strong> (раздел «Выдача по группам»). У 26.Б03-э — <strong>до следующего занятия, 18.11.2026</strong>: на нём прогнозы разрешаются и разбираются. Где горизонт в выдаче не задан — не позже 12 месяцев, лучше в пределах семестра: тогда вы увидите результат сами. Примеры в таблице ниже и <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/forecast-cards/examples/key-rate-2026-12.md">пример карточки</a> показывают форму вопроса; их даты для 26.Б03-э слишком далёкие.</li><li><strong>Исход открыт.</strong> Если почти все уверены (меньше 10 % или больше 90 %), вопрос слишком лёгкий — переформулируйте: не «будет ли заседание», а «какое решение примут».</li><li><strong>Вы не можете повлиять на исход.</strong> Если можете — это обещание, а не прогноз.</li><li><strong>Не о конкретных людях</strong> (увольнения, личная жизнь, здоровье): это чужие персональные данные.</li><li><strong>Экономическая тема</strong> — см. «Логику задачи»: о спорте, кино, погоде — только их экономическая сторона.</li></ol>
+<div class="tbl"><table><thead><tr><th>Плохо</th><th>Почему</th><th>Хорошо</th></tr></thead><tbody><tr><td>«Биткоин вырастет»</td><td>Нет даты и порога</td><td>«Курс BTC на CoinGecko на 31.12.2026 в 23:59 UTC будет выше 100 000 $»</td></tr><tr><td>«Зенит хорошо сыграет»</td><td>Нет признака, тема не экономическая</td><td>«Курс доллара, установленный Банком России на ⟨дата⟩, будет выше ⟨порог⟩ ₽»</td></tr><tr><td>«Ставка ЦБ снизится когда-нибудь»</td><td>Нет даты, исход почти очевиден</td><td>«ЦБ снизит ключевую ставку на заседании 18.12.2026»</td></tr><tr><td>«Я сдам сессию на отлично»</td><td>Автор влияет на исход</td><td>Любой вопрос о внешнем событии</td></tr></tbody></table></div>
+<h4>Логика выполнения</h4>
+<div class="tbl"><table><thead><tr><th>Шаг</th><th>Что делать</th><th>Где фиксировать</th></tr></thead><tbody><tr><td>1. Аккаунт</td><td>Зарегистрироваться на <a href="https://github.com">github.com</a>, выбрать ник (он же подпись на бирже). Настоящее имя в нике не обязательно</td><td>—</td></tr><tr><td>2. Репозиторий</td><td><strong>New repository</strong> → имя <code>forecast-&lt;тема&gt;</code> (латиницей) → <strong>Public</strong> → отметить <strong>Add a README file</strong> → <strong>Create repository</strong></td><td>GitHub</td></tr><tr><td>3. Вопрос</td><td>Выбрать событие, проверить его по семи требованиям выше</td><td>Черновик</td></tr><tr><td>4. Свой прогноз</td><td>Изучить источники, записать вероятность <strong>до</strong> того, как спросить ИИ</td><td>Карточка, разделы 2–3</td></tr><tr><td>5. База ИИ</td><td>Задать ИИ стандартный запрос (ниже), записать модель, дату и ответ</td><td>Карточка, раздел 4</td></tr><tr><td>6. Осколок</td><td>Записать, что должно появиться до главной даты, если вы правы</td><td>Карточка, раздел 5</td></tr><tr><td>7. Карточка</td><td>Открыть <code>README.md</code> → карандаш (<strong>Edit</strong>) → вставить <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/forecast-cards/template.md">шаблон</a> → заполнить → <strong>Commit changes</strong></td><td><code>README.md</code> репозитория</td></tr><tr><td>8. Оформление</td><td>Справа от списка файлов шестерёнка <strong>About</strong> → описание (сам вопрос), темы (Topics): <code>econ-forecast</code> и <code>vbi-2026</code></td><td>GitHub</td></tr><tr><td>9. Сдача</td><td>Отправить ссылку на репозиторий преподавателю в канал, который он назовёт на занятии</td><td>—</td></tr><tr><td>10. Обновления</td><td>Новые факты → новая строка в журнале позиции и новый коммит. Проверить предсказанный осколок в его дату</td><td><code>README.md</code></td></tr></tbody></table></div>
+<p>Карточку можно хранить и отдельным файлом <code>forecast.md</code>, но в <code>README.md</code> она видна сразу на главной странице репозитория. Если прогнозов несколько, каждый — отдельный файл в папке <code>forecasts/</code>, а <code>README.md</code> — список ссылок на них.</p>
+<p><strong>Стандартный запрос к ИИ</strong> (чтобы базы разных студентов были сравнимы):</p>
+<blockquote><p>Оцени вероятность события в процентах (одно число от 0 до 100). Событие: ⟨вопрос карточки⟩. Признак исхода: ⟨признак⟩. Источник проверки: ⟨источник⟩. Сегодня ⟨дата⟩. Ответь числом и тремя короткими причинами.</p></blockquote>
+<p><strong>Доступ преподавателю.</strong> Публичный репозиторий доступен всем по ссылке, отдельного приглашения не нужно. Отзыв преподаватель оставит в разделе <strong>Issues</strong> вашего репозитория. Если преподаватель попросит, добавьте его как соавтора: <strong>Settings → Collaborators → Add people →</strong> <code>dmitrykhan123</code>.</p>
+<h4>Ориентировочный результат</h4>
+<p>Публичный репозиторий с карточкой прогноза по <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/forecast-cards/template.md">шаблону</a>: заполнены все разделы, кроме «Разрешения». Объём — одна-две страницы.</p>
+<h4>Критерии приёмки</h4>
+<ul><li>Репозиторий публичный, ссылка сдана в срок, у репозитория есть описание и темы <code>econ-forecast</code>, <code>vbi-2026</code>.</li><li>Карточка оформлена по шаблону: паспорт вверху заполнен, заголовок — сам вопрос, разделы на месте, таблицы отображаются, ссылки открываются.</li><li>Вопрос проходит семь требований: экономическая тема, дата, однозначный признак, открытый источник, срок не позже горизонта из выдачи (у 26.Б03-э — 18.11.2026), открытый исход, автор не влияет.</li><li>Вероятность — одно число от 1 до 99 %. Записаны вероятность ИИ, модель и дата запроса.</li><li>Обоснование — 3–5 пунктов, у каждого источник. Есть хотя бы один факт «что уже видно».</li><li>Есть предсказанный осколок с датой раньше даты разрешения и источником проверки.</li><li>Указано, что заставит изменить мнение.</li><li>Дата прогноза подтверждается коммитом, история не переписана.</li></ul>
+<p>Оценивается рассуждение на момент прогноза, а не угаданный исход.</p>
+<h4>После сдачи</h4>
+<ol><li><strong>Обновления.</strong> Появилось событие, которое меняет картину, — новая строка в журнале: дата, новая вероятность, что изменилось. Старые строки не удаляются.</li><li><strong>Предсказанный осколок.</strong> В его дату отметьте в карточке: нашёлся или нет, со ссылкой.</li><li><strong>Разрешение.</strong> После даты разрешения заполните последний раздел: исход, ссылка, балл Брайера ваш и ИИ, короткий разбор. Балл Брайера = (p − исход)², где p — вероятность в долях, исход — 1 («да») или 0 («нет»). Меньше — лучше: 0 — идеально, 0,25 — как «50 %» на всё. <em>Пример:</em> прогноз 25 %, события не случилось → (0,25 − 0)² = 0,0625. ИИ давал 40 % → (0,40 − 0)² = 0,16. Вы точнее ИИ на 0,0975.</li><li><strong>Перенос на биржу.</strong> Когда публичная версия биржи заработает, карточки из репозиториев с темой <code>econ-forecast</code> переносятся в неё. Паспорт карточки совпадает с полями <code>questions.csv</code>, журнал — с <code>forecasts.csv</code> (раздел «Данные» в <a href="https://github.com/dmitrykhan123/invert-bets/blob/main/docs/model.md">модели биржи</a>).</li></ol>
+<p class="src">Источник — карточка <a href="https://github.com/SPBUEcon/econ-library/blob/main/assignments/templates/tpl22-first-forecast.md"><code>tpl22</code></a>.</p>
+</div>
+<!-- /task:tpl22 -->
+        </details>
+      </li>
+
+    </ol>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <a href="../../../index.html">← Дашборд мастерской</a> ·
+    <a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/ise-1/README.md">Трек ise-1 на GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>
