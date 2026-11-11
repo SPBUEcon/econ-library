@@ -136,6 +136,12 @@ def convert(md, ctx, top):
             while "-->" not in lines[i]:
                 i += 1
             i += 1
+        elif ln.startswith("```"):                # блок кода — как есть, без разметки
+            j = i + 1
+            while j < len(lines) and not lines[j].startswith("```"):
+                j += 1
+            out.append(f"<pre>{html.escape(chr(10).join(lines[i + 1:j]))}</pre>")
+            i = j + 1
         elif re.match(r"^#{1,6} ", ln):
             lvl = len(ln) - len(ln.lstrip("#"))
             if lvl >= top:                 # заголовки выше top — обёртки разделов, не выводятся
@@ -164,7 +170,7 @@ def convert(md, ctx, top):
             out.append(h)
         else:
             para = []
-            while (i < len(lines) and lines[i].strip() and not lines[i].startswith(("|", "#", "<!--"))
+            while (i < len(lines) and lines[i].strip() and not lines[i].startswith(("|", "#", "<!--", "```"))
                    and not ITEM.match(lines[i])):
                 para.append(lines[i].strip())
                 i += 1
