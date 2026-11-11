@@ -7,7 +7,7 @@ blocks: transition; ai-business
 covers: bm01; ca08
 refs: bm01; ca08; m01; c01; c19; c23; m02
 questions: q17
-assignments: rb-02; tpl07
+assignments: rb-02; tpl07; rb-08
 dossier: red-bull
 preview: 3
 status: черновик
@@ -121,6 +121,7 @@ updated: 2026-10-08 16:24
 |---|---|
 | [`rb-02` Бизнес-модель Red Bull по трём укладам](../../assignments/templates/rb-02-red-bull-business-model.md) | Проверить тезисы слайдов по первоисточникам и собрать модель в досье |
 | `tpl07` Stratos как хлопушка ([архив](../../assignments/site/index.html)) | Разобрать Stratos по модели «воронка · лейка · хлопушка» |
+| [`rb-08` Как бы вы входили на рынок энергетиков сегодня?](../../assignments/templates/rb-08-energy-drink-market-entry.md) | На занятии: предложить ход входа, защитить его от атаки соседней команды, оставить ставку |
 
 ### Что проверить
 
