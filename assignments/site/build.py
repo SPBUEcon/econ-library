@@ -264,6 +264,7 @@ footer p{margin-bottom:8px;max-width:920px}
     <select id="f-type" aria-label="Тип задания"></select>
     <select id="f-skill" aria-label="Навык"></select>
     <select id="f-scale" aria-label="Масштаб"></select>
+    <select id="f-level" aria-label="Уровень подготовки"></select>
     <select id="f-dossier" aria-label="Досье"></select>
     <div class="search"><input id="q" type="search" placeholder="Поиск по заданиям…" aria-label="Поиск"></div>
     <button class="reset" id="reset">Сбросить</button>
@@ -338,7 +339,7 @@ const st = [
 document.getElementById("stats").innerHTML = st.map(([n, l]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join("");
 
 // controls
-const F = {kind:"", type:"", skill:"", scale:"", dossier:"", q:""};
+const F = {kind:"", type:"", skill:"", scale:"", level:"", dossier:"", q:""};
 document.getElementById("kinds").innerHTML =
   [["", "Все"], ...Object.entries(KIND)].map(([k, l]) => `<button class="chip" data-kind="${k}">${l}</button>`).join("");
 function fill(id, label, opts){
@@ -347,6 +348,7 @@ function fill(id, label, opts){
 fill("f-type", "Все типы", DATA.types.map(t => [t.type_id, t.title]));
 fill("f-skill", "Все навыки", DATA.skills.map(s => [s.skill_id, s.title]));
 fill("f-scale", "Любой масштаб", [["индивид", "Индивидуально"], ["команда", "Команда"]]);
+fill("f-level", "Любой уровень", [["начальный", "Начальный"], ["базовый", "Базовый"], ["продвинутый", "Продвинутый"]]);
 fill("f-dossier", "Все задания", [["none", "Без досье (общие шаблоны)"], ...DATA.dossiers.map(d => [d.dossier_id, "Досье: " + d.object])]);
 
 // cards
@@ -357,8 +359,11 @@ function card(t){
   const sep = '<span class="sep">|</span>';
   const facts = [`<b>Масштаб:</b> ${esc(t.scale.join(" / "))}`];
   if (t.duration) facts.push(`<b>Срок:</b> ${esc(t.duration)}`);
+  if (t.level) facts.push(`<b>Уровень:</b> ${esc(t.level)}`);
+  if (t.timebox) facts.push(`<b>Таймбокс:</b> ${esc(t.timebox)}`);
   if (mech) facts.push(`<b>Механика:</b> ${esc(mech)}`);
   const extra = [];
+  if (t.audience) extra.push(`<b>Кому выдавать:</b> ${esc(t.audience)}`);
   if (t.parameters) extra.push(`<b>Варианты:</b> ${esc(t.parameters)}`);
   if (t.dossier_id) extra.push(`<b>Досье:</b> ${esc(d ? d.object : t.dossier_id)}` + (t.entry_stage.length ? `, стадия: ${esc(t.entry_stage.join(", "))}` : ""));
   else if (t.entry_stage.length) extra.push(`<b>Стадия досье:</b> ${esc(t.entry_stage.join(", "))}`);
@@ -371,7 +376,7 @@ function card(t){
   if (!t.card_url) links.push(`<span class="muted">описание — в этой строке архива</span>`);
   links.push(`<a href="${(t.card_url || "__GH__catalog/templates.csv").replace("/blob/main/", "/edit/main/")}"`
     + ` title="Открыть в редакторе GitHub; после правки пересобрать: python assignments/site/build.py">✎ Править</a>`);
-  const text = [t.template_id, t.title, t.brief, t.deliverable, t.acceptance, t.parameters, mech,
+  const text = [t.template_id, t.title, t.brief, t.deliverable, t.acceptance, t.parameters, mech, t.audience, t.purpose, t.strategic_outcome,
     TY[t.type_id] ? TY[t.type_id].title : "", t.skill_ids.map(s => SK[s] ? SK[s].title : "").join(" ")].join(" ").toLowerCase();
   return `<article class="card" id="t-${esc(t.template_id)}" data-kind="${esc(t.kind)}" data-text="${esc(text)}">
     <div class="head">
@@ -387,7 +392,7 @@ function card(t){
       <div class="facts">${facts.join(sep)}</div>
       ${extra.length ? `<div class="facts">${extra.join(sep)}</div>` : ""}
       <div>${skills}</div>
-      <div class="res"><p><b>Что сдаётся:</b> ${esc(t.deliverable)}</p><p><b>Критерии приёмки:</b> ${esc(t.acceptance)}</p>
+      <div class="res">${t.purpose ? `<p><b>Назначение:</b> ${esc(t.purpose)}</p>` : ""}${t.strategic_outcome ? `<p><b>Стратегический итог:</b> ${esc(t.strategic_outcome)}</p>` : ""}<p><b>Что сдаётся:</b> ${esc(t.deliverable)}</p><p><b>Критерии приёмки:</b> ${esc(t.acceptance)}</p>
         ${t.related_questions.length ? `<p><b>Вопросы банка:</b> ${esc(t.related_questions.join(", "))}</p>` : ""}</div>
       <div class="act">${links.join("")}</div>
     </div></article>`;
@@ -433,6 +438,7 @@ function match(t){
   if (F.type && t.type_id !== F.type) return false;
   if (F.skill && !t.skill_ids.includes(F.skill)) return false;
   if (F.scale && !t.scale.includes(F.scale)) return false;
+  if (F.level && t.level !== F.level) return false;
   if (F.dossier === "none" && t.dossier_id) return false;
   if (F.dossier && F.dossier !== "none" && t.dossier_id !== F.dossier) return false;
   return true;
@@ -462,7 +468,7 @@ function apply(){
   document.getElementById("c-archive").textContent = n === T.length ? `${n}` : `${n} из ${T.length}`;
   document.getElementById("empty").style.display = n ? "none" : "block";
   document.querySelectorAll("#kinds .chip").forEach(c => c.classList.toggle("on", c.dataset.kind === F.kind));
-  ["type", "skill", "scale", "dossier"].forEach(k => document.getElementById("f-" + k).value = F[k]);
+  ["type", "skill", "scale", "level", "dossier"].forEach(k => document.getElementById("f-" + k).value = F[k]);
   document.getElementById("q").value = F.q;
   const h = Object.entries(F).filter(([, v]) => v).map(([k, v]) => k + "=" + encodeURIComponent(v)).join("&");
   history.replaceState(null, "", h ? "#" + h : location.pathname);
@@ -470,7 +476,7 @@ function apply(){
 function resetAll(){ Object.keys(F).forEach(k => F[k] = ""); apply(); }
 function showOne(id){ resetAll(); F.q = id.toLowerCase(); apply(); setOpen(document.getElementById("t-" + id), true); }
 document.getElementById("kinds").addEventListener("click", e => { if (e.target.dataset.kind !== undefined) { F.kind = e.target.dataset.kind; apply(); } });
-["type", "skill", "scale", "dossier"].forEach(k => document.getElementById("f-" + k).addEventListener("change", e => { F[k] = e.target.value; apply(); }));
+["type", "skill", "scale", "level", "dossier"].forEach(k => document.getElementById("f-" + k).addEventListener("change", e => { F[k] = e.target.value; apply(); }));
 document.getElementById("q").addEventListener("input", e => { F.q = e.target.value; apply(); });
 document.getElementById("reset").addEventListener("click", resetAll);
 
