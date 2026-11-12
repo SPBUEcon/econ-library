@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<!--
+  Задание 1 (econ-3, осень 2026): кто из студентов сдал доклад или эссе.
+  Публичный URL: https://spbuecon.github.io/econ-library/tracks/econ-3/site/assignment-1/
+  Данные: data.js (собирает build_data.py из приватного разбора — только код, тема, группа, число авторов)
+  и roster.js (численность групп). Оценки уровня сюда не выводятся.
+-->
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Задание 1 · кто сдал доклад — econ-3</title>
+  <style>
+    :root {
+      --bg: #f4f5f7;
+      --card: #ffffff;
+      --text: #1d2330;
+      --muted: #6b7280;
+      --border: #d9dde3;
+      --accent: #2f5bea;
+      --ok: #0ca30c;
+      --no: #d03b3b;
+      --tile: 30px;
+      --gap: 3px;
+      --pad: 14px;
+      --group-gap: 18px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+    main { padding: 12px 12px 40px; }
+    .top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin: 0 4px 10px; }
+    h1 { font-size: 1.3rem; margin: 0; }
+    h2 { font-size: 1.15rem; margin: 0; }
+    .subtitle { color: var(--muted); margin: 0; font-size: .875rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: var(--pad); margin-bottom: 12px; }
+
+    .controls { position: sticky; top: 0; z-index: 5; padding: 8px 10px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+    button { font: inherit; cursor: pointer; }
+    .tabs { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .tabs button { background: #fff; color: var(--text); border: 0; border-right: 1px solid var(--border); padding: 3px 10px; font-size: .85rem; }
+    .tabs button:last-child { border-right: 0; }
+    .tabs button:hover { background: #eef1f6; }
+    .tabs button[aria-pressed="true"] { background: var(--text); color: #fff; }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 6px; font-size: .8rem; }
+    .legend .item { display: inline-flex; align-items: center; gap: 6px; }
+    .legend .muted { color: var(--muted); }
+    .sw { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+    .sw.ok { background: var(--ok); }
+    .sw.no { background: var(--no); }
+
+    .panel-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; align-items: flex-start; margin-bottom: 10px; }
+    .panel-note { color: var(--muted); font-size: .85rem; margin: 2px 0 0; }
+    .hero { display: flex; align-items: baseline; gap: 8px; }
+    .hero b { font-size: 1.4rem; line-height: 1; font-variant-numeric: tabular-nums; }
+    .hero span { color: var(--muted); font-size: .9rem; }
+    .groups { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px var(--group-gap); align-items: flex-start; }
+    .group-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 4px; font-size: .8rem; }
+    .group-head b { font-size: .875rem; }
+    .group-head span { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+    .grid { display: grid; gap: var(--gap); justify-content: center; }
+    .tile { position: relative; width: var(--tile); height: var(--tile); border-radius: 5px; overflow: hidden; cursor: default;
+            transition: transform .12s, opacity .12s, box-shadow .12s; outline: none; }
+    .tile.ok { background: var(--ok); }
+    .tile.no { background: var(--no); }
+    .tile .person { position: absolute; left: 50%; bottom: -3px; width: 23px; height: 23px; transform: translateX(-50%); fill: #fff; opacity: .95; }
+    .tile.no .person { opacity: .55; }
+    .tile:hover, .tile:focus-visible { transform: scale(1.15); box-shadow: 0 3px 8px rgba(0,0,0,.2); z-index: 1; }
+    .tile:focus-visible { box-shadow: 0 0 0 3px var(--accent); }
+    .dim .tile:not(.hl) { opacity: .2; }
+
+    .tip { position: fixed; z-index: 10; pointer-events: none; max-width: 300px; background: var(--text); color: #fff; padding: 10px 12px;
+           border-radius: 8px; font-size: .875rem; line-height: 1.4; box-shadow: 0 6px 18px rgba(0,0,0,.2); opacity: 0; transition: opacity .08s; }
+    .tip.show { opacity: 1; }
+    .tip .name { font-weight: 600; }
+    .tip .muted { color: #b9c0cc; }
+
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: .875rem; }
+    th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    th { color: var(--muted); font-weight: 600; vertical-align: bottom; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .summary tr.sub td { background: #f7f8fa; font-weight: 600; }
+    .summary tr.total td { background: #eef1f6; font-weight: 700; border-bottom: 0; }
+    .summary td.grp { padding-left: 24px; }
+    .cell { display: inline-flex; align-items: center; gap: 8px; justify-content: flex-end; }
+    .cell .pct { color: var(--muted); width: 3.2em; text-align: right; font-weight: 400; }
+    .bar { width: 56px; height: 6px; border-radius: 3px; background: var(--no); overflow: hidden; display: inline-block; }
+    .bar i { display: block; height: 100%; background: var(--ok); border-right: 2px solid #fff; }
+    .notes { color: var(--muted); font-size: .8rem; margin: 10px 0 0; padding-left: 18px; }
+    .private { color: var(--muted); font-size: .8rem; margin: 0 4px 10px; }
+    #err { display: none; background: #fff6e0; border: 1px solid #e3a21a; border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="person" viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="4.2"/><path d="M3.5 24v-2.5a8.5 8.5 0 0 1 17 0V24z"/></symbol>
+  </svg>
+
+  <main>
+    <div id="err"></div>
+    <header class="top">
+      <h1>Задание 1 · кто сдал доклад</h1>
+      <p class="subtitle" id="subtitle"></p>
+    </header>
+    <p class="private"><a href="../#tasks">← Трек econ-3: задания на семестр</a> · мини-эссе или доклад «Компания или технология, которая меняет рынки»</p>
+
+    <section class="card controls">
+      <div class="toolbar">
+        <div class="tabs" id="scope-tabs" role="group" aria-label="Какие группы показать"></div>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+
+    <div id="streams"></div>
+
+    <section class="card">
+      <div class="panel-head" style="margin-bottom:12px">
+        <div>
+          <h2>Сводная таблица</h2>
+          <p class="panel-note">Сколько студентов сдали доклад, по группам и потокам</p>
+        </div>
+      </div>
+      <div class="table-wrap"><table class="summary" id="summary"></table></div>
+      <ul class="notes" id="notes"></ul>
+    </section>
+  </main>
+
+  <div class="tip" id="tip" role="tooltip"></div>
+
+  <script src="roster.js"></script>
+  <script src="data.js"></script>
+  <script>
+  (function () {
+    const $ = id => document.getElementById(id);
+    if (!window.ROSTER || !window.DATA) {
+      $('err').style.display = 'block';
+      $('err').innerHTML = 'Нет <code>roster.js</code> или <code>data.js</code> рядом со страницей. <code>data.js</code> собирается командой <code>python tracks/econ-3/site/assignment-1/build_data.py</code>.';
+      return;
+    }
+
+    // ---------- Справочники ----------
+    const GROUPS = ROSTER.slice();
+    const streamIds = [...new Set(GROUPS.map(g => g.stream))].sort();
+    const STREAMS = streamIds.map(k => {
+      const groups = GROUPS.filter(g => g.stream === k);
+      return { id: k, name: `Поток ${k}`, groups, range: `${groups[0].id} – ${groups[groups.length - 1].id}` };
+    });
+    const groupById = Object.fromEntries(GROUPS.map(g => [g.id, g]));
+
+    // ---------- Помощники ----------
+    const svgUse = (id, cls = '') => `<svg class="${cls}" aria-hidden="true"><use href="#${id}"/></svg>`;
+    const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const plural = (n, one, few, many) => {
+      const m10 = n % 10, m100 = n % 100;
+      if (m10 === 1 && m100 !== 11) return one;
+      if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+      return many;
+    };
+    const studentsWord = n => `${n} ${plural(n, 'студент', 'студента', 'студентов')}`;
+    const groupsWord = n => `${n} ${plural(n, 'группа', 'группы', 'групп')}`;
+    const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+    const cleanTitle = t => t.replace(/\s*\((А|В)\)\s*$/, '');
+
+    // ---------- Студенты из works.csv ----------
+    // Каждый автор работы — зелёная плитка в своей группе. Работа нескольких групп делится
+    // между ними поровну (распределение условное). Неизвестный состав команды считаем за 1.
+    const notes = [];
+    const authors = [];      // { group|null, stream|null, work, approx }
+    DATA.works.forEach(w => {
+      const size = w.team_size === '' ? 1 : +w.team_size;
+      if (w.team_size === '') notes.push(`У работы ${w.code} не указан состав авторов — считаем как одного студента.`);
+      const gs = w.groups === 'группа не указана' ? [] : w.groups.split(/\s+и\s+/).map(s => s.trim());
+      const unknown = gs.filter(g => !groupById[g]);
+      if (unknown.length) notes.push(`Работа ${w.code}: группы ${unknown.join(', ')} нет в roster.js — авторы показаны без группы.`);
+      const known = gs.filter(g => groupById[g]);
+      if (!known.length) {
+        for (let k = 0; k < size; k++) authors.push({ group: null, stream: null, work: w, approx: false });
+        return;
+      }
+      if (known.length > 1) notes.push(`Работа ${w.code} — совместная, ${known.join(' и ')}: ${size} авторов поделены между группами поровну, условно.`);
+      known.forEach((g, j) => {
+        const share = Math.floor(size / known.length) + (j < size % known.length ? 1 : 0);
+        for (let k = 0; k < share; k++) authors.push({ group: g, stream: groupById[g].stream, work: w, approx: known.length > 1 });
+      });
+    });
+
+    const unplaced = authors.filter(a => !a.group);
+    if (unplaced.length) {
+      const codes = [...new Set(unplaced.map(a => a.work.code))].join(', ');
+      notes.push(`${studentsWord(unplaced.length)} сдали доклад, но группа не указана (${codes}). Они входят в итог по курсу, но не в потоки и группы — поэтому красных плиток в группах может быть больше, чем на самом деле.`);
+    }
+
+    // Плитки групп: сначала авторы (работы подряд, чтобы команда стояла вместе), потом не сдавшие
+    const students = [];
+    GROUPS.forEach(g => {
+      const mine = authors.filter(a => a.group === g.id).sort((a, b) => a.work.code.localeCompare(b.work.code, 'ru'));
+      if (mine.length > g.n) notes.push(`В ${g.id} авторов (${mine.length}) больше, чем студентов в roster.js (${g.n}) — проверьте численность.`);
+      mine.forEach(a => students.push(a));
+      for (let k = mine.length; k < g.n; k++) students.push({ group: g.id, stream: g.stream, work: null });
+    });
+    unplaced.forEach(a => students.push(a));
+
+    const TOTAL = GROUPS.reduce((s, g) => s + g.n, 0);
+    const DONE = authors.length;
+
+    // ---------- Раскладка ----------
+    function fitCols(width) {
+      const css = getComputedStyle(document.documentElement);
+      const tile = parseFloat(css.getPropertyValue('--tile')), gap = parseFloat(css.getPropertyValue('--gap'));
+      return Math.max(2, Math.floor((width + gap) / (tile + gap)));
+    }
+    function contentWidth() {
+      const pad = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--pad'));
+      return $('streams').clientWidth - 2 * pad - 2;
+    }
+
+    // ---------- Состояние ----------
+    let scope = 'all';  // 'all', номер потока или 'groups'
+
+    // ---------- Отрисовка ----------
+    function renderTabs() {
+      const scopes = [['all', `Весь курс · ${TOTAL}`],
+        ...STREAMS.map(st => [st.id, `${st.name} · ${st.groups.reduce((a, g) => a + g.n, 0)}`]),
+        ['groups', 'По группам']];
+      $('scope-tabs').innerHTML = scopes.map(([k, label]) =>
+        `<button type="button" data-k="${k}" aria-pressed="${k === scope}">${label}</button>`).join('');
+    }
+
+    function renderLegend() {
+      $('legend').innerHTML =
+        `<span class="item"><span class="sw ok"></span>доклад сдан</span>` +
+        `<span class="item"><span class="sw no"></span>не сдан</span>` +
+        `<span class="item muted">Наведите на зелёную плитку — подсветится вся команда</span>`;
+    }
+
+    function tileHtml(s) {
+      const i = students.indexOf(s);
+      const label = s.work ? `${s.group || 'группа не указана'}: доклад «${cleanTitle(s.work.title)}»` : `${s.group}: доклад не сдан`;
+      return `<div class="tile ${s.work ? 'ok' : 'no'}" role="listitem" tabindex="0" data-i="${i}" data-code="${s.work ? s.work.code : ''}" aria-label="${esc(label)}">
+        ${svgUse('person', 'person')}</div>`;
+    }
+    const gridHtml = (list, cols, label) =>
+      `<div class="grid" role="list" aria-label="${esc(label)}" style="grid-template-columns: repeat(${Math.max(1, cols)}, var(--tile))">
+        ${list.map(tileHtml).join('')}</div>`;
+    const card = (title, note, done, total, body) =>
+      `<section class="card" aria-label="${esc(title)}">
+        <div class="panel-head">
+          <div><h2>${title}</h2><p class="panel-note">${note}</p></div>
+          <div class="hero"><b>${done} из ${total}</b><span>сдали · ${pct(done, total)}%</span></div>
+        </div>${body}</section>`;
+    const sortDone = list => list.slice().sort((a, b) => (!!b.work - !!a.work));
+
+    function renderStreams() {
+      if (scope === 'all') {
+        // Весь курс: авторы без группы входят в число сдавших, поэтому красных плиток
+        // ровно «численность курса − сдали»
+        const greens = students.filter(s => s.work);
+        const reds = students.filter(s => !s.work).slice(0, Math.max(0, TOTAL - greens.length));
+        const list = greens.concat(reds);
+        const note = `${STREAMS.length} ${plural(STREAMS.length, 'поток', 'потока', 'потоков')} · ${groupsWord(GROUPS.length)} · ${studentsWord(TOTAL)}`;
+        $('streams').innerHTML = card('Весь курс', note, greens.length, TOTAL,
+          gridHtml(list, Math.min(list.length, fitCols(contentWidth())), 'Весь курс'));
+        return;
+      }
+      if (typeof scope === 'number') {
+        const st = STREAMS.find(x => x.id === scope);
+        const list = sortDone(students.filter(s => s.stream === st.id));
+        const done = list.filter(s => s.work).length;
+        $('streams').innerHTML = card(st.name, `${st.range} · ${groupsWord(st.groups.length)} · ${studentsWord(list.length)}`,
+          done, list.length, gridHtml(list, Math.min(list.length, fitCols(contentWidth())), st.name));
+        return;
+      }
+
+      // По группам: у всех групп потока одинаковое число колонок, чтобы высоты были сравнимы
+      const maxPerRow = Math.max(...STREAMS.map(st => st.groups.length));
+      const groupGap = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--group-gap'));
+      let groupCols;
+      for (let k = maxPerRow; k >= 1; k--) {
+        if (maxPerRow % k) continue;
+        groupCols = fitCols((contentWidth() - (k - 1) * groupGap) / k);
+        if (groupCols >= 4) break;
+      }
+      let html = STREAMS.map(st => {
+        const inStream = students.filter(s => s.stream === st.id);
+        const groupsHtml = st.groups.map(g => {
+          const list = sortDone(students.filter(s => s.group === g.id));
+          const done = list.filter(s => s.work).length;
+          return `<div class="group"><div class="group-head"><b>${g.id}</b><span>${done} из ${g.n}</span></div>
+            ${gridHtml(list, groupCols, g.id)}</div>`;
+        }).join('');
+        return card(st.name, `${st.range} · ${groupsWord(st.groups.length)} · ${studentsWord(inStream.length)}`,
+          inStream.filter(s => s.work).length, inStream.length, `<div class="groups">${groupsHtml}</div>`);
+      }).join('');
+      if (unplaced.length) {
+        html += `<section class="card"><div class="panel-head"><div><h2>Группа не указана</h2>
+          <p class="panel-note">Сдали доклад, но в работе нет группы: ${studentsWord(unplaced.length)}</p></div></div>
+          ${gridHtml(unplaced, Math.min(unplaced.length, fitCols(contentWidth())), 'Группа не указана')}</section>`;
+      }
+      $('streams').innerHTML = html;
+    }
+
+    function renderSummary() {
+      const cell = (done, n) => {
+        const p = pct(done, n);
+        return `<td class="num"><span class="cell">${done}<span class="pct">${n ? p + '%' : ''}</span>
+          <span class="bar" aria-hidden="true" ${n ? '' : 'style="visibility:hidden"'}><i style="width:${p}%"></i></span></span></td>`;
+      };
+      const row = (cls, label, n, done) =>
+        `<tr class="${cls}"><td class="${cls === 'grp' ? 'grp' : ''}">${label}</td><td class="num">${n ?? '—'}</td>${cell(done, n)}</tr>`;
+      const head = `<tr><th>Группа</th><th class="num">Студентов</th><th class="num">Сдали доклад</th></tr>`;
+      const body = STREAMS.map(st => {
+        const n = st.groups.reduce((a, g) => a + g.n, 0);
+        return row('sub', `${st.name} <span style="font-weight:400;color:var(--muted)">${st.range}</span>`, n,
+            authors.filter(a => a.stream === st.id).length) +
+          st.groups.map(g => row('grp', g.id, g.n, authors.filter(a => a.group === g.id).length)).join('');
+      }).join('') +
+        (unplaced.length ? row('sub', 'Группа не указана', null, unplaced.length) : '') +
+        row('total', 'Весь курс', TOTAL, DONE);
+      $('summary').innerHTML = `<thead>${head}</thead><tbody>${body}</tbody>`;
+      $('notes').innerHTML = notes.map(n => `<li>${esc(n)}</li>`).join('');
+    }
+
+    function render() {
+      $('subtitle').textContent = `${STREAMS.length} потока · ${groupsWord(GROUPS.length)} · ${studentsWord(TOTAL)} · ` +
+        `сдали ${DONE} (${pct(DONE, TOTAL)}%) · ${DATA.works.length} работ · данные: ${DATA.updated || 'works.csv'}`;
+      renderTabs();
+      renderLegend();
+      renderStreams();
+      renderSummary();
+    }
+
+    // ---------- Подсказка ----------
+    const tip = $('tip');
+    function tipHtml(tile) {
+      const s = students[tile.dataset.i];
+      const where = s.group ? `${s.group} · поток ${s.stream}` : 'группа не указана';
+      const head = `<div class="name">${esc(where)}</div>`;
+      if (!s.work) return head + `<div>Доклад не сдан</div>`;
+      const w = s.work;
+      const team = w.team_size === '' ? 'состав не указан' : +w.team_size === 1 ? 'один автор' : `команда из ${w.team_size}`;
+      return head + `<div>«${esc(cleanTitle(w.title))}»</div>` +
+        `<div class="muted">${esc(w.code)} · ${team}${s.approx ? ` · совместно ${esc(w.groups)}, деление по группам условное` : ''}</div>`;
+    }
+    function placeTip(x, y) {
+      const pad = 12, r = tip.getBoundingClientRect();
+      let left = x + 14, top = y + 16;
+      if (left + r.width > innerWidth - pad) left = x - r.width - 14;
+      if (top + r.height > innerHeight - pad) top = y - r.height - 12;
+      tip.style.left = Math.max(pad, left) + 'px';
+      tip.style.top = Math.max(pad, top) + 'px';
+    }
+    function highlight(code) {
+      const box = $('streams');
+      if (!code) { box.classList.remove('dim'); return; }
+      box.classList.add('dim');
+      box.querySelectorAll('.tile').forEach(t => t.classList.toggle('hl', t.dataset.code === code));
+    }
+    function showTip(tile, x, y) {
+      tip.innerHTML = tipHtml(tile); tip.classList.add('show'); placeTip(x, y);
+      highlight(tile.dataset.code);
+    }
+    const hideTip = () => { tip.classList.remove('show'); highlight(''); };
+
+    document.addEventListener('pointerover', e => { const t = e.target.closest('.tile'); if (t) showTip(t, e.clientX, e.clientY); });
+    document.addEventListener('pointermove', e => { if (e.target.closest('.tile')) placeTip(e.clientX, e.clientY); });
+    document.addEventListener('pointerout', e => { const t = e.target.closest('.tile'); if (t && !t.contains(e.relatedTarget)) hideTip(); });
+    document.addEventListener('focusin', e => {
+      if (!e.target.classList.contains('tile')) return;
+      const r = e.target.getBoundingClientRect(); showTip(e.target, r.right - 8, r.bottom - 8);
+    });
+    document.addEventListener('focusout', e => { if (e.target.classList.contains('tile')) hideTip(); });
+    addEventListener('scroll', () => tip.classList.remove('show'), { passive: true });
+    let rt;
+    addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(renderStreams, 150); });
+
+    $('scope-tabs').addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      scope = isNaN(b.dataset.k) ? b.dataset.k : Number(b.dataset.k);
+      render();
+    });
+
+    render();
+  })();
+  </script>
+</body>
+</html>
