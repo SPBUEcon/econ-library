@@ -133,6 +133,25 @@ summary:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-r
 .doc blockquote{margin:10px 0;border-left:3px solid var(--coral);background:var(--panel);border-radius:0 10px 10px 0;padding:6px 14px}
 .doc .src{margin-top:18px;font-size:13px;color:var(--grey)}
 
+/* -------- «Главная» и меню разделов -------- */
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.crumbs a.home{display:inline-flex;align-items:center;gap:6px;background:var(--coral);color:#fff;font-weight:600;font-size:14.5px;
+  text-decoration:none;padding:8px 18px;border-radius:999px;box-shadow:0 6px 18px rgba(240,97,79,.35);transition:transform .15s ease}
+.crumbs a.home:hover{transform:translateY(-1px);background:#E2503E}
+.crumbs a.home:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.secnav{position:sticky;top:0;z-index:10;background:rgba(250,251,254,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.secnav ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px;padding:12px 0}
+.secnav a{display:inline-block;padding:7px 16px;border-radius:999px;border:1px solid var(--line);background:#fff;
+  font-weight:600;font-size:14px;text-decoration:none}
+.secnav a:hover,.secnav a:focus-visible{border-color:var(--coral);color:var(--coral)}
+section{scroll-margin-top:62px}
+/* -------- статистика (считается скриптом по этой же странице) -------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:26px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.stat .v{font-family:var(--disp);font-weight:700;font-size:30px;line-height:1}
+.stat .k{margin-top:6px;font-size:13.5px;color:var(--grey)}
+.stat.done .v{color:var(--green)} .stat.empty .v{color:var(--amber)}
+
 .foot{background:var(--ink);color:var(--ice);padding:34px 0;font-size:14px}
 .foot a{color:#fff;font-weight:600;text-decoration:none}
 .foot a:hover{text-decoration:underline}
@@ -152,7 +171,7 @@ summary:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-r
 
 <header class="hero">
   <div class="wrap">
-    <div class="crumbs"><a href="../../../index.html#tracks">Дашборд</a> · Треки · econ-3</div>
+    <div class="crumbs"><a class="home" href="../../../index.html">← Главная</a> <span>Треки · econ-3</span></div>
     <div class="eyebrow">Трек econ-3 · осень 2026</div>
     <h1>Экономика, 3 курс <span class="accent">(неск. групп)</span></h1>
     <p class="sub">Предмет «Применение информационных технологий в экономике и финансах» — база знаний
@@ -160,6 +179,14 @@ summary:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-r
       Экономика) — на занятиях по четыре: Б07–Б10 и Б11–Б14.</p>
   </div>
 </header>
+
+<nav class="secnav" aria-label="Разделы страницы">
+  <div class="wrap"><ul>
+    <li><a href="#schedule">Расписание</a></li>
+    <li><a href="#tasks">Задания</a></li>
+    <li><a href="#stats">Статистика</a></li>
+  </ul></div>
+</nav>
 
 <!-- ===================== РАСПИСАНИЕ ===================== -->
 <section id="schedule">
@@ -744,12 +771,65 @@ summary:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-r
   </div>
 </section>
 
+<!-- ===================== СТАТИСТИКА ===================== -->
+<section id="stats">
+  <div class="wrap">
+    <div class="eyebrow">03 · Статистика</div>
+    <h2>Трек в цифрах</h2>
+    <p class="lead">Считается по этой странице: «прошло» — по дате занятия относительно сегодняшнего дня, «с материалами» — есть ли в карточке ссылки на материалы; задания — из раздела «Задания». <span id="stats-asof"></span></p>
+    <div class="stats" id="stats-grid"><p class="nocontent">Статистика считается в браузере — включите JavaScript.</p></div>
+  </div>
+</section>
+
 <footer class="foot">
   <div class="wrap">
-    <a href="../../../index.html">← Дашборд мастерской</a> ·
+    <a href="../../../index.html">← Главная</a> ·
     <a href="https://github.com/SPBUEcon/econ-library/blob/main/tracks/econ-3/README.md">Трек econ-3 на GitHub</a>
   </div>
 </footer>
 
+<script>
+/* Статистика трека — по датам и материалам карточек этой страницы, без внешних данных.
+   «Прошло» — дата карточки раньше сегодняшней; «с материалами» — в карточке есть ссылки .mat.
+   Бейдж «запланировано» у прошедшей даты заменяется, чтобы карточка не противоречила статистике. */
+(function(){
+  var MONTHS={'января':0,'февраля':1,'марта':2,'апреля':3,'мая':4,'июня':5,'июля':6,'августа':7,
+    'сентября':8,'октября':9,'ноября':10,'декабря':11};
+  var YEAR=2026; /* прогон «осень 2026» */
+  var now=new Date(), today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  var ses=[].slice.call(document.querySelectorAll('#schedule .ses')).map(function(el){
+    var d=parseInt(el.querySelector('.date .d').textContent,10);
+    var m=MONTHS[el.querySelector('.date .m').textContent.trim().toLowerCase()];
+    var date=new Date(YEAR,m,d);
+    return {el:el, past:date<today, mat:!!el.querySelector('.mat')};
+  });
+  ses.forEach(function(s){
+    var plan=s.el.querySelector('.status.plan');
+    if(s.past && plan){
+      plan.className='status '+(s.mat?'done':'empty');
+      plan.innerHTML='<span class="dot"></span>'+(s.mat?'прошло':'прошло · контент не внесён');
+    }
+  });
+  var groups={};
+  document.querySelectorAll('#schedule .slot .g').forEach(function(g){groups[g.textContent.trim()]=1;});
+  var past=ses.filter(function(s){return s.past;});
+  var tiles=[
+    ['', ses.length, 'занятий в расписании'],
+    ['', past.length, 'прошло по расписанию'],
+    ['done', past.filter(function(s){return s.mat;}).length, 'из них с материалами'],
+    ['empty', past.filter(function(s){return !s.mat;}).length, 'из них без материалов'],
+    ['', ses.length-past.length, 'впереди']
+  ];
+  var ng=Object.keys(groups).length;
+  if(ng) tiles.push(['', ng, 'учебных групп']);
+  var nt=document.querySelectorAll('#tasks .task').length||document.querySelectorAll('#tasks tbody tr').length;
+  tiles.push(['', nt, 'заданий в разделе «Задания»']);
+  document.getElementById('stats-grid').innerHTML=tiles.map(function(t){
+    return '<div class="stat '+t[0]+'"><div class="v">'+t[1]+'</div><div class="k">'+t[2]+'</div></div>';
+  }).join('');
+  var asof=document.getElementById('stats-asof');
+  if(asof) asof.textContent='По состоянию на '+today.toLocaleDateString('ru-RU')+'.';
+})();
+</script>
 </body>
 </html>
